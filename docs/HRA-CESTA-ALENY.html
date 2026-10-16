@@ -1,0 +1,476 @@
+<title>Cesta Aleny</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: a board game. Left = the board with Alena's token walking 16 squares; right = the square's card + where her 13 reports live right now. Below = plain-language answers. One deliberate light "toy" world. */
+:root{
+  color-scheme:light;
+  --sky:#E8F1F8; --paper:#FFFFFF; --ink:#1B2A3A; --soft:#5C6E80; --line:#C9D7E3;
+  --path:#F7E7C6; --path-edge:#E2C88F;
+  --blue:#2F6FD0; --blue-bg:#E3EDFB; --red:#D9364B; --red-bg:#FDE7EA; --green:#1F9D6B; --green-bg:#DFF5EA;
+  --violet:#6B48D6; --violet-bg:#ECE6FF; --amber:#F2A93B; --amber-bg:#FFF2DC; --teal:#1A9AA0;
+  --display:"Fredoka","Avenir Next Rounded","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  --shadow:0 3px 0 rgba(27,42,58,.18);
+}
+*{box-sizing:border-box}
+body{background:var(--sky);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+.wrap{max-width:1260px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:22px 60px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+.top h1{font-size:clamp(32px,4.6vw,52px);line-height:1}
+.top p{margin:6px 0 0;max-width:62ch;color:var(--soft);font-size:17px}
+.mission{background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:12px 16px;box-shadow:4px 4px 0 var(--ink);max-width:470px;font-size:15px}
+.mission b{font-family:var(--display);color:var(--red);display:block;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.game{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:960px){.game{grid-template-columns:1fr}}
+.boardbox{background:var(--paper);border:2px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);padding:14px;position:relative;min-width:0}
+.hud{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.day{display:flex;align-items:baseline;gap:10px}
+.day .big{font-family:var(--display);font-weight:700;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.day .sub{color:var(--soft);font-size:14px}
+.meter{flex:1 1 220px;min-width:180px}
+.meter .bar{height:14px;border-radius:99px;background:var(--sky);border:2px solid var(--ink);overflow:hidden}
+.meter .fill{height:100%;width:0;background:repeating-linear-gradient(45deg,var(--amber),var(--amber) 8px,#F6BC63 8px,#F6BC63 16px);transition:width .9s cubic-bezier(.3,.8,.3,1)}
+.meter small{display:block;font-size:12.5px;color:var(--soft);margin-top:3px}
+svg.board{width:100%;height:auto;display:block}
+.st circle.base{transition:fill .4s,stroke .4s}
+.st text{font-family:var(--display);font-weight:600}
+.token{transition:transform 1s cubic-bezier(.45,.05,.25,1)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.token .bobber{animation:bob 1.6s ease-in-out infinite}
+@keyframes pulse{0%{r:44;opacity:.55}100%{r:64;opacity:0}}
+.ring{animation:pulse 1.6s ease-out infinite}
+@media (prefers-reduced-motion:reduce){.token,.meter .fill{transition:none}.token .bobber,.ring{animation:none}}
+.controls{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:600;font-size:18px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:14px;padding:10px 18px;cursor:pointer;box-shadow:var(--shadow);transition:transform .12s}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn.go{background:var(--amber)}
+.btn[disabled]{opacity:.4;cursor:default}
+.dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.dots button{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);padding:0;cursor:pointer}
+.dots button.done{background:var(--ink)}
+.dots button.loss{border-color:var(--red)}
+.dots button.cur{background:var(--amber);transform:scale(1.3)}
+.side{display:grid;gap:14px;min-width:0}
+.card{background:var(--paper);border:2px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);padding:18px 20px;min-width:0}
+.card .step{font-family:var(--display);font-size:14px;color:var(--soft);letter-spacing:.04em;text-transform:uppercase}
+.card h2{font-size:clamp(24px,3vw,32px);line-height:1.08;margin:4px 0 8px}
+.card .when{display:inline-flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:3px 11px;font-weight:800;font-size:13.5px;border:2px solid var(--ink);background:var(--paper)}
+.pill.where{background:var(--blue-bg)}
+.pill.date{background:var(--amber-bg)}
+.story{font-size:17.5px;line-height:1.55;margin:0 0 10px}
+.who{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
+.who span{font-size:13.5px;font-weight:700;background:var(--sky);border-radius:10px;padding:3px 9px}
+.box{border-radius:16px;padding:11px 14px;margin-top:10px;font-size:15.5px;border:2px solid}
+.box b{font-family:var(--display);display:block;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:2px}
+.box.lost{background:var(--red-bg);border-color:var(--red)}
+.box.lost b{color:var(--red)}
+.box.app{background:var(--violet-bg);border-color:var(--violet)}
+.box.app b{color:var(--violet)}
+.box.why{background:var(--green-bg);border-color:var(--green)}
+.box.why b{color:var(--green)}
+.card.enter{animation:pop .45s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes pop{0%{transform:translateY(10px) scale(.98);opacity:.2}100%{transform:none;opacity:1}}
+.term{font:inherit;color:var(--blue);background:none;border:0;border-bottom:2px dotted var(--blue);padding:0;cursor:help;font-weight:700}
+.tip{position:fixed;z-index:20;max-width:300px;background:var(--ink);color:#fff;border-radius:14px;padding:10px 12px;font-size:14.5px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.tip b{font-family:var(--display);display:block;color:#FFD48A}
+/* reports inventory */
+.inv h3{font-size:20px;margin-bottom:2px}
+.inv p.hint{margin:0 0 10px;color:var(--soft);font-size:14px}
+.places{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.place{border:2px dashed var(--line);border-radius:14px;padding:8px 9px;min-height:74px;background:var(--sky)}
+.place.koord{grid-column:1/-1;border:2px solid var(--violet);background:var(--violet-bg);min-height:70px}
+.place h4{margin:0 0 6px;font-size:12.5px;font-family:var(--body);font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.04em}
+.place.koord h4{color:var(--violet)}
+.docs{display:flex;flex-wrap:wrap;gap:5px}
+.doc{display:inline-flex;align-items:center;gap:5px;background:var(--paper);border:2px solid var(--ink);border-radius:8px;padding:2px 7px;font-size:12.5px;font-weight:700;animation:drop .5s cubic-bezier(.2,.9,.3,1.4)}
+.doc i{font-style:normal;font-family:var(--display);background:var(--ink);color:#fff;border-radius:5px;padding:0 4px;font-size:11px}
+.doc.copy{border-style:dashed;opacity:.85}
+@keyframes drop{0%{transform:translateY(-12px) rotate(-6deg);opacity:0}100%{transform:none;opacity:1}}
+.counter{font-family:var(--display);font-weight:700}
+/* answers */
+section{margin-top:40px}
+section>h2{font-size:clamp(26px,3.4vw,38px);margin-bottom:6px}
+section>p.lead{margin:0 0 16px;color:var(--soft);font-size:17px;max-width:70ch}
+.qa{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+@media (max-width:420px){.qa{grid-template-columns:1fr}}
+.q{background:var(--paper);border:2px solid var(--ink);border-radius:22px;box-shadow:5px 5px 0 var(--ink);padding:16px 18px;min-width:0}
+.q h3{font-size:21px;line-height:1.15;margin-bottom:8px}
+.q p{margin:0 0 8px;font-size:16px}
+.q ul{margin:0 0 8px;padding-left:20px}
+.q li{margin-bottom:4px}
+.q .short{font-family:var(--display);font-size:19px;font-weight:600;background:var(--amber-bg);border-radius:12px;padding:8px 12px;margin-bottom:10px}
+.q svg{width:100%;height:auto;display:block;margin:6px 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
+.chips span{border:2px solid var(--ink);border-radius:10px;padding:2px 8px;font-size:13.5px;font-weight:700;background:var(--blue-bg)}
+.src{font-size:12.5px;color:var(--soft)}
+.unk{color:var(--red);font-weight:800}
+footer{margin-top:40px;font-size:13px;color:var(--soft)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Cesta Aleny</h1>
+      <p>Alena má 63 rokov a bolí ju brucho. O dva mesiace neskôr bude mať diagnózu rakoviny pankreasu. Klikaj <b>Ďalej</b> a sleduj, čo sa po ceste deje a kde sa strácajú informácie. Celý prípad je fiktívny, je to súťažný prípad VZP.</p>
+    </div>
+    <div class="mission"><b>Tvoja misia</b>Sleduj Aleniných 13 správ. Ležia na 7 rôznych miestach a koordinátor ich musí dostať k sebe na jeden stôl, inak konzílium nemôže rozhodnúť.</div>
+  </div>
+
+  <div class="game">
+    <div class="boardbox">
+      <div class="hud">
+        <div class="day"><span class="big" id="dayBig">Deň –</span><span class="sub" id="daySub"></span></div>
+        <div class="meter"><div class="bar"><div class="fill" id="fill"></div></div><small id="meterTxt">Dni od prvej návštevy u lekára (1. 9.) po začiatok liečby</small></div>
+      </div>
+      <svg class="board" id="board" viewBox="0 0 1000 800" role="img" aria-label="Herná doska: 16 políčok cesty pacientky"></svg>
+      <div class="controls">
+        <button class="btn" id="prev" type="button">◀ Späť</button>
+        <button class="btn go" id="next" type="button">Ďalej ▶</button>
+        <button class="btn" id="auto" type="button">▶▶ Prehrať samo</button>
+      </div>
+      <div class="dots" id="dots" aria-label="Políčka"></div>
+    </div>
+
+    <div class="side">
+      <article class="card" id="card" aria-live="polite"></article>
+      <div class="card inv">
+        <h3>Kde sú teraz Aleniny správy <span class="counter" id="cnt"></span></h3>
+        <p class="hint">Každá správa je dokument od lekára alebo laboratória. Fialová krabica je stôl koordinátora. Čiarkovaná správa = jej kópiu už koordinátor má.</p>
+        <div class="places" id="places"></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="otazky">
+    <h2>Otázky, ktoré sa bál opýtať každý</h2>
+    <p class="lead">Krátko a po lopate. Kde niečo nikto nezverejnil, píšeme to rovno.</p>
+    <div class="qa" id="qa"></div>
+  </section>
+
+  <footer>Súťažný prípad Aleny je fiktívny (zadanie VZP, Rakathon 2026). Fakty o systéme: Věstník MZ 11/2025, MZ ČR, úhradová vyhláška 2026, ÚZIS, OECD 2025. Zdroje ku každému číslu: <code>docs/kontext/</code> v našom repe.</footer>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const TERMS = {
+  "praktik":"Praktický lekár. Tvoj obvodný lekár. Väčšinou ako prvý zistí, že niečo nie je v poriadku, a posiela ťa ďalej.",
+  "kardiológ":"Lekár na srdce.",
+  "liek na riedenie krvi":"Apixaban. Aby sa netvorili krvné zrazeniny. Pred zákrokom ako biopsia sa musí na pár dní vysadiť, inak hrozí krvácanie.",
+  "gastroenterológ":"Lekár na žalúdok, črevá, pečeň a pankreas.",
+  "ultrazvuk":"Vyšetrenie sondou na bruchu. Nebolí, je rýchle a ukáže orgány v tele.",
+  "pankreas":"Podžalúdková žľaza. Orgán za žalúdkom, ktorý robí tráviace šťavy a inzulín. Jej rakovina je veľmi zákerná, lebo sa dlho neprejaví.",
+  "KOC":"Komplexné onkologické centrum. Veľká nemocnica (alebo spolupracujúce nemocnice), ktorá má od ministerstva titul na liečbu rakoviny. V Česku ich je 15 pre dospelých a 2 pre deti.",
+  "koordinátor":"Nová pozícia od 1. 1. 2026. Človek v KOC, ktorý objednáva vyšetrenia, stráži termíny a zbiera správy. Nelieči a nerozhoduje o liečbe. Nemusí byť zdravotník.",
+  "CT":"Počítačová tomografia. Röntgen, ktorý urobí z tela „plátky“ ako chlieb. Ukáže, kde presne je nádor a či sa rozšíril.",
+  "biopsia":"Odber kúska tkaniva ihlou. Pri pankrease cez hadičku s kamerou (endoskop), ktorá ide cez ústa do žalúdka.",
+  "histológia":"Vyšetrenie kúska tkaniva pod mikroskopom. Až toto s istotou povie, či je to rakovina a aký typ.",
+  "konzílium":"Odborne MDT (multidisciplinárny tím). Porada lekárov rôznych odborov (chirurg, onkológ, rádiológ, patológ…), ktorí spolu rozhodnú, ako sa bude pacient liečiť.",
+  "algeziológ":"Lekár na liečbu bolesti.",
+  "psychológ":"Pomáha zvládnuť šok, strach a stres z diagnózy.",
+  "chemoterapia":"Lieky, ktoré ničia rakovinové bunky. Podávajú sa v cykloch, napríklad každé 2 týždne.",
+  "epikríza":"Zhrnutie lekára: čo pacientovi je, čo sa robilo a čo ďalej.",
+  "žiadosť":"Papier alebo elektronická správa, ktorou jeden lekár posiela pacienta k inému lekárovi. Musí v nej byť diagnóza, výsledky a dôvod.",
+  "podklad":"Zhrnutie všetkých dôležitých údajov o pacientovi na jednom mieste, aby lekári na konzíliu nemuseli čítať 13 správ.",
+  "ECOG":"Číslo 0 až 5, ktoré hovorí, ako zvláda bežný deň (0 = úplne fit, 4 = leží). Lekári podľa toho volia liečbu.",
+  "revízny lekár":"Lekár poisťovne, ktorý kontroluje, či je liečba oprávnená a dá sa preplatiť."
+};
+const T = (k, label) => `<button type="button" class="term" data-t="${k}">${label || k}</button>`;
+
+const PLACES = [
+  ["kard","Kardiológ (Jesenice)"],["lab","Laboratórium LabJih"],["rtg","Rádiológia Modřany"],["pl","Praktik"],
+  ["poli","Poliklinika Jižní"],["koc1","KOC 1 · Nemocnica Severní"],["koc2","KOC 2 · Nemocnica Lipová"]
+];
+const DOCS = {
+  "01":["Kardiológia","kard"],"02":["Krv","lab"],"03":["RTG pľúc","rtg"],"04":["Epikríza","pl"],"05":["Gastro","poli"],
+  "06":["Ultrazvuk","poli"],"07":["Žiadosť do KOC","pl"],"08":["CT","koc1"],"09":["Biopsia","koc2"],"10":["Krv KOC","koc2"],
+  "11":["Histológia","koc2"],"12":["Bolesť","koc1"],"13":["Psychológ","koc2"]
+};
+// for each level: which docs exist, which are on the coordinator's desk
+const L = [
+ {t:"Alena žije normálne", place:"Doma", date:"júl", day:null, ico:"home",
+  s:`Alena má 63 rokov a slabšie srdce. V júli bola u ${T("kardiológ")} a ten jej predpísal ${T("liek na riedenie krvi")}. Zatiaľ nič nesúvisí s rakovinou.`,
+  who:["Alena","kardiológ"], why:`Táto správa bude neskôr dôležitá. Pred biopsiou sa ten liek musí vysadiť, a koordinátor o ňom musí vedieť.`,
+  docs:["01"], desk:[]},
+ {t:"Bolí ju brucho", place:"Doma", date:"pol. augusta", day:null, ico:"pain",
+  s:`Alenu začne bolieť brucho a bolesť ide do chrbta. Myslí si, že to prejde, a dva týždne čaká. Pri rakovine ${T("pankreas","pankreasu")} je to bežné, lebo príznaky sú nenápadné.`,
+  who:["Alena","dcéra"], why:`Rakovina pankreasu nemá skríning (pravidelné preventívne vyšetrenie). Zistí sa až podľa príznakov, často neskoro.`,
+  docs:["01"], desk:[]},
+ {t:"Prvá návšteva u praktika", place:"Ambulancia praktika", date:"1. 9.", day:0, ico:"doc",
+  s:`Alena ide k ${T("praktik","praktikovi")}. Má teplotu 38,1 °C. Praktik si myslí, že je to infekcia, dá jej antibiotiká a pošle ju na odber krvi. Krv ide do súkromného laboratória.`,
+  who:["Alena","praktik","sestra","laboratórium"], why:`Tu spúšťame stopky. Od tohto dňa počítame dni do začiatku liečby.`,
+  docs:["01","02"], desk:[]},
+ {t:"Röntgen a telefonát", place:"Rádiológia + praktik", date:"3.–4. 9.", day:3, ico:"xray",
+  s:`Praktik ju pošle na röntgen pľúc do inej budovy. Výsledok je v poriadku. O deň neskôr jej praktik zavolá, napíše ${T("epikríza","epikrízu")} a objedná ju ku ${T("gastroenterológ","gastroenterológovi")}.`,
+  who:["praktik","rádiológ","Alena"], why:`Každé vyšetrenie má vlastnú správu a každá leží v inom systéme. Už teraz sú 4 správy na 4 miestach.`,
+  docs:["01","02","03","04"], desk:[]},
+ {t:"U gastroenterológa", place:"Poliklinika", date:"15. 9.", day:14, ico:"doc",
+  s:`Na termín čakala 11 dní. ${T("gastroenterológ","Gastroenterológ")} ju vyšetrí a pošle na ${T("ultrazvuk")} brucha. Na ten zasa čaká dva týždne.`,
+  who:["gastroenterológ","Alena"], why:`Čakanie medzi krokmi je normálne, ale pri rakovine je každý týždeň dôležitý.`,
+  docs:["01","02","03","04","05"], desk:[]},
+ {t:"Ultrazvuk niečo našiel", place:"Poliklinika", date:"29. 9.", day:28, ico:"scan",
+  s:`Na ultrazvuku je ložisko na ${T("pankreas","pankrease")}. Podozrenie na rakovinu. Alena nesie výsledok sama k praktikovi.`,
+  who:["rádiológ","Alena","praktik"], why:`Od teraz má ísť všetko rýchlo. Pacient by mal ísť do špecializovaného centra (KOC).`,
+  docs:["01","02","03","04","05","06"], desk:[]},
+ {t:"Praktik posiela Alenu do KOC", place:"Ambulancia praktika → KOC 2", date:"2. 10.", day:31, ico:"send", loss:"Vstup",
+  s:`Praktik napíše ${T("žiadosť")} do ${T("KOC")} (Nemocnica Lipová) a pošle ju koordinátorovi.`,
+  who:["praktik","koordinátor"],
+  lost:`V žiadosti nie sú výsledky, len zoznam, kde ich hľadať. Chýba e-mail na pacientku a otázka pre lekárov je všeobecná. Praktik nedostane potvrdenie, že ju prijali. Už prešiel 31 dní.`,
+  app:`Praktik pretiahne do appky všetko, čo má (PDF, fotky), jedným krokom a bez nového formulára. Hneď dostane potvrdenie, že pacientku prevzali.`,
+  docs:["01","02","03","04","05","06","07"], desk:["07"]},
+ {t:"Koordinátor naháňa správy", place:"KOC 2 · stôl koordinátora", date:"2.–8. 10.", day:33, ico:"phone", loss:"Vnútri KOC",
+  s:`${T("koordinátor","Koordinátor")} otvorí žiadosť a zistí, čo chýba. Volá a píše kardiológovi, do laboratória, na rádiológiu, praktikovi aj gastroenterológovi. Správy chodia ako PDF, fotky z mobilu, niečo poštou. V Nemocnici Lipová nie je voľné CT, tak ho objedná v inej nemocnici (KOC 1).`,
+  who:["koordinátor","5 pracovísk","Alena"],
+  lost:`Koordinátor trávi čas telefonovaním namiesto koordinovania. Nikde nie je vidno, čo už prišlo, čo chýba a kto je na ťahu. Všetko je v jeho hlave a v e-mailoch.`,
+  app:`Appka sama ukáže, čo chýba, a jedným klikom pošle žiadosť správnemu pracovisku. Na jednej obrazovke je vidno stav, termín a kto je na ťahu.`,
+  docs:["01","02","03","04","05","06","07"], desk:["01","02","03","04","05","06","07"]},
+ {t:"CT v inej nemocnici", place:"KOC 1 · Nemocnica Severní", date:"8. 10.", day:37, ico:"scan",
+  s:`Alena ide na ${T("CT")} do Nemocnice Severní. CT ukáže, aký veľký je nádor a či sa rozšíril.`,
+  who:["rádiológ KOC 1","Alena"], why:`Snímky sú v inej nemocnici, ako bude konzílium. Musia sa nejako dostať do KOC 2. Keď sa to nepodarí, CT sa často robí znova.`,
+  docs:["01","02","03","04","05","06","07","08"], desk:["01","02","03","04","05","06","07"]},
+ {t:"Biopsia a krv", place:"KOC 2 · Nemocnica Lipová", date:"12.–15. 10.", day:41, ico:"needle",
+  s:`Lekári urobia ${T("biopsia","biopsiu")}: odoberú kúsok pankreasu ihlou cez žalúdok. O tri dni má kontrolné odbery krvi.`,
+  who:["gastroenterológ KOC 2","sestra","laboratórium KOC 2"], why:`Pred biopsiou musela vysadiť liek na riedenie krvi. V správe je ale nemožný dátum poslednej dávky (18. 10. pri výkone 12. 10.). Takéto chyby musí niekto chytiť.`,
+  docs:["01","02","03","04","05","06","07","08","09","10"], desk:["01","02","03","04","05","06","07"]},
+ {t:"Histológia potvrdí rakovinu", place:"KOC 2 · patológia", date:"19. 10.", day:48, ico:"micro",
+  s:`Patológ pozrie vzorku pod mikroskopom. ${T("histológia","Histológia")} potvrdí rakovinu pankreasu (adenokarcinóm).`,
+  who:["patológ"], why:`Až teraz je diagnóza istá. Lekári môžu rozhodnúť o liečbe.`,
+  docs:["01","02","03","04","05","06","07","08","09","10","11"], desk:["01","02","03","04","05","06","07"]},
+ {t:"Koordinátor chystá podklad pre konzílium", place:"KOC 2 · stôl koordinátora", date:"20.–21. 10.", day:49, ico:"folder", loss:"Vnútri KOC",
+  s:`Koordinátor zbiera všetkých 11 správ a ručne z nich robí ${T("podklad")} pre ${T("konzílium")}: diagnózu, lieky, výsledky, otázku pre lekárov.`,
+  who:["koordinátor"],
+  lost:`Chyby sa ľahko prehliadnu: ${T("ECOG")} nikde nie je, váha je raz 63 a raz 65 kg, histológia je „vydaná“ deň pred odberom, dátum lieku nesedí. Lekári môžu dostať podklad neskoro alebo neúplný.`,
+  app:`AI vytiahne údaje do šablóny a pri každom ukáže presnú vetu zo správy, odkiaľ ho vzala. Červeno označí, čo chýba a čo si odporuje. Koordinátor to len skontroluje a lekár potvrdí.`,
+  docs:["01","02","03","04","05","06","07","08","09","10","11"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
+ {t:"Konzílium rozhodne", place:"KOC 2 · zasadačka", date:"21. 10.", day:50, ico:"table",
+  s:`Na ${T("konzílium")} sa stretne 5–6 lekárov: chirurg, onkológ, rádiológ, patológ, gastroenterológ. Rozhodnú: najprv ${T("chemoterapia")}, potom zvážiť operáciu.`,
+  who:["chirurg","onkológ","rádiológ","patológ","koordinátor"], why:`Toto je najdôležitejší okamih. Bez kompletných podkladov sa rozhodnutie odloží o týždeň.`,
+  docs:["01","02","03","04","05","06","07","08","09","10","11"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
+ {t:"Povedia to Alene", place:"KOC 1 + KOC 2", date:"23.–27. 10.", day:52, ico:"talk",
+  s:`Lekár povie Alene a dcére, čo jej je a ako sa bude liečiť. Alena ide k ${T("algeziológ","algeziológovi")} (bolesť) a k ${T("psychológ","psychológovi")}.`,
+  who:["onkológ","Alena","dcéra","algeziológ","psychológ"], why:`Pozor: lekár na bolesť (v KOC 1) a psychológ (v KOC 2) jej odporúčajú lieky, ktoré sa spolu nemusia znášať. Navzájom o sebe nevedia.`,
+  docs:["01","02","03","04","05","06","07","08","09","10","11","12","13"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
+ {t:"Späť k praktikovi", place:"KOC 2 → praktik", date:"po 21. 10.", day:55, ico:"mail", loss:"Výstup",
+  s:`Výsledok konzília by mal dostať praktik aj ${T("revízny lekár")} poisťovne. Praktik je ten, kto bude Alenu vidieť najčastejšie.`,
+  who:["koordinátor","praktik","revízny lekár"],
+  lost:`Zákon neurčuje, ako sa výsledok pošle, a nikto nepotvrdzuje, že ho praktik dostal. Praktik často nevie, či Alenu prijali a čo sa rozhodlo.`,
+  app:`Záver konzília ide praktikovi aj s pôvodným kontextom. Appka ukáže „doručené a prečítané“ a prípad sa uzavrie.`,
+  docs:["01","02","03","04","05","06","07","08","09","10","11","12","13"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
+ {t:"Začína liečba", place:"KOC 2 · onkológia", date:"4. 11.", day:64, ico:"drip",
+  s:`Alena začína ${T("chemoterapia","chemoterapiu")}. Bude chodiť každé 2 týždne, niekoľko mesiacov. Potom lekári zvážia operáciu.`,
+  who:["onkológ","sestra","Alena","dcéra"], why:`Od prvej návštevy u praktika ubehlo 64 dní. 31 z nich bolo ešte pred KOC a 19 v KOC do konzília. Cieľ ministerstva pri takýchto diagnózach je ideálne pár týždňov.`,
+  docs:["01","02","03","04","05","06","07","08","09","10","11","12","13"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
+];
+const MAXDAY = 64;
+
+// ---------- board ----------
+const svg = document.getElementById("board");
+const COLS = 4, ROWS = 4, X0 = 130, X1 = 870, Y0 = 120, DY = 185;
+const pos = L.map((_, i) => { const r = Math.floor(i / COLS), c = i % COLS; const x = X0 + (r % 2 ? COLS - 1 - c : c) * ((X1 - X0) / (COLS - 1)); return [x, Y0 + r * DY]; });
+const ICON = {
+  home:'<path d="M-16 2L0-13 16 2"/><path d="M-11-1v14h22V-1"/>',
+  pain:'<circle r="13"/><path d="M-6 6q6-6 12 0M-6-4l3 2M6-4l-3 2"/>',
+  doc:'<path d="M-10-14h14l6 6v22h-20z"/><path d="M-5-2h10M-5 4h10M-5 10h6"/>',
+  xray:'<rect x="-13" y="-13" width="26" height="26" rx="4"/><path d="M0-9v18M-7-5q7 4 14 0M-7 1q7 4 14 0"/>',
+  scan:'<circle r="13"/><circle r="5"/><path d="M0-13v4M0 9v4"/>',
+  send:'<path d="M-15 0l30-12-8 26-6-10z"/><path d="M1 4l14-16"/>',
+  phone:'<path d="M-11-14h8l3 7-4 3q3 7 10 10l3-4 7 3v8q-20 1-27-27z"/>',
+  needle:'<path d="M-12 12l14-14M2-2l8-8 4 4-8 8zM-14 14l3-3"/>',
+  micro:'<path d="M-4-14h6l2 12h-10zM-1-2v6M-12 14h24M8 14q4-10-4-14"/>',
+  folder:'<path d="M-15-9h10l3 4h17v18h-30z"/><path d="M-6 4l4 4 8-9" stroke="#6B48D6"/>',
+  table:'<ellipse rx="15" ry="7"/><circle cx="-11" cy="-11" r="3.5"/><circle cx="0" cy="-14" r="3.5"/><circle cx="11" cy="-11" r="3.5"/>',
+  talk:'<path d="M-15-10h18v12h-9l-5 5V2h-4z"/><path d="M15-2H7v10h3v4l4-4h1z"/>',
+  mail:'<rect x="-15" y="-10" width="30" height="20" rx="3"/><path d="M-15-8L0 3l15-11"/>',
+  drip:'<path d="M-6-15h12v14h-12z"/><path d="M0-1v9M0 8q0 7-8 7"/><circle cx="-8" cy="15" r="2"/>'
+};
+let pathD = `M${pos[0][0]},${pos[0][1]}`;
+for (let i = 1; i < pos.length; i++) { const [x0,y0] = pos[i-1], [x1,y1] = pos[i]; if (y0 === y1) pathD += ` L${x1},${y1}`; else { const k = x0 > 500 ? 1 : -1; pathD += ` C${x0 + 110*k},${y0} ${x1 + 110*k},${y1} ${x1},${y1}`; } }
+svg.innerHTML = `
+  <defs><pattern id="dotz" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="#C9D7E3"/></pattern></defs>
+  <rect x="0" y="0" width="1000" height="800" rx="22" fill="url(#dotz)"/>
+  <path d="${pathD}" fill="none" stroke="var(--path-edge)" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${pathD}" fill="none" stroke="var(--path)" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${pathD}" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="2 16" stroke-linecap="round"/>
+  <path id="walked" d="${pathD}" fill="none" stroke="var(--amber)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+  <text x="${pos[0][0]-70}" y="${pos[0][1]-70}" font-family="var(--display)" font-size="22" font-weight="700" fill="var(--soft)">ŠTART</text>
+  <text x="${pos[pos.length-1][0]-30}" y="${pos[pos.length-1][1]+86}" font-family="var(--display)" font-size="22" font-weight="700" fill="var(--green)">LIEČBA</text>
+  ${L.map((l, i) => `<g class="st" data-i="${i}" transform="translate(${pos[i][0]},${pos[i][1]})" style="cursor:pointer">
+     ${l.loss ? `<circle class="ring" r="44" fill="none" stroke="var(--red)" stroke-width="4" style="display:none"/>` : ""}
+     <circle class="base" r="40" fill="#fff" stroke="${l.loss ? "var(--red)" : "var(--ink)"}" stroke-width="${l.loss ? 5 : 3.5}"/>
+     <g fill="none" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,-4)">${ICON[l.ico] || ICON.doc}</g>
+     <circle cx="28" cy="-28" r="14" fill="${l.loss ? "var(--red)" : "var(--ink)"}"/>
+     <text x="28" y="-23" text-anchor="middle" font-size="15" fill="#fff">${l.loss ? "!" : i + 1}</text>
+     <text y="62" text-anchor="middle" font-size="15" fill="var(--soft)">${l.date}</text>
+   </g>`).join("")}
+  <g class="token" id="token"><g class="bobber">
+    <ellipse cx="0" cy="34" rx="20" ry="6" fill="rgba(27,42,58,.18)"/>
+    <path d="M-17 30q0-24 17-24t17 24z" fill="var(--violet)" stroke="var(--ink)" stroke-width="3"/>
+    <circle cx="0" cy="-6" r="15" fill="#FFD9B8" stroke="var(--ink)" stroke-width="3"/>
+    <path d="M-15-8q2-17 15-17t15 17q-4-8-15-9t-15 9z" fill="#8A5A3C" stroke="var(--ink)" stroke-width="2.5"/>
+    <circle cx="-5" cy="-5" r="1.9" fill="var(--ink)"/><circle cx="5" cy="-5" r="1.9" fill="var(--ink)"/>
+    <path d="M-4 2q4 3 8 0" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>
+    <rect x="-24" y="-48" width="48" height="20" rx="10" fill="var(--ink)"/><text x="0" y="-34" text-anchor="middle" font-family="var(--display)" font-size="13" font-weight="600" fill="#fff">Alena</text>
+  </g></g>`;
+const walked = document.getElementById("walked");
+const totalLen = walked.getTotalLength();
+// cumulative path length at each station (sample)
+const stationLen = pos.map(([x, y]) => { let best = 0, bd = 1e9; for (let s = 0; s <= totalLen; s += 4) { const p = walked.getPointAtLength(s); const d = (p.x - x) ** 2 + (p.y - y) ** 2; if (d < bd) { bd = d; best = s; } } return best; });
+walked.style.strokeDasharray = `${totalLen}`;
+walked.style.transition = "stroke-dashoffset 1s cubic-bezier(.45,.05,.25,1)";
+
+// ---------- UI ----------
+let cur = 0, timer = null;
+const $ = id => document.getElementById(id);
+$("dots").innerHTML = L.map((l, i) => `<button type="button" aria-label="Políčko ${i + 1}: ${l.t}" data-i="${i}" class="${l.loss ? "loss" : ""}"></button>`).join("");
+const placeEls = () => {
+  const lvl = L[cur];
+  const desk = new Set(lvl.desk);
+  const html = PLACES.map(([k, n]) => {
+    const here = lvl.docs.filter(d => DOCS[d][1] === k);
+    return `<div class="place"><h4>${n}</h4><div class="docs">${here.map(d => `<span class="doc${desk.has(d) ? " copy" : ""}"><i>${d}</i>${DOCS[d][0]}</span>`).join("") || `<span class="src">zatiaľ nič</span>`}</div></div>`;
+  }).join("");
+  const deskHtml = `<div class="place koord"><h4>Stôl koordinátora v KOC 2</h4><div class="docs">${lvl.desk.map(d => `<span class="doc"><i>${d}</i>${DOCS[d][0]}</span>`).join("") || `<span class="src">prázdny, koordinátor o Alene ešte nevie</span>`}</div></div>`;
+  $("places").innerHTML = deskHtml + html;
+  $("cnt").textContent = `· na stole ${lvl.desk.length} z ${lvl.docs.length}`;
+};
+function render(animate = true) {
+  const l = L[cur];
+  const [x, y] = pos[cur];
+  $("token").style.transform = `translate(${x}px,${y - 66}px)`;
+  walked.style.strokeDashoffset = `${totalLen - stationLen[cur]}`;
+  svg.querySelectorAll(".st").forEach((g, i) => {
+    const base = g.querySelector(".base"); base.setAttribute("fill", i < cur ? "#FFF2DC" : i === cur ? "#FFE3A6" : "#fff");
+    const ring = g.querySelector(".ring"); if (ring) ring.style.display = i === cur ? "" : "none";
+  });
+  $("dayBig").textContent = l.day === null ? "Pred 1. návštevou" : `Deň ${l.day}`;
+  $("daySub").textContent = l.date;
+  $("fill").style.width = `${l.day === null ? 0 : Math.min(100, (l.day / MAXDAY) * 100)}%`;
+  const card = $("card");
+  card.innerHTML = `<div class="step">Políčko ${cur + 1} z ${L.length}${l.loss ? ` · <span style="color:var(--red)">tu sa strácajú informácie (${l.loss})</span>` : ""}</div>
+    <h2>${l.t}</h2>
+    <div class="when"><span class="pill date">Kedy: ${l.date}</span><span class="pill where">Kde: ${l.place}</span></div>
+    <p class="story">${l.s}</p>
+    <div class="who">${l.who.map(w => `<span>${w}</span>`).join("")}</div>
+    ${l.why ? `<div class="box why"><b>Prečo je to dôležité</b>${l.why}</div>` : ""}
+    ${l.lost ? `<div class="box lost"><b>Čo sa tu pokazí</b>${l.lost}</div>` : ""}
+    ${l.app ? `<div class="box app"><b>Čo urobí naša appka</b>${l.app}</div>` : ""}`;
+  if (animate) { card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter"); }
+  $("dots").querySelectorAll("button").forEach((b, i) => { b.classList.toggle("done", i < cur); b.classList.toggle("cur", i === cur); });
+  $("prev").disabled = cur === 0; $("next").textContent = cur === L.length - 1 ? "Znova od začiatku ↺" : "Ďalej ▶";
+  placeEls();
+  try { localStorage.setItem("alena-step", String(cur)); } catch (e) {}
+}
+function go(i) { cur = (i + L.length) % L.length; render(); }
+$("next").onclick = () => { stopAuto(); go(cur === L.length - 1 ? 0 : cur + 1); };
+$("prev").onclick = () => { stopAuto(); if (cur > 0) go(cur - 1); };
+$("dots").onclick = e => { const b = e.target.closest("button"); if (b) { stopAuto(); go(+b.dataset.i); } };
+svg.addEventListener("click", e => { const g = e.target.closest(".st"); if (g) { stopAuto(); go(+g.dataset.i); } });
+function stopAuto() { if (timer) { clearInterval(timer); timer = null; $("auto").textContent = "▶▶ Prehrať samo"; } }
+$("auto").onclick = () => { if (timer) return stopAuto(); $("auto").textContent = "❚❚ Zastaviť"; timer = setInterval(() => { if (cur >= L.length - 1) return stopAuto(); go(cur + 1); }, 7000); };
+addEventListener("keydown", e => { if (e.target.closest("input,textarea")) return; if (e.key === "ArrowRight") { stopAuto(); if (cur < L.length - 1) go(cur + 1); } if (e.key === "ArrowLeft") { stopAuto(); if (cur > 0) go(cur - 1); } });
+
+// glossary tooltips
+const tip = $("tip");
+document.addEventListener("click", e => {
+  const t = e.target.closest(".term");
+  if (!t) { tip.hidden = true; return; }
+  const k = t.dataset.t; tip.innerHTML = `<b>${k}</b>${TERMS[k] || ""}`; tip.hidden = false;
+  const r = t.getBoundingClientRect(); const w = Math.min(300, innerWidth - 32);
+  tip.style.maxWidth = w + "px";
+  tip.style.left = Math.max(16, Math.min(r.left, innerWidth - w - 16)) + "px";
+  tip.style.top = (r.bottom + 8 + 160 > innerHeight ? Math.max(16, r.top - 8 - tip.offsetHeight) : r.bottom + 8) + "px";
+});
+addEventListener("scroll", () => { tip.hidden = true; }, { passive: true });
+
+try { const s = +localStorage.getItem("alena-step"); if (s > 0 && s < L.length) cur = s; } catch (e) {}
+render(false);
+
+// ---------- answers ----------
+const QA = [{q:"Koľko je tých koordinátorov?", short:"V jednej nemocnici sú to zatiaľ 1 až 3 ľudia, nie stovky. Celkový počet v Česku nikto nezverejnil.",
+ html:`<svg viewBox="0 0 520 236" role="img" aria-label="Počet koordinátorov v piatich nemocniciach">
+  <g font-family="Nunito,sans-serif" font-weight="700" font-size="14" fill="#1B2A3A">
+  ${[["Nemocnica Jihlava",3,""],["FN Olomouc",3,"2 s menom + 1"],["Nem. Na Pleši",2,""],["KN Zlín",1,""],["FN Ostrava (onkológia)",1,"len pár hodín týždenne"]].map((r,i)=>`
+   <text x="0" y="${30+i*44}">${r[0]}</text>
+   ${Array.from({length:r[1]}).map((_,k)=>`<g transform="translate(${215+k*44},${18+i*44})"><circle cy="-6" r="8" fill="#6B48D6" stroke="#1B2A3A" stroke-width="2"/><path d="M-13 16q0-14 13-14t13 14z" fill="#ECE6FF" stroke="#1B2A3A" stroke-width="2"/></g>`).join("")}
+   <text x="${230+r[1]*44}" y="${30+i*44}" font-weight="600" font-size="12.5" fill="#5C6E80">${r[2]}</text>`).join("")}
+  </g></svg>
+  <ul><li><b>Pravidlo:</b> každé KOC musí mať <b>aspoň jedného koordinátora na plný úväzok</b> (8 hodín denne). Viac môže mať, horná hranica nie je.</li>
+  <li><b>Realita:</b> z webov 5 nemocníc vychádza <b>1 až 3 koordinátori</b> na onkologické pracovisko. Často sú rozdelení podľa diagnóz (jedna má prsník, druhá tráviacu sústavu).</li>
+  <li><b>Koľko pacientov má jeden:</b> nikto to nezverejnil. Jediný údaj: koordinátorka v nemocnici Bulovka rieši <b>asi 10 nových pacientov týždenne</b>.</li>
+  <li><b>Pre porovnanie:</b> KOC musí mať aspoň <b>1 000 nových onkologických pacientov ročne</b>. Onkologická klinika VFN prijme asi 1 250 ročne. Koordinátor teda nestihne všetkých, sústredí sa hlavne na rýchle a nebezpečné diagnózy (pľúca, pankreas).</li>
+  <li><b>Kto to je:</b> nemusí byť zdravotník, stačí maturita a 16-hodinový kurz na ČVUT. Kurz zatiaľ absolvovalo asi 140 záujemcov.</li></ul>
+  <p><b>Prečo to je pre nás dôležité:</b> na stovky pacientov sú 1–3 ľudia. Každá minúta, ktorú im appka ušetrí, sa počíta.</p>
+  <p class="src">Zdroje: Věstník MZ 11/2025 (min. 1 úväzok), weby nemocníc Jihlava, FN Olomouc, KN Zlín, FN Ostrava, článok o Na Pleši, Zdravotnický deník 6/2026 (Bulovka), MZ 2. 9. 2026 (kurz ČVUT). Malá vzorka, 5 z 15 KOC.</p>`},
+{q:"Za čo presne je tých 250 Kč?", short:"Poisťovňa zaplatí nemocnici 250 Kč za každý deň, keď koordinátor niečo urobil pre jedného pacienta. Najviac raz denne na pacienta.",
+ html:`<svg viewBox="0 0 520 200" role="img" aria-label="Príklad: 4 dni so zásahom koordinátora = 4 × 250 Kč">
+  <g font-family="Nunito,sans-serif" font-weight="700" fill="#1B2A3A" font-size="13">
+   ${[["2. 10.","prevzal Alenu, vyžiadal správy"],["3. 10.","objednal CT v KOC 1"],["7. 10.","objednal biopsiu"],["20. 10.","pripravil podklad"]].map((d,i)=>`
+   <g transform="translate(${10+i*128},14)"><rect width="118" height="104" rx="14" fill="#FFF2DC" stroke="#1B2A3A" stroke-width="2.5"/>
+   <text x="59" y="26" text-anchor="middle" font-family="Fredoka,sans-serif" font-size="16">${d[0]}</text>
+   <foreignObject x="8" y="34" width="102" height="44"><div xmlns="http://www.w3.org/1999/xhtml" style="font:600 12px/1.25 Nunito,sans-serif;text-align:center;color:#1B2A3A">${d[1]}</div></foreignObject>
+   <rect x="22" y="78" width="74" height="20" rx="10" fill="#1F9D6B"/><text x="59" y="93" text-anchor="middle" fill="#fff" font-size="12.5">+250 Kč</text></g>`).join("")}
+   <text x="260" y="152" text-anchor="middle" font-family="Fredoka,sans-serif" font-size="20">4 dni so zásahom = 4 × 250 = 1 000 Kč pre nemocnicu</text>
+   <text x="260" y="180" text-anchor="middle" font-size="12.5" fill="#5C6E80">príklad na Alene, presné dni sú ilustračné</text>
+  </g></svg>
+  <ul><li><b>Za čo:</b> za jeden „zásah koordinátora“ (kód výkonu 51887). Zásah je napríklad objednanie vyšetrenia, vyžiadanie správy alebo príprava podkladu.</li>
+  <li><b>Ako často:</b> najviac <b>1× za deň</b> na jedného pacienta. Keď koordinátor v ten istý deň urobí pre Alenu 5 vecí, je to stále 250 Kč.</li>
+  <li><b>Strop za celú liečbu:</b> žiadny. Koľko dní koordinátor pre pacienta niečo robí, toľkokrát 250 Kč.</li>
+  <li><b>Komu:</b> peniaze idú <b>nemocnici</b> (KOC), nie koordinátorovi. Ten dostáva bežný plat od nemocnice.</li>
+  <li><b>Podmienka:</b> každý zásah musí byť <b>zapísaný</b> (kto ho požiadal, čo urobil, kedy). Bez zápisu poisťovňa nezaplatí.</li>
+  <li><b>Pre porovnanie:</b> je to malý bonus, nie platba za liečbu. VZP dá na jedného onkologického pacienta v priemere asi 71 tisíc Kč ročne (náš výpočet: 23,7 mld. Kč / 333 tisíc pacientov), a to sa platí inými kódmi.</li></ul>
+  <p><b>Prečo to je pre nás dôležité:</b> koordinátor musí každý zásah poctivo zapísať, inak nemocnica nedostane peniaze. Naša appka môže zapisovať automaticky, čo koordinátor kedy urobil.</p>
+  <p class="src">Zdroj: vyhláška 134/1998 Sb. (zoznam výkonov, kód 51887, frekvencia „1/1 den“) a úhradová vyhláška 432/2025 Sb., bod 8.5. Čo presne je „jeden zásah“, predpis nedefinuje.</p>`},
+{q:"Kto koho platí?", short:"Ty platíš poisťovňu, poisťovňa platí nemocnicu, nemocnica platí ľudí (aj koordinátora).",
+ html:`<svg viewBox="0 0 520 250" role="img" aria-label="Tok peňazí: človek, poisťovňa, nemocnica, zamestnanci">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1B2A3A"/></marker></defs>
+  <g font-family="Nunito,sans-serif" font-size="14" font-weight="700" fill="#1B2A3A">
+   <rect x="10" y="20" width="140" height="66" rx="14" fill="#FFF2DC" stroke="#1B2A3A" stroke-width="2.5"/><text x="80" y="48" text-anchor="middle">Ty (každý z nás)</text><text x="80" y="68" text-anchor="middle" font-weight="600" font-size="12.5">odvod z výplaty</text>
+   <rect x="190" y="20" width="140" height="66" rx="14" fill="#E3EDFB" stroke="#1B2A3A" stroke-width="2.5"/><text x="260" y="48" text-anchor="middle">Poisťovňa</text><text x="260" y="68" text-anchor="middle" font-weight="600" font-size="12.5">VZP a 6 ďalších</text>
+   <rect x="370" y="20" width="140" height="66" rx="14" fill="#DFF5EA" stroke="#1B2A3A" stroke-width="2.5"/><text x="440" y="48" text-anchor="middle">Nemocnica (KOC)</text><text x="440" y="68" text-anchor="middle" font-weight="600" font-size="12.5">za výkony a lôžka</text>
+   <rect x="370" y="160" width="140" height="66" rx="14" fill="#ECE6FF" stroke="#1B2A3A" stroke-width="2.5"/><text x="440" y="188" text-anchor="middle">Lekári, sestry,</text><text x="440" y="208" text-anchor="middle">koordinátor</text>
+   <rect x="10" y="160" width="140" height="66" rx="14" fill="#fff" stroke="#1B2A3A" stroke-width="2.5" stroke-dasharray="6 5"/><text x="80" y="188" text-anchor="middle">Štát</text><text x="80" y="208" text-anchor="middle" font-weight="600" font-size="12.5">za deti a dôchodcov</text>
+   <path d="M150 53h36" stroke="#1B2A3A" stroke-width="2.5" marker-end="url(#ar)"/>
+   <path d="M330 53h36" stroke="#1B2A3A" stroke-width="2.5" marker-end="url(#ar)"/>
+   <path d="M440 86v70" stroke="#1B2A3A" stroke-width="2.5" marker-end="url(#ar)"/>
+   <path d="M150 180q60-30 110-90" fill="none" stroke="#1B2A3A" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#ar)"/>
+   <text x="455" y="128" font-size="12.5">plat</text>
+  </g></svg>
+  <ul><li><b>Ty</b> (a tvoj zamestnávateľ) platíte každý mesiac zdravotné poistenie. Za deti, študentov a dôchodcov ho platí štát.</li>
+  <li><b>Poisťovňa</b> (najväčšia je VZP, má 6,17 mil. ľudí) z toho platí nemocniciam: za každé vyšetrenie, za pobyt v nemocnici podľa diagnózy aj za drahé lieky.</li>
+  <li><b>Nemocnica</b> z toho platí platy lekárov, sestier aj koordinátora.</li>
+  <li><b>Pacient</b> za liečbu rakoviny v Česku takmer nič neplatí.</li>
+  <li>VZP dala na onkológiu v roku 2024 <b>23,7 miliardy Kč</b> pre zhruba 333 tisíc pacientov.</li></ul>`},
+{q:"Čo je KOC a kde sú?", short:"Titul, ktorý dá ministerstvo veľkej nemocnici na liečbu rakoviny. Nie samostatná budova ani firma.",
+ html:`<p>V Česku je <b>15 KOC pre dospelých</b> a <b>2 pre deti</b> (zoznam ministerstva, február 2026, platí do roku 2031):</p>
+  <div class="chips"><span>Praha · Motol + Homolka</span><span>Praha · VFN + Thomayerova + ÚVN</span><span>Praha · Vinohrady</span><span>Brno · MOÚ + FN Brno + sv. Anna</span><span>Hradec Králové</span><span>Olomouc</span><span>Ostrava</span><span>Plzeň</span><span>České Budějovice</span><span>Liberec</span><span>Zlín</span><span>Pardubice</span><span>Ústí nad Labem</span><span>Jihlava</span><span>Nový Jičín (AGEL)</span></div>
+  <ul><li>Aby nemocnica dostala titul, musí ročne liečiť <b>aspoň 1 000 nových onkologických pacientov</b>, mať 2 ožarovacie prístroje, konzíliá a <b>koordinátora</b>.</li>
+  <li><b>8</b> KOC sú štátne (fakultné nemocnice), <b>6</b> krajské a <b>1</b> súkromné.</li>
+  <li>Okolo každého KOC sú menšie nemocnice (asi 23 „regionálnych centier“), ktoré s ním spolupracujú.</li>
+  <li>Na Slovensku KOC ešte nie je, buduje sa okolo Národného onkologického ústavu.</li></ul>`},
+{q:"Prečo si lekári nepošlú správu jednoducho e-mailom?", short:"Každý lekár má iný program a tie programy spolu nekomunikujú.",
+ html:`<svg viewBox="0 0 520 150" role="img" aria-label="Tri nespojené programy"><g font-family="Nunito,sans-serif" font-weight="700" font-size="13.5" fill="#1B2A3A">
+   <rect x="10" y="30" width="140" height="80" rx="14" fill="#FFF2DC" stroke="#1B2A3A" stroke-width="2.5"/><text x="80" y="64" text-anchor="middle">Praktik</text><text x="80" y="84" text-anchor="middle" font-weight="600" font-size="12">program A</text>
+   <rect x="190" y="30" width="140" height="80" rx="14" fill="#E3EDFB" stroke="#1B2A3A" stroke-width="2.5"/><text x="260" y="64" text-anchor="middle">Poliklinika</text><text x="260" y="84" text-anchor="middle" font-weight="600" font-size="12">program B</text>
+   <rect x="370" y="30" width="140" height="80" rx="14" fill="#DFF5EA" stroke="#1B2A3A" stroke-width="2.5"/><text x="440" y="64" text-anchor="middle">Nemocnica</text><text x="440" y="84" text-anchor="middle" font-weight="600" font-size="12">program C</text>
+   <g stroke="#D9364B" stroke-width="4" stroke-linecap="round"><path d="M160 60l20 20M180 60l-20 20"/><path d="M340 60l20 20M360 60l-20 20"/></g>
+   <text x="260" y="140" text-anchor="middle" font-size="13" fill="#5C6E80">Medzi nimi: papier, telefón, PDF, CD, pošta</text></g></svg>
+  <ul><li>Praktici majú najčastejšie programy CGM alebo MEDaX, nemocnice zas STAPRO, Asseco, ICZ či Medicalc. Navzájom si nerozumejú.</li>
+  <li>Zdravotné údaje by sa mali posielať šifrovane, preto obyčajný e-mail mnohé nemocnice nepoužívajú.</li>
+  <li>Elektronická žiadanka (eŽádanka) existuje od 1. 1. 2026, ale je zatiaľ <b>dobrovoľná</b>. Centrálne miesto na všetky správy pacienta v Česku neexistuje.</li>
+  <li>Preto pacienti často <b>nosia papiere a CD so snímkami sami</b> a ľudia údaje prepisujú ručne.</li></ul>`},
+{q:"Čo presne postavíme?", short:"Jednu webovú appku pre koordinátora, ktorá prevedie Alenu celou cestou bez straty informácií.",
+ html:`<ol style="padding-left:20px;margin:0 0 8px">
+  <li><b>Prevziať:</b> praktik pošle Alenu jedným krokom, len nahrá správy, ktoré má.</li>
+  <li><b>Vyťažiť:</b> AI z 11 správ vytiahne dôležité údaje. Pri každom ukáže presnú vetu, odkiaľ ho vzala, a označí, čo chýba a čo si odporuje.</li>
+  <li><b>Koordinovať:</b> na jednej obrazovke vidno všetkých pacientov, ich stav, termíny a kto je na ťahu.</li>
+  <li><b>Spätná väzba:</b> záver konzília ide praktikovi a appka potvrdí, že ho dostal.</li></ol>
+  <p><b>Pravidlo:</b> AI iba pripraví návrh, rozhoduje vždy človek. Na hackathone to ukážeme na jednej fiktívnej pacientke (Alena) od prvej správy po potvrdené odovzdanie.</p>`},
+];
+$("qa").innerHTML = QA.map(q => `<article class="q"><h3>${q.q}</h3>${q.short ? `<div class="short">${q.short}</div>` : ""}${q.html}</article>`).join("");
+</script>

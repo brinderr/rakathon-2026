@@ -33,9 +33,9 @@ _Na 10 minút čítania. Stav: piatok 16. 10. 2026. Zdroje a detaily sú v `docs
 
 **Koordinátori:**
 - **Od kedy:** zaviedlo ich ministerstvo od **1. 1. 2026**. Koncepciu spoluvytváral **Marián Rybář**, garant našej výzvy.
-- **Koľko:** každé KOC musí mať **minimálne 1 úväzok**, väčšie majú viac (jedna klinika uvádza „máme dve koordinátorky“). Celkový počet v ČR **nikto nezverejnil [?]**, minimum je 15. Zatiaľ ich vyškolili asi 140 (ČVUT).
+- **Koľko:** každé KOC musí mať **aspoň 1 človeka na plný úväzok**, horná hranica nie je. Podľa webov 5 nemocníc je to v praxi **1 až 3 koordinátori** na onkologické pracovisko (Jihlava 3, Olomouc 2–3, Na Pleši 2, Zlín 1, Ostrava 1 na pár hodín). Celkový počet v ČR **nikto nezverejnil [?]**. Jediný údaj o vyťažení: koordinátorka na Bulovke rieši **asi 10 nových pacientov týždenne**. Kurz na ČVUT (16 hodín) zatiaľ absolvovalo asi 140 záujemcov.
 - **Typy:** koordinátor 1 vedie pacienta od podozrenia po diagnózu, koordinátor 2 pracuje vnútri KOC a chystá podklady pre MDT (**to je náš užívateľ**), koordinátor 3 sa stará o pacienta po liečbe.
-- **Platba:** VZP platí nemocnici **250 Kč za výkon koordinátora** (kód 51887). Peniaze teda idú nemocnici, nie koordinátorovi.
+- **Platba:** poisťovňa platí nemocnici **250 Kč za každý deň, keď koordinátor niečo urobil pre jedného pacienta** (kód výkonu 51887, najviac 1× denne na pacienta, strop za liečbu nie je). Príklad: 4 dni so zásahom = 1 000 Kč. Peniaze idú **nemocnici**, nie koordinátorovi, a každý zásah musí byť zapísaný, inak poisťovňa nezaplatí. Je to malý bonus, nie platba za liečbu.
 - **Nástroje:** podľa predpisu musí koordinátor pracovať v NIS a všetko **preukázateľne zapisovať**. **Špeciálny softvér pre neho neexistuje**, a presne ten chce VZP.
 
 **Čísla:**
