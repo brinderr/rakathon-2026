@@ -12,6 +12,7 @@ Bruno + Maťo, Rakathon Praha. Chcú hlboký research (Slack + Google Drive z pr
 - **Nápad**: vlastný nápad nemajú, vychádzame z researchu. (kolo 1)
 - **Obmedzenia**: žiadne technické (aj mobilná appka OK). Musí to riešiť skutočný bottleneck, o ktorý je dopyt. Nemusí byť nové, stačí robiť existujúcu vec lepšie, rýchlejšie, lacnejšie. Pozerať z pohľadu koncového užívateľa. **Výsledný produkt musí byť maximálne jednoduchý** (lekári a koordinátori nie sú technici). Nápady môžu byť „šialené“. (kolo 1)
 - **Čas**: research do 60–90 min, výber výzvy do 19:00, Claude kóduje cez noc, ráno doladenie. Pitch 3 min (cca 1–1,5 min video + reč). (kolo 1)
+- **Bonus InterSystems (1 500 €)**: peniaze sú fajn. Ak to reálne dáva zmysel, postaviť riešenie tak, aby malo šancu aj na cenu InterSystems (AI + FHIR, IRIS for Health). Nenarvať to tam nasilu. (kolo 1, doplnok)
 - **Výstupy**: research na GitHub, súhrn v chate zrozumiteľnou rečou, one-pager, na záver 3 vety „čo by zvolil Alex Hormozi“. Rozpočet max ~50 % denného limitu. (kolo 1)
 
 ## Zistené fakty
