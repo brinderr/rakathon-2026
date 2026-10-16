@@ -1,0 +1,43 @@
+/* Design tokens: calm, premium, Apple-like. Soft lavender-to-mint glass on a pale canvas,
+   SF system font, generous whitespace, hairline borders, 20–28px radii, very few colors.
+   Status colors are the ONLY saturated colors and are always paired with a label. */
+:root {
+  --canvas: #F4F5FA;
+  --canvas-2: #EEF0F8;
+  --surface: #FFFFFF;
+  --surface-glass: rgba(255, 255, 255, 0.72);
+  --ink: #111827;
+  --ink-2: #374151;
+  --muted: #6B7280;
+  --faint: #9CA3AF;
+  --hair: rgba(17, 24, 39, 0.08);
+  --hair-2: rgba(17, 24, 39, 0.14);
+  --accent: #6D5BD0;          /* violet, primary actions */
+  --accent-soft: #EEEBFB;
+  --accent-grad: linear-gradient(135deg, #8B7CF6 0%, #6D5BD0 100%);
+  --mint: #2FB38A; --mint-soft: #E5F6EF;      /* confirmed / done */
+  --amber: #E29A2D; --amber-soft: #FDF2E1;    /* proposed / waiting / conflict-light */
+  --coral: #E5484D; --coral-soft: #FDECEC;    /* missing / late */
+  --orange: #F07A2B; --orange-soft: #FEEEE3;  /* conflict */
+  --sky: #3B82F6; --sky-soft: #E8F0FE;        /* info / clock */
+  --pastel-1: linear-gradient(135deg, #FBD5E5 0%, #F9E7C8 100%);
+  --pastel-2: linear-gradient(135deg, #D7DDFB 0%, #CDEFE6 100%);
+  --pastel-3: linear-gradient(135deg, #EAD9FB 0%, #F6D9EC 100%);
+  --r-sm: 12px; --r-md: 18px; --r-lg: 24px; --r-xl: 28px;
+  --shadow-1: 0 1px 2px rgba(17,24,39,.04), 0 4px 16px rgba(17,24,39,.05);
+  --shadow-2: 0 2px 6px rgba(17,24,39,.05), 0 16px 40px rgba(76,61,170,.10);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0; font-family: var(--font); color: var(--ink); font-size: 15px; line-height: 1.5;
+  background: radial-gradient(1200px 600px at 10% -10%, #E9E5FF 0%, transparent 60%),
+              radial-gradient(900px 500px at 110% 0%, #DDF3EC 0%, transparent 55%), var(--canvas);
+  -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums;
+}
+h1, h2, h3, h4 { margin: 0; letter-spacing: -0.02em; font-weight: 650; }
+button { font-family: inherit; }
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset: 2px; border-radius: 10px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
