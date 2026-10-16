@@ -12,3 +12,4 @@ Najnovšie záznamy dole. Formát: `## YYYY-MM-DD HH:MM` + odrážky.
 - Ďalej: overiť dáta v #mdt-copilot, rozhodnúť s Brunom do 19:05.
 - 2026-10-16 18:54: Vysvetľujúca stránka „Cesta pacienta krok za krokom“ (z Brunovho researchu + ilustrácie Higgsfield): docs/cesta-krok-za-krokom/index.html, online https://claude.ai/artifact/BTtb1oMoKbUmyytR3EMGDp
 - 2026-10-17 00:45: docs/matej-idealny-system.md – všetkých 27 požiadaviek VZP namapovaných na funkcie (DEMO vs IDEÁL) + vzory DK/SE/NO/NL/UK/EE; navrhnuté „hodiny cesty“ a národný panel merania.
+- 2026-10-17 00:47: docs/matej-overdeliver.md – ku každému bodu slide 12 splniť/prekonať/wow/riziko, plán stavby 01–13 h, 5-min demo.
