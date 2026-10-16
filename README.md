@@ -4,8 +4,8 @@ Tím: **Bruno** + **Matej**. Každý pracuje vo vlastnom Claude Code, spolu v to
 
 ## Štart (každý raz, na svojom počítači)
 ```bash
-git clone https://github.com/<owner>/rakathon.git
-cd rakathon
+git clone https://github.com/brinderr/rakathon-2026.git
+cd rakathon-2026
 ./scripts/setup.sh matej        # alebo bruno
 claude                          # alebo otvor priečinok v Claude desktop appke
 ```
