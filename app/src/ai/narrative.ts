@@ -48,11 +48,18 @@ export function diagnosisFallback(docs: Doc[]): RuleField {
   return { value: parts.join('; '), citations, sourceDate: histo?.date ?? ref?.date };
 }
 
+const KEY_FINDING = /(ložisk|tumor|nádor|pankrea|malign|histolog|metast|cholest|\bCT\b)/i;
+const ONSET = /^(Od |Asi |Přibližně |Před )|(od poloviny|trvající)/i;
+
+/** Onset of complaints + sentences with key findings, in document order (max 4); first 3 sentences otherwise. */
 export function epicrisisFallback(docs: Doc[]): RuleField {
   const ref = latestReferral(docs);
   const block = ref ? section(ref.text, /^EPIKRÍZA/) : null;
   if (!ref || !block) return { value: '', citations: [], status: 'missing', note: 'Epikríza nie je k dispozícii.' };
-  const s = sentences(block).slice(0, 3);
+  const all = sentences(block);
+  const onset = all.findIndex((s) => ONSET.test(s));
+  const picked = all.filter((s, i) => i === onset || KEY_FINDING.test(s)).slice(0, 4);
+  const s = picked.length >= 2 ? picked : all.slice(0, 3);
   return { value: s.join(' '), citations: citeAll(ref, s), sourceDate: ref.date };
 }
 

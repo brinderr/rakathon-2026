@@ -1,0 +1,350 @@
+{
+  "caseId": "alena",
+  "title": "Kontrolná sada – Alena Procházková (fiktívna pacientka)",
+  "source": "public/data/source.json",
+  "asOf": "2026-10-21",
+  "howToRead": "Ručne pripravená správna odpoveď pre 20 polí Handover_obsah k dátumu konzília 21. 10. 2026. accept = skupiny, v každej musí byť v hodnote aspoň jedna alternatíva (bez ohľadu na veľkosť písmen a typ pomlčky). reject = text, ktorý v hodnote byť nesmie. citeDocs = aspoň jeden citát musí byť z týchto správ. evidence = doslovné úryvky zo správ, eval ich pri každom behu overí (zlatá sada si nesmie nič vymyslieť).",
+  "fields": [
+    {
+      "key": "firstName",
+      "expect": "value",
+      "accept": [["Alena"]],
+      "evidence": [{ "docId": "07", "quote": "Pacientka: Alena Procházková" }]
+    },
+    {
+      "key": "lastName",
+      "expect": "value",
+      "accept": [["Procházková"]],
+      "evidence": [{ "docId": "07", "quote": "Pacientka: Alena Procházková" }]
+    },
+    {
+      "key": "age",
+      "expect": "value",
+      "accept": [["63"]],
+      "evidence": [{ "docId": "07", "quote": "Datum narození: 22. 7. 1963 (63 let)" }],
+      "why": "K 21. 10. 2026 má 63 rokov (narodená 22. 7. 1963)."
+    },
+    {
+      "key": "sex",
+      "expect": "value",
+      "accept": [["žena", "ženské", "ženy", "female"]],
+      "evidence": [{ "docId": "07", "quote": "Pacientka: Alena Procházková" }, { "docId": "07", "quote": "63letá pacientka sledovaná v naší ordinaci." }],
+      "why": "Pohlavie nie je napísané priamo, vyplýva z označenia „Pacientka“."
+    },
+    {
+      "key": "insurer",
+      "expect": "value",
+      "accept": [["211"]],
+      "reject": ["111", "Všeobecná zdravotní"],
+      "evidence": [{ "docId": "07", "quote": "Zdravotní pojišťovna: 211" }],
+      "why": "211 je Zdravotní pojišťovna ministerstva vnitra ČR, nie VZP (111)."
+    },
+    {
+      "key": "patientContact",
+      "expect": "value",
+      "accept": [["777 000 541"]],
+      "reject": ["@"],
+      "evidence": [{ "docId": "07", "quote": "Telefon: +420 777 000 541" }],
+      "why": "Telefón áno, e-mail v žiadnej správe nie je – nesmie sa doplniť."
+    },
+    {
+      "key": "contactPerson",
+      "expect": "value",
+      "accept": [["Petra Horká"], ["777 000 542"], ["dcer"]],
+      "evidence": [{ "docId": "07", "quote": "Kontaktní osoba: Petra Horká (dcera), tel. +420 777 000 542" }]
+    },
+    {
+      "key": "diagnosis",
+      "expect": "value",
+      "accept": [["adenokarcinom"], ["pankrea"], ["C25"]],
+      "reject": ["R52", "F41"],
+      "citeDocs": ["11"],
+      "evidence": [
+        { "docId": "07", "quote": "Suspektní diagnóza: C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom" },
+        { "docId": "11", "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí." }
+      ],
+      "why": "K dátumu konzília je už histológia (19. 10.), takže nestačí „suspektní“. Zápis z MDT chce aj kód MKN-10 (C25.0 zo žiadanky). R52.1 a F41.2 sú diagnózy až zo správ po konzíliu."
+    },
+    {
+      "key": "epicrisis",
+      "expect": "value",
+      "accept": [["bolest"], ["pankrea"]],
+      "evidence": [
+        { "docId": "07", "quote": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří" },
+        { "docId": "07", "quote": "UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity." }
+      ],
+      "why": "Stručný súhrn musí obsahovať ťažkosti aj hlavný nález (ložisko hlavy pankreasu)."
+    },
+    {
+      "key": "mdtQuestion",
+      "expect": "value",
+      "accept": [["dokončení diagnostiky", "dalšího postupu", "další postup", "postup"]],
+      "citeDocs": ["07"],
+      "evidence": [{ "docId": "07", "quote": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT." }]
+    },
+    {
+      "key": "comorbidities",
+      "expect": "value",
+      "accept": [["fibrilace síní", "fibrilácia predsiení"], ["hypertenze", "hypertenzia"], ["hypercholesterol"]],
+      "evidence": [
+        { "docId": "07", "quote": "OA: paroxysmální fibrilace síní od r. 2021 na antikoagulaci" },
+        { "docId": "07", "quote": "arteriální hypertenze, hypercholesterolémie" }
+      ]
+    },
+    {
+      "key": "medications",
+      "expect": "value",
+      "accept": [["apixaban"], ["bisoprolol"], ["perindopril"], ["rosuvastatin"], ["paracetamol"]],
+      "reject": ["tramadol", "metamizol", "metoklopramid", "laktulóza"],
+      "evidence": [{ "docId": "07", "quote": "FA: apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně" }],
+      "why": "Platí najnovší zoznam zo žiadanky (07) vrátane paracetamolu. Tramadol a ďalšie lieky nasadila algeziológia až 26. 10. (po konzíliu)."
+    },
+    {
+      "key": "allergies",
+      "expect": "value",
+      "accept": [["neguje", "bez alergi", "žiadne", "nemá"]],
+      "evidence": [{ "docId": "07", "quote": "AA: neguje" }]
+    },
+    {
+      "key": "performanceStatus",
+      "expect": "missing",
+      "rejectRegex": ["(ECOG|Karnofsk\\w*|\\bPS\\b|WHO)\\s*[:=]?\\s*\\d"],
+      "evidence": [{ "docId": "07", "quote": "Soběstačná, v práci t. č. v pracovní neschopnosti." }],
+      "why": "Žiadna správa neuvádza ECOG ani Karnofsky. „Soběstačná“ je slovný popis, nie skóre – skóre sa nesmie odhadnúť."
+    },
+    {
+      "key": "weightHeight",
+      "expect": "value",
+      "accept": [["65"], ["165"]],
+      "reject": ["63"],
+      "citeDocs": ["05"],
+      "evidence": [
+        { "docId": "05", "quote": "Hmotnost 65 kg." },
+        { "docId": "01", "quote": "Výška 165 cm, hmotnost 69 kg." }
+      ],
+      "why": "Posledná váha známa pred konzíliom je 65 kg (15. 9.). 63 kg je až zo správy 12 (26. 10.)."
+    },
+    {
+      "key": "symptoms",
+      "expect": "value",
+      "accept": [["bolest"], ["srpn", "srpen", "august"], ["úbyt", "hubn", "pokles hmotnosti"]],
+      "evidence": [
+        { "docId": "07", "quote": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří" },
+        { "docId": "07", "quote": "Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší." }
+      ],
+      "why": "Šablóna chce príznaky aj ich začiatok (od polovice augusta 2026)."
+    },
+    {
+      "key": "exams",
+      "expect": "value",
+      "accept": [["CT"], ["8. 10. 2026"], ["UZ", "ultrazvuk"], ["29. 9. 2026"], ["EUS"], ["12. 10. 2026"], ["RTG"]],
+      "citeDocs": ["08"],
+      "evidence": [
+        { "docId": "08", "quote": "Datum vyšetření: 8. 10. 2026" },
+        { "docId": "06", "quote": "Datum vyšetření: 29. 9. 2026" },
+        { "docId": "09", "quote": "Datum výkonu: 12. 10. 2026" },
+        { "docId": "03", "quote": "Datum vyšetření: 3. 9. 2026" }
+      ],
+      "why": "Vyšetrenia s dátumom a miestom. CT robilo iné KOC (Nemocnice Severní) – nesmie sa stratiť."
+    },
+    {
+      "key": "labs",
+      "expect": "value",
+      "accept": [["CA 19-9"], ["312"], ["CEA"], ["4,1"], ["CA 125"], ["48"], ["bilirubin"], ["15. 10. 2026"]],
+      "citeDocs": ["10"],
+      "evidence": [
+        { "docId": "10", "quote": "Odběr: 15. 10. 2026 7:45" },
+        { "docId": "10", "quote": "CA 19-9" },
+        { "docId": "10", "quote": "312 H" },
+        { "docId": "10", "quote": "CA 125" },
+        { "docId": "10", "quote": "48 H" }
+      ],
+      "why": "Šablóna chce laboratórium vrátane onkomarkerov – všetky tri, aj normálny CEA 4,1."
+    },
+    {
+      "key": "histology",
+      "expect": "value",
+      "accept": [["adenokarcinom"], ["G2"], ["perineur"]],
+      "citeDocs": ["11"],
+      "evidence": [{ "docId": "11", "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3." }]
+    },
+    {
+      "key": "otherNotes",
+      "expect": "value",
+      "accept": [["antikoagul", "apixaban"], ["úzkost", "psycholog"], ["dcer"]],
+      "citeDocs": ["07"],
+      "evidence": [
+        { "docId": "07", "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa." },
+        { "docId": "07", "quote": "Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory." },
+        { "docId": "07", "quote": "Souhlasí se sdílením informací s dcerou." }
+      ],
+      "why": "Jiná důležitá sdělení včetně přání pacienta: antikoagulácia pred výkonom, úzkosť, súhlas so zdieľaním s dcérou – všetko známe už zo žiadanky 07."
+    }
+  ],
+  "traps": [
+    {
+      "id": "ecog-missing",
+      "title": "Chýba výkonnostný stav (ECOG/Karnofsky)",
+      "why": "Konzílium ho potrebuje na voľbu liečby. V správach je len „Soběstačná“. Systém ho musí označiť ako chýbajúci a nesmie odhadnúť číslo.",
+      "evidence": [{ "docId": "07", "quote": "Soběstačná, v práci t. č. v pracovní neschopnosti." }],
+      "checks": [
+        { "type": "fieldStatus", "field": "performanceStatus", "status": "missing" },
+        { "type": "valueNotMatches", "field": "performanceStatus", "regex": "(ECOG|Karnofsk\\w*|\\bPS\\b|WHO)\\s*[:=]?\\s*\\d" }
+      ]
+    },
+    {
+      "id": "apixaban-impossible-date",
+      "title": "Nemožný dátum poslednej dávky apixabanu (správa 09)",
+      "why": "Výkon bol 12. 10., ale „poslední dávka 18. 10. 2026“ je až po výkone. Treba overiť s pracoviskom, kedy liek naozaj vysadili.",
+      "evidence": [
+        { "docId": "09", "quote": "(poslední dávka 18. 10. 2026 večer)" },
+        { "docId": "09", "quote": "Datum výkonu: 12. 10. 2026" }
+      ],
+      "checks": [{ "type": "flagged", "docId": "09", "all": ["18. 10."] }]
+    },
+    {
+      "id": "histology-issued-before-sampling",
+      "title": "Histológia „vydaná“ pred „odberom“ (správa 11)",
+      "why": "Odber 20. 10., vydanie 19. 10. a biopsia bola 12. 10. – jeden z dátumov je preklep.",
+      "evidence": [
+        { "docId": "11", "quote": "(odběr 20. 10. 2026)" },
+        { "docId": "11", "quote": "Datum vydání: 19. 10. 2026" }
+      ],
+      "checks": [{ "type": "flagged", "docId": "11", "all": ["20. 10.", "19. 10."] }]
+    },
+    {
+      "id": "weight-63-after-mdt",
+      "title": "Váha 63 kg vznikla až po konzíliu (správa 12)",
+      "why": "Podklad má obsahovať len to, čo bolo známe k 21. 10. – teda 65 kg z 15. 9.",
+      "evidence": [
+        { "docId": "12", "quote": "Hmotnost 63 kg." },
+        { "docId": "05", "quote": "Hmotnost 65 kg." }
+      ],
+      "checks": [
+        { "type": "valueContains", "field": "weightHeight", "all": ["65"] },
+        { "type": "valueNotContains", "field": "weightHeight", "any": ["63"] },
+        { "type": "noCitationFromDocs", "docs": ["12"] }
+      ]
+    },
+    {
+      "id": "patient-email-missing",
+      "title": "Chýba e-mail pacientky",
+      "why": "Zápis z MDT chce telefón aj e-mail. E-mail nie je v žiadnej správe – označiť, nevymyslieť.",
+      "evidence": [{ "docId": "07", "quote": "Telefon: +420 777 000 541" }],
+      "checks": [
+        { "type": "valueNotContains", "field": "patientContact", "any": ["@"] },
+        { "type": "messageMatches", "all": ["e-?mail", "pacient"] }
+      ]
+    },
+    {
+      "id": "gp-email-missing",
+      "title": "Chýba e-mail odosielajúceho lekára",
+      "why": "Zápis z MDT chce pri referujúcom lekárovi telefón aj e-mail. Hlavička žiadanky má len telefón.",
+      "evidence": [{ "docId": "07", "quote": "IČP: 72045318 Tel.: +420 311 000 287" }],
+      "checks": [{ "type": "messageMatches", "all": ["e-?mail", "(lekár|lékař|lekara|lékaře|praktik|odosiel|odesíl)"] }]
+    },
+    {
+      "id": "all-tumor-markers",
+      "title": "Všetky onkomarkery, nielen zvýšené",
+      "why": "CA 19-9 312 a CA 125 48 sú zvýšené, CEA 4,1 je v norme – aj normálna hodnota je pre konzílium informácia.",
+      "evidence": [
+        { "docId": "10", "quote": "CA 19-9" },
+        { "docId": "10", "quote": "CEA" },
+        { "docId": "10", "quote": "CA 125" }
+      ],
+      "checks": [{ "type": "valueContains", "field": "labs", "all": ["CA 19-9", "312", "CEA", "4,1", "CA 125", "48"] }]
+    },
+    {
+      "id": "post-mdt-reports-excluded",
+      "title": "Správy 12 a 13 sú až po konzíliu",
+      "why": "Algeziológia (26. 10.) a psychológ (27. 10.) nemôžu byť v podklade pre konzílium 21. 10.",
+      "evidence": [
+        { "docId": "12", "quote": "Datum: 26. 10. 2026" },
+        { "docId": "13", "quote": "Datum: 27. 10. 2026" }
+      ],
+      "checks": [
+        { "type": "noCitationFromDocs", "docs": ["12", "13"] },
+        { "type": "valuesNotContain", "any": ["tramadol", "metamizol", "R52.1", "F41.2", "HADS"] }
+      ]
+    },
+    {
+      "id": "insurer-211-not-vzp",
+      "title": "Poisťovňa 211, nie VZP",
+      "why": "Súhrn pre revízneho lekára ide poisťovni 211 (ZP MV ČR). Nesmie sa automaticky predpokladať VZP.",
+      "evidence": [{ "docId": "07", "quote": "Zdravotní pojišťovna: 211" }],
+      "checks": [
+        { "type": "valueContains", "field": "insurer", "all": ["211"] },
+        { "type": "valueNotMatches", "field": "insurer", "regex": "(\\b111\\b|Všeobecná|\\bVZP\\b)" }
+      ]
+    },
+    {
+      "id": "planned-control-without-report",
+      "title": "Plánovaná kontrola 9. 9. bez správy",
+      "why": "Praktik v správe 04 plánuje kontrolu s odberom 9. 9. 2026, ale výsledok v dokumentácii nie je – možno sa stratil.",
+      "evidence": [{ "docId": "04", "quote": "2. Kontrola u PL po dobrání ATB 9. 9. 2026 s kontrolním odběrem." }],
+      "checks": [{ "type": "messageMatches", "all": ["9\\. ?9\\. ?2026", "kontrol"] }]
+    },
+    {
+      "id": "results-not-attached",
+      "title": "Žiadanka neobsahuje výsledky, len kde sú",
+      "why": "Žiadanka do KOC len vymenúva 5 pracovísk, kde sú výsledky. Koordinátor ich musí vyžiadať.",
+      "evidence": [{ "docId": "07", "quote": "PROVEDENÁ VYŠETŘENÍ (VÝSLEDKY K DISPOZICI NA JEDNOTLIVÝCH PRACOVIŠTÍCH)" }],
+      "checks": [{ "type": "messageMatches", "all": ["výsledk", "(neobsahuje|chýba|chybí|vyžiadať|nie sú|nejsou)"] }]
+    },
+    {
+      "id": "medication-latest-list",
+      "title": "Najnovší zoznam liekov (aj paracetamol)",
+      "why": "Kardiológ (01) uvádza 4 lieky, žiadanka (07) už aj paracetamol. Starý zoznam by bol neúplný.",
+      "evidence": [{ "docId": "07", "quote": "paracetamol 500 mg při bolesti max. 4× denně" }],
+      "checks": [{ "type": "valueContains", "field": "medications", "all": ["apixaban", "paracetamol"] }]
+    },
+    {
+      "id": "tumor-size-not-a-conflict",
+      "title": "Rôzne rozmery nádoru nie sú rozpor",
+      "why": "UZ 34 × 30, CT 35 × 31, EUS 33 × 29 mm – iné metódy merajú inak. Falošný poplach by koordinátora zahltil.",
+      "evidence": [
+        { "docId": "06", "quote": "ložisko 34 × 30 mm" },
+        { "docId": "08", "quote": "ložisko 35 × 31 mm" },
+        { "docId": "09", "quote": "pankreatu 33 × 29 mm" }
+      ],
+      "checks": [{ "type": "fieldNotStatus", "field": "exams", "status": "conflict" }]
+    },
+    {
+      "id": "mdt-question-general",
+      "title": "Otázka na konzílium je všeobecná",
+      "why": "„Stanovení dalšího postupu“ nie je konkrétna otázka – systém na to má upozorniť, aby ju lekár KOC pred konzíliom spresnil.",
+      "evidence": [{ "docId": "07", "quote": "stanovení dalšího postupu v rámci MDT" }],
+      "checks": [{ "type": "noteMatches", "field": "mdtQuestion", "regex": "(všeobecn|obecn|spresn|upresn|nekonkr)" }]
+    },
+    {
+      "id": "anticoagulation-before-procedure",
+      "title": "Antikoagulácia pred invazívnym výkonom",
+      "why": "Apixaban treba pred biopsiou alebo operáciou riešiť podľa lekára – informácia sa nesmie stratiť.",
+      "evidence": [{ "docId": "07", "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa." }],
+      "checks": [{ "type": "textMatches", "fields": ["otherNotes"], "messages": true, "all": ["(apixaban|antikoagul|riedenie krvi)"] }]
+    },
+    {
+      "id": "daughter-consent-before-mdt",
+      "title": "Súhlas so zdieľaním s dcérou je už v žiadanke",
+      "why": "Prianie pacientky je známe zo žiadanky 07 (2. 10.), netreba čakať na psychológa (správa 13 je po konzíliu).",
+      "evidence": [{ "docId": "07", "quote": "Souhlasí se sdílením informací s dcerou." }],
+      "checks": [
+        { "type": "valueContains", "field": "otherNotes", "all": ["dcer"] },
+        { "type": "citesDoc", "field": "otherNotes", "docId": "07" }
+      ]
+    },
+    {
+      "id": "ct-from-other-koc",
+      "title": "CT z iného KOC sa nestratí",
+      "why": "Praktik CT nevedel zabezpečiť, urobilo ho KOC Nemocnice Severní – iná nemocnica ako tá, ktorá prípad vedie.",
+      "evidence": [
+        { "docId": "07", "quote": "Termín CT se nám v dostupných pracovištích nepodařilo zajistit." },
+        { "docId": "08", "quote": "KOC Nemocnice Severní (fiktivní)" }
+      ],
+      "checks": [
+        { "type": "valueContains", "field": "exams", "all": ["8. 10. 2026"] },
+        { "type": "citesDoc", "field": "exams", "docId": "08" }
+      ]
+    }
+  ]
+}
