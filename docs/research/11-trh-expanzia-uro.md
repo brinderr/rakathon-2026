@@ -1,4 +1,4 @@
-# 05 – Trh, hodnota pre klienta, expanzia a synergia s ÚRO (výber výzvy)
+# 11 – Trh, hodnota pre klienta, expanzia a synergia s ÚRO (výber výzvy)
 
 _Matej (Claude), pi 16. 10. 2026 ~17:15. Rýchly web research: 8 skupín výziev, profil ÚRO, živá tabuľa prihlášok.
 Výsledky nezávisle posúdili 3 hodnotitelia: (1) globálny klient a investor, (2) expanzia, partner a ÚRO, (3) vyhrateľnosť
@@ -34,6 +34,35 @@ Pochybné tvrdenia sú v §6._
   výzvach postupuje do finále víťaz z každého mesta. Zadanie však poznáme len z tlačovej správy a dáta sú iba na portáli.
 - **Pred 19:05 overiť:** či sú už zverejnené dáta pre MDT Copilot (kanál #mdt-copilot, M. Bušek, Ľ. Piljan). Ak nie,
   pripraviť syntetické dáta podľa zadania alebo ísť do MEDDI.
+
+## 0b. Aktualizácia 17:10: po prečítaní Brunovho `10-VYHODNOTENIE-VYZIEV.md`
+
+- **Môj research podcenil Cestu pacienta.** Moji agenti nemali zadanie, Bruno ho medzitým našiel na Drive
+  (`Zadani_ulohy.docx`): 1 fiktívna pacientka, 13 správ, šablóny vstupu aj výstupu. S plným zadaním a dátami
+  stúpa vyhrateľnosť aj hodnota pre klienta.
+- **Dva nezávislé researche dospeli k rovnakému jadru produktu.** Brunov „NIT“ (Cesta pacienta) aj môj
+  „MDT Brief“ (MDT Copilot) sú v podstate to isté:
+  - AI zloží podklad pre konzílium s overeným citátom ku každému údaju,
+  - označí, čo chýba a čo si odporuje,
+  - obsahuje riadok „snímky a dávka“ (väzba na ÚRO),
+  - výstup ide do FHIR.
+  Rozhoduje sa teda hlavne o tom, **pod ktorým partnerom** to postavíme.
+- **Cesta pacienta (VZP):**
+  - Dáta a zadanie už sú.
+  - Jasný domáci kupec: koordinátori v 15 KOC od 1/2026, VZP platí 250 Kč za výkon a štandardný softvér neexistuje.
+  - V porote je VZP aj ministerstvo, v Prahe súperia 2 tímy.
+  - Cesta do zahraničia vedie cez SK: NCZI OnkoAsist (tender ~11 mil. €) a mentor z Assecu, ktorý na OnkoAsiste robí.
+  - Synergia s ÚRO je 4: Radiačný preukaz pacienta je presne „informácia, ktorá putuje s pacientom“, plus zbytočne
+    opakované CT.
+- **MDT Copilot (Asseco):**
+  - Lepší kanál do zahraničia (dodávateľ NIS).
+  - **Dáta však stále nie sú**, poskytuje ich InterSystems mentor O. Hoferek.
+  - Zadanie je najširšie.
+- **Aktualizovaný záver:**
+  - Pri tomto časovom tlaku **Cesta pacienta s modulom „snímky a dávka“** spája hodnotu, dáta aj synergiu s ÚRO.
+    Produkt postavíme tak, aby sa podklad pre konzílium dal neskôr ponúknuť aj Assecu.
+  - Bušek (Asseco) je aj tak v hlavnej porote.
+  - MDT Copilot má zmysel len vtedy, ak sa do 19:05 podarí získať dáta od Hoferka a prioritou je kanál Asseco.
 
 ## 1. Živá tabuľa prihlášok (submit.rakathon.cz/vyzvy, ~16:45)
 
