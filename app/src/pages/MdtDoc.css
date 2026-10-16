@@ -1,0 +1,19 @@
+/* MdtDoc – podklad pre konzílium (printable) */
+.mdt-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; max-width: 860px; margin: 0 auto 18px; }
+.mdt-bar__stats, .mdt-bar__confirm { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.paper-list { margin: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; }
+.paper-sec__after-table { margin-top: 14px; border-top: 1px solid var(--hair-2); padding-top: 4px; }
+.paper-list li::marker { color: var(--accent); }
+
+@media print {
+  @page { margin: 16mm; }
+  body { background: #fff !important; }
+  body * { visibility: hidden; }
+  .mdt-print, .mdt-print * { visibility: visible; }
+  .mdt-print { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none !important; border: 0 !important; padding: 0 !important; max-width: none !important; border-radius: 0 !important; }
+  .no-print { display: none !important; }
+  .paper-sec { break-inside: avoid; }
+  .paper-table tr { break-inside: avoid; }
+  .doc-sup { color: #000; }
+  .doc-missing { color: #B8373B; }
+}

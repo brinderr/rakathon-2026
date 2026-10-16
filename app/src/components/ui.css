@@ -1,0 +1,113 @@
+/* Shared primitives. Tokens live in src/theme.css. */
+
+.icon { flex: none; display: inline-block; vertical-align: middle; }
+
+/* Card */
+.card {
+  background: var(--surface); border: 1px solid var(--hair); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1); padding: 20px;
+}
+.card--click { cursor: pointer; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.card--click:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--hair-2); }
+.card--click:active { transform: translateY(0); }
+.card--pastel-1 { background: var(--pastel-1); border-color: transparent; }
+.card--pastel-2 { background: var(--pastel-2); border-color: transparent; }
+.card--pastel-3 { background: var(--pastel-3); border-color: transparent; }
+
+/* Pill */
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .01em; white-space: nowrap; line-height: 1;
+  background: var(--canvas-2); color: var(--ink-2);
+}
+.pill--sm { height: 22px; padding: 0 8px; font-size: 11.5px; }
+.pill--accent { background: var(--accent-soft); color: var(--accent); }
+.pill--mint { background: var(--mint-soft); color: #1E7F5F; }
+.pill--amber { background: var(--amber-soft); color: #9A5B0C; }
+.pill--coral { background: var(--coral-soft); color: #B3262B; }
+.pill--orange { background: var(--orange-soft); color: #B04E12; }
+.pill--sky { background: var(--sky-soft); color: #1D4FB0; }
+
+/* StatusDot */
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--faint); flex: none; }
+.dot--accent { background: var(--accent); }
+.dot--mint { background: var(--mint); }
+.dot--amber { background: var(--amber); }
+.dot--coral { background: var(--coral); }
+.dot--orange { background: var(--orange); }
+.dot--sky { background: var(--sky); }
+.dot--pulse { animation: dot-pulse 1.8s ease-in-out infinite; }
+.dot-label { display: inline-flex; align-items: center; gap: 8px; }
+@keyframes dot-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 0%, transparent); } 50% { box-shadow: 0 0 0 4px rgba(229, 72, 77, .18); } }
+
+/* Button */
+.btn {
+  height: 40px; padding: 0 18px; border-radius: 999px; font-weight: 600; font-size: 14px; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent;
+  cursor: pointer; white-space: nowrap; transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn--primary { background: var(--accent-grad); color: #fff; box-shadow: 0 6px 16px rgba(109, 91, 208, .28); }
+.btn--primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(109, 91, 208, .34); }
+.btn--primary:active:not(:disabled) { transform: translateY(0); }
+.btn--ghost { background: transparent; color: var(--ink-2); border-color: var(--hair-2); }
+.btn--ghost:hover:not(:disabled) { background: var(--surface); border-color: rgba(17, 24, 39, .22); color: var(--ink); }
+.btn--sm { height: 32px; padding: 0 12px; font-size: 13px; gap: 6px; }
+
+/* Ring */
+.ring { position: relative; display: inline-grid; place-items: center; flex: none; }
+.ring svg { transform: rotate(-90deg); display: block; }
+.ring__track { stroke: var(--canvas-2); }
+.ring__bar { stroke-linecap: round; transition: stroke-dashoffset .8s cubic-bezier(.2, .7, .2, 1); }
+.ring__bar--accent { stroke: var(--accent); }
+.ring__bar--mint { stroke: var(--mint); }
+.ring__bar--amber { stroke: var(--amber); }
+.ring__bar--coral { stroke: var(--coral); }
+.ring__bar--orange { stroke: var(--orange); }
+.ring__bar--sky { stroke: var(--sky); }
+.ring__bar--neutral { stroke: var(--faint); }
+.ring__center { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; line-height: 1.1; }
+
+/* Stat */
+.stat { display: flex; flex-direction: column; gap: 4px; }
+.stat__value { font-size: 30px; font-weight: 700; letter-spacing: -.03em; line-height: 1; color: var(--ink); }
+.stat--lg .stat__value { font-size: 40px; }
+.stat__label { color: var(--muted); font-size: 13px; line-height: 1.35; }
+.stat__hint { color: var(--faint); font-size: 12px; }
+.stat--pastel { padding: 16px 18px; border-radius: var(--r-md); }
+.stat--pastel-1 { background: var(--pastel-1); }
+.stat--pastel-2 { background: var(--pastel-2); }
+.stat--pastel-3 { background: var(--pastel-3); }
+.stat--pastel .stat__label { color: var(--ink-2); }
+
+/* Avatar */
+.avatar {
+  border-radius: 50%; display: inline-grid; place-items: center; font-weight: 650; letter-spacing: .02em;
+  flex: none; user-select: none; line-height: 1;
+}
+.avatar--ring { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent); }
+
+/* Tabs */
+.tabs { display: inline-flex; background: var(--canvas-2); border-radius: 999px; padding: 4px; gap: 2px; }
+.tab {
+  border: 0; background: transparent; padding: 7px 14px; border-radius: 999px; font: inherit; font-size: 13.5px;
+  font-weight: 600; color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s ease, color .15s ease;
+}
+.tab:hover { color: var(--ink); }
+.tab--active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); }
+.tab__count { font-size: 11.5px; color: var(--faint); font-weight: 600; }
+.tab--active .tab__count { color: var(--accent); }
+
+/* Tooltip */
+.tip { position: relative; display: inline-flex; align-items: center; outline-offset: 2px; }
+.tip__bubble {
+  position: absolute; left: 50%; transform: translateX(-50%) translateY(4px);
+  background: var(--ink); color: #fff; font-size: 12px; font-weight: 500; line-height: 1.4;
+  padding: 8px 10px; border-radius: 10px; width: max-content; max-width: 260px; text-align: left;
+  opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; z-index: 50;
+  box-shadow: 0 8px 24px rgba(17, 24, 39, .18);
+}
+.tip__bubble--top { bottom: calc(100% + 8px); }
+.tip__bubble--bottom { top: calc(100% + 8px); transform: translateX(-50%) translateY(-4px); }
+.tip:hover .tip__bubble, .tip:focus-visible .tip__bubble { opacity: 1; transform: translateX(-50%) translateY(0); }

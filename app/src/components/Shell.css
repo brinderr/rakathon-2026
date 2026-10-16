@@ -1,0 +1,68 @@
+/* Frame: 88px icon rail + fluid main column. Works from 1280px (desktop demo). */
+.shell { display: grid; grid-template-columns: 88px minmax(0, 1fr); min-height: 100vh; }
+
+/* Left rail */
+.rail {
+  position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; align-items: center;
+  gap: 6px; padding: 22px 0; border-right: 1px solid var(--hair);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, .25));
+  backdrop-filter: blur(10px);
+}
+.rail__btn {
+  width: 66px; height: 64px; border-radius: 18px; border: 0; background: transparent; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .01em;
+  transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.rail__btn:hover { background: var(--surface-glass); color: var(--ink); }
+.rail__btn--active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow-1); }
+
+/* Main column */
+.shell__main { display: flex; flex-direction: column; min-width: 0; min-height: 100vh; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  gap: 24px; padding: 16px 36px 12px;
+  background: linear-gradient(180deg, rgba(244, 245, 250, .92) 0%, rgba(244, 245, 250, .72) 100%);
+  backdrop-filter: blur(14px);
+}
+.brand {
+  justify-self: start; display: inline-flex; align-items: center; gap: 10px; border: 0; background: transparent;
+  padding: 6px 8px 6px 4px; border-radius: 12px; cursor: pointer; color: var(--ink);
+}
+.brand:hover { background: var(--surface-glass); }
+.brand__mark {
+  width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center;
+  background: var(--accent-grad); color: #fff; box-shadow: 0 4px 12px rgba(109, 91, 208, .25);
+}
+.brand__name { font-weight: 700; font-size: 17px; letter-spacing: -.02em; }
+
+.search {
+  width: 380px; height: 42px; border-radius: 999px; background: var(--surface); border: 1px solid var(--hair);
+  display: flex; align-items: center; gap: 10px; padding: 0 16px; color: var(--faint);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.search:focus-within { border-color: rgba(109, 91, 208, .45); box-shadow: 0 0 0 4px rgba(109, 91, 208, .10); color: var(--muted); }
+.search input {
+  flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: 14px; color: var(--ink); min-width: 0;
+}
+.search input::placeholder { color: var(--faint); }
+.search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.topbar__right { justify-self: end; display: flex; align-items: center; gap: 14px; }
+.me { display: flex; align-items: center; gap: 12px; }
+.me__text { text-align: right; line-height: 1.15; }
+.me__name { font-weight: 650; font-size: 14px; }
+.me__role { font-size: 12px; color: var(--muted); }
+
+.content { flex: 1; padding: 10px 36px 28px; }
+
+.foot { padding: 10px 36px 22px; font-size: 12px; color: var(--faint); text-align: center; letter-spacing: .01em; }
+
+@media print {
+  .rail, .topbar { display: none; }
+  .shell { display: block; }
+  .content { padding: 0; }
+  .foot { padding: 12px 0 0; }
+  body { background: #fff; }
+}

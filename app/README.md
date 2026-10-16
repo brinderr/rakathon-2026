@@ -1,54 +1,68 @@
-# React + TypeScript + Vite
+# Koordinátor – appka pre koordinátora onkologickej starostlivosti
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Prototyp pre výzvu VZP „Cesta pacienta bez ztráty informací“ (Rakathon 2026).
+**Nič sa nestratí a vždy vieš, kto je na ťahu.**
 
-Currently, two official plugins are available:
+> Prototyp · fiktívne dáta · nie je zdravotnícka pomôcka. Všetky údaje o pacientke Alene sú vymyslené (zadanie VZP).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Spustenie
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+cd app
+npm install
+npm run dev        # http://localhost:5173
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Ďalšie príkazy:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Príkaz | Čo robí |
+|---|---|
+| `npm run build` | kontrola typov (TypeScript) + produkčný build do `dist/` |
+| `npm run preview` | spustí hotový build (po `npm run build`) |
+| `npm run verify` | overí, že každý citát sa **doslovne** nachádza v texte správy; zapíše `public/data/cases.json` |
+| `npm run lint` | ESLint |
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+Demo „dnes“ je pevne **19. 10. 2026**, konzílium Aleny **21. 10. 2026** (`DEMO_TODAY` v `src/types.ts`).
+
+## Obrazovky a priame odkazy
+
+| Odkaz | Obrazovka |
+|---|---|
+| `/#` | **Fronta prípadov** – ranný prehľad, karty pacientov (zoradené len podľa termínov), moja bilancia |
+| `/#case/alena` | **Prípad Aleny** – hlavička, metriky, stav k dátumu, ďalší krok, úplnosť podkladu, čo treba vyriešiť |
+| `/#case/alena/podklad` | 20 polí podkladu s citátmi, laboratórium, lieky, vyšetrenia (klik = originál so zvýraznenou vetou) |
+| `/#case/alena/kroky` | Cesta pacientky – kroky so 4 stavmi (vyžiadané → objednané → vykonané → výsledok) |
+| `/#case/alena/dokumenty` | Prijaté správy a tie, ktoré prídu neskôr |
+| `/#case/alena/zaznam` | Záznam o koordinovaní (dni so zásahom = podklad pre výkon 51887) |
+| `/#mdt/alena` | **Podklad pre konzílium** podľa vzoru VZP `MDT_zapis` (tlač / kopírovanie) |
+| `/#gp/alena` | **Záver pre praktika** + „Čo to znamená pre vás“, doručenka, revízny lekár ZP 211 |
+| `/#intake` | **Žiadanka** (strana praktika) – kontrola ešte pred odoslaním |
+
+## Čo kde je
+
 ```
+app/
+├─ CONTRACT.md              pravidlá obsahu, dizajnu a vlastníci súborov – čítaj ako prvé
+├─ public/data/source.json  texty 13 fiktívnych správ Aleny + šablóny VZP
+├─ public/data/cases.json   export dát (generuje npm run verify)
+├─ scripts/verify.mjs       overenie citátov
+├─ design/                  dizajnové referencie (ref-*.jpg) a screenshoty appky (shots/)
+└─ src/
+   ├─ types.ts              dátový kontrakt (Case, HandoverField, Citation, …)
+   ├─ nav.tsx               malý router (useNav) – bez knižníc
+   ├─ theme.css             farby, tiene, rádiusy (tokeny)
+   ├─ App.tsx, main.tsx     koreň appky, route ↔ URL hash
+   ├─ data/                 CASES (Alena plná + 3 ľahké prípady), načítanie správ
+   ├─ components/           Shell (bočný panel, horná lišta), ui (spoločné prvky)
+   │  ├─ case/              časti profilu pacienta
+   │  └─ docs/              časti dokumentov (podklad, záver, žiadanka)
+   └─ pages/                Queue, CaseView, MdtDoc, GpReport, Intake
+```
+
+Stack: Vite + React 19 + TypeScript, žiadne ďalšie knižnice (grafy a ikony sú ručné SVG).
+
+## Pravidlá (skrátene, celé v `CONTRACT.md`)
+
+1. Každá hodnota má citát, ktorý je doslovne v správe – stráži to `npm run verify`.
+2. Chýbajúce sa označí, nikdy nedomýšľa. Rozpor sa ukáže vedľa seba, rozhoduje človek.
+3. Žiadne skóre naliehavosti ani odporúčanie liečby; fronta je zoradená len podľa termínov.
