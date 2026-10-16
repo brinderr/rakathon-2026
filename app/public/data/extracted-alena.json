@@ -1,0 +1,1459 @@
+{
+  "meta": {
+    "caseId": "alena",
+    "asOf": "2026-10-21",
+    "generatedAt": "2026-10-16T23:55:15.607Z",
+    "promptVersion": "handover-v1",
+    "mode": "rules",
+    "docsUsed": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11"
+    ],
+    "docsExcluded": [
+      {
+        "id": "12",
+        "date": "2026-10-26",
+        "reason": "po dátume konzília 21. 10. 2026"
+      },
+      {
+        "id": "13",
+        "date": "2026-10-27",
+        "reason": "po dátume konzília 21. 10. 2026"
+      }
+    ],
+    "stats": {
+      "fields": 20,
+      "withValue": 19,
+      "missing": 1,
+      "conflicts": 2,
+      "citations": 63,
+      "citationsVerified": 63,
+      "fieldsWithoutVerifiedCitation": 0,
+      "llmFieldsAccepted": 0,
+      "llmFieldsRejected": 0
+    }
+  },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Meno",
+      "group": "Pacient",
+      "value": "Alena",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Pacientka: Alena Procházková"
+        }
+      ]
+    },
+    {
+      "key": "lastName",
+      "label": "Priezvisko",
+      "group": "Pacient",
+      "value": "Procházková",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Pacientka: Alena Procházková"
+        }
+      ]
+    },
+    {
+      "key": "age",
+      "label": "Vek",
+      "group": "Pacient",
+      "value": "63 rokov (nar. 22. 7. 1963)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Datum narození: 22. 7. 1963 (63 let)"
+        }
+      ]
+    },
+    {
+      "key": "sex",
+      "label": "Pohlavie",
+      "group": "Pacient",
+      "value": "žena",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Pacientka: Alena Procházková"
+        }
+      ],
+      "note": "Podľa označenia „Pacientka“ v správe."
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotná poisťovňa",
+      "group": "Pacient",
+      "value": "211",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Zdravotní pojišťovna: 211"
+        }
+      ],
+      "note": "211 = Zdravotní pojišťovna ministerstva vnitra ČR – nie VZP, súhrn pre revízneho lekára ide tejto poisťovni."
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacientku",
+      "group": "Kontakty",
+      "value": "tel. +420 777 000 541 · e-mail neuvedený",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Telefon: +420 777 000 541"
+        }
+      ],
+      "note": "E-mail pacienta v dokumentácii chýba (zápis pre konzílium ho vyžaduje)."
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktná osoba",
+      "group": "Kontakty",
+      "value": "Petra Horká (dcera), tel. +420 777 000 542",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Kontaktní osoba: Petra Horká (dcera), tel. +420 777 000 542"
+        }
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "group": "Diagnóza",
+      "value": "C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom (podozrenie v žiadanke, 2. 10. 2026); histologicky: Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. (19. 10. 2026)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Suspektní diagnóza: C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom"
+        },
+        {
+          "docId": "11",
+          "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3."
+        }
+      ],
+      "sourceDate": "2026-10-19"
+    },
+    {
+      "key": "epicrisis",
+      "label": "Priebeh ochorenia v skratke",
+      "group": "Diagnóza",
+      "value": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Pro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha. UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity. Gastroenterolog doporučil doplnit CT břicha dle pankreatického protokolu, případně EUS.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč."
+        },
+        {
+          "docId": "07",
+          "quote": "Pro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha."
+        },
+        {
+          "docId": "07",
+          "quote": "UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity."
+        },
+        {
+          "docId": "07",
+          "quote": "Gastroenterolog doporučil doplnit CT břicha dle pankreatického protokolu, případně EUS."
+        }
+      ],
+      "sourceDate": "2026-10-02"
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pre konzílium",
+      "group": "Diagnóza",
+      "value": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT. Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT. Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení."
+        }
+      ],
+      "sourceDate": "2026-10-02",
+      "note": "Otázka je všeobecná (dokončiť diagnostiku a určiť postup) – lekár KOC ju pred konzíliom môže spresniť."
+    },
+    {
+      "key": "comorbidities",
+      "label": "Pridružené ochorenia",
+      "group": "Anamnéza",
+      "value": "paroxysmální fibrilace síní od r. 2021 na antikoagulaci (kardiolog MUDr. Petr Malý, Jesenice), arteriální hypertenze, hypercholesterolémie, st. p. hysterektomii pro myomy (2010), v r. 2019 po úmrtí manžela přechodně depresivní ladění, neléčena",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "OA: paroxysmální fibrilace síní od r. 2021 na antikoagulaci (kardiolog MUDr. Petr Malý, Jesenice), arteriální hypertenze, hypercholesterolémie, st. p. hysterektomii pro myomy (2010), v r. 2019 po úmrtí manžela přechodně depresivní ladění, neléčena"
+        }
+      ],
+      "sourceDate": "2026-10-02"
+    },
+    {
+      "key": "medication",
+      "label": "Lieky, ktoré užíva",
+      "group": "Anamnéza",
+      "value": "apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "FA: apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně"
+        }
+      ],
+      "sourceDate": "2026-10-02",
+      "conflict": {
+        "a": {
+          "value": "poslední dávka 18. 10. 2026",
+          "citation": {
+            "docId": "09",
+            "quote": "Nalačno od půlnoci. Apixaban vysazen 48 h před výkonem (poslední dávka 18. 10. 2026 večer). Informovaný souhlas podepsán."
+          }
+        },
+        "b": {
+          "value": "Datum výkonu: 12. 10. 2026",
+          "citation": {
+            "docId": "09",
+            "quote": "Datum výkonu: 12. 10. 2026"
+          }
+        },
+        "explain": "Posledná dávka je zapísaná na 18. 10. 2026, teda po dátume výkonu 12. 10. 2026. Dátum je nemožný – overte s pracoviskom, kedy bol liek naozaj vysadený."
+      }
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "group": "Anamnéza",
+      "value": "neguje",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "AA: neguje"
+        }
+      ],
+      "sourceDate": "2026-10-02",
+      "note": "Alergie pacient neguje."
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostný stav (ECOG)",
+      "group": "Stav",
+      "value": "",
+      "status": "missing",
+      "citations": [],
+      "note": "Skóre ECOG ani Karnofsky nie je v žiadnej správe. Správa 07 uvádza len slovný popis „Soběstačná“ – to nie je skóre.",
+      "request": {
+        "to": "onkologická ambulancia KOC / odosielajúci lekár",
+        "channel": "e-mail",
+        "draft": "Dobrý deň, pred konzíliom 21. 10. 2026 prosíme o doplnenie výkonnostného stavu (ECOG alebo Karnofsky) – Alena Procházková. V doterajšej dokumentácii nie je uvedený. Ďakujeme, koordinátor KOC."
+      }
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "group": "Stav",
+      "value": "65 kg (15. 9. 2026) · výška 165 cm (20. 7. 2026)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "05",
+          "quote": "Hmotnost 65 kg"
+        },
+        {
+          "docId": "01",
+          "quote": "Výška 165 cm"
+        },
+        {
+          "docId": "01",
+          "quote": "hmotnost 69 kg"
+        }
+      ],
+      "sourceDate": "2026-09-15",
+      "note": "Skôr: 69 kg (20. 7. 2026). Novšia hodnota 63 kg (správa 12, 26. 10. 2026) vznikla až po 21. 10. 2026, preto do podkladu nepatrí."
+    },
+    {
+      "key": "symptoms",
+      "label": "Príznaky a ich začiatok",
+      "group": "Stav",
+      "value": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Při vyšetření 1. 9. 2026 febrilní (38,1 °C), se subikterem sklér. Při kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva. Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč."
+        },
+        {
+          "docId": "07",
+          "quote": "Při vyšetření 1. 9. 2026 febrilní (38,1 °C), se subikterem sklér."
+        },
+        {
+          "docId": "07",
+          "quote": "Při kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva."
+        },
+        {
+          "docId": "07",
+          "quote": "Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší."
+        }
+      ],
+      "sourceDate": "2026-10-02"
+    },
+    {
+      "key": "exams",
+      "label": "Vykonané vyšetrenia",
+      "group": "Vyšetrenia",
+      "value": "20. 7. 2026 · kontrolní vyšetření · Kardiologická ambulance Jesenice – Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027).\n3. 9. 2026 · RTG hrudníku PA · Radiologické centrum Modřany – Bez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích.\n15. 9. 2026 · vstupní vyšetření · Poliklinika Jižní – Gastroenterologická ambulance – Cholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu.\n29. 9. 2026 · UZ břicha · Poliklinika Jižní – Radiodiagnostické pracoviště – Ložisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS.\n8. 10. 2026 · CT břicha a hrudníku s k. l., pankreatický protokol · KOC Nemocnice Severní – Radiologická klinika – Tumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz.\n12. 10. 2026 · EUS-FNB · KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika – Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB) Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "01",
+          "quote": "Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027)."
+        },
+        {
+          "docId": "03",
+          "quote": "Bez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích."
+        },
+        {
+          "docId": "05",
+          "quote": "Cholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu."
+        },
+        {
+          "docId": "06",
+          "quote": "Ložisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS."
+        },
+        {
+          "docId": "08",
+          "quote": "Tumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz."
+        },
+        {
+          "docId": "09",
+          "quote": "Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB)"
+        },
+        {
+          "docId": "09",
+          "quote": "Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm."
+        }
+      ],
+      "sourceDate": "2026-10-12",
+      "note": "Plné znenie výsledku je v pôvodnej správe (klik na citát)."
+    },
+    {
+      "key": "labs",
+      "label": "Laboratórium a nádorové markery",
+      "group": "Laboratórium",
+      "value": "15. 10. 2026 (KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie): nádorové markery: CA 19-9 312 kU/l ↑, CEA 4,1 µg/l, CA 125 48 kU/l ↑; mimo normy: Hemoglobin 118 g/l ↓, Glukóza 6,2 mmol/l ↑, Bilirubin celkový 23 µmol/l ↑, Bilirubin konjugovaný 6 µmol/l ↑, ALT 1,62 µkat/l ↑, AST 1,20 µkat/l ↑, GGT 5,00 µkat/l ↑, ALP 3,40 µkat/l ↑, CRP 18 mg/l ↑\n1. 9. 2026 (Laboratoř LabJih s.r.o.): mimo normy: Leukocyty 12,8 10⁹/l ↑, Neutrofily 82 % ↑, Lymfocyty 12 % ↓, Glukóza 6,4 mmol/l ↑, Bilirubin celkový 38 µmol/l ↑, ALT 1,92 µkat/l ↑, AST 1,45 µkat/l ↑, GGT 4,20 µkat/l ↑, ALP 3,10 µkat/l ↑, CRP 86 mg/l ↑",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "10",
+          "quote": "CA 19-9\n312 H"
+        },
+        {
+          "docId": "10",
+          "quote": "CEA\n4,1"
+        },
+        {
+          "docId": "10",
+          "quote": "CA 125\n48 H"
+        },
+        {
+          "docId": "10",
+          "quote": "Hemoglobin\n118 L"
+        },
+        {
+          "docId": "10",
+          "quote": "Glukóza\n6,2 H"
+        },
+        {
+          "docId": "10",
+          "quote": "Bilirubin celkový\n23 H"
+        },
+        {
+          "docId": "10",
+          "quote": "Bilirubin konjugovaný\n6 H"
+        },
+        {
+          "docId": "10",
+          "quote": "ALT\n1,62 H"
+        },
+        {
+          "docId": "10",
+          "quote": "AST\n1,20 H"
+        },
+        {
+          "docId": "10",
+          "quote": "GGT\n5,00 H"
+        },
+        {
+          "docId": "10",
+          "quote": "ALP\n3,40 H"
+        },
+        {
+          "docId": "10",
+          "quote": "CRP\n18 H"
+        },
+        {
+          "docId": "02",
+          "quote": "Leukocyty\n12,8 H"
+        },
+        {
+          "docId": "02",
+          "quote": "Neutrofily\n82 H"
+        },
+        {
+          "docId": "02",
+          "quote": "Lymfocyty\n12 L"
+        },
+        {
+          "docId": "02",
+          "quote": "Glukóza\n6,4 H"
+        },
+        {
+          "docId": "02",
+          "quote": "Bilirubin celkový\n38 H"
+        },
+        {
+          "docId": "02",
+          "quote": "ALT\n1,92 H"
+        },
+        {
+          "docId": "02",
+          "quote": "AST\n1,45 H"
+        },
+        {
+          "docId": "02",
+          "quote": "GGT\n4,20 H"
+        },
+        {
+          "docId": "02",
+          "quote": "ALP\n3,10 H"
+        },
+        {
+          "docId": "02",
+          "quote": "CRP\n86 H"
+        }
+      ],
+      "sourceDate": "2026-10-15",
+      "note": "Uvedené všetky nádorové markery (CA 19-9, CEA, CA 125), nielen zvýšené."
+    },
+    {
+      "key": "histology",
+      "label": "Histológia (výsledok biopsie)",
+      "group": "Histológia",
+      "value": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. · vydané 19. 10. 2026",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "11",
+          "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3."
+        },
+        {
+          "docId": "11",
+          "quote": "Datum vydání: 19. 10. 2026"
+        }
+      ],
+      "sourceDate": "2026-10-19",
+      "conflict": {
+        "a": {
+          "value": "odběr 20. 10. 2026",
+          "citation": {
+            "docId": "11",
+            "quote": "Materiál: ložisko hlavy pankreatu, EUS-FNB 22G (odběr 20. 10. 2026)"
+          }
+        },
+        "b": {
+          "value": "Datum vydání: 19. 10. 2026",
+          "citation": {
+            "docId": "11",
+            "quote": "Datum vydání: 19. 10. 2026"
+          }
+        },
+        "explain": "Materiál má dátum odberu 20. 10. 2026, ale správa bola vydaná 19. 10. 2026 a biopsia prebehla 12. 10. 2026 (správa 09). Pravdepodobne preklep – overte s patológiou."
+      }
+    },
+    {
+      "key": "other",
+      "label": "Iné dôležité a želania pacientky",
+      "group": "Iné",
+      "value": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa. Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory. Pacientka je o podezření na nádorové onemocnění informována. Souhlasí se sdílením informací s dcerou.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa."
+        },
+        {
+          "docId": "07",
+          "quote": "Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory."
+        },
+        {
+          "docId": "07",
+          "quote": "Pacientka je o podezření na nádorové onemocnění informována."
+        },
+        {
+          "docId": "07",
+          "quote": "Souhlasí se sdílením informací s dcerou."
+        }
+      ],
+      "sourceDate": "2026-10-02"
+    }
+  ],
+  "provenance": {
+    "firstName": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "lastName": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "age": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "sex": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "insurer": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "patientContact": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "contactPerson": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "diagnosis": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "epicrisis": {
+      "extractor": "rules",
+      "checkedQuotes": 4,
+      "verifiedQuotes": 4,
+      "rejected": []
+    },
+    "mdtQuestion": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "comorbidities": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "medication": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "allergies": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "performance": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    },
+    "weightHeight": {
+      "extractor": "rules",
+      "checkedQuotes": 3,
+      "verifiedQuotes": 3,
+      "rejected": []
+    },
+    "symptoms": {
+      "extractor": "rules",
+      "checkedQuotes": 4,
+      "verifiedQuotes": 4,
+      "rejected": []
+    },
+    "exams": {
+      "extractor": "rules",
+      "checkedQuotes": 7,
+      "verifiedQuotes": 7,
+      "rejected": []
+    },
+    "labs": {
+      "extractor": "rules",
+      "checkedQuotes": 22,
+      "verifiedQuotes": 22,
+      "rejected": []
+    },
+    "histology": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "other": {
+      "extractor": "rules",
+      "checkedQuotes": 4,
+      "verifiedQuotes": 4,
+      "rejected": []
+    }
+  },
+  "findings": [
+    {
+      "id": "patient-email-missing",
+      "severity": "missing",
+      "fieldKey": "patientContact",
+      "text": "Chýba e-mail pacienta – zápis pre konzílium (MDT_zapis) vyžaduje telefón aj e-mail.",
+      "citations": []
+    },
+    {
+      "id": "ecog-missing",
+      "severity": "missing",
+      "fieldKey": "performance",
+      "text": "Skóre ECOG ani Karnofsky nie je v žiadnej správe. Správa 07 uvádza len slovný popis „Soběstačná“ – to nie je skóre.",
+      "citations": []
+    },
+    {
+      "id": "date-conflict-09",
+      "severity": "conflict",
+      "fieldKey": "medication",
+      "text": "Posledná dávka je zapísaná na 18. 10. 2026, teda po dátume výkonu 12. 10. 2026. Dátum je nemožný – overte s pracoviskom, kedy bol liek naozaj vysadený.",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Nalačno od půlnoci. Apixaban vysazen 48 h před výkonem (poslední dávka 18. 10. 2026 večer). Informovaný souhlas podepsán."
+        },
+        {
+          "docId": "09",
+          "quote": "Datum výkonu: 12. 10. 2026"
+        }
+      ]
+    },
+    {
+      "id": "date-conflict-11",
+      "severity": "conflict",
+      "fieldKey": "histology",
+      "text": "Materiál má dátum odberu 20. 10. 2026, ale správa bola vydaná 19. 10. 2026 a biopsia prebehla 12. 10. 2026 (správa 09). Pravdepodobne preklep – overte s patológiou.",
+      "citations": [
+        {
+          "docId": "11",
+          "quote": "Materiál: ložisko hlavy pankreatu, EUS-FNB 22G (odběr 20. 10. 2026)"
+        },
+        {
+          "docId": "11",
+          "quote": "Datum vydání: 19. 10. 2026"
+        }
+      ]
+    },
+    {
+      "id": "planned-2026-09-09",
+      "severity": "info",
+      "text": "Správa 04 plánuje kontrolu 9. 9. 2026, ale správa z nej v dokumentácii nie je – možno chýba.",
+      "citations": [
+        {
+          "docId": "04",
+          "quote": "2. Kontrola u PL po dobrání ATB 9. 9. 2026 s kontrolním odběrem."
+        }
+      ]
+    },
+    {
+      "id": "after-mdt",
+      "severity": "info",
+      "text": "Správy 12, 13 vznikli po 21. 10. 2026 – do podkladu pre konzílium nepatria (zadanie VZP: len to, čo bolo známe k dátumu konzília).",
+      "citations": []
+    },
+    {
+      "id": "gp-email-missing",
+      "severity": "info",
+      "text": "Chýba e-mail odosielajúceho lekára (zápis pre konzílium ho vyžaduje) – telefón je uvedený.",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Tel.: +420 311 000 287"
+        }
+      ]
+    },
+    {
+      "id": "results-not-attached",
+      "severity": "missing",
+      "text": "Žiadanka neobsahuje výsledky vyšetrení – uvádza len, kde sú (5 pracovísk). Treba ich vyžiadať.",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "VÝSLEDKY K DISPOZICI NA JEDNOTLIVÝCH PRACOVIŠTÍCH"
+        }
+      ]
+    }
+  ],
+  "precheck": {
+    "findings": [
+      {
+        "text": "Žiadanka neobsahuje výsledky vyšetrení – uvádza len, kde sú (5 pracovísk). Treba ich vyžiadať.",
+        "severity": "missing"
+      },
+      {
+        "text": "Vyžiadať: Laboratorní vyšetření 1. 9. 2026 – krevní obraz, biochemie, moč chemicky a sediment, kultivace moči (LabJih)",
+        "severity": "info"
+      },
+      {
+        "text": "Vyžiadať: RTG plic 3. 9. 2026 (Radiologické centrum Modřany)",
+        "severity": "info"
+      },
+      {
+        "text": "Vyžiadať: Gastroenterologické vyšetření 15. 9. 2026 (MUDr. Ivana Křížová, Poliklinika Jižní)",
+        "severity": "info"
+      },
+      {
+        "text": "Vyžiadať: UZ břicha 29. 9. 2026 (RDG pracoviště, Poliklinika Jižní)",
+        "severity": "info"
+      },
+      {
+        "text": "Vyžiadať: Kardiologická kontrola 20. 7. 2026 (MUDr. Petr Malý)",
+        "severity": "info"
+      },
+      {
+        "text": "Chýba výkonnostný stav (ECOG/Karnofsky).",
+        "severity": "missing"
+      },
+      {
+        "text": "Chýba e-mail pacienta aj odosielajúceho lekára.",
+        "severity": "info"
+      },
+      {
+        "text": "Pacient užíva liek na riedenie krvi – pred invazívnym výkonom treba postup podľa lekára.",
+        "severity": "info"
+      },
+      {
+        "text": "Súhlas so zdieľaním informácií s blízkou osobou je v žiadanke.",
+        "severity": "info"
+      }
+    ]
+  },
+  "labs": [
+    {
+      "test": "Leukocyty",
+      "value": "8,9",
+      "unit": "10⁹/l",
+      "ref": "4,0–10,0",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Erytrocyty",
+      "value": "3,98",
+      "unit": "10¹²/l",
+      "ref": "3,80–5,20",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Hemoglobin",
+      "value": "118",
+      "unit": "g/l",
+      "ref": "120–160",
+      "flag": "L",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Hematokrit",
+      "value": "0,35",
+      "unit": "1",
+      "ref": "0,35–0,47",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "MCV",
+      "value": "88",
+      "unit": "fl",
+      "ref": "82–98",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Trombocyty",
+      "value": "312",
+      "unit": "10⁹/l",
+      "ref": "150–400",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Neutrofily",
+      "value": "68",
+      "unit": "%",
+      "ref": "45–70",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Lymfocyty",
+      "value": "22",
+      "unit": "%",
+      "ref": "20–45",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Sodík",
+      "value": "137",
+      "unit": "mmol/l",
+      "ref": "136–145",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Draslík",
+      "value": "4,1",
+      "unit": "mmol/l",
+      "ref": "3,5–5,1",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Vápník",
+      "value": "2,31",
+      "unit": "mmol/l",
+      "ref": "2,15–2,55",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Urea",
+      "value": "4,6",
+      "unit": "mmol/l",
+      "ref": "2,8–8,1",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Kreatinin",
+      "value": "74",
+      "unit": "µmol/l",
+      "ref": "45–84",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "eGFR (CKD-EPI)",
+      "value": "1,25",
+      "unit": "ml/s/1,73 m²",
+      "ref": "> 1,0",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Glukóza",
+      "value": "6,2",
+      "unit": "mmol/l",
+      "ref": "3,9–5,6",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Bilirubin celkový",
+      "value": "23",
+      "unit": "µmol/l",
+      "ref": "2–17",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Bilirubin konjugovaný",
+      "value": "6",
+      "unit": "µmol/l",
+      "ref": "0–5",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "ALT",
+      "value": "1,62",
+      "unit": "µkat/l",
+      "ref": "0,10–0,60",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "AST",
+      "value": "1,20",
+      "unit": "µkat/l",
+      "ref": "0,10–0,60",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "GGT",
+      "value": "5,00",
+      "unit": "µkat/l",
+      "ref": "0,10–0,70",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "ALP",
+      "value": "3,40",
+      "unit": "µkat/l",
+      "ref": "0,58–1,75",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Celková bílkovina",
+      "value": "66",
+      "unit": "g/l",
+      "ref": "64–83",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Albumin",
+      "value": "36",
+      "unit": "g/l",
+      "ref": "35–52",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "CRP",
+      "value": "18",
+      "unit": "mg/l",
+      "ref": "0–5",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "CA 19-9",
+      "value": "312",
+      "unit": "kU/l",
+      "ref": "< 37",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "CEA",
+      "value": "4,1",
+      "unit": "µg/l",
+      "ref": "< 5,0",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "CA 125",
+      "value": "48",
+      "unit": "kU/l",
+      "ref": "< 35",
+      "flag": "H",
+      "date": "2026-10-15",
+      "lab": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "docId": "10"
+    },
+    {
+      "test": "Leukocyty",
+      "value": "12,8",
+      "unit": "10⁹/l",
+      "ref": "4,0–10,0",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Erytrocyty",
+      "value": "4,21",
+      "unit": "10¹²/l",
+      "ref": "3,80–5,20",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Hemoglobin",
+      "value": "124",
+      "unit": "g/l",
+      "ref": "120–160",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Hematokrit",
+      "value": "0,37",
+      "unit": "1",
+      "ref": "0,35–0,47",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Trombocyty",
+      "value": "298",
+      "unit": "10⁹/l",
+      "ref": "150–400",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Neutrofily",
+      "value": "82",
+      "unit": "%",
+      "ref": "45–70",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Lymfocyty",
+      "value": "12",
+      "unit": "%",
+      "ref": "20–45",
+      "flag": "L",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Sodík",
+      "value": "136",
+      "unit": "mmol/l",
+      "ref": "136–145",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Draslík",
+      "value": "4,0",
+      "unit": "mmol/l",
+      "ref": "3,5–5,1",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Chloridy",
+      "value": "99",
+      "unit": "mmol/l",
+      "ref": "98–107",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Urea",
+      "value": "5,1",
+      "unit": "mmol/l",
+      "ref": "2,8–8,1",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Kreatinin",
+      "value": "78",
+      "unit": "µmol/l",
+      "ref": "45–84",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Glukóza",
+      "value": "6,4",
+      "unit": "mmol/l",
+      "ref": "3,9–5,6",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Bilirubin celkový",
+      "value": "38",
+      "unit": "µmol/l",
+      "ref": "2–17",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "ALT",
+      "value": "1,92",
+      "unit": "µkat/l",
+      "ref": "0,10–0,60",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "AST",
+      "value": "1,45",
+      "unit": "µkat/l",
+      "ref": "0,10–0,60",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "GGT",
+      "value": "4,20",
+      "unit": "µkat/l",
+      "ref": "0,10–0,70",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "ALP",
+      "value": "3,10",
+      "unit": "µkat/l",
+      "ref": "0,58–1,75",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Amyláza",
+      "value": "1,10",
+      "unit": "µkat/l",
+      "ref": "0,47–1,67",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Lipáza",
+      "value": "0,85",
+      "unit": "µkat/l",
+      "ref": "0,22–1,00",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "CRP",
+      "value": "86",
+      "unit": "mg/l",
+      "ref": "0–5",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – pH",
+      "value": "6,0",
+      "unit": "",
+      "ref": "5–7",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Bílkovina",
+      "value": "+",
+      "unit": "",
+      "ref": "neg.",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Glukóza",
+      "value": "neg.",
+      "unit": "",
+      "ref": "neg.",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Ketolátky",
+      "value": "neg.",
+      "unit": "",
+      "ref": "neg.",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Bilirubin",
+      "value": "++",
+      "unit": "",
+      "ref": "neg.",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Urobilinogen",
+      "value": "norm.",
+      "unit": "",
+      "ref": "norm.",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Krev",
+      "value": "+",
+      "unit": "",
+      "ref": "neg.",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Leukocyty",
+      "value": "++",
+      "unit": "",
+      "ref": "neg.",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Nitrity",
+      "value": "neg.",
+      "unit": "",
+      "ref": "neg.",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Erytrocyty",
+      "value": "8",
+      "unit": "/µl",
+      "ref": "0–5",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Leukocyty",
+      "value": "65",
+      "unit": "/µl",
+      "ref": "0–10",
+      "flag": "H",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Bakterie",
+      "value": "+",
+      "unit": "",
+      "ref": "neg.",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Epitelie ploché",
+      "value": "ojediněle",
+      "unit": "",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    },
+    {
+      "test": "Moč – Hlen",
+      "value": "+",
+      "unit": "",
+      "date": "2026-09-01",
+      "lab": "Laboratoř LabJih s.r.o.",
+      "docId": "02"
+    }
+  ],
+  "exams": [
+    {
+      "date": "2026-07-20",
+      "place": "Kardiologická ambulance Jesenice",
+      "type": "kontrolní vyšetření",
+      "summary": "Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027).",
+      "docId": "01"
+    },
+    {
+      "date": "2026-09-03",
+      "place": "Radiologické centrum Modřany",
+      "type": "RTG hrudníku PA",
+      "summary": "Bez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích.",
+      "docId": "03"
+    },
+    {
+      "date": "2026-09-15",
+      "place": "Poliklinika Jižní – Gastroenterologická ambulance",
+      "type": "vstupní vyšetření",
+      "summary": "Cholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu.",
+      "docId": "05"
+    },
+    {
+      "date": "2026-09-29",
+      "place": "Poliklinika Jižní – Radiodiagnostické pracoviště",
+      "type": "UZ břicha",
+      "summary": "Ložisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS.",
+      "docId": "06"
+    },
+    {
+      "date": "2026-10-08",
+      "place": "KOC Nemocnice Severní – Radiologická klinika",
+      "type": "CT břicha a hrudníku s k. l., pankreatický protokol",
+      "summary": "Tumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz.",
+      "docId": "08"
+    },
+    {
+      "date": "2026-10-12",
+      "place": "KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika",
+      "type": "EUS-FNB",
+      "summary": "Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB) Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm.",
+      "docId": "09"
+    }
+  ],
+  "meds": [
+    {
+      "name": "apixaban",
+      "dose": "5 mg 1-0-1",
+      "citation": {
+        "docId": "07",
+        "quote": "apixaban 5 mg 1-0-1"
+      }
+    },
+    {
+      "name": "bisoprolol",
+      "dose": "5 mg 1-0-0",
+      "citation": {
+        "docId": "07",
+        "quote": "bisoprolol 5 mg 1-0-0"
+      }
+    },
+    {
+      "name": "perindopril",
+      "dose": "4 mg 1-0-0",
+      "citation": {
+        "docId": "07",
+        "quote": "perindopril 4 mg 1-0-0"
+      }
+    },
+    {
+      "name": "rosuvastatin",
+      "dose": "10 mg 0-0-1",
+      "citation": {
+        "docId": "07",
+        "quote": "rosuvastatin 10 mg 0-0-1"
+      }
+    },
+    {
+      "name": "paracetamol",
+      "dose": "500 mg při bolesti max. 4× denně",
+      "citation": {
+        "docId": "07",
+        "quote": "paracetamol 500 mg při bolesti max. 4× denně"
+      }
+    }
+  ],
+  "referringGp": {
+    "name": "MUDr. Tomáš Řezníček",
+    "phone": "+420 311 000 287",
+    "citations": [
+      {
+        "docId": "07",
+        "quote": "MUDr. Tomáš Řezníček"
+      },
+      {
+        "docId": "07",
+        "quote": "Tel.: +420 311 000 287"
+      }
+    ]
+  }
+}

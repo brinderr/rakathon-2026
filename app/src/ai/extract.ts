@@ -6,7 +6,8 @@
 //   2. rules: header, contacts, weight/height, lab tables, exam conclusions, histology, allergies, medications
 //   3. LLM (optional): drafts the free-text fields on pseudonymized text; each quote is located in the report,
 //      numbers in the value must appear in the verified quotes, otherwise the proposal is rejected → rule fallback
-//   4. trap detectors: impossible dates, missing ECOG/e-mails, planned controls without a report, post-MDT reports
+//   4. trap detectors: impossible dates, side of the tumour, birth-number mismatch, allergy lost in a newer report,
+//      announced results that never arrived, missing ECOG/e-mails, planned controls without a report, post-MDT reports
 //   5. final pass: every citation must be verbatim in its report; counts go to meta.stats
 import type { Citation, Exam, HandoverField, ISODate, LabRow, Medication } from '../types.ts';
 import { FIELD_SPECS, type FieldSpec } from './fields.ts';
@@ -18,7 +19,7 @@ import * as R from './rules.ts';
 import { czDate, fold, isVerbatim, locateQuote, numbersIn } from './text.ts';
 
 /** Free-text fields drafted by the LLM (the rest is read by rules). */
-export const LLM_KEYS = ['diagnosis', 'epicrisis', 'mdtQuestion', 'symptoms', 'otherNotes'];
+export const LLM_KEYS = ['diagnosis', 'epicrisis', 'mdtQuestion', 'symptoms', 'other'];
 
 export interface ExtractOptions {
   caseId: string;
@@ -167,6 +168,8 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
   const ps = R.performanceStatus(included, patientLabel, asOf);
   if (ps.finding) findings.push(ps.finding);
   const med = R.medications(included);
+  const alg = R.allergies(included);
+  if (alg.finding) findings.push(alg.finding);
   const lab = R.labsField(included);
   const ex = R.examsField(included);
 
@@ -182,15 +185,15 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
     epicrisis: draft(N.epicrisisFallback(included)),
     mdtQuestion: draft(N.mdtQuestionFallback(included)),
     comorbidities: draft(R.comorbidities(included)),
-    medications: draft(med.field),
-    allergies: draft(R.allergies(included)),
-    performanceStatus: draft(ps.field),
+    medication: draft(med.field),
+    allergies: draft(alg.field),
+    performance: draft(ps.field),
     weightHeight: draft(R.weightHeight(included, excluded, asOf)),
     symptoms: draft(N.symptomsFallback(included)),
     exams: draft(ex.field),
     labs: draft(lab.field),
     histology: draft(R.histologyField(included)),
-    otherNotes: draft(N.otherNotesFallback(included)),
+    other: draft(N.otherNotesFallback(included)),
   };
 
   // ---- 3. LLM ----
@@ -240,7 +243,7 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
   // ---- 4. trap detectors ----
   for (const c of R.impossibleDates(included)) {
     const histo = R.docKind(c.doc) === 'histology';
-    const target = histo ? 'histology' : /(dávk|vysaz)/i.test(c.event.quote) ? 'medications' : undefined;
+    const target = histo ? 'histology' : /(dávk|vysaz)/i.test(c.event.quote) ? 'medication' : undefined;
     const line = c.doc.text.split(/\r?\n/).find((l) => l.includes(c.event.quote))?.trim() ?? c.event.quote;
     const a: Citation = { docId: c.doc.id, quote: locateQuote(c.doc.text, line) ?? c.event.quote };
     const b: Citation = { docId: c.doc.id, quote: c.issued.quote };
@@ -248,7 +251,7 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
     if (histo) {
       const proc = included.find((d) => R.docKind(d) === 'procedure' && d.date <= c.issued.iso);
       explain = `Materiál má dátum odberu ${czDate(c.event.iso)}, ale správa bola vydaná ${czDate(c.issued.iso)}${proc ? ` a biopsia prebehla ${czDate(proc.date)} (správa ${proc.id})` : ''}. Pravdepodobne preklep – overte s patológiou.`;
-    } else if (target === 'medications') {
+    } else if (target === 'medication') {
       explain = `Posledná dávka je zapísaná na ${czDate(c.event.iso)}, teda po dátume výkonu ${czDate(c.issued.iso)}. Dátum je nemožný – overte s pracoviskom, kedy bol liek naozaj vysadený.`;
     } else {
       explain = `Udalosť z ${czDate(c.event.iso)} je zapísaná v správe vydanej ${czDate(c.issued.iso)} – dátum je nemožný.`;
@@ -259,11 +262,48 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
       drafts[target].conflict = { a: { value: c.event.quote, citation: a }, b: { value: c.issued.quote, citation: b }, explain };
     }
   }
+  const side = R.sideConflict(included);
+  if (side) {
+    const a: Citation = { docId: side.a.doc.id, quote: side.a.quote };
+    const b: Citation = { docId: side.b.doc.id, quote: side.b.quote };
+    findings.push({ id: 'side-conflict', severity: 'conflict', fieldKey: 'diagnosis', text: side.explain, citations: [a, b] });
+    if (!drafts.diagnosis.conflict) {
+      drafts.diagnosis.status = 'conflict';
+      drafts.diagnosis.conflict = { a: { value: side.a.phrase, citation: a }, b: { value: side.b.phrase, citation: b }, explain: side.explain };
+    }
+  }
+  const kindField: Partial<Record<R.DocKind, string>> = { lab: 'labs', histology: 'histology', imaging: 'exams', procedure: 'exams', clinic: 'exams' };
+  for (const m of R.identityMismatch(included)) {
+    const target = kindField[R.docKind(m.doc)];
+    const explain = `Správa ${m.doc.id} (${R.docTitle(m.doc)}, ${czDate(m.doc.date)}) má iné rodné číslo (${m.rc}) ako ostatné správy (${m.ref.rc}). Overiť, či patrí tomuto pacientovi – dovtedy jej údaje nepoužívať ako fakt.`;
+    const a: Citation = { docId: m.ref.doc.id, quote: m.ref.quote };
+    const b: Citation = { docId: m.doc.id, quote: m.quote };
+    findings.push({ id: `rc-mismatch-${m.doc.id}`, severity: 'conflict', fieldKey: target, text: explain, citations: [a, b] });
+    if (target && !drafts[target].conflict) {
+      drafts[target].status = 'conflict';
+      drafts[target].conflict = { a: { value: m.ref.quote, citation: a }, b: { value: m.quote, citation: b }, explain };
+    }
+  }
+  for (const p of R.pendingResults(included, asOf)) {
+    const what = p.items.length ? p.items.join(', ') : 'výsledok';
+    const target = R.docKind(p.doc) === 'histology' ? 'histology' : undefined;
+    const text = `Správa ${p.doc.id} (${R.docTitle(p.doc)}, ${czDate(p.doc.date)}) avizuje doplnenie: ${what}. K ${czDate(asOf)} v dokumentácii nie je – vyžiadať pred konzíliom.`;
+    findings.push({ id: `pending-${p.doc.id}`, severity: 'missing', fieldKey: target, text, citations: [{ docId: p.doc.id, quote: p.quote }] });
+    if (target) {
+      const d = drafts[target];
+      d.note = [d.note, `Chýba avizovaný dodatok (${what}).`].filter(Boolean).join(' ');
+      d.request ??= {
+        to: R.facility(p.doc), channel: 'e-mail',
+        draft: `Dobrý deň, pred konzíliom ${czDate(asOf)} prosíme o zaslanie dodatku (${what})${p.ref ? ` k vyšetreniu ${p.ref}` : ''} – ${patientLabel}. Ďakujeme, koordinátor KOC.`,
+      };
+    }
+  }
   findings.push(...R.plannedButMissing(included, asOf));
   if (excluded.length) {
+    const many = excluded.length > 1;
     findings.push({
       id: 'after-mdt', severity: 'info',
-      text: `Správy ${excluded.map((d) => d.id).join(', ')} vznikli po ${czDate(asOf)} – do podkladu pre konzílium nepatria (zadanie VZP: len to, čo bolo známe k dátumu konzília).`,
+      text: `${many ? 'Správy' : 'Správa'} ${excluded.map((d) => d.id).join(', ')} ${many ? 'vznikli' : 'vznikla'} po ${czDate(asOf)} – do podkladu pre konzílium ${many ? 'nepatria' : 'nepatrí'} (zadanie VZP: len to, čo bolo známe k dátumu konzília).`,
       citations: [],
     });
   }
@@ -271,9 +311,17 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
   if (gp) findings.push(...gp.findings);
   const referral = included.filter((d) => R.docKind(d) === 'referral').sort((a, b) => b.date.localeCompare(a.date))[0];
   const pre = referral ? R.referralPrecheck(referral) : [];
+  const psCite = drafts.performance.status !== 'missing' ? drafts.performance.citations[0] : undefined;
+  for (const f of pre) {
+    if (f.id !== 'ecog-missing' || !psCite) continue;
+    f.severity = 'info';
+    f.text = `Žiadanka neuvádza výkonnostný stav – je v správe ${psCite.docId}: „${drafts.performance.value}“.`;
+    f.citations = [psCite];
+  }
   for (const f of pre) if (f.severity === 'missing' && !findings.some((x) => x.id === f.id)) findings.push(f);
 
   // ---- 5. final verification and assembly ----
+  const male = id?.sex.value === 'muž';
   const fields: HandoverField[] = [];
   let citationsTotal = 0;
   let citationsVerified = 0;
@@ -292,7 +340,7 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
       note = [note, 'Bez overeného citátu – nezobrazovať ako fakt, overiť ručne.'].filter(Boolean).join(' ');
     }
     fields.push({
-      key: spec.key, label: spec.label, group: spec.group,
+      key: spec.key, label: male ? spec.label.replace(/pacientk[uy]/, 'pacienta') : spec.label, group: spec.group,
       value: status === 'missing' ? '' : d.value,
       status, citations: status === 'missing' ? [] : citations,
       sourceDate: d.sourceDate, note, conflict, request: d.request,

@@ -1,0 +1,35 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+Nemocnice Benešov (fiktivní)
+Plicní ambulance – MUDr. Karel Veselý
+Máchova 400, 256 01 Benešov
+Tel.: +420 317 000 450, e-mail: plicni.ambulance@example.com
+Epikríza a žádost o převzetí do péče KOC
+Adresát: Komplexní onkologické centrum Nemocnice Lipová – koordinátor KOC
+Pacient: Josef Novák
+Rodné číslo: 660314/1243
+Bydliště: Lipová 8, 256 01 Benešov
+Zdravotní pojišťovna: 111
+Datum narození: 14. 3. 1966 (60 let)
+Telefon: +420 603 000 118
+E-mail: josef.novak@example.com
+Kontaktní osoba: Marie Nováková (manželka), tel. +420 603 000 119
+EPIKRÍZA
+60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026. RTG hrudníku 26. 8. 2026 prokázalo opacitu v pravém horním plicním poli. CT hrudníku 10. 9. 2026 popisuje tumor pravého horního laloku 42 × 35 mm a suspektní uzliny 10R a 4R. Bronchoskopie s EBUS-TBNA 17. 9. 2026 na KOC Nemocnice Lipová, histologicky adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez známek vzdálených metastáz.
+Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater. Váha 76 kg, nadále ubývá. Pacient je soběstačný, pracuje omezeně.
+ANAMNÉZA
+OA: diabetes mellitus 2. typu na PAD, arteriální hypertenze, dyslipidémie
+FA: metformin 1000 mg 1-0-1, amlodipin 5 mg 1-0-0, atorvastatin 20 mg 0-0-1
+AA: neguje
+Abusus: kuřák 40 balíčkoroků, od 3. 9. 2026 nekouří
+SA: ženatý, žije s manželkou v rodinném domě
+PA: zedník, t. č. v pracovní neschopnosti
+PŘILOŽENÉ VÝSLEDKY
+RTG hrudníku 26. 8. 2026, laboratoř 8. 9. 2026, CT hrudníku 10. 9. 2026, bronchoskopie 17. 9. 2026, histologie 23. 9. 2026, PET/CT 1. 10. 2026 – v příloze.
+ŽÁDOST
+Diagnóza: C34.1 – adenokarcinom pravého horního laloku plíce, uzliny 10R a 4R pozitivní
+Žádám o převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R.
+Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka.
+Děkuji za spolupráci.
+V Benešově dne 7. 10. 2026
+MUDr. Karel Veselý
+pneumolog

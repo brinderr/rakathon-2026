@@ -1,0 +1,27 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+Nemocnice Benešov (fiktivní)
+Plicní ambulance – MUDr. Karel Veselý
+Máchova 400, 256 01 Benešov
+Ambulantní zpráva – vstupní vyšetření
+Datum: 3. 9. 2026
+Pacient: Josef Novák
+Rodné číslo: 660314/1243
+Bydliště: Lipová 8, 256 01 Benešov
+Zdravotní pojišťovna: 111
+Odesílající lékař: MUDr. Hana Benešová, praktický lékař
+SUBJEKTIVNĚ
+Kašel 7 týdnů, opakovaně drobná hemoptýza, námahová dušnost. Úbytek hmotnosti 3 kg za 2 měsíce. Bolesti na hrudi neguje.
+OBJEKTIVNĚ
+Výška 176 cm, hmotnost 78 kg. SpO₂ 95 %. Oslabené dýchání vpravo nahoře, bez vedlejších fenoménů.
+Spirometrie: FEV1 2,6 l (82 % n. h.), FVC 3,5 l (88 % n. h.), FEV1/FVC 0,74.
+ZÁVĚR
+Suspektní tumor pravého horního laloku plíce u kuřáka 40 balíčkoroků. Výkonnostní stav ECOG 1.
+DOPORUČENÍ
+1. CT hrudníku a horního břicha s k. l. – objednáno na 10. 9. 2026.
+2. Laboratoř včetně nádorových markerů a koagulace – odběr 8. 9. 2026.
+3. Bronchoskopie s EBUS-TBNA na KOC Nemocnice Lipová – dle výsledku CT.
+4. Ukončit kouření, nabídnuta odvykací terapie.
+V Benešově dne 3. 9. 2026
+MUDr. Karel Veselý
+pneumolog
+Kopie: MUDr. Hana Benešová, praktický lékař

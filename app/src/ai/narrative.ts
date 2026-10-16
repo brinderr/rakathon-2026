@@ -16,7 +16,8 @@ export function sentences(block: string): string[] {
       const prev = line[at - 1] ?? '';
       const next = line[at + m[0].length] ?? '';
       const word = line.slice(0, at).split(/[\s(]+/).pop() ?? '';
-      const endsSentence = /[a-záčďéěíňóřšťúůýž)%°]/.test(prev) && /[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(next) && !ABBREV.has(word);
+      // a sentence may end with a year ("… 24. 8. 2026. RTG …"), but not with a day or month ("1. 9. 2026")
+      const endsSentence = (/[a-záčďéěíňóřšťúůýž)%°]/.test(prev) || /^\d{4}$/.test(word)) && /[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(next) && !ABBREV.has(word);
       if (!endsSentence) continue;
       out.push(line.slice(start, at + 1).trim());
       start = at + m[0].length;
@@ -41,14 +42,18 @@ export function diagnosisFallback(docs: Doc[]): RuleField {
   const parts: string[] = [];
   const citations: Citation[] = [];
   const susp = ref ? labeledLine(ref.text, /^(Suspektní diagnóza|Pracovní diagnóza|Diagnóza):/) : null;
-  if (ref && susp) { parts.push(`${susp.value} (podozrenie v žiadanke, ${czDate(ref.date)})`); citations.push(...citeAll(ref, [susp.line])); }
+  if (ref && susp) {
+    const suspected = /^(Suspektní|Pracovní)/.test(susp.line);
+    parts.push(`${susp.value} (${suspected ? 'podozrenie v žiadanke' : 'v žiadanke'}, ${czDate(ref.date)})`);
+    citations.push(...citeAll(ref, [susp.line]));
+  }
   const z = histo ? section(histo.text, /^ZÁVĚR/)?.split('\n')[0] : undefined;
   if (histo && z) { parts.push(`histologicky: ${z} (${czDate(histo.date)})`); citations.push(...citeAll(histo, [z])); }
   if (!parts.length) return { value: '', citations: [], status: 'missing', note: 'Diagnóza nie je v dokumentácii uvedená.' };
   return { value: parts.join('; '), citations, sourceDate: histo?.date ?? ref?.date };
 }
 
-const KEY_FINDING = /(ložisk|tumor|nádor|pankrea|malign|histolog|metast|cholest|\bCT\b)/i;
+const KEY_FINDING = /(ložisk|tumor|nádor|karcinom|malign|histolog|metast|cholest|\bCT\b)/i;
 const ONSET = /^(Od |Asi |Přibližně |Před )|(od poloviny|trvající)/i;
 
 /** Onset of complaints + sentences with key findings, in document order (max 4); first 3 sentences otherwise. */
@@ -77,11 +82,13 @@ export function mdtQuestionFallback(docs: Doc[]): RuleField {
   };
 }
 
+const SYMPTOM = /(bolest|teplot|horečk|tmavší moč|nechutenství|úbyt|ikter|únav|zvracen|nauze|hubn|kašel|kašl|hemopt|dušnost|chrapot|pocení)/i;
+
 export function symptomsFallback(docs: Doc[]): RuleField {
   const ref = latestReferral(docs);
   const block = ref ? section(ref.text, /^EPIKRÍZA/) : null;
   if (!ref || !block) return { value: '', citations: [], status: 'missing', note: 'Príznaky nie sú opísané.' };
-  const hits = sentences(block).filter((s) => /(bolest|teplot|tmavší moč|nechutenství|úbyt|ikter|únav|zvracen|nauze|hubn)/i.test(s)).slice(0, 4);
+  const hits = sentences(block).filter((s) => SYMPTOM.test(s)).slice(0, 4);
   if (!hits.length) return { value: '', citations: [], status: 'missing', note: 'Príznaky nie sú opísané.' };
   return { value: hits.join(' '), citations: citeAll(ref, hits), sourceDate: ref.date };
 }

@@ -1,0 +1,296 @@
+{
+  "caseId": "pacient-2",
+  "title": "Kontrolná sada – Josef Novák (fiktívny pacient, adenokarcinóm pľúc)",
+  "source": "data-pacient-2/source-pacient-2.json",
+  "asOf": "2026-10-22",
+  "howToRead": "Druhý fiktívny pacient, aby nikto nepovedal „ušité na jednu pacientku“. Iný orgán (pľúca), iná poisťovňa (VZP 111), žiadanka od špecialistu (nie od praktika) a 4 nové typy pascí: strana nádoru, alergia stratená v novšej správe, iné rodné číslo v jednej správe, avizovaný dodatok, ktorý neprišiel. Navyše kontroly falošných poplachov: e-mail a ECOG tu sú, otázka na konzílium je konkrétna. Formát rovnaký ako gold-alena.json.",
+  "fields": [
+    {
+      "key": "firstName",
+      "expect": "value",
+      "accept": [["Josef"]],
+      "evidence": [{ "docId": "09", "quote": "Pacient: Josef Novák" }]
+    },
+    {
+      "key": "lastName",
+      "expect": "value",
+      "accept": [["Novák"]],
+      "evidence": [{ "docId": "09", "quote": "Pacient: Josef Novák" }]
+    },
+    {
+      "key": "age",
+      "expect": "value",
+      "accept": [["60"]],
+      "evidence": [{ "docId": "09", "quote": "Datum narození: 14. 3. 1966 (60 let)" }]
+    },
+    {
+      "key": "sex",
+      "expect": "value",
+      "accept": [["muž", "mužské", "male"]],
+      "evidence": [{ "docId": "09", "quote": "Pacient: Josef Novák" }]
+    },
+    {
+      "key": "insurer",
+      "expect": "value",
+      "accept": [["111"]],
+      "evidence": [{ "docId": "09", "quote": "Zdravotní pojišťovna: 111" }]
+    },
+    {
+      "key": "patientContact",
+      "expect": "value",
+      "accept": [["603 000 118"], ["josef.novak@example.com"]],
+      "evidence": [{ "docId": "09", "quote": "Telefon: +420 603 000 118" }, { "docId": "09", "quote": "E-mail: josef.novak@example.com" }]
+    },
+    {
+      "key": "contactPerson",
+      "expect": "value",
+      "accept": [["Marie Nováková"], ["603 000 119"], ["manžel"]],
+      "evidence": [{ "docId": "09", "quote": "Kontaktní osoba: Marie Nováková (manželka), tel. +420 603 000 119" }]
+    },
+    {
+      "key": "diagnosis",
+      "expect": "value",
+      "accept": [["adenokarcinom"], ["plic", "plíc"], ["C34"]],
+      "citeDocs": ["07"],
+      "evidence": [
+        { "docId": "09", "quote": "Diagnóza: C34.1 – adenokarcinom pravého horního laloku plíce, uzliny 10R a 4R pozitivní" },
+        { "docId": "07", "quote": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R." }
+      ]
+    },
+    {
+      "key": "epicrisis",
+      "expect": "value",
+      "accept": [["kašel", "kašl"], ["adenokarcinom", "tumor"]],
+      "evidence": [{ "docId": "09", "quote": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026." }]
+    },
+    {
+      "key": "mdtQuestion",
+      "expect": "value",
+      "accept": [["resekabil"]],
+      "citeDocs": ["09"],
+      "evidence": [{ "docId": "09", "quote": "Žádám o převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R." }]
+    },
+    {
+      "key": "comorbidities",
+      "expect": "value",
+      "accept": [["diabetes"], ["hypertenze", "hypertenzia"], ["dyslipid"]],
+      "evidence": [{ "docId": "09", "quote": "OA: diabetes mellitus 2. typu na PAD, arteriální hypertenze, dyslipidémie" }]
+    },
+    {
+      "key": "medication",
+      "expect": "value",
+      "accept": [["metformin"], ["amlodipin"], ["atorvastatin"]],
+      "evidence": [{ "docId": "09", "quote": "FA: metformin 1000 mg 1-0-1, amlodipin 5 mg 1-0-0, atorvastatin 20 mg 0-0-1" }]
+    },
+    {
+      "key": "allergies",
+      "expect": "value",
+      "accept": [["jod"]],
+      "rejectRegex": ["^\\s*neguje\\s*$"],
+      "citeDocs": ["05", "08"],
+      "evidence": [
+        { "docId": "05", "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku." },
+        { "docId": "09", "quote": "AA: neguje" }
+      ],
+      "why": "Pri CT 10. 9. reakcia na jódovú kontrastnú látku. Žiadanka 09 (7. 10.) ju neprevzala a uvádza „AA: neguje“ – najnovšia správa nie je vždy správna."
+    },
+    {
+      "key": "performance",
+      "expect": "value",
+      "accept": [["ECOG 1"]],
+      "citeDocs": ["03"],
+      "evidence": [{ "docId": "03", "quote": "Výkonnostní stav ECOG 1." }],
+      "why": "Tentoraz ECOG v dokumentácii je (pneumológ 3. 9.), len nie v žiadanke – systém ho musí nájsť, nie hlásiť ako chýbajúci."
+    },
+    {
+      "key": "weightHeight",
+      "expect": "value",
+      "accept": [["76"], ["176"]],
+      "reject": ["73"],
+      "citeDocs": ["09"],
+      "evidence": [
+        { "docId": "09", "quote": "Váha 76 kg, nadále ubývá." },
+        { "docId": "03", "quote": "Výška 176 cm, hmotnost 78 kg." }
+      ],
+      "why": "Posledná váha pred konzíliom je 76 kg (7. 10., zapísaná ako „Váha“, nie „Hmotnost“). 73 kg je až z nutričnej ambulancie po konzíliu."
+    },
+    {
+      "key": "symptoms",
+      "expect": "value",
+      "accept": [["kašel", "kašl"], ["hemopt"], ["týdn", "týden"]],
+      "evidence": [
+        { "docId": "09", "quote": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026." },
+        { "docId": "09", "quote": "Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater." }
+      ]
+    },
+    {
+      "key": "exams",
+      "expect": "value",
+      "accept": [["RTG"], ["CT"], ["bronchoskop", "EBUS"], ["PET"], ["1. 10. 2026"]],
+      "citeDocs": ["08"],
+      "evidence": [
+        { "docId": "02", "quote": "Datum vyšetření: 26. 8. 2026" },
+        { "docId": "05", "quote": "Datum vyšetření: 10. 9. 2026" },
+        { "docId": "06", "quote": "Datum výkonu: 17. 9. 2026" },
+        { "docId": "08", "quote": "Datum vyšetření: 1. 10. 2026" }
+      ]
+    },
+    {
+      "key": "labs",
+      "expect": "value",
+      "accept": [["CEA"], ["8,2"], ["CYFRA"], ["6,4"], ["NSE"], ["14,1"]],
+      "citeDocs": ["04"],
+      "evidence": [
+        { "docId": "04", "quote": "Odběr: 8. 9. 2026 7:30" },
+        { "docId": "04", "quote": "CYFRA 21-1" },
+        { "docId": "04", "quote": "6,4 H" },
+        { "docId": "04", "quote": "14,1" }
+      ]
+    },
+    {
+      "key": "histology",
+      "expect": "value",
+      "accept": [["adenokarcinom"], ["4R"]],
+      "citeDocs": ["07"],
+      "evidence": [{ "docId": "07", "quote": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R." }]
+    },
+    {
+      "key": "other",
+      "expect": "value",
+      "accept": [["manželk"]],
+      "citeDocs": ["09"],
+      "evidence": [{ "docId": "09", "quote": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka." }]
+    }
+  ],
+  "traps": [
+    {
+      "id": "side-conflict",
+      "title": "Strana nádoru: bronchoskopia píše ľavý lalok, ostatné pravý",
+      "why": "RTG, CT, PET/CT aj žiadanka uvádzajú pravý horný lalok, protokol bronchoskopie ľavý. Strana rozhoduje o operácii aj ožarovaní.",
+      "evidence": [
+        { "docId": "06", "quote": "Indikace: tumor levého horního laloku, staging mediastina" },
+        { "docId": "05", "quote": "Tumor pravého horního laloku 42 × 35 mm" }
+      ],
+      "checks": [{ "type": "flagged", "docId": "06", "all": ["lev"] }]
+    },
+    {
+      "id": "allergy-lost-in-referral",
+      "title": "Alergia na kontrastnú látku sa v žiadanke stratila",
+      "why": "Pri CT reakcia na jódovú kontrastnú látku, PET/CT ju rešpektuje, ale žiadanka do KOC uvádza „AA: neguje“.",
+      "evidence": [
+        { "docId": "05", "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku." },
+        { "docId": "09", "quote": "AA: neguje" }
+      ],
+      "checks": [
+        { "type": "valueContains", "field": "allergies", "all": ["jod"] },
+        { "type": "flagged", "docId": "09", "all": ["neguje"] }
+      ]
+    },
+    {
+      "id": "birth-number-mismatch",
+      "title": "Laboratórium má iné rodné číslo",
+      "why": "Výsledky z 8. 9. majú RČ …/1234, ostatné správy …/1243. Môže ísť o výsledok iného pacienta – nesmie sa ticho zlúčiť.",
+      "evidence": [
+        { "docId": "04", "quote": "RČ 660314/1234" },
+        { "docId": "09", "quote": "Rodné číslo: 660314/1243" }
+      ],
+      "checks": [{ "type": "flagged", "docId": "04", "all": ["660314/1234"] }]
+    },
+    {
+      "id": "predictive-markers-pending",
+      "title": "Prediktívne markery (EGFR, ALK, ROS1, PD-L1) neprišli",
+      "why": "Patológ 23. 9. avizuje dodatok, do konzília 22. 10. v dokumentácii nie je. Pri adenokarcinóme pľúc rozhoduje o liečbe.",
+      "evidence": [{ "docId": "07", "quote": "Prediktivní vyšetření (EGFR, ALK, ROS1, PD-L1) probíhá – výsledek bude doplněn dodatkem." }],
+      "checks": [{ "type": "messageMatches", "all": ["(EGFR|PD-L1)", "(nie je|chýba|chybí|vyžiadať)"] }]
+    },
+    {
+      "id": "weight-73-after-mdt",
+      "title": "Váha 73 kg je až po konzíliu (správa 10)",
+      "why": "Podklad k 22. 10. má mať 76 kg zo 7. 10.",
+      "evidence": [
+        { "docId": "10", "quote": "Výška 176 cm, hmotnost 73 kg, BMI 23,6." },
+        { "docId": "09", "quote": "Váha 76 kg, nadále ubývá." }
+      ],
+      "checks": [
+        { "type": "valueContains", "field": "weightHeight", "all": ["76"] },
+        { "type": "valueNotContains", "field": "weightHeight", "any": ["73"] },
+        { "type": "noCitationFromDocs", "docs": ["10"] }
+      ]
+    },
+    {
+      "id": "all-tumor-markers",
+      "title": "Všetky onkomarkery, aj normálny NSE",
+      "why": "CEA a CYFRA 21-1 sú zvýšené, NSE 14,1 je v norme – aj to je pre konzílium informácia.",
+      "evidence": [
+        { "docId": "04", "quote": "CEA" },
+        { "docId": "04", "quote": "CYFRA 21-1" },
+        { "docId": "04", "quote": "NSE" }
+      ],
+      "checks": [{ "type": "valueContains", "field": "labs", "all": ["CEA", "8,2", "CYFRA 21-1", "6,4", "NSE", "14,1"] }]
+    },
+    {
+      "id": "no-false-alarm-email",
+      "title": "Bez falošného poplachu: e-maily sú uvedené",
+      "why": "Na rozdiel od Aleny tu e-mail pacienta aj lekára je. Systém nesmie hlásiť, že chýba.",
+      "evidence": [
+        { "docId": "09", "quote": "E-mail: josef.novak@example.com" },
+        { "docId": "09", "quote": "Tel.: +420 317 000 450, e-mail: plicni.ambulance@example.com" }
+      ],
+      "checks": [
+        { "type": "valueContains", "field": "patientContact", "all": ["josef.novak@example.com"] },
+        { "type": "noMessageMatches", "all": ["e-?mail", "(chýba|chybí)"] }
+      ]
+    },
+    {
+      "id": "no-false-alarm-ecog",
+      "title": "Bez falošného poplachu: ECOG je v správe pneumológa",
+      "why": "Žiadanka ECOG neuvádza, ale správa 03 áno – nájsť ho, nehlásiť „chýba“.",
+      "evidence": [{ "docId": "03", "quote": "Výkonnostní stav ECOG 1." }],
+      "checks": [
+        { "type": "fieldNotStatus", "field": "performance", "status": "missing" },
+        { "type": "noMessageMatches", "all": ["Chýba výkonnostný stav"] }
+      ]
+    },
+    {
+      "id": "no-false-alarm-planned-lab",
+      "title": "Bez falošného poplachu: plánovaný odber nie je nemožný dátum",
+      "why": "Pneumológ 3. 9. v odporúčaní plánuje odber 8. 9. – je to plán, nie udalosť v minulosti.",
+      "evidence": [{ "docId": "03", "quote": "2. Laboratoř včetně nádorových markerů a koagulace – odběr 8. 9. 2026." }],
+      "checks": [{ "type": "noMessageMatches", "all": ["nemožn"] }]
+    },
+    {
+      "id": "mdt-question-specific",
+      "title": "Otázka na konzílium je konkrétna",
+      "why": "Resekabilita vs. chemorádioterapia – na rozdiel od Aleny nie je všeobecná, netreba ju označiť.",
+      "evidence": [{ "docId": "09", "quote": "posouzení resekability tumoru vs. konkomitantní chemoradioterapie" }],
+      "checks": [{ "type": "noteNotMatches", "field": "mdtQuestion", "regex": "(všeobecn|obecn)" }]
+    },
+    {
+      "id": "insurer-vzp",
+      "title": "Poisťovňa 111 = VZP",
+      "why": "Tentoraz je pacient poistencom VZP – súhrn pre revízneho lekára ide VZP.",
+      "evidence": [{ "docId": "09", "quote": "Zdravotní pojišťovna: 111" }],
+      "checks": [{ "type": "valueContains", "field": "insurer", "all": ["111"] }]
+    },
+    {
+      "id": "post-mdt-report-excluded",
+      "title": "Nutričná správa (27. 10.) je až po konzíliu",
+      "why": "Do podkladu k 22. 10. nepatrí.",
+      "evidence": [{ "docId": "10", "quote": "Datum: 27. 10. 2026" }],
+      "checks": [
+        { "type": "noCitationFromDocs", "docs": ["10"] },
+        { "type": "valuesNotContain", "any": ["Sipping", "NRS 2002", "BMI"] }
+      ]
+    },
+    {
+      "id": "pet-from-other-koc",
+      "title": "PET/CT z iného KOC sa nestratí",
+      "why": "PET/CT urobilo KOC Nemocnice Severní, prípad vedie KOC Nemocnice Lipová.",
+      "evidence": [{ "docId": "08", "quote": "KOC Nemocnice Severní (fiktivní)" }],
+      "checks": [
+        { "type": "valueContains", "field": "exams", "all": ["1. 10. 2026"] },
+        { "type": "citesDoc", "field": "exams", "docId": "08" }
+      ]
+    }
+  ]
+}

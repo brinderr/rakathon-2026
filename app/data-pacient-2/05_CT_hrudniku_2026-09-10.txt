@@ -1,0 +1,17 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+Nemocnice Benešov (fiktivní)
+Radiologické oddělení
+Máchova 400, 256 01 Benešov
+Výsledek vyšetření – CT hrudníku a horního břicha s k. l.
+Pacient: Josef Novák, RČ 660314/1243, ZP 111
+Indikující lékař: MUDr. Karel Veselý, pneumolog
+Datum vyšetření: 10. 9. 2026
+POPIS
+V pravém horním laloku (segmenty S1–S2) solidní tumor s nepravidelnými okraji 42 × 35 mm, přiléhá k viscerální pleuře, bez invaze do hrudní stěny. Tumor zužuje segmentový bronchus B1. Hilové uzliny vpravo (stanice 10R) 15 mm, pravostranná paratracheální uzlina (4R) 12 mm. Ostatní mediastinální uzliny nezvětšeny. Levá plíce bez ložisek. Bez fluidothoraxu. Játra, nadledviny a skelet v rozsahu vyšetření bez ložiskových změn.
+KOMPLIKACE
+Po aplikaci jodové kontrastní látky (iomeprol) generalizovaná kopřivka, podán bisulepin i.v., stav do 30 minut odezněl. Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku.
+ZÁVĚR
+Tumor pravého horního laloku 42 × 35 mm, suspektní metastatické uzliny 10R a 4R. Bez známek vzdálených metastáz v rozsahu vyšetření.
+Datum: 10. 9. 2026
+MUDr. Ondřej Malina
+radiolog

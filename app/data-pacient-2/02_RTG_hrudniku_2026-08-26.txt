@@ -1,0 +1,16 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+Nemocnice Benešov (fiktivní)
+Radiologické oddělení
+Máchova 400, 256 01 Benešov
+Výsledek vyšetření – RTG hrudníku PA
+Pacient: Josef Novák, RČ 660314/1243, ZP 111
+Indikující lékař: MUDr. Hana Benešová, praktický lékař
+Datum vyšetření: 26. 8. 2026
+Klinická otázka: kašel, hemoptýza, kuřák – vyloučit tumor
+POPIS
+V pravém horním plicním poli neostře ohraničená opacita velikosti asi 40 mm, pravý hilus rozšířen. Levá plíce bez ložiskových změn. Bránice hladká, kostofrenické úhly volné. Srdeční stín nezvětšen.
+ZÁVĚR
+Opacita v pravém horním plicním poli suspektní z tumoru, rozšířený pravý hilus. Doporučeno CT hrudníku s k. l.
+Datum: 26. 8. 2026
+MUDr. Ondřej Malina
+radiolog

@@ -1,0 +1,838 @@
+{
+  "meta": {
+    "caseId": "pacient-2",
+    "asOf": "2026-10-22",
+    "generatedAt": "2026-10-16T23:55:15.938Z",
+    "promptVersion": "handover-v1",
+    "mode": "rules",
+    "docsUsed": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09"
+    ],
+    "docsExcluded": [
+      {
+        "id": "10",
+        "date": "2026-10-27",
+        "reason": "po dátume konzília 22. 10. 2026"
+      }
+    ],
+    "stats": {
+      "fields": 20,
+      "withValue": 20,
+      "missing": 0,
+      "conflicts": 3,
+      "citations": 44,
+      "citationsVerified": 44,
+      "fieldsWithoutVerifiedCitation": 0,
+      "llmFieldsAccepted": 0,
+      "llmFieldsRejected": 0
+    }
+  },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Meno",
+      "group": "Pacient",
+      "value": "Josef",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Pacient: Josef Novák"
+        }
+      ]
+    },
+    {
+      "key": "lastName",
+      "label": "Priezvisko",
+      "group": "Pacient",
+      "value": "Novák",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Pacient: Josef Novák"
+        }
+      ]
+    },
+    {
+      "key": "age",
+      "label": "Vek",
+      "group": "Pacient",
+      "value": "60 rokov (nar. 14. 3. 1966)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Datum narození: 14. 3. 1966 (60 let)"
+        }
+      ]
+    },
+    {
+      "key": "sex",
+      "label": "Pohlavie",
+      "group": "Pacient",
+      "value": "muž",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Pacient: Josef Novák"
+        }
+      ],
+      "note": "Podľa označenia „Pacient“ v správe."
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotná poisťovňa",
+      "group": "Pacient",
+      "value": "111",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Zdravotní pojišťovna: 111"
+        }
+      ],
+      "note": "111 = Všeobecná zdravotní pojišťovna ČR (VZP)."
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacienta",
+      "group": "Kontakty",
+      "value": "tel. +420 603 000 118 · e-mail josef.novak@example.com",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Telefon: +420 603 000 118"
+        },
+        {
+          "docId": "09",
+          "quote": "E-mail: josef.novak@example.com"
+        }
+      ]
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktná osoba",
+      "group": "Kontakty",
+      "value": "Marie Nováková (manželka), tel. +420 603 000 119",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Kontaktní osoba: Marie Nováková (manželka), tel. +420 603 000 119"
+        }
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "group": "Diagnóza",
+      "value": "C34.1 – adenokarcinom pravého horního laloku plíce, uzliny 10R a 4R pozitivní (v žiadanke, 7. 10. 2026); histologicky: Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. (23. 9. 2026)",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Diagnóza: C34.1 – adenokarcinom pravého horního laloku plíce, uzliny 10R a 4R pozitivní"
+        },
+        {
+          "docId": "07",
+          "quote": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R."
+        }
+      ],
+      "sourceDate": "2026-09-23",
+      "conflict": {
+        "a": {
+          "value": "pravého horního laloku",
+          "citation": {
+            "docId": "09",
+            "quote": "Diagnóza: C34.1 – adenokarcinom pravého horního laloku plíce, uzliny 10R a 4R pozitivní"
+          }
+        },
+        "b": {
+          "value": "levém horním laloku",
+          "citation": {
+            "docId": "06",
+            "quote": "Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření."
+          }
+        },
+        "explain": "Strana nálezu nesedí: správy 02, 03, 05, 08, 09 uvádzajú pravú stranu, správa 06 ľavú. Overiť s pracoviskom – strana rozhoduje o operácii aj ožarovaní."
+      }
+    },
+    {
+      "key": "epicrisis",
+      "label": "Priebeh ochorenia v skratke",
+      "group": "Diagnóza",
+      "value": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026. CT hrudníku 10. 9. 2026 popisuje tumor pravého horního laloku 42 × 35 mm a suspektní uzliny 10R a 4R. Bronchoskopie s EBUS-TBNA 17. 9. 2026 na KOC Nemocnice Lipová, histologicky adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez známek vzdálených metastáz.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026."
+        },
+        {
+          "docId": "09",
+          "quote": "CT hrudníku 10. 9. 2026 popisuje tumor pravého horního laloku 42 × 35 mm a suspektní uzliny 10R a 4R. Bronchoskopie s EBUS-TBNA 17. 9. 2026 na KOC Nemocnice Lipová, histologicky adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez známek vzdálených metastáz."
+        }
+      ],
+      "sourceDate": "2026-10-07"
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pre konzílium",
+      "group": "Diagnóza",
+      "value": "Žádám o převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Žádám o převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R."
+        }
+      ],
+      "sourceDate": "2026-10-07"
+    },
+    {
+      "key": "comorbidities",
+      "label": "Pridružené ochorenia",
+      "group": "Anamnéza",
+      "value": "diabetes mellitus 2. typu na PAD, arteriální hypertenze, dyslipidémie",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "OA: diabetes mellitus 2. typu na PAD, arteriální hypertenze, dyslipidémie"
+        }
+      ],
+      "sourceDate": "2026-10-07"
+    },
+    {
+      "key": "medication",
+      "label": "Lieky, ktoré užíva",
+      "group": "Anamnéza",
+      "value": "metformin 1000 mg 1-0-1, amlodipin 5 mg 1-0-0, atorvastatin 20 mg 0-0-1",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "FA: metformin 1000 mg 1-0-1, amlodipin 5 mg 1-0-0, atorvastatin 20 mg 0-0-1"
+        }
+      ],
+      "sourceDate": "2026-10-07"
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "group": "Anamnéza",
+      "value": "alergie na jodovou kontrastní látku (10. 9. 2026)",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "05",
+          "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku"
+        },
+        {
+          "docId": "08",
+          "quote": "Poznámka: CT část bez jodové kontrastní látky (alergie na jodovou kontrastní látku v anamnéze)"
+        }
+      ],
+      "sourceDate": "2026-09-10",
+      "conflict": {
+        "a": {
+          "value": "AA: neguje",
+          "citation": {
+            "docId": "09",
+            "quote": "AA: neguje"
+          }
+        },
+        "b": {
+          "value": "alergie na jodovou kontrastní látku",
+          "citation": {
+            "docId": "05",
+            "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku"
+          }
+        },
+        "explain": "Správa 09 (7. 10. 2026) uvádza „AA: neguje“, ale správa 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Overiť pred ďalším vyšetrením alebo liečbou – novšia správa alergiu pravdepodobne neprevzala."
+      }
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostný stav (ECOG)",
+      "group": "Stav",
+      "value": "Výkonnostní stav ECOG 1.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "03",
+          "quote": "Výkonnostní stav ECOG 1."
+        }
+      ],
+      "sourceDate": "2026-09-03"
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "group": "Stav",
+      "value": "76 kg (7. 10. 2026) · výška 176 cm (3. 9. 2026)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Váha 76 kg"
+        },
+        {
+          "docId": "03",
+          "quote": "Výška 176 cm"
+        },
+        {
+          "docId": "03",
+          "quote": "hmotnost 78 kg"
+        }
+      ],
+      "sourceDate": "2026-10-07",
+      "note": "Skôr: 78 kg (3. 9. 2026). Novšia hodnota 73 kg (správa 10, 27. 10. 2026) vznikla až po 22. 10. 2026, preto do podkladu nepatrí."
+    },
+    {
+      "key": "symptoms",
+      "label": "Príznaky a ich začiatok",
+      "group": "Stav",
+      "value": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026. Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026."
+        },
+        {
+          "docId": "09",
+          "quote": "Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater."
+        }
+      ],
+      "sourceDate": "2026-10-07"
+    },
+    {
+      "key": "exams",
+      "label": "Vykonané vyšetrenia",
+      "group": "Vyšetrenia",
+      "value": "26. 8. 2026 · RTG hrudníku PA · Nemocnice Benešov – Radiologické oddělení – Opacita v pravém horním plicním poli suspektní z tumoru, rozšířený pravý hilus. Doporučeno CT hrudníku s k. l.\n3. 9. 2026 · vstupní vyšetření · Nemocnice Benešov – Plicní ambulance – Suspektní tumor pravého horního laloku plíce u kuřáka 40 balíčkoroků. Výkonnostní stav ECOG 1.\n10. 9. 2026 · CT hrudníku a horního břicha s k. l. · Nemocnice Benešov – Radiologické oddělení – Tumor pravého horního laloku 42 × 35 mm, suspektní metastatické uzliny 10R a 4R. Bez známek vzdálených metastáz v rozsahu vyšetření.\n17. 9. 2026 · bronchoskopie s EBUS-TBNA · KOC Nemocnice Lipová – Bronchologické pracoviště, Klinika pneumologie – Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření. EBUS: uzlina 4R 13 × 10 mm a uzlina 10R 15 × 11 mm, z každé 3 vpichy jehlou 22G.\n1. 10. 2026 · PET/CT (18F-FDG) celotělové · KOC Nemocnice Severní – Oddělení nukleární medicíny – Metabolicky aktivní tumor pravého horního laloku s postižením uzlin 10R a 4R, bez známek vzdálených metastáz.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "02",
+          "quote": "Opacita v pravém horním plicním poli suspektní z tumoru, rozšířený pravý hilus. Doporučeno CT hrudníku s k. l."
+        },
+        {
+          "docId": "03",
+          "quote": "Suspektní tumor pravého horního laloku plíce u kuřáka 40 balíčkoroků. Výkonnostní stav ECOG 1."
+        },
+        {
+          "docId": "05",
+          "quote": "Tumor pravého horního laloku 42 × 35 mm, suspektní metastatické uzliny 10R a 4R. Bez známek vzdálených metastáz v rozsahu vyšetření."
+        },
+        {
+          "docId": "06",
+          "quote": "Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření."
+        },
+        {
+          "docId": "06",
+          "quote": "EBUS: uzlina 4R 13 × 10 mm a uzlina 10R 15 × 11 mm, z každé 3 vpichy jehlou 22G."
+        },
+        {
+          "docId": "08",
+          "quote": "Metabolicky aktivní tumor pravého horního laloku s postižením uzlin 10R a 4R, bez známek vzdálených metastáz."
+        }
+      ],
+      "sourceDate": "2026-10-01",
+      "note": "Plné znenie výsledku je v pôvodnej správe (klik na citát)."
+    },
+    {
+      "key": "labs",
+      "label": "Laboratórium a nádorové markery",
+      "group": "Laboratórium",
+      "value": "8. 9. 2026 (Laboratoř Benešov s.r.o.): nádorové markery: CEA 8,2 µg/l ↑, CYFRA 21-1 6,4 µg/l ↑, NSE 14,1 µg/l; mimo normy: Hemoglobin 128 g/l ↓, Glukóza 8,4 mmol/l ↑, CRP 12 mg/l ↑",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "04",
+          "quote": "CEA\n8,2 H"
+        },
+        {
+          "docId": "04",
+          "quote": "CYFRA 21-1\n6,4 H"
+        },
+        {
+          "docId": "04",
+          "quote": "NSE\n14,1"
+        },
+        {
+          "docId": "04",
+          "quote": "Hemoglobin\n128 L"
+        },
+        {
+          "docId": "04",
+          "quote": "Glukóza\n8,4 H"
+        },
+        {
+          "docId": "04",
+          "quote": "CRP\n12 H"
+        }
+      ],
+      "sourceDate": "2026-09-08",
+      "note": "Uvedené všetky nádorové markery (CEA, CYFRA 21-1, NSE), nielen zvýšené.",
+      "conflict": {
+        "a": {
+          "value": "Rodné číslo: 660314/1243",
+          "citation": {
+            "docId": "09",
+            "quote": "Rodné číslo: 660314/1243"
+          }
+        },
+        "b": {
+          "value": "RČ 660314/1234",
+          "citation": {
+            "docId": "04",
+            "quote": "RČ 660314/1234"
+          }
+        },
+        "explain": "Správa 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má iné rodné číslo (660314/1234) ako ostatné správy (660314/1243). Overiť, či patrí tomuto pacientovi – dovtedy jej údaje nepoužívať ako fakt."
+      }
+    },
+    {
+      "key": "histology",
+      "label": "Histológia (výsledok biopsie)",
+      "group": "Histológia",
+      "value": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. · vydané 23. 9. 2026",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R."
+        },
+        {
+          "docId": "07",
+          "quote": "Datum vydání: 23. 9. 2026"
+        }
+      ],
+      "sourceDate": "2026-09-23",
+      "note": "Chýba avizovaný dodatok (EGFR, ALK, ROS1, PD-L1).",
+      "request": {
+        "to": "KOC Nemocnice Lipová – Ústav patologie",
+        "channel": "e-mail",
+        "draft": "Dobrý deň, pred konzíliom 22. 10. 2026 prosíme o zaslanie dodatku (EGFR, ALK, ROS1, PD-L1) k vyšetreniu B-2026/14388 – Josef Novák. Ďakujeme, koordinátor KOC."
+      }
+    },
+    {
+      "key": "other",
+      "label": "Iné dôležité a želania pacienta",
+      "group": "Iné",
+      "value": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka."
+        }
+      ],
+      "sourceDate": "2026-10-07"
+    }
+  ],
+  "provenance": {
+    "firstName": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "lastName": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "age": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "sex": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "insurer": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "patientContact": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "contactPerson": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "diagnosis": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "epicrisis": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "mdtQuestion": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "comorbidities": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "medication": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "allergies": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "performance": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "weightHeight": {
+      "extractor": "rules",
+      "checkedQuotes": 3,
+      "verifiedQuotes": 3,
+      "rejected": []
+    },
+    "symptoms": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "exams": {
+      "extractor": "rules",
+      "checkedQuotes": 6,
+      "verifiedQuotes": 6,
+      "rejected": []
+    },
+    "labs": {
+      "extractor": "rules",
+      "checkedQuotes": 6,
+      "verifiedQuotes": 6,
+      "rejected": []
+    },
+    "histology": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "other": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    }
+  },
+  "findings": [
+    {
+      "id": "allergy-conflict",
+      "severity": "conflict",
+      "fieldKey": "allergies",
+      "text": "Správa 09 (7. 10. 2026) uvádza „AA: neguje“, ale správa 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Overiť pred ďalším vyšetrením alebo liečbou – novšia správa alergiu pravdepodobne neprevzala.",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "AA: neguje"
+        },
+        {
+          "docId": "05",
+          "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku"
+        }
+      ]
+    },
+    {
+      "id": "side-conflict",
+      "severity": "conflict",
+      "fieldKey": "diagnosis",
+      "text": "Strana nálezu nesedí: správy 02, 03, 05, 08, 09 uvádzajú pravú stranu, správa 06 ľavú. Overiť s pracoviskom – strana rozhoduje o operácii aj ožarovaní.",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Diagnóza: C34.1 – adenokarcinom pravého horního laloku plíce, uzliny 10R a 4R pozitivní"
+        },
+        {
+          "docId": "06",
+          "quote": "Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření."
+        }
+      ]
+    },
+    {
+      "id": "rc-mismatch-04",
+      "severity": "conflict",
+      "fieldKey": "labs",
+      "text": "Správa 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má iné rodné číslo (660314/1234) ako ostatné správy (660314/1243). Overiť, či patrí tomuto pacientovi – dovtedy jej údaje nepoužívať ako fakt.",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Rodné číslo: 660314/1243"
+        },
+        {
+          "docId": "04",
+          "quote": "RČ 660314/1234"
+        }
+      ]
+    },
+    {
+      "id": "pending-07",
+      "severity": "missing",
+      "fieldKey": "histology",
+      "text": "Správa 07 (Bioptický nález, 23. 9. 2026) avizuje doplnenie: EGFR, ALK, ROS1, PD-L1. K 22. 10. 2026 v dokumentácii nie je – vyžiadať pred konzíliom.",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Prediktivní vyšetření (EGFR, ALK, ROS1, PD-L1) probíhá – výsledek bude doplněn dodatkem."
+        }
+      ]
+    },
+    {
+      "id": "after-mdt",
+      "severity": "info",
+      "text": "Správa 10 vznikla po 22. 10. 2026 – do podkladu pre konzílium nepatrí (zadanie VZP: len to, čo bolo známe k dátumu konzília).",
+      "citations": []
+    }
+  ],
+  "precheck": {
+    "findings": [
+      {
+        "text": "Žiadanka neuvádza výkonnostný stav – je v správe 03: „Výkonnostní stav ECOG 1.“.",
+        "severity": "info"
+      }
+    ]
+  },
+  "labs": [
+    {
+      "test": "Leukocyty",
+      "value": "9,6",
+      "unit": "10⁹/l",
+      "ref": "4,0–10,0",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "Hemoglobin",
+      "value": "128",
+      "unit": "g/l",
+      "ref": "135–175",
+      "flag": "L",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "Trombocyty",
+      "value": "352",
+      "unit": "10⁹/l",
+      "ref": "150–400",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "INR",
+      "value": "1,0",
+      "unit": "1",
+      "ref": "0,8–1,2",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "Kreatinin",
+      "value": "96",
+      "unit": "µmol/l",
+      "ref": "62–106",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "Glukóza",
+      "value": "8,4",
+      "unit": "mmol/l",
+      "ref": "3,9–5,6",
+      "flag": "H",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "ALT",
+      "value": "0,52",
+      "unit": "µkat/l",
+      "ref": "0,10–0,85",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "Vápník",
+      "value": "2,38",
+      "unit": "mmol/l",
+      "ref": "2,15–2,55",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "CRP",
+      "value": "12",
+      "unit": "mg/l",
+      "ref": "0–5",
+      "flag": "H",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "CEA",
+      "value": "8,2",
+      "unit": "µg/l",
+      "ref": "< 5,0",
+      "flag": "H",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "CYFRA 21-1",
+      "value": "6,4",
+      "unit": "µg/l",
+      "ref": "< 3,3",
+      "flag": "H",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    },
+    {
+      "test": "NSE",
+      "value": "14,1",
+      "unit": "µg/l",
+      "ref": "< 16,3",
+      "date": "2026-09-08",
+      "lab": "Laboratoř Benešov s.r.o.",
+      "docId": "04"
+    }
+  ],
+  "exams": [
+    {
+      "date": "2026-08-26",
+      "place": "Nemocnice Benešov – Radiologické oddělení",
+      "type": "RTG hrudníku PA",
+      "summary": "Opacita v pravém horním plicním poli suspektní z tumoru, rozšířený pravý hilus. Doporučeno CT hrudníku s k. l.",
+      "docId": "02"
+    },
+    {
+      "date": "2026-09-03",
+      "place": "Nemocnice Benešov – Plicní ambulance",
+      "type": "vstupní vyšetření",
+      "summary": "Suspektní tumor pravého horního laloku plíce u kuřáka 40 balíčkoroků. Výkonnostní stav ECOG 1.",
+      "docId": "03"
+    },
+    {
+      "date": "2026-09-10",
+      "place": "Nemocnice Benešov – Radiologické oddělení",
+      "type": "CT hrudníku a horního břicha s k. l.",
+      "summary": "Tumor pravého horního laloku 42 × 35 mm, suspektní metastatické uzliny 10R a 4R. Bez známek vzdálených metastáz v rozsahu vyšetření.",
+      "docId": "05"
+    },
+    {
+      "date": "2026-09-17",
+      "place": "KOC Nemocnice Lipová – Bronchologické pracoviště, Klinika pneumologie",
+      "type": "bronchoskopie s EBUS-TBNA",
+      "summary": "Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření. EBUS: uzlina 4R 13 × 10 mm a uzlina 10R 15 × 11 mm, z každé 3 vpichy jehlou 22G.",
+      "docId": "06"
+    },
+    {
+      "date": "2026-10-01",
+      "place": "KOC Nemocnice Severní – Oddělení nukleární medicíny",
+      "type": "PET/CT (18F-FDG) celotělové",
+      "summary": "Metabolicky aktivní tumor pravého horního laloku s postižením uzlin 10R a 4R, bez známek vzdálených metastáz.",
+      "docId": "08"
+    }
+  ],
+  "meds": [
+    {
+      "name": "metformin",
+      "dose": "1000 mg 1-0-1",
+      "citation": {
+        "docId": "09",
+        "quote": "metformin 1000 mg 1-0-1"
+      }
+    },
+    {
+      "name": "amlodipin",
+      "dose": "5 mg 1-0-0",
+      "citation": {
+        "docId": "09",
+        "quote": "amlodipin 5 mg 1-0-0"
+      }
+    },
+    {
+      "name": "atorvastatin",
+      "dose": "20 mg 0-0-1",
+      "citation": {
+        "docId": "09",
+        "quote": "atorvastatin 20 mg 0-0-1"
+      }
+    }
+  ],
+  "referringGp": {
+    "name": "MUDr. Karel Veselý",
+    "phone": "+420 317 000 450",
+    "email": "plicni.ambulance@example.com",
+    "citations": [
+      {
+        "docId": "09",
+        "quote": "MUDr. Karel Veselý"
+      },
+      {
+        "docId": "09",
+        "quote": "Tel.: +420 317 000 450"
+      }
+    ]
+  }
+}

@@ -92,7 +92,7 @@
       ]
     },
     {
-      "key": "medications",
+      "key": "medication",
       "expect": "value",
       "accept": [["apixaban"], ["bisoprolol"], ["perindopril"], ["rosuvastatin"], ["paracetamol"]],
       "reject": ["tramadol", "metamizol", "metoklopramid", "laktulóza"],
@@ -106,7 +106,7 @@
       "evidence": [{ "docId": "07", "quote": "AA: neguje" }]
     },
     {
-      "key": "performanceStatus",
+      "key": "performance",
       "expect": "missing",
       "rejectRegex": ["(ECOG|Karnofsk\\w*|\\bPS\\b|WHO)\\s*[:=]?\\s*\\d"],
       "evidence": [{ "docId": "07", "quote": "Soběstačná, v práci t. č. v pracovní neschopnosti." }],
@@ -169,7 +169,7 @@
       "evidence": [{ "docId": "11", "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3." }]
     },
     {
-      "key": "otherNotes",
+      "key": "other",
       "expect": "value",
       "accept": [["antikoagul", "apixaban"], ["úzkost", "psycholog"], ["dcer"]],
       "citeDocs": ["07"],
@@ -188,8 +188,8 @@
       "why": "Konzílium ho potrebuje na voľbu liečby. V správach je len „Soběstačná“. Systém ho musí označiť ako chýbajúci a nesmie odhadnúť číslo.",
       "evidence": [{ "docId": "07", "quote": "Soběstačná, v práci t. č. v pracovní neschopnosti." }],
       "checks": [
-        { "type": "fieldStatus", "field": "performanceStatus", "status": "missing" },
-        { "type": "valueNotMatches", "field": "performanceStatus", "regex": "(ECOG|Karnofsk\\w*|\\bPS\\b|WHO)\\s*[:=]?\\s*\\d" }
+        { "type": "fieldStatus", "field": "performance", "status": "missing" },
+        { "type": "valueNotMatches", "field": "performance", "regex": "(ECOG|Karnofsk\\w*|\\bPS\\b|WHO)\\s*[:=]?\\s*\\d" }
       ]
     },
     {
@@ -296,7 +296,7 @@
       "title": "Najnovší zoznam liekov (aj paracetamol)",
       "why": "Kardiológ (01) uvádza 4 lieky, žiadanka (07) už aj paracetamol. Starý zoznam by bol neúplný.",
       "evidence": [{ "docId": "07", "quote": "paracetamol 500 mg při bolesti max. 4× denně" }],
-      "checks": [{ "type": "valueContains", "field": "medications", "all": ["apixaban", "paracetamol"] }]
+      "checks": [{ "type": "valueContains", "field": "medication", "all": ["apixaban", "paracetamol"] }]
     },
     {
       "id": "tumor-size-not-a-conflict",
@@ -321,7 +321,7 @@
       "title": "Antikoagulácia pred invazívnym výkonom",
       "why": "Apixaban treba pred biopsiou alebo operáciou riešiť podľa lekára – informácia sa nesmie stratiť.",
       "evidence": [{ "docId": "07", "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa." }],
-      "checks": [{ "type": "textMatches", "fields": ["otherNotes"], "messages": true, "all": ["(apixaban|antikoagul|riedenie krvi)"] }]
+      "checks": [{ "type": "textMatches", "fields": ["other"], "messages": true, "all": ["(apixaban|antikoagul|riedenie krvi)"] }]
     },
     {
       "id": "daughter-consent-before-mdt",
@@ -329,8 +329,8 @@
       "why": "Prianie pacientky je známe zo žiadanky 07 (2. 10.), netreba čakať na psychológa (správa 13 je po konzíliu).",
       "evidence": [{ "docId": "07", "quote": "Souhlasí se sdílením informací s dcerou." }],
       "checks": [
-        { "type": "valueContains", "field": "otherNotes", "all": ["dcer"] },
-        { "type": "citesDoc", "field": "otherNotes", "docId": "07" }
+        { "type": "valueContains", "field": "other", "all": ["dcer"] },
+        { "type": "citesDoc", "field": "other", "docId": "07" }
       ]
     },
     {

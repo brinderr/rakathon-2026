@@ -1,0 +1,251 @@
+{
+  "caseId": "pacient-2",
+  "generatedAt": "2026-10-16T23:55:16.088Z",
+  "asOf": "2026-10-22",
+  "gold": "eval/gold-pacient-2.json",
+  "extraction": {
+    "file": "public/data/extracted-pacient-2.json",
+    "mode": "rules",
+    "model": null,
+    "generatedAt": "2026-10-16T23:55:15.938Z",
+    "promptVersion": "handover-v1"
+  },
+  "headline": "Na kontrolnej sade: 20/20 polí správne · 13/13 pascí zachytených · 0 vymyslených hodnôt · 44/44 citátov doslova v správach",
+  "summary": {
+    "fieldsCorrect": 20,
+    "fieldsTotal": 20,
+    "trapsCaught": 13,
+    "trapsTotal": 13,
+    "fieldsWithoutVerifiedCitation": 0,
+    "inventedValues": 0,
+    "citationsVerified": 44,
+    "citationsTotal": 44,
+    "goldIntegrity": true
+  },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Meno",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "lastName",
+      "label": "Priezvisko",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "age",
+      "label": "Vek",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "sex",
+      "label": "Pohlavie",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotná poisťovňa",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacientku",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktná osoba",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "ok": true,
+      "status": "conflict",
+      "problems": []
+    },
+    {
+      "key": "epicrisis",
+      "label": "Priebeh ochorenia v skratke",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pre konzílium",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "comorbidities",
+      "label": "Pridružené ochorenia",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "medication",
+      "label": "Lieky, ktoré užíva",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "ok": true,
+      "status": "conflict",
+      "problems": []
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostný stav (ECOG)",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "symptoms",
+      "label": "Príznaky a ich začiatok",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "exams",
+      "label": "Vykonané vyšetrenia",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "labs",
+      "label": "Laboratórium a nádorové markery",
+      "ok": true,
+      "status": "conflict",
+      "problems": []
+    },
+    {
+      "key": "histology",
+      "label": "Histológia (výsledok biopsie)",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "other",
+      "label": "Iné dôležité a želania pacientky",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    }
+  ],
+  "traps": [
+    {
+      "id": "side-conflict",
+      "title": "Strana nádoru: bronchoskopia píše ľavý lalok, ostatné pravý",
+      "why": "RTG, CT, PET/CT aj žiadanka uvádzajú pravý horný lalok, protokol bronchoskopie ľavý. Strana rozhoduje o operácii aj ožarovaní.",
+      "caught": true
+    },
+    {
+      "id": "allergy-lost-in-referral",
+      "title": "Alergia na kontrastnú látku sa v žiadanke stratila",
+      "why": "Pri CT reakcia na jódovú kontrastnú látku, PET/CT ju rešpektuje, ale žiadanka do KOC uvádza „AA: neguje“.",
+      "caught": true
+    },
+    {
+      "id": "birth-number-mismatch",
+      "title": "Laboratórium má iné rodné číslo",
+      "why": "Výsledky z 8. 9. majú RČ …/1234, ostatné správy …/1243. Môže ísť o výsledok iného pacienta – nesmie sa ticho zlúčiť.",
+      "caught": true
+    },
+    {
+      "id": "predictive-markers-pending",
+      "title": "Prediktívne markery (EGFR, ALK, ROS1, PD-L1) neprišli",
+      "why": "Patológ 23. 9. avizuje dodatok, do konzília 22. 10. v dokumentácii nie je. Pri adenokarcinóme pľúc rozhoduje o liečbe.",
+      "caught": true
+    },
+    {
+      "id": "weight-73-after-mdt",
+      "title": "Váha 73 kg je až po konzíliu (správa 10)",
+      "why": "Podklad k 22. 10. má mať 76 kg zo 7. 10.",
+      "caught": true
+    },
+    {
+      "id": "all-tumor-markers",
+      "title": "Všetky onkomarkery, aj normálny NSE",
+      "why": "CEA a CYFRA 21-1 sú zvýšené, NSE 14,1 je v norme – aj to je pre konzílium informácia.",
+      "caught": true
+    },
+    {
+      "id": "no-false-alarm-email",
+      "title": "Bez falošného poplachu: e-maily sú uvedené",
+      "why": "Na rozdiel od Aleny tu e-mail pacienta aj lekára je. Systém nesmie hlásiť, že chýba.",
+      "caught": true
+    },
+    {
+      "id": "no-false-alarm-ecog",
+      "title": "Bez falošného poplachu: ECOG je v správe pneumológa",
+      "why": "Žiadanka ECOG neuvádza, ale správa 03 áno – nájsť ho, nehlásiť „chýba“.",
+      "caught": true
+    },
+    {
+      "id": "no-false-alarm-planned-lab",
+      "title": "Bez falošného poplachu: plánovaný odber nie je nemožný dátum",
+      "why": "Pneumológ 3. 9. v odporúčaní plánuje odber 8. 9. – je to plán, nie udalosť v minulosti.",
+      "caught": true
+    },
+    {
+      "id": "mdt-question-specific",
+      "title": "Otázka na konzílium je konkrétna",
+      "why": "Resekabilita vs. chemorádioterapia – na rozdiel od Aleny nie je všeobecná, netreba ju označiť.",
+      "caught": true
+    },
+    {
+      "id": "insurer-vzp",
+      "title": "Poisťovňa 111 = VZP",
+      "why": "Tentoraz je pacient poistencom VZP – súhrn pre revízneho lekára ide VZP.",
+      "caught": true
+    },
+    {
+      "id": "post-mdt-report-excluded",
+      "title": "Nutričná správa (27. 10.) je až po konzíliu",
+      "why": "Do podkladu k 22. 10. nepatrí.",
+      "caught": true
+    },
+    {
+      "id": "pet-from-other-koc",
+      "title": "PET/CT z iného KOC sa nestratí",
+      "why": "PET/CT urobilo KOC Nemocnice Severní, prípad vedie KOC Nemocnice Lipová.",
+      "caught": true
+    }
+  ],
+  "invented": [],
+  "uncited": [],
+  "badCitations": [],
+  "goldProblems": []
+}

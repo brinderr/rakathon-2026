@@ -1,0 +1,19 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+KOC Nemocnice Lipová (fiktivní)
+Ústav patologie
+Nemocniční 15, 140 00 Praha 4
+Bioptický nález
+Pacient: Josef Novák, RČ 660314/1243, ZP 111
+Číslo vyšetření: B-2026/14388
+Materiál: 1) endobronchiální biopsie B1, 2) EBUS-TBNA uzlina 4R, 3) EBUS-TBNA uzlina 10R (odběr 17. 9. 2026)
+Odesílající: MUDr. Petra Králová, bronchologické pracoviště KOC
+Datum vydání: 23. 9. 2026
+MIKROSKOPICKY
+1) Infiltrace adenokarcinomem s acinárním a solidním uspořádáním. 2) Metastáza adenokarcinomu. 3) Metastáza adenokarcinomu.
+Imunohistochemicky: TTF-1 pozitivní, napsin A pozitivní, p40 negativní.
+ZÁVĚR
+Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R.
+Prediktivní vyšetření (EGFR, ALK, ROS1, PD-L1) probíhá – výsledek bude doplněn dodatkem.
+Datum: 23. 9. 2026
+MUDr. Radek Pokorný, Ph.D.
+patolog

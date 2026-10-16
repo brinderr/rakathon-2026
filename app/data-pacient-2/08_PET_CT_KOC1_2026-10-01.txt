@@ -1,0 +1,16 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+KOC Nemocnice Severní (fiktivní)
+Oddělení nukleární medicíny
+Severní 1200, 180 00 Praha 8
+Výsledek vyšetření – PET/CT (18F-FDG) celotělové
+Pacient: Josef Novák, RČ 660314/1243, ZP 111
+Indikující lékař: MUDr. Karel Veselý, pneumolog
+Datum vyšetření: 1. 10. 2026
+Poznámka: CT část bez jodové kontrastní látky (alergie na jodovou kontrastní látku v anamnéze).
+POPIS
+Hypermetabolický tumor pravého horního laloku 43 × 36 mm, SUVmax 12,4. Hypermetabolické uzliny 10R (SUVmax 6,1) a 4R (SUVmax 5,3). Ostatní mediastinální uzliny bez zvýšené akumulace. Játra, nadledviny a skelet bez patologické akumulace.
+ZÁVĚR
+Metabolicky aktivní tumor pravého horního laloku s postižením uzlin 10R a 4R, bez známek vzdálených metastáz.
+Datum: 1. 10. 2026
+MUDr. Jana Horáková
+nukleární medicína

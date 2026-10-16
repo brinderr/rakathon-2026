@@ -1,0 +1,275 @@
+{
+  "caseId": "alena",
+  "generatedAt": "2026-10-16T23:55:15.778Z",
+  "asOf": "2026-10-21",
+  "gold": "eval/gold-alena.json",
+  "extraction": {
+    "file": "public/data/extracted-alena.json",
+    "mode": "rules",
+    "model": null,
+    "generatedAt": "2026-10-16T23:55:15.607Z",
+    "promptVersion": "handover-v1"
+  },
+  "headline": "Na kontrolnej sade: 20/20 polí správne · 17/17 pascí zachytených · 0 vymyslených hodnôt · 63/63 citátov doslova v správach",
+  "summary": {
+    "fieldsCorrect": 20,
+    "fieldsTotal": 20,
+    "trapsCaught": 17,
+    "trapsTotal": 17,
+    "fieldsWithoutVerifiedCitation": 0,
+    "inventedValues": 0,
+    "citationsVerified": 63,
+    "citationsTotal": 63,
+    "goldIntegrity": true
+  },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Meno",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "lastName",
+      "label": "Priezvisko",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "age",
+      "label": "Vek",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "sex",
+      "label": "Pohlavie",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotná poisťovňa",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacientku",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktná osoba",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "epicrisis",
+      "label": "Priebeh ochorenia v skratke",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pre konzílium",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "comorbidities",
+      "label": "Pridružené ochorenia",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "medication",
+      "label": "Lieky, ktoré užíva",
+      "ok": true,
+      "status": "conflict",
+      "problems": []
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostný stav (ECOG)",
+      "ok": true,
+      "status": "missing",
+      "problems": []
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "symptoms",
+      "label": "Príznaky a ich začiatok",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "exams",
+      "label": "Vykonané vyšetrenia",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "labs",
+      "label": "Laboratórium a nádorové markery",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "histology",
+      "label": "Histológia (výsledok biopsie)",
+      "ok": true,
+      "status": "conflict",
+      "problems": []
+    },
+    {
+      "key": "other",
+      "label": "Iné dôležité a želania pacientky",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    }
+  ],
+  "traps": [
+    {
+      "id": "ecog-missing",
+      "title": "Chýba výkonnostný stav (ECOG/Karnofsky)",
+      "why": "Konzílium ho potrebuje na voľbu liečby. V správach je len „Soběstačná“. Systém ho musí označiť ako chýbajúci a nesmie odhadnúť číslo.",
+      "caught": true
+    },
+    {
+      "id": "apixaban-impossible-date",
+      "title": "Nemožný dátum poslednej dávky apixabanu (správa 09)",
+      "why": "Výkon bol 12. 10., ale „poslední dávka 18. 10. 2026“ je až po výkone. Treba overiť s pracoviskom, kedy liek naozaj vysadili.",
+      "caught": true
+    },
+    {
+      "id": "histology-issued-before-sampling",
+      "title": "Histológia „vydaná“ pred „odberom“ (správa 11)",
+      "why": "Odber 20. 10., vydanie 19. 10. a biopsia bola 12. 10. – jeden z dátumov je preklep.",
+      "caught": true
+    },
+    {
+      "id": "weight-63-after-mdt",
+      "title": "Váha 63 kg vznikla až po konzíliu (správa 12)",
+      "why": "Podklad má obsahovať len to, čo bolo známe k 21. 10. – teda 65 kg z 15. 9.",
+      "caught": true
+    },
+    {
+      "id": "patient-email-missing",
+      "title": "Chýba e-mail pacientky",
+      "why": "Zápis z MDT chce telefón aj e-mail. E-mail nie je v žiadnej správe – označiť, nevymyslieť.",
+      "caught": true
+    },
+    {
+      "id": "gp-email-missing",
+      "title": "Chýba e-mail odosielajúceho lekára",
+      "why": "Zápis z MDT chce pri referujúcom lekárovi telefón aj e-mail. Hlavička žiadanky má len telefón.",
+      "caught": true
+    },
+    {
+      "id": "all-tumor-markers",
+      "title": "Všetky onkomarkery, nielen zvýšené",
+      "why": "CA 19-9 312 a CA 125 48 sú zvýšené, CEA 4,1 je v norme – aj normálna hodnota je pre konzílium informácia.",
+      "caught": true
+    },
+    {
+      "id": "post-mdt-reports-excluded",
+      "title": "Správy 12 a 13 sú až po konzíliu",
+      "why": "Algeziológia (26. 10.) a psychológ (27. 10.) nemôžu byť v podklade pre konzílium 21. 10.",
+      "caught": true
+    },
+    {
+      "id": "insurer-211-not-vzp",
+      "title": "Poisťovňa 211, nie VZP",
+      "why": "Súhrn pre revízneho lekára ide poisťovni 211 (ZP MV ČR). Nesmie sa automaticky predpokladať VZP.",
+      "caught": true
+    },
+    {
+      "id": "planned-control-without-report",
+      "title": "Plánovaná kontrola 9. 9. bez správy",
+      "why": "Praktik v správe 04 plánuje kontrolu s odberom 9. 9. 2026, ale výsledok v dokumentácii nie je – možno sa stratil.",
+      "caught": true
+    },
+    {
+      "id": "results-not-attached",
+      "title": "Žiadanka neobsahuje výsledky, len kde sú",
+      "why": "Žiadanka do KOC len vymenúva 5 pracovísk, kde sú výsledky. Koordinátor ich musí vyžiadať.",
+      "caught": true
+    },
+    {
+      "id": "medication-latest-list",
+      "title": "Najnovší zoznam liekov (aj paracetamol)",
+      "why": "Kardiológ (01) uvádza 4 lieky, žiadanka (07) už aj paracetamol. Starý zoznam by bol neúplný.",
+      "caught": true
+    },
+    {
+      "id": "tumor-size-not-a-conflict",
+      "title": "Rôzne rozmery nádoru nie sú rozpor",
+      "why": "UZ 34 × 30, CT 35 × 31, EUS 33 × 29 mm – iné metódy merajú inak. Falošný poplach by koordinátora zahltil.",
+      "caught": true
+    },
+    {
+      "id": "mdt-question-general",
+      "title": "Otázka na konzílium je všeobecná",
+      "why": "„Stanovení dalšího postupu“ nie je konkrétna otázka – systém na to má upozorniť, aby ju lekár KOC pred konzíliom spresnil.",
+      "caught": true
+    },
+    {
+      "id": "anticoagulation-before-procedure",
+      "title": "Antikoagulácia pred invazívnym výkonom",
+      "why": "Apixaban treba pred biopsiou alebo operáciou riešiť podľa lekára – informácia sa nesmie stratiť.",
+      "caught": true
+    },
+    {
+      "id": "daughter-consent-before-mdt",
+      "title": "Súhlas so zdieľaním s dcérou je už v žiadanke",
+      "why": "Prianie pacientky je známe zo žiadanky 07 (2. 10.), netreba čakať na psychológa (správa 13 je po konzíliu).",
+      "caught": true
+    },
+    {
+      "id": "ct-from-other-koc",
+      "title": "CT z iného KOC sa nestratí",
+      "why": "Praktik CT nevedel zabezpečiť, urobilo ho KOC Nemocnice Severní – iná nemocnica ako tá, ktorá prípad vedie.",
+      "caught": true
+    }
+  ],
+  "invented": [],
+  "uncited": [],
+  "badCitations": [],
+  "goldProblems": []
+}

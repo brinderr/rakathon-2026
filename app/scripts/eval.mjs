@@ -186,6 +186,8 @@ const CHECKS = {
   citesDoc: (c) => (fieldsByKey[c.field]?.citations ?? []).some((x) => x.docId === c.docId && okCite(x)),
   noCitationFromDocs: (c) => everyCitation.every((x) => !c.docs.includes(x.docId)),
   messageMatches: (c) => messages.some((m) => c.all.every((r) => new RegExp(r, 'iu').test(m))),
+  noMessageMatches: (c) => !messages.some((m) => c.all.every((r) => new RegExp(r, 'iu').test(m))),
+  noteNotMatches: (c) => !!fieldsByKey[c.field] && !new RegExp(c.regex, 'iu').test(fieldsByKey[c.field].note ?? ''),
   textMatches: (c) => [...(c.messages ? messages : []), ...c.fields.map((k) => fieldText(fieldsByKey[k]))]
     .some((m) => c.all.every((r) => new RegExp(r, 'iu').test(m))),
   flagged: (c) => flags.some((fl) => fl.docIds.includes(c.docId) && c.all.every((s) => has(fl.text, s))),

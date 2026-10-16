@@ -1,0 +1,79 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+Laboratoř Benešov s.r.o. (fiktivní)
+Klinická biochemie a hematologie
+Máchova 400, 256 01 Benešov
+Výsledky laboratorního vyšetření
+Pacient: Josef Novák, RČ 660314/1234, ZP 111
+Indikující lékař: MUDr. Karel Veselý, pneumolog
+Odběr: 8. 9. 2026 7:30
+KREVNÍ OBRAZ
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+Leukocyty
+9,6
+10⁹/l
+4,0–10,0
+Hemoglobin
+128 L
+g/l
+135–175
+Trombocyty
+352
+10⁹/l
+150–400
+KOAGULACE
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+INR
+1,0
+1
+0,8–1,2
+BIOCHEMIE
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+Kreatinin
+96
+µmol/l
+62–106
+Glukóza
+8,4 H
+mmol/l
+3,9–5,6
+ALT
+0,52
+µkat/l
+0,10–0,85
+Vápník
+2,38
+mmol/l
+2,15–2,55
+CRP
+12 H
+mg/l
+0–5
+NÁDOROVÉ MARKERY
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+CEA
+8,2 H
+µg/l
+< 5,0
+CYFRA 21-1
+6,4 H
+µg/l
+< 3,3
+NSE
+14,1
+µg/l
+< 16,3
+Vydáno: 8. 9. 2026
+Ing. Pavel Dušek
+odborný pracovník laboratoře
