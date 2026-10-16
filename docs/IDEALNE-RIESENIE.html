@@ -1,0 +1,366 @@
+<title>Nástroj pre koordinátora</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: a one-page plan for laymen. Top: the answer. Then the coordinator's screen, how data flows (inputs → core → outputs), where data lives per wave, the 3 waves, the world, safety, the Saturday demo. Same light toy world as the two games. */
+:root{
+  color-scheme:light;
+  --sky:#EEF3F7; --paper:#FFFFFF; --ink:#1B2A3A; --soft:#5C6E80; --line:#CBD8E3;
+  --blue:#2F6FD0; --blue-bg:#E3EDFB; --green:#1F9D6B; --green-bg:#DFF5EA; --amber:#E39B23; --amber-bg:#FFF2DC;
+  --red:#D9364B; --red-bg:#FDE7EA; --violet:#6B48D6; --violet-bg:#ECE6FF; --gray-bg:#EEF1F4;
+  --display:"Fredoka","Avenir Next Rounded","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--sky);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--soft)}
+header h1{font-size:clamp(32px,5vw,56px);line-height:1.02;margin:6px 0 10px}
+header p{font-size:18px;max-width:68ch;color:var(--soft);margin:0}
+.big{background:var(--paper);border:2px solid var(--ink);border-radius:22px;box-shadow:6px 6px 0 var(--ink);padding:18px 22px;margin-top:18px}
+.big b.lab{font-family:var(--display);font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--violet);display:block}
+.big p{font-family:var(--display);font-weight:600;font-size:clamp(20px,2.6vw,28px);line-height:1.25;margin:4px 0 0}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:18px}
+.ans{background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:12px 14px;min-width:0}
+.ans .n{font-family:var(--display);font-weight:700;font-size:13px;color:#fff;background:var(--ink);border-radius:8px;padding:1px 8px;display:inline-block;margin-bottom:6px}
+.ans.no .n{background:var(--red)} .ans.yes .n{background:var(--green)}
+.ans h3{font-size:18px;line-height:1.2;margin-bottom:4px}
+.ans p{margin:0;font-size:15px}
+section{margin-top:46px}
+section>h2{font-size:clamp(26px,3.4vw,38px);margin-bottom:6px}
+section>p.lead{margin:0 0 16px;color:var(--soft);font-size:17px;max-width:72ch}
+/* before/after */
+.ba{display:grid;gap:10px}
+.ba .row{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,1.2fr);gap:10px;align-items:stretch}
+.ba .was,.ba .now{border-radius:14px;padding:10px 12px;font-size:15px;border:2px solid}
+.ba .was{background:var(--gray-bg);border-color:var(--line);color:var(--soft);text-decoration:line-through;text-decoration-color:rgba(217,54,75,.6)}
+.ba .now{background:var(--paper);border-color:var(--ink)}
+.ba .now small{display:block;color:var(--soft);font-size:13px;margin-top:3px}
+.ba .arr{display:grid;place-items:center;font-family:var(--display);font-size:22px}
+@media (max-width:640px){.ba .row{grid-template-columns:1fr}.ba .arr{transform:rotate(90deg);height:22px}}
+/* screens */
+.screen{background:var(--paper);border:2px solid var(--ink);border-radius:20px;box-shadow:6px 6px 0 var(--ink);overflow:hidden;margin-bottom:18px}
+.screen .bar{background:var(--ink);color:#fff;font-family:var(--display);font-weight:600;padding:8px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.screen .bar i{width:10px;height:10px;border-radius:50%;background:#FF6B6B;display:inline-block}
+.screen .bar i+i{background:#FFC24B}.screen .bar i+i+i{background:#3DD68C}
+.filters{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px 0}
+.filters span{border:2px solid var(--ink);border-radius:99px;padding:2px 10px;font-size:13px;font-weight:800}
+.filters span.on{background:var(--amber-bg)}
+.tbl{overflow-x:auto;padding:10px 14px 14px}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14.5px}
+th{text-align:left;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--soft);padding:6px 8px;border-bottom:2px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.st{display:inline-block;border-radius:99px;padding:1px 9px;font-weight:800;font-size:12.5px;border:2px solid var(--ink)}
+.st.akt{background:var(--blue-bg)} .st.new{background:var(--amber-bg)} .st.wait{background:var(--gray-bg)}
+.late{color:var(--red);font-weight:800}
+.me{font-weight:800;color:var(--violet)}
+.case{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;padding:14px}
+@media (max-width:800px){.case{grid-template-columns:1fr}}
+.panel{border:2px solid var(--line);border-radius:14px;padding:10px 12px;min-width:0}
+.panel h4{margin:0 0 6px;font-family:var(--display);font-size:16px}
+.sema{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:6px 0}
+.sema i{height:16px;border-radius:5px;border:2px solid var(--ink)}
+.g{background:#3DD68C}.y{background:#FFD25C}.r{background:var(--red)}.o{background:#FF9A3C}
+.sum{font-weight:800;font-size:14px}
+.fields{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:5px;font-size:14px}
+.fields li{display:grid;grid-template-columns:14px 1fr;gap:8px;align-items:start}
+.fields li i{width:12px;height:12px;border-radius:4px;border:2px solid var(--ink);margin-top:4px}
+.fields q{color:var(--soft);font-style:italic}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px}
+.steps li{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.flow4{display:inline-flex;gap:3px}
+.flow4 b{font-size:11.5px;border-radius:6px;padding:1px 6px;border:1.5px solid var(--ink);background:var(--gray-bg)}
+.flow4 b.d{background:#3DD68C}
+/* pipeline diagram */
+.pipe{display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1.25fr) 40px minmax(0,1fr);gap:8px;align-items:stretch}
+@media (max-width:860px){.pipe{grid-template-columns:1fr}.pipe .arr{transform:rotate(90deg);height:30px}}
+.col{background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:12px 14px;min-width:0}
+.col.core{background:var(--violet-bg);border-color:var(--violet);box-shadow:5px 5px 0 var(--violet)}
+.col h3{font-size:17px;margin-bottom:8px}
+.col ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.col li{border:2px solid var(--line);background:var(--paper);border-radius:10px;padding:6px 9px;font-size:14px;font-weight:700}
+.col li small{display:block;font-weight:600;color:var(--soft);font-size:12.5px}
+.col li.later{border-style:dashed;color:var(--soft)}
+.pipe .arr{display:grid;place-items:center;font-family:var(--display);font-size:28px;color:var(--violet)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:14px}
+.rules div{background:var(--paper);border:2px solid var(--violet);border-radius:14px;padding:10px 12px;font-size:14.5px}
+.rules b{font-family:var(--display);color:var(--violet)}
+/* data map */
+.dmap{overflow-x:auto;background:var(--paper);border:2px solid var(--ink);border-radius:18px}
+.dmap table{min-width:860px}
+.chip{display:inline-block;border-radius:10px;padding:4px 8px;font-size:13px;font-weight:700;border:2px solid;line-height:1.3}
+.c-a{background:var(--green-bg);border-color:var(--green)} .c-d{background:var(--amber-bg);border-color:var(--amber)} .c-n{background:var(--gray-bg);border-color:var(--line);color:var(--soft)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.conc{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-top:14px}
+.conc div{background:var(--amber-bg);border:2px solid var(--amber);border-radius:14px;padding:10px 12px;font-size:15px}
+/* waves */
+.waves{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.wave{background:var(--paper);border:2px solid var(--ink);border-radius:20px;box-shadow:5px 5px 0 var(--ink);padding:14px 16px;min-width:0;display:grid;gap:8px;align-content:start}
+.wave .when{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ink);border-radius:8px;padding:2px 9px;justify-self:start}
+.wave.a .when{background:var(--violet)} .wave.b .when{background:var(--blue)} .wave.c .when{background:var(--green)}
+.wave h3{font-size:22px}
+.wave ul{margin:0;padding-left:18px;font-size:14.5px}
+.wave .new{border-radius:12px;padding:8px 10px;font-size:14.5px}
+.wave .new.doc{background:var(--green-bg)} .wave .new.koo{background:var(--violet-bg)}
+.wave .money{font-size:13.5px;color:var(--soft)}
+/* world */
+.world{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.w{background:var(--paper);border:2px solid var(--ink);border-radius:16px;padding:12px 14px;min-width:0}
+.w .flag{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--soft)}
+.w h3{font-size:17px;margin:2px 0 4px}
+.w p{margin:0;font-size:14.5px}
+.w p.l{margin-top:6px;background:var(--violet-bg);border-radius:10px;padding:6px 8px;font-size:14px}
+.lessons5{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
+.lessons5 div{background:var(--ink);color:#fff;border-radius:14px;padding:10px 12px;font-family:var(--display);font-weight:600;font-size:16px;line-height:1.25}
+/* safety */
+.safe{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.safe .s{background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:14px 16px;min-width:0}
+.safe h3{font-size:19px;margin-bottom:8px}
+.safe ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:14.5px}
+.safe li{display:grid;grid-template-columns:20px 1fr;gap:6px}
+.safe li::before{content:"☐";font-weight:800}
+.never{background:var(--red-bg);border:2px solid var(--red);border-radius:16px;padding:12px 14px;margin-top:14px;font-size:15px}
+.never b{color:var(--red);font-family:var(--display)}
+/* demo */
+.demo{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:d}
+.demo li{counter-increment:d;display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;background:var(--paper);border:2px solid var(--ink);border-radius:16px;padding:10px 14px}
+.demo li::before{content:counter(d);font-family:var(--display);font-weight:700;font-size:22px;width:36px;height:36px;border-radius:50%;background:var(--amber);border:2px solid var(--ink);display:grid;place-items:center}
+.demo li span.req{font-size:12.5px;font-weight:800;color:var(--violet);background:var(--violet-bg);border-radius:8px;padding:2px 8px;white-space:nowrap}
+@media (max-width:640px){.demo li{grid-template-columns:44px 1fr}.demo li span.req{grid-column:2;justify-self:start}}
+.pitch{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:16px}
+.pitch div{background:var(--paper);border:2px solid var(--ink);border-radius:16px;padding:12px 14px;font-size:15px}
+.pitch b{font-family:var(--display);display:block;margin-bottom:4px}
+.qs{counter-reset:q;list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.qs li{counter-increment:q;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:10px 12px 10px 46px;position:relative;font-size:15px}
+.qs li::before{content:counter(q);position:absolute;left:12px;top:10px;font-family:var(--display);font-weight:700;background:var(--blue);color:#fff;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;font-size:14px}
+footer{margin-top:44px;font-size:13px;color:var(--soft)}
+code{font-size:.92em}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Rakathon 2026 · výzva VZP · plán pre Bruna a Maťa</div>
+    <h1>Nástroj pre koordinátora: čo postavíme a prečo takto</h1>
+    <p>Výsledok researchu 11 agentov (Opus 5.5 na architektúru, kritiku a záver): kde v Česku ležia dáta pacienta, ako ich dostať k koordinátorovi bez toho, aby sa lekári učili novú appku, čo funguje vo svete a čo musí byť splnené, aby nás nemocnica pustila dnu.</p>
+    <div class="big"><b class="lab">Hlavná veta do pitchu</b><p>„Nič sa nestratí a vždy vieš, kto je na ťahu.“</p></div>
+  </header>
+
+  <div class="answers">
+    <div class="ans yes"><span class="n">STAVIAME</span><h3>Pracovný nástroj pre koordinátora</h3><p>Prvá obrazovka je fronta prípadov: pri každom pacientovi stav, termín a kto je na ťahu. Presne to chce zadanie VZP a takto vyzerajú aj nástroje v Anglicku.</p></div>
+    <div class="ans yes"><span class="n">STAVIAME</span><h3>Podklad pre konzílium s viditeľnými medzerami</h3><p>Každý údaj má citát zo správy, ktorý program overí. Chýbajúce a rozporné údaje sú označené, nič sa nedomýšľa.</p></div>
+    <div class="ans no"><span class="n">NESTAVIAME</span><h3>Novú appku ani účet pre lekárov</h3><p>Lekárov všade vo svete rozhýbala platba alebo zákon, nie appka. Praktik pošle správu ako dnes a dostane späť potvrdenie a výsledok.</p></div>
+    <div class="ans no"><span class="n">NESTAVIAME</span><h3>Automatické ťahanie dát od všetkých</h3><p>Verejné rozhrania u výrobcov programov lekárov sme nenašli a štátne služby smie volať len nemocnica s certifikátom. Dáta dnes prichádzajú ako dokumenty.</p></div>
+    <div class="ans no"><span class="n">NESTAVIAME</span><h3>Nič, čo radí, ako liečiť</h3><p>Žiadne skóre naliehavosti ani odporúčania. Inak by appka bola zdravotníckou pomôckou s prísnou certifikáciou. AI iba navrhne, rozhoduje človek.</p></div>
+  </div>
+
+  <section id="zmena">
+    <h2>Čo sme zmenili na vašej vízii</h2>
+    <p class="lead">Vaša vízia bola krásny profil pacienta so všetkými dátami. Kritici (IT riaditeľ nemocnice a koordinátorka s VZP) ju posunuli takto:</p>
+    <div class="ba">
+      <div class="row"><div class="was">Krásny profil pacienta ako hlavná obrazovka</div><div class="arr">→</div><div class="now"><b>Prvá obrazovka = fronta prípadov.</b> Čo mešká, čo čaká na mňa, čo na iných, do kedy. Profil je až v detaile.<small>Takto to majú Cancer 360 aj Infoflex v Anglicku a aj ministerstvo v ukážke.</small></div></div>
+      <div class="row"><div class="was">Všetky dáta automaticky pod jedným profilom</div><div class="arr">→</div><div class="now"><b>Dáta prichádzajú ako dokumenty</b> kanálmi, ktoré lekári už majú. Hodnota je vo <b>viditeľných medzerách</b>.<small>Ani Estónsko s povinným centrálnym úložiskom nemá úplné dáta.</small></div></div>
+      <div class="row"><div class="was">Lieky: kedy predpísané a dokedy</div><div class="arr">→</div><div class="now"><b>Lieky presne tak, ako stoja v správe</b>, s dátumom a citátom.<small>Štátny lékový záznam pole „dokedy“ nemá a dopočítanie by bolo radenie lekárovi.</small></div></div>
+      <div class="row"><div class="was">Laboratórne výsledky ako graf</div><div class="arr">→</div><div class="now"><b>Tabuľka:</b> test, hodnota, jednotka, dátum, laboratórium, zdroj.<small>Do konzília má Alena len dva odbery, graf nemá zmysel.</small></div></div>
+      <div class="row"><div class="was">Praktik dostane odkaz s prihlásením</div><div class="arr">→</div><div class="now"><b>Praktik nedostane žiadny nový účet.</b> Dostane potvrdenie prijatia a zoznam, čo chýba, tým kanálom, ktorým písal.<small>Každý nový účet by podľa vyhlášky 409/2025 potreboval dvojfaktorové prihlásenie.</small></div></div>
+      <div class="row"><div class="was">(chýbalo)</div><div class="arr">+</div><div class="now"><b>Záznam o koordinovaní vzniká sám</b> z práce koordinátora. Ministerstvo ho od koordinátora vyžaduje a z neho sa vykazuje výkon 51887 (250 Kč na deň).</div></div>
+    </div>
+  </section>
+
+  <section id="obrazovka">
+    <h2>Čo uvidí koordinátor</h2>
+    <p class="lead">Náčrt s fiktívnymi údajmi. Dnes je 19. 10. 2026.</p>
+    <div class="screen">
+      <div class="bar"><i></i><i></i><i></i> Moje prípady</div>
+      <div class="filters"><span class="on">Čaká na mňa</span><span>Čaká na iných</span><span>Mešká</span><span>Konzílium tento týždeň</span></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Pacient</th><th>Konzílium</th><th>Stav</th><th>Ďalší krok</th><th>Na ťahu</th><th>Termín</th></tr></thead>
+        <tbody>
+          <tr><td><b>Procházková Alena</b></td><td>21. 10.</td><td><span class="st akt">aktívny</span></td><td>doplniť ECOG</td><td class="me">ja (koordinátor)</td><td>20. 10.</td></tr>
+          <tr><td></td><td></td><td></td><td>histológia (biopsia 12. 10.)</td><td>patológia KOC 2</td><td class="late">15. 10. · mešká 4 dni</td></tr>
+          <tr><td>(fiktívny pacient 2)</td><td>28. 10.</td><td><span class="st new">nový</span></td><td>prevziať žiadosť praktika</td><td class="me">ja</td><td>dnes</td></tr>
+          <tr><td>(fiktívny pacient 3)</td><td>–</td><td><span class="st wait">čaká</span></td><td>CT v inom KOC</td><td>rádiológia KOC 1</td><td>23. 10.</td></tr>
+        </tbody></table></div>
+      <div style="padding:0 14px 12px;font-size:13.5px;color:var(--soft)">Poradie je len podľa termínov, nikdy podľa zdravotných údajov. Žiadne skóre ani „rizikový pacient“.</div>
+    </div>
+    <div class="screen">
+      <div class="bar"><i></i><i></i><i></i> Prípad: Alena Procházková · konzílium 21. 10. · <span style="opacity:.8">stav k dátumu: 21. 10.</span></div>
+      <div class="case">
+        <div class="panel"><h4>Úplnosť podkladu pre konzílium</h4>
+          <div class="sema"><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="r"></i><i class="r"></i><i class="o"></i><i class="o"></i></div>
+          <div class="sum">16/20 potvrdených · 2 chýbajú · 2 rozpory · 0 polí bez citátu</div>
+          <ul class="fields">
+            <li><i class="g"></i><span>Diagnóza: ložisko hlavy pankreasu <q>„ložisko hlavy pankreatu suspektní z malignity“ · správa 07</q></span></li>
+            <li><i class="r"></i><span><b>ECOG</b> (ako zvláda bežný deň) chýba · <u>vyžiadať</u></span></li>
+            <li><i class="o"></i><span><b>Rozpor:</b> liek na riedenie krvi, nemožný dátum poslednej dávky (správa 09)</span></li>
+            <li><i class="o"></i><span><b>Rozpor:</b> histológia „vydaná“ 19. 10., ale „odobratá“ 20. 10. (správa 11)</span></li>
+            <li><i class="g"></i><span>Váha 65 kg <q>(15. 9., správa 05)</q>. 63 kg je až zo správy po konzíliu, do podkladu nepatrí.</span></li>
+          </ul></div>
+        <div class="panel"><h4>Kroky cesty</h4>
+          <ul class="steps">
+            <li>CT · KOC 1 <span class="flow4"><b class="d">vyžiadané</b><b class="d">objednané</b><b class="d">vykonané</b><b class="d">výsledok</b></span></li>
+            <li>Biopsia · KOC 2 <span class="flow4"><b class="d">vyžiadané</b><b class="d">objednané</b><b class="d">vykonané</b><b class="d">výsledok</b></span></li>
+            <li>Histológia · patológia <span class="flow4"><b class="d">vyžiadané</b><b class="d">objednané</b><b class="d">vykonané</b><b>výsledok</b></span> <span class="late">mešká</span></li>
+            <li>Algeziológ · KOC 1 <span class="flow4"><b class="d">vyžiadané</b><b>objednané</b><b>vykonané</b><b>výsledok</b></span></li>
+          </ul>
+          <h4 style="margin-top:12px">Záznam o koordinovaní</h4>
+          <ul class="steps"><li>2. 10. prijatá žiadosť od praktika · potvrdenie odoslané</li><li>2. 10. vyžiadané správy 01–06 (6 pracovísk)</li><li>3. 10. objednané CT v KOC 1</li><li style="color:var(--soft)">dni so zásahom = podklad pre výkon 51887</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tok">
+    <h2>Ako tečú dáta</h2>
+    <p class="lead">Vľavo to, čo lekári už dnes používajú. V strede jadro, ktoré používa len koordinátor. Vpravo to, čo ide späť tam, kde to lekári čítajú.</p>
+    <div class="pipe">
+      <div class="col"><h3>Vstupy (nič nové pre lekárov)</h3><ul>
+        <li>Telefón<small>koordinátor zapíše poznámku z hovoru</small></li>
+        <li>E-mail na spoločnú adresu KOC<small>ministerstvo ho od 9/2026 predpisuje centrám pre pankreas</small></li>
+        <li>eZpráva<small>zabezpečená lekárska pošta (PDF + DASTA)</small></li>
+        <li>Papier a CD od pacienta<small>sken alebo príloha</small></li>
+        <li class="later">Neskôr: eŽádanka K (FHIR)<small>keď bude povinná</small></li>
+        <li class="later">Neskôr: nemocničný systém KOC<small>po zmluve s dodávateľom</small></li>
+      </ul></div>
+      <div class="arr">→</div>
+      <div class="col core"><h3>Jadro (len koordinátor)</h3><ul>
+        <li>1 · Fronta prípadov<small>stav, termín, kto je na ťahu</small></li>
+        <li>2 · Príjem dokumentu a priradenie k pacientovi</li>
+        <li>3 · Vyťaženie<small>laboratórium (DASTA) bez AI, ostatné AI s citátom overeným programom</small></li>
+        <li>4 · Úplnosť k dátumu konzília a rozpory</li>
+        <li>5 · Kroky a úlohy<small>vlastník, termín, stav, upozornenie po termíne</small></li>
+        <li>6 · Potvrdenie<small>koordinátor so zdrojom, lekár KOC podklad</small></li>
+        <li>7 · Záznam o koordinovaní a auditný log</li>
+      </ul></div>
+      <div class="arr">→</div>
+      <div class="col"><h3>Výstupy (tam, kde to čítajú)</h3><ul>
+        <li>Podklad pre konzílium<small>PDF + FHIR do nemocničného systému KOC</small></li>
+        <li>Potvrdenie prijatia praktikovi<small>a zoznam, čo chýba</small></li>
+        <li>Záver konzília praktikovi<small>podpíše alebo zapečatí nemocnica (§55a), s dokladom doručenia</small></li>
+      </ul></div>
+    </div>
+    <div class="rules">
+      <div><b>Zdroj je pravda.</b> Do systémov lekárov nič neprepisujeme. Výstupom je hotový dokument.</div>
+      <div><b>Každé pole má pôvod:</b> dokument, doslovný citát, kanál, dátum. Bez overeného citátu nie je fakt.</div>
+      <div><b>Chýbajúce sa označí, nikdy nedopĺňa.</b> Rozpor sa ukáže, nerozhoduje sa.</div>
+      <div><b>AI iba navrhuje.</b> Nemá tlačidlo „odoslať“ ani „zmazať“. Rozhoduje človek.</div>
+      <div><b>Nie sme register pacientov.</b> Pracovný priestor jedného prípadu, originál ostáva v nemocnici.</div>
+    </div>
+  </section>
+
+  <section id="data">
+    <h2>Kde ležia dáta a ako ich dostaneme</h2>
+    <p class="lead">Dnes = reálny svet a hackathon. Pilot = jedno KOC. Národne = 2027 až 2031.</p>
+    <div class="legend"><span class="chip c-a">štruktúrovane / automaticky</span><span class="chip c-d">ako dokument + AI s citátom</span><span class="chip c-n">nie / nevieme</span></div>
+    <div class="dmap"><table>
+      <thead><tr><th>Zdroj</th><th>Kde ležia</th><th>Dnes</th><th>Pilot (1 KOC)</th><th>Národne</th></tr></thead>
+      <tbody>
+        <tr><td><b>Praktik</b></td><td>program ambulancie (najčastejšie CGM, MEDaX)</td><td><span class="chip c-d">telefón, e-mail, formulár, eZpráva, papier</span></td><td><span class="chip c-d">spoločná schránka KOC + AI</span></td><td><span class="chip c-a">eŽádanka K z jeho programu (keď bude povinná, návrh od 7/2027)</span></td></tr>
+        <tr><td><b>Ambulantný špecialista</b></td><td>rôzne programy</td><td><span class="chip c-d">správa, e-mail na vyžiadanie, eZpráva</span></td><td><span class="chip c-d">žiadosť z nástroja, príjem ako dokument</span></td><td><span class="chip c-a">eŽádanka K, štátna výmena dokumentov (návrh)</span></td></tr>
+        <tr><td><b>Poliklinika, rádiológia</b></td><td>popis snímky ako dokument</td><td><span class="chip c-d">papier/PDF; snímky na CD alebo cez ePACS</span></td><td><span class="chip c-d">popis cez AI; snímky len stav „doručené do PACS“</span></td><td><span class="chip c-a">EHDS: snímky od 26. 3. 2031</span></td></tr>
+        <tr><td><b>Laboratórium</b></td><td>LIS, formát DASTA + kódy NČLP</td><td><span class="chip c-d">PDF alebo eZpráva (PDF + DASTA)</span></td><td><span class="chip c-a">DASTA sa číta bez AI</span></td><td><span class="chip c-a">laboratórna eŽádanka (návrh 1/2028), EHDS 2031</span></td></tr>
+        <tr><td><b>Systém vlastného KOC</b></td><td>STAPRO, ICZ, IKIS, Medicalc, Zlatokop</td><td><span class="chip c-n">koordinátor pracuje priamo v ňom</span></td><td><span class="chip c-d">fáza 0: PDF vloží koordinátor; potom rozhranie (~100 tis. Kč a viac)</span></td><td><span class="chip c-a">rozhranie cez integračný engine nemocnice</span></td></tr>
+        <tr><td><b>Iné KOC</b></td><td>iný dodávateľ</td><td><span class="chip c-d">e-mail, telefón, eZpráva; CT cez ePACS</span></td><td><span class="chip c-d">na vyžiadanie ako dokument</span></td><td><span class="chip c-a">NCP: odovzdanie na žiadosť (§56b), 30 z 37 pripojených</span></td></tr>
+        <tr><td><b>Lieky (SÚKL)</b></td><td>lékový záznam, bez poľa „dokedy“</td><td><span class="chip c-n">koordinátor-nelekár: nevieme</span></td><td><span class="chip c-d">len text zo správ</span></td><td><span class="chip c-a">EHDS e-recept od 26. 3. 2029</span></td></tr>
+        <tr><td><b>VZP</b></td><td>vykázané výkony</td><td><span class="chip c-n">spracuje sa do 50 dní, na živú koordináciu nepoužiteľné</span></td><td><span class="chip c-d">adresa registrujúceho lekára cez KOC</span></td><td><span class="chip c-a">páka: platba, napr. za uzavretú slučku</span></td></tr>
+        <tr><td><b>Sdílený zdravotní záznam</b></td><td>štátny záznam</td><td><span class="chip c-n">len núdzové údaje a prevencia, nie onkológia</span></td><td><span class="chip c-n">nie</span></td><td><span class="chip c-n">cez certifikát KOC, nevieme</span></td></tr>
+        <tr><td><b>Pacient</b></td><td>papiere, CD, EZKarta</td><td><span class="chip c-d">prinesie, zavolá</span></td><td><span class="chip c-d">sken alebo príloha</span></td><td><span class="chip c-n">súhlas pre tretiu osobu, nevieme</span></td></tr>
+      </tbody></table></div>
+    <div class="conc">
+      <div><b>Všetko podstatné dnes prichádza ako dokument.</b> Jadrom je spoľahlivé vyťaženie s citátom a viditeľné medzery, nie integrácia.</div>
+      <div><b>Najštruktúrovanejšie sú laboratórne výsledky</b> (DASTA). Keď prídu cez eZprávu, čítame ich bez AI.</div>
+      <div><b>Plná automatizácia je do roka reálna len pri systéme vlastného KOC</b>, a aj to so zmluvou a peniazmi.</div>
+    </div>
+  </section>
+
+  <section id="vlny">
+    <h2>Tri vlny: hackathon, pilot, celé Česko</h2>
+    <div class="waves">
+      <div class="wave a"><span class="when">do soboty 13:00</span><h3>A · Hackathon</h3>
+        <ul><li>Webová appka: fronta, prípad, podklad, záver praktikovi</li><li>Simulovaná schránka: 13 správ Aleny „prichádza“ podľa dátumov</li><li>AI s citátmi overenými kódom, úplnosť a rozpory k dátumu</li><li>Dáta vo FHIR (InterSystems IRIS for Health, dostupné vo VZP Azure)</li><li>Doručenka praktikovi simulovaná, povedať to nahlas</li></ul>
+        <div class="new doc"><b>Nové pre lekára:</b> nič.</div><div class="new koo"><b>Nové pre koordinátora:</b> jedna fronta namiesto pošty a poznámok; podklad sa skladá sám a ukazuje, čo chýba.</div></div>
+      <div class="wave b"><span class="when">6–12 mesiacov</span><h3>B · Pilot v 1 KOC</h3>
+        <ul><li><b>Príprava:</b> zmluva o spracovaní dát, posúdenie vplyvu (DPIA), test zraniteľností, prihlásenie cez nemocnicu s dvoma faktormi</li><li><b>Fáza 0 (3 mesiace):</b> jedna spoločná schránka, podklad ako PDF do nemocničného systému, merať</li><li><b>Merať:</b> dni do úplného podkladu, minúty na prípad, doručené závery</li><li><b>Potom rozhranie</b> cez existujúci engine nemocnice</li><li>AI len v EÚ, bez rodných čísel</li></ul>
+        <div class="money">Rozhrania do NIS podľa verejných zmlúv: od ~100 tis. Kč + ročná podpora; odhad 0,3–1 mil. Kč, 3–6 mesiacov.</div>
+        <div class="new doc"><b>Nové pre lekára:</b> nič. Žiadny účet.</div><div class="new koo"><b>Nové pre koordinátora:</b> fronta, úlohy, koncepty žiadostí, záznam o koordinovaní.</div></div>
+      <div class="wave c"><span class="when">2027–2031</span><h3>C · Celé Česko</h3>
+        <ul><li>Praktik vystaví eŽádanku K vo svojom programe</li><li>Ostatné dokumenty cez štátnu výmenu (AAfD, IHE MHD)</li><li>Laboratórne výsledky štruktúrovane, identita cez register pacientov</li><li>EHDS: e-recept a súhrn 2029, snímky a laboratóriá 2031</li><li>VZP ako páka (platba), nie úložisko dokumentov</li></ul>
+        <div class="new doc"><b>Nové pre lekára:</b> eŽádanka, ak ju štát urobí povinnou. Štátna povinnosť, nie naša appka.</div><div class="new koo"><b>Nové pre koordinátora:</b> menej prepisovania, rieši len výnimky.</div></div>
+    </div>
+  </section>
+
+  <section id="svet">
+    <h2>Čo používajú inde</h2>
+    <p class="lead">Výber z 20 nástrojov a krajín, ktoré sme preskúmali.</p>
+    <div class="world">
+      <div class="w"><div class="flag">Anglicko</div><h3>Cancer 360</h3><p>Číta zo 7–8 druhov systémov, nič nezapisuje späť. Vlastné má len úlohy (kto, čo, dokedy).</p><p class="l">Presne náš vzor. Ale do 6/2026 ho mali len 6 nemocničných skupín.</p></div>
+      <div class="w"><div class="flag">Anglicko</div><h3>Infoflex</h3><p>Lekár zadá odporúčanie vo svojom systéme, to sa samo prenesie a koordinátorovi vznikne zoznam úloh.</p><p class="l">Lekár nič nové nerobí.</p></div>
+      <div class="w"><div class="flag">Anglicko</div><h3>Somerset Cancer Register</h3><p>Prepojenia, ktoré vie udržiavať len dodávateľ.</p><p class="l">Najdrahšie je prepojenie, nie obrazovka.</p></div>
+      <div class="w"><div class="flag">Anglicko</div><h3>e-RS (e-odporúčania)</h3><p>Roky okolo 52 % použitia. Rozhýbalo ho až to, že od 10/2018 nemocnica bez neho nedostane zaplatené.</p><p class="l">Platba, nie appka.</p></div>
+      <div class="w"><div class="flag">Švédsko</div><h3>NPÖ</h3><p>Lekár vidí záznamy iných poskytovateľov.</p><p class="l">Ľudia nechcú preskakovať do ďalšej appky.</p></div>
+      <div class="w"><div class="flag">Dánsko</div><h3>Sundhedsjournalen</h3><p>Otvára sa tlačidlom z lekárovho vlastného systému.</p><p class="l">Lekár ostáva vo svojom nástroji.</p></div>
+      <div class="w"><div class="flag">Holandsko</div><h3>ZorgDomein</h3><p>Odporúčania zabudované v systémoch lekárov, používa ho 95 % praktikov (údaj firmy).</p><p class="l">Úspech = je tam, kde lekár už pracuje. Trvalo to vyše 20 rokov.</p></div>
+      <div class="w"><div class="flag">Estónsko</div><h3>Národné úložisko (od 2008)</h3><p>Povinné posielanie dokumentov zo zákona.</p><p class="l">Ani zákon nedá úplné dáta: asi tretina poskytovateľov v 2024 neposlala nič.</p></div>
+      <div class="w"><div class="flag">Česko</div><h3>„Pilotné koordinačné aplikácie“ MZ</h3><p>Niektoré KOC ich skúšajú od 2/2026. Názov ani dodávateľ nie sú verejné.</p><p class="l">Aj ministerstvo si predstavuje frontu a úlohy.</p></div>
+      <div class="w"><div class="flag">Slovensko</div><h3>OnkoAsist</h3><p>Štátna „cesta pacienta“ cez systémy lekárov, dodávateľ Asseco, pilot pre 3 diagnózy.</p><p class="l">Štát stavia cez existujúce systémy, nie novú appku.</p></div>
+    </div>
+    <div class="lessons5">
+      <div>Nikto nenúti lekárov do novej appky.</div>
+      <div>Tvárou nástroja je zoznam úloh, nie dashboard.</div>
+      <div>Čítať zo zdrojov, nič do nich neprepisovať.</div>
+      <div>Najpomalšie a najdrahšie je prepojenie.</div>
+      <div>Šírenie rozhýbe platba alebo zákon.</div>
+    </div>
+  </section>
+
+  <section id="bezpecnost">
+    <h2>Bezpečnosť a právo</h2>
+    <p class="lead">Nie sme právnici. Pred pilotom treba právnika a poverenca pre ochranu údajov (DPO) nemocnice.</p>
+    <div class="safe">
+      <div class="s"><h3>Hackathon</h3><ul>
+        <li>Len fiktívne dáta zo zadania, nič reálne</li><li>V appke viditeľne: „Prototyp, nie zdravotnícka pomôcka, fiktívne dáta“</li><li>AI nemá tlačidlá na odoslanie ani zmazanie; text dokumentu nie je príkaz pre AI</li><li>Citát overený kódom, chýbajúce len označiť</li><li>Auditný log ako ukážka</li></ul></div>
+      <div class="s"><h3>Pilot</h3><ul>
+        <li>Nemocnica = správca dát, my = spracovateľ, zmluva podľa čl. 28 GDPR</li><li>Posúdenie vplyvu (DPIA) robí nemocnica, my dodáme návrh</li><li>Prihlásenie cez nemocnicu s dvoma faktormi</li><li>Prístup len k jednej spoločnej schránke, nie k celej pošte</li><li>AI len v EÚ; rodné čísla nikdy do AI</li><li>Logy prístupov aspoň 18 mesiacov, test zraniteľností pred spustením</li><li>Záver praktikovi podpíše alebo zapečatí nemocnica (§55a)</li></ul></div>
+      <div class="s"><h3>Celé Česko</h3><ul>
+        <li>Režim dodávateľa podľa kybernetického zákona 264/2025 Sb. v každom KOC</li><li>Štátne služby len cez certifikát každého KOC</li><li>Posúdiť, či sme „EHR systém“ podľa EHDS (nevieme)</li><li>Pacient sa môže opýtať, kto videl jeho dáta (z auditného logu)</li></ul></div>
+    </div>
+    <div class="never"><b>Nikdy nehovoriť:</b> „napojené na NIS“, „lieky dokedy“, „AI rozhodne“, „GDPR compliant“, „nasadené“, „certifikované“, „anonymizované“, „VZP uzol“ ako hotová vec.</div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo do soboty 13:00: 8 krokov</h2>
+    <ol class="demo">
+      <li><span>Úvodná obrazovka je fronta: Alena + 2 fiktívne riadky, stav, termín, kto je na ťahu.</span><span class="req">Koordinovať</span></li>
+      <li><span>E-mail praktika so žiadosťou „príde“, založí sa prípad, praktikovi odíde potvrdenie a zoznam, čo chýba.</span><span class="req">Prevziať</span></li>
+      <li><span>Koncepty žiadostí o správy 01–06 so správnym adresátom, správy postupne prichádzajú.</span><span class="req">Vyžiadať</span></li>
+      <li><span>Medzery a rozpory: chýba ECOG, nemožný dátum lieku, histológia „pred odberom“, chýbajúce e-maily.</span><span class="req">Vyťažiť</span></li>
+      <li><span>Klik na údaj → citát zvýraznený v pôvodnej správe. Na obrazovke „0 polí bez citátu“.</span><span class="req">Vyťažiť</span></li>
+      <li><span>Kroky s termínom: vyžiadané ≠ objednané ≠ vykonané. Histológia mešká → upozornenie.</span><span class="req">Koordinovať</span></li>
+      <li><span>Prepínač „stav k 21. 10.“: správy po konzíliu sa v podklade neobjavia, váha 65 kg s dátumom.</span><span class="req">Podklad</span></li>
+      <li><span>Podklad pre konzílium (PDF), potvrdenie lekárom, záver praktikovi s doručenkou, záznam o koordinovaní.</span><span class="req">Uzavrieť slučku</span></li>
+    </ol>
+    <div class="pitch">
+      <div><b>Cesta k realite 1</b>„Dnes beriem to, čo koordinátorovi reálne chodí: telefón, e-mail na spoločnú adresu a eZprávu. Ministerstvo od septembra predpisuje presne e-mail a telefón koordinátora.“</div>
+      <div><b>Cesta k realite 2</b>„Pilot je jedno KOC: tri mesiace bez rozhrania a meranie, až potom napojenie na systém nemocnice. Lekár sa nič nové neučí a nedostane žiadny účet.“</div>
+      <div><b>Cesta k realite 3</b>„Keď bude eŽádanka povinná a spustí sa štátna výmena dokumentov, napojíme sa cez certifikát KOC. Výstup už dnes ukladáme vo FHIR.“</div>
+    </div>
+  </section>
+
+  <section id="otazky">
+    <h2>8 otázok na mentorov (ráno)</h2>
+    <ol class="qs">
+      <li><b>Koordinátorky:</b> Akým kanálom vám reálne chodia žiadosti a správy, koľko minút trvá jeden prípad pre konzílium a ako dnes vediete záznam o koordinovaní?</li>
+      <li><b>MZ:</b> Ktoré koordinačné aplikácie sa v KOC pilotujú od februára 2026 a odkiaľ berú dáta?</li>
+      <li><b>VZP:</b> Čo presne má robiť „komunikačný uzol vo VZP“ a je VZP ochotná viazať platbu na doložené uzavretie slučky?</li>
+      <li><b>Autorky zadania:</b> Stačí ako „jedno digitálne miesto“ spoločná schránka KOC a eZpráva, alebo chcete portál, kam praktik nahrá správy?</li>
+      <li><b>IT nemocnice:</b> Aký máte nemocničný systém, kto spravuje certifikát, máte eZprávu a za koľko vie váš systém prijať dokument cez rozhranie?</li>
+      <li><b>Ochrana údajov:</b> Je koordinátor „iný odborný pracovník“ podľa §65 zákona 372/2011 a smieme prijímať správy na spoločnú schránku?</li>
+      <li><b>Lekári KOC:</b> Ako dnes podpisujete alebo pečatíte záver konzília pre praktika a ktorým kanálom ho posielate?</li>
+      <li><b>NCEZ a eZpráva:</b> Môže dodávateľ volať eŽádanku a register pacientov certifikátom KOC a dovolí eZpráva automatický príjem pre KOC?</li>
+    </ol>
+  </section>
+
+  <footer>Celý dokument s ~50 zdrojmi (zákony, vyhlášky, MZ, NCEZ, VZP, SÚKL, ÚOOÚ, NÚKIB, verejné zmluvy, NHS England, Danske Regioner, Inera, VECOZO, štúdie): <code>docs/integracia/IDEALNE-RIESENIE.md</code> a podklady <code>g1–g7</code>, architektúra <code>A-architektura.md</code>, kritiky <code>K1-cio.md</code> a <code>K2-koordinator-vzp.md</code> v našom repe. Kritiky sú hrané roly (Claude), nie výpovede skutočných ľudí. Údaje pacientky sú fiktívne.</footer>
+</div>
