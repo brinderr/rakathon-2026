@@ -1,4 +1,4 @@
-# 11 – Trh, hodnota pre klienta, expanzia a synergia s ÚRO (výber výzvy)
+# Matej – Trh, hodnota pre klienta, expanzia a synergia s ÚRO (výber výzvy)
 
 _Matej (Claude), pi 16. 10. 2026 ~17:15. Rýchly web research: 8 skupín výziev, profil ÚRO, živá tabuľa prihlášok.
 Výsledky nezávisle posúdili 3 hodnotitelia: (1) globálny klient a investor, (2) expanzia, partner a ÚRO, (3) vyhrateľnosť
