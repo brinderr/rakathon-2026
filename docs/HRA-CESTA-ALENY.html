@@ -119,14 +119,14 @@ footer{margin-top:40px;font-size:13px;color:var(--soft)}
       <h1>Cesta Aleny</h1>
       <p>Alena má 63 rokov a bolí ju brucho. O dva mesiace neskôr bude mať diagnózu rakoviny pankreasu. Klikaj <b>Ďalej</b> a sleduj, čo sa po ceste deje a kde sa strácajú informácie. Celý prípad je fiktívny, je to súťažný prípad VZP.</p>
     </div>
-    <div class="mission"><b>Tvoja misia</b>Sleduj Aleniných 13 správ. Ležia na 7 rôznych miestach a koordinátor ich musí dostať k sebe na jeden stôl, inak konzílium nemôže rozhodnúť.</div>
+    <div class="mission"><b>Tvoja misia</b>Sleduj Aleniných 13 správ. Ležia na 7 rôznych miestach. Pred konzíliom ich koordinátor potrebuje 11 na jednom stole.</div>
   </div>
 
   <div class="game">
     <div class="boardbox">
       <div class="hud">
         <div class="day"><span class="big" id="dayBig">Deň –</span><span class="sub" id="daySub"></span></div>
-        <div class="meter"><div class="bar"><div class="fill" id="fill"></div></div><small id="meterTxt">Dni od prvej návštevy u lekára (1. 9.) po začiatok liečby</small></div>
+        <div class="meter"><div class="bar"><div class="fill" id="fill"></div></div><small id="meterTxt">Dni od prvej návštevy u lekára (1. 9.) po termín na onkológii (4. 11.)</small></div>
       </div>
       <svg class="board" id="board" viewBox="0 0 1000 800" role="img" aria-label="Herná doska: 16 políčok cesty pacientky"></svg>
       <div class="controls">
@@ -153,7 +153,7 @@ footer{margin-top:40px;font-size:13px;color:var(--soft)}
     <div class="qa" id="qa"></div>
   </section>
 
-  <footer>Súťažný prípad Aleny je fiktívny (zadanie VZP, Rakathon 2026). Fakty o systéme: Věstník MZ 11/2025, MZ ČR, úhradová vyhláška 2026, ÚZIS, OECD 2025. Zdroje ku každému číslu: <code>docs/kontext/</code> v našom repe.</footer>
+  <footer>Súťažný prípad Aleny je fiktívny (zadanie VZP, Rakathon 2026). Fakty o systéme: Věstník MZ 11/2025, MZ ČR (2. 9. 2026), Metodický pokyn MZ pre HPB centrá (účinný od 1. 9. 2026), úhradová vyhláška 2026, ÚZIS, OECD 2025. Ako si lekári posielajú správy: zadanie a prezentácia VZP, Metodický pokyn MZ pre HPB centrá, rozhovory s koordinátorkami (Bulovka, FN Olomouc), stránky Bulovky a MOÚ Brno, FN Hradec Králové a KN Zlín (eZpráva), tender nemocnice v Tišnove (2024), ČT24 (2024), NKÚ (2026). Zdroje ku každému číslu: <code>docs/kontext/</code> v našom repe.</footer>
 </div>
 
 <div class="tip" id="tip" hidden></div>
@@ -162,22 +162,22 @@ footer{margin-top:40px;font-size:13px;color:var(--soft)}
 const TERMS = {
   "praktik":"Praktický lekár. Tvoj obvodný lekár. Väčšinou ako prvý zistí, že niečo nie je v poriadku, a posiela ťa ďalej.",
   "kardiológ":"Lekár na srdce.",
-  "liek na riedenie krvi":"Apixaban. Aby sa netvorili krvné zrazeniny. Pred zákrokom ako biopsia sa musí na pár dní vysadiť, inak hrozí krvácanie.",
+  "liek na riedenie krvi":"Apixaban. Aby sa netvorili krvné zrazeniny. Kardiológ napísal, že pred zákrokom s rizikom krvácania sa má vysadiť 48 hodín vopred.",
   "gastroenterológ":"Lekár na žalúdok, črevá, pečeň a pankreas.",
   "ultrazvuk":"Vyšetrenie sondou na bruchu. Nebolí, je rýchle a ukáže orgány v tele.",
   "pankreas":"Podžalúdková žľaza. Orgán za žalúdkom, ktorý robí tráviace šťavy a inzulín. Jej rakovina je veľmi zákerná, lebo sa dlho neprejaví.",
   "KOC":"Komplexné onkologické centrum. Veľká nemocnica (alebo spolupracujúce nemocnice), ktorá má od ministerstva titul na liečbu rakoviny. V Česku ich je 15 pre dospelých a 2 pre deti.",
-  "koordinátor":"Nová pozícia od 1. 1. 2026. Človek v KOC, ktorý objednáva vyšetrenia, stráži termíny a zbiera správy. Nelieči a nerozhoduje o liečbe. Nemusí byť zdravotník.",
+  "koordinátor":"Od roku 2026 ho musí mať každé KOC (niektoré nemocnice ho mali už skôr). Človek v KOC, ktorý objednáva vyšetrenia, stráži termíny a zbiera správy. Nelieči a nerozhoduje o liečbe. Nemusí byť zdravotník.",
   "CT":"Počítačová tomografia. Röntgen, ktorý urobí z tela „plátky“ ako chlieb. Ukáže, kde presne je nádor a či sa rozšíril.",
-  "biopsia":"Odber kúska tkaniva ihlou. Pri pankrease cez hadičku s kamerou (endoskop), ktorá ide cez ústa do žalúdka.",
+  "biopsia":"Odber kúska tkaniva ihlou. Pri pankrease cez hadičku s ultrazvukom, ktorá ide cez ústa a žalúdok až do dvanástnika.",
   "histológia":"Vyšetrenie kúska tkaniva pod mikroskopom. Až toto s istotou povie, či je to rakovina a aký typ.",
   "konzílium":"Odborne MDT (multidisciplinárny tím). Porada lekárov rôznych odborov (chirurg, onkológ, rádiológ, patológ…), ktorí spolu rozhodnú, ako sa bude pacient liečiť.",
   "algeziológ":"Lekár na liečbu bolesti.",
   "psychológ":"Pomáha zvládnuť šok, strach a stres z diagnózy.",
-  "chemoterapia":"Lieky, ktoré ničia rakovinové bunky. Podávajú sa v cykloch, napríklad každé 2 týždne.",
+  "chemoterapia":"Lieky, ktoré ničia rakovinové bunky. Podávajú sa v cykloch.",
   "epikríza":"Zhrnutie lekára: čo pacientovi je, čo sa robilo a čo ďalej.",
   "žiadosť":"Papier alebo elektronická správa, ktorou jeden lekár posiela pacienta k inému lekárovi. Musí v nej byť diagnóza, výsledky a dôvod.",
-  "podklad":"Zhrnutie všetkých dôležitých údajov o pacientovi na jednom mieste, aby lekári na konzíliu nemuseli čítať 13 správ.",
+  "podklad":"Zhrnutie všetkých dôležitých údajov o pacientovi na jednom mieste, aby lekári na konzíliu nemuseli čítať 11 správ.",
   "ECOG":"Číslo 0 až 5, ktoré hovorí, ako zvláda bežný deň (0 = úplne fit, 4 = leží). Lekári podľa toho volia liečbu.",
   "revízny lekár":"Lekár poisťovne, ktorý kontroluje, či je liečba oprávnená a dá sa preplatiť."
 };
@@ -195,76 +195,76 @@ const DOCS = {
 // for each level: which docs exist, which are on the coordinator's desk
 const L = [
  {t:"Alena žije normálne", place:"Doma", date:"júl", day:null, ico:"home",
-  s:`Alena má 63 rokov a slabšie srdce. V júli bola u ${T("kardiológ")} a ten jej predpísal ${T("liek na riedenie krvi")}. Zatiaľ nič nesúvisí s rakovinou.`,
+  s:`Alena má 63 rokov. Lieči sa na nepravidelný tlkot srdca (fibriláciu predsiení) a vysoký tlak. V júli bola na kontrole u ${T("kardiológ","kardiológa")}. ${T("liek na riedenie krvi","Liek na riedenie krvi")} berie od roku 2021. Kardiológ do správy napísal, že pred zákrokom s rizikom krvácania ho treba vysadiť 48 hodín vopred. Zatiaľ nič nesúvisí s rakovinou.`,
   who:["Alena","kardiológ"], why:`Táto správa bude neskôr dôležitá. Pred biopsiou sa ten liek musí vysadiť, a koordinátor o ňom musí vedieť.`,
   docs:["01"], desk:[]},
  {t:"Bolí ju brucho", place:"Doma", date:"pol. augusta", day:null, ico:"pain",
-  s:`Alenu začne bolieť brucho a bolesť ide do chrbta. Myslí si, že to prejde, a dva týždne čaká. Pri rakovine ${T("pankreas","pankreasu")} je to bežné, lebo príznaky sú nenápadné.`,
-  who:["Alena","dcéra"], why:`Rakovina pankreasu nemá skríning (pravidelné preventívne vyšetrenie). Zistí sa až podľa príznakov, často neskoro.`,
+  s:`Od polovice augusta Alenu bolí brucho, hore pod rebrami. Koncom augusta pribudnú teploty so zimnicou a tmavý moč. K lekárovi ide asi po dvoch týždňoch. Príznaky rakoviny ${T("pankreas","pankreasu")} sú nenápadné a podobajú sa na iné choroby.`,
+  who:["Alena"], why:`Rakovina pankreasu nemá skríning (pravidelné preventívne vyšetrenie). Zistí sa až podľa príznakov, často neskoro. V Česku sa viac ako polovica prípadov zistí v pokročilom štádiu (ÚZIS).`,
   docs:["01"], desk:[]},
  {t:"Prvá návšteva u praktika", place:"Ambulancia praktika", date:"1. 9.", day:0, ico:"doc",
-  s:`Alena ide k ${T("praktik","praktikovi")}. Má teplotu 38,1 °C. Praktik si myslí, že je to infekcia, dá jej antibiotiká a pošle ju na odber krvi. Krv ide do súkromného laboratória.`,
-  who:["Alena","praktik","sestra","laboratórium"], why:`Tu spúšťame stopky. Od tohto dňa počítame dni do začiatku liečby.`,
+  s:`Alena ide k ${T("praktik","praktikovi")}. Má teplotu 38,1 °C. Praktik si myslí, že je to infekcia, dá jej antibiotiká a pošle ju na odber krvi a moču. Vzorky idú do súkromného laboratória.`,
+  who:["Alena","praktik","laboratórium"], why:`Tu spúšťame stopky. Od tohto dňa počítame dni po prvý termín na onkológii.`,
   docs:["01","02"], desk:[]},
  {t:"Röntgen a telefonát", place:"Rádiológia + praktik", date:"3.–4. 9.", day:3, ico:"xray",
   s:`Praktik ju pošle na röntgen pľúc do inej budovy. Výsledok je v poriadku. O deň neskôr jej praktik zavolá, napíše ${T("epikríza","epikrízu")} a objedná ju ku ${T("gastroenterológ","gastroenterológovi")}.`,
-  who:["praktik","rádiológ","Alena"], why:`Každé vyšetrenie má vlastnú správu a každá leží v inom systéme. Už teraz sú 4 správy na 4 miestach.`,
+  who:["praktik","rádiológ","Alena"], why:`Každé vyšetrenie má vlastnú správu a každá vznikla na inom pracovisku. Už teraz sú 4 správy na 4 miestach.`,
   docs:["01","02","03","04"], desk:[]},
  {t:"U gastroenterológa", place:"Poliklinika", date:"15. 9.", day:14, ico:"doc",
-  s:`Na termín čakala 11 dní. ${T("gastroenterológ","Gastroenterológ")} ju vyšetrí a pošle na ${T("ultrazvuk")} brucha. Na ten zasa čaká dva týždne.`,
-  who:["gastroenterológ","Alena"], why:`Čakanie medzi krokmi je normálne, ale pri rakovine je každý týždeň dôležitý.`,
+  s:`Na termín čakala 11 dní. ${T("gastroenterológ","Gastroenterologička")} ju vyšetrí a pošle na ${T("ultrazvuk")} brucha. Na ten zasa čaká dva týždne.`,
+  who:["gastroenterológ","Alena"], why:`Ministerstvo píše, že práve v tejto fáze (podozrenie, žiadanky, čakanie na výsledky) môže pacient stratiť týždne. Gastroenterologička už 15. 9. medzi možnými príčinami uviedla aj nádor pankreasu.`,
   docs:["01","02","03","04","05"], desk:[]},
  {t:"Ultrazvuk niečo našiel", place:"Poliklinika", date:"29. 9.", day:28, ico:"scan",
-  s:`Na ultrazvuku je ložisko na ${T("pankreas","pankrease")}. Podozrenie na rakovinu. Alena nesie výsledok sama k praktikovi.`,
-  who:["rádiológ","Alena","praktik"], why:`Od teraz má ísť všetko rýchlo. Pacient by mal ísť do špecializovaného centra (KOC).`,
+  s:`Na ultrazvuku je ložisko na ${T("pankreas","pankrease")}. Podozrenie na rakovinu. S výsledkom sa Alena vráti k praktikovi.`,
+  who:["rádiológ","Alena","praktik"], why:`Ministerstvo hovorí, že pri dôvodnom podozrení na nádor má lekár kontaktovať koordinátora. Rakovinu pankreasu ministerstvo radí medzi rýchlo postupujúce nádory, ktoré majú u koordinátora prednosť.`,
   docs:["01","02","03","04","05","06"], desk:[]},
  {t:"Praktik posiela Alenu do KOC", place:"Ambulancia praktika → KOC 2", date:"2. 10.", day:31, ico:"send", loss:"Vstup",
-  s:`Praktik napíše ${T("žiadosť")} do ${T("KOC")} (Nemocnica Lipová) a pošle ju koordinátorovi.`,
+  s:`Praktik napíše ${T("žiadosť")} do ${T("KOC")} (Nemocnica Lipová) a pošle ju koordinátorovi. Akým kanálom, zadanie nepíše. Na Bulovke v Prahe lekár koordinátorke zavolá alebo napíše e-mail a pošle vyplnený formulár. V Masarykovom onkologickom ústave v Brne vyplní žiadanku na webe. Pre centrá, ktoré operujú pankreas, ministerstvo od 1. 9. 2026 určuje ako kontakt web, e-mail a telefón koordinátora.`,
   who:["praktik","koordinátor"],
-  lost:`V žiadosti nie sú výsledky, len zoznam, kde ich hľadať. Chýba e-mail na pacientku a otázka pre lekárov je všeobecná. Praktik nedostane potvrdenie, že ju prijali. Už prešiel 31 dní.`,
-  app:`Praktik pretiahne do appky všetko, čo má (PDF, fotky), jedným krokom a bez nového formulára. Hneď dostane potvrdenie, že pacientku prevzali.`,
+  lost:`V žiadosti nie sú výsledky, len zoznam, kde ich hľadať. Pritom správy od kardiológa a od gastroenterologičky majú na konci poznámku, že kópiu dostal praktik. Chýba e-mail na pacientku aj na praktika. Otázka pre konzílium znie len „stanovenie ďalšieho postupu“. VZP píše, že praktik nemá jednoduchý spôsob, ako zistiť, či pacientku prijali. Už prešlo 31 dní.`,
+  app:`Praktik vyberie centrum, priloží epikrízu a nahrá správy, ktoré má vo svojom programe. Ručne vyplní len to najnutnejšie. Hneď vidí, že žiadosť prišla, a potom aj jej stav (napríklad „čaká na podklady“).`,
   docs:["01","02","03","04","05","06","07"], desk:["07"]},
- {t:"Koordinátor naháňa správy", place:"KOC 2 · stôl koordinátora", date:"2.–8. 10.", day:33, ico:"phone", loss:"Vnútri KOC",
-  s:`${T("koordinátor","Koordinátor")} otvorí žiadosť a zistí, čo chýba. Volá a píše kardiológovi, do laboratória, na rádiológiu, praktikovi aj gastroenterológovi. Správy chodia ako PDF, fotky z mobilu, niečo poštou. V Nemocnici Lipová nie je voľné CT, tak ho objedná v inej nemocnici (KOC 1).`,
+ {t:"Koordinátor naháňa správy", place:"KOC 2 · stôl koordinátora", date:"2.–8. 10.", day:31, ico:"phone", loss:"Vnútri KOC",
+  s:`${T("koordinátor","Koordinátor")} dostane od praktika epikrízu so žiadosťou. Výsledky v nej nie sú, je tam len zoznam, kde ich hľadať. Koordinátor si preto vyžiada všetkých 6 starších správ: od kardiológa, laboratória, rádiológie, praktika a polikliniky. V Nemocnici Lipová nie je voľný termín na CT, tak ho objedná v inej nemocnici (KOC 1).`,
   who:["koordinátor","5 pracovísk","Alena"],
-  lost:`Koordinátor trávi čas telefonovaním namiesto koordinovania. Nikde nie je vidno, čo už prišlo, čo chýba a kto je na ťahu. Všetko je v jeho hlave a v e-mailoch.`,
-  app:`Appka sama ukáže, čo chýba, a jedným klikom pošle žiadosť správnemu pracovisku. Na jednej obrazovke je vidno stav, termín a kto je na ťahu.`,
+  lost:`VZP v prezentácii k výzve píše, že koordinátor „tráví veľkú časť času dohľadávaním chýbajúcich údajov a dokumentov namiesto koordinácie starostlivosti“ a že „nie je spoločný prehľad o stave prípadu, termínoch a zodpovednosti za ďalší krok“. Správy sú z rôznych pracovísk a v rôznej podobe, od celých správ po samotné výsledky. Akým kanálom ich koordinátor získava, zadanie neuvádza. Skutočné koordinátorky opisujú hlavne telefonovanie a e-maily na pracoviská (FN Olomouc). Koordinátorka na Bulovke hovorí, že nečaká, kým správy prídu, ale sama ich zháňa. Snímky CT a MR z iných nemocníc chodia cez ePACS, sieť na posielanie snímok (Bulovka). Ako sa ku koordinátorovi dostanú správy od praktikov a ambulancií mimo nemocnice, nikto nezverejnil.`,
+  app:`Appka sama ukáže, čo chýba, a koordinátor z nej vyžiada chýbajúce správy od správnych pracovísk. Na jednej obrazovke je vidno stav, termín a kto je na ťahu.`,
   docs:["01","02","03","04","05","06","07"], desk:["01","02","03","04","05","06","07"]},
  {t:"CT v inej nemocnici", place:"KOC 1 · Nemocnica Severní", date:"8. 10.", day:37, ico:"scan",
   s:`Alena ide na ${T("CT")} do Nemocnice Severní. CT ukáže, aký veľký je nádor a či sa rozšíril.`,
-  who:["rádiológ KOC 1","Alena"], why:`Snímky sú v inej nemocnici, ako bude konzílium. Musia sa nejako dostať do KOC 2. Keď sa to nepodarí, CT sa často robí znova.`,
+  who:["rádiológ KOC 1","Alena"], why:`CT robili v Nemocnici Severní, konzílium bude v Nemocnici Lipová. Snímky sa teda musia dostať do druhej nemocnice. Bulovka chce snímky CT a MR cez ePACS, sieť na posielanie snímok medzi nemocnicami. MOÚ Brno sa vo formulári pýta, či sú snímky dostupné v PACS. Niektoré nemocnice dávajú pacientom snímky aj na CD (ČT24, 2024). Ako sa snímky dostali do Lipovej, zadanie nepíše.`,
   docs:["01","02","03","04","05","06","07","08"], desk:["01","02","03","04","05","06","07"]},
  {t:"Biopsia a krv", place:"KOC 2 · Nemocnica Lipová", date:"12.–15. 10.", day:41, ico:"needle",
-  s:`Lekári urobia ${T("biopsia","biopsiu")}: odoberú kúsok pankreasu ihlou cez žalúdok. O tri dni má kontrolné odbery krvi.`,
-  who:["gastroenterológ KOC 2","sestra","laboratórium KOC 2"], why:`Pred biopsiou musela vysadiť liek na riedenie krvi. V správe je ale nemožný dátum poslednej dávky (18. 10. pri výkone 12. 10.). Takéto chyby musí niekto chytiť.`,
+  s:`Lekári urobia ${T("biopsia","biopsiu")}: cez ústa zavedú hadičku s ultrazvukom až do dvanástnika a odtiaľ tenkou ihlou odoberú kúsok nádoru. O tri dni má kontrolné odbery krvi.`,
+  who:["gastroenterológ KOC 2","anestéziológ","laboratórium KOC 2"], why:`Pred biopsiou musela vysadiť liek na riedenie krvi. V správe je ale nemožný dátum poslednej dávky (18. 10. pri výkone 12. 10.). Takéto chyby musí niekto chytiť.`,
   docs:["01","02","03","04","05","06","07","08","09","10"], desk:["01","02","03","04","05","06","07"]},
  {t:"Histológia potvrdí rakovinu", place:"KOC 2 · patológia", date:"19. 10.", day:48, ico:"micro",
   s:`Patológ pozrie vzorku pod mikroskopom. ${T("histológia","Histológia")} potvrdí rakovinu pankreasu (adenokarcinóm).`,
   who:["patológ"], why:`Až teraz je diagnóza istá. Lekári môžu rozhodnúť o liečbe.`,
   docs:["01","02","03","04","05","06","07","08","09","10","11"], desk:["01","02","03","04","05","06","07"]},
  {t:"Koordinátor chystá podklad pre konzílium", place:"KOC 2 · stôl koordinátora", date:"20.–21. 10.", day:49, ico:"folder", loss:"Vnútri KOC",
-  s:`Koordinátor zbiera všetkých 11 správ a ručne z nich robí ${T("podklad")} pre ${T("konzílium")}: diagnózu, lieky, výsledky, otázku pre lekárov.`,
+  s:`Koordinátor dáva dokopy ${T("podklad")} pre ${T("konzílium")} z 11 správ: diagnózu, lieky, výsledky, otázku pre lekárov. Ako sa to dnes robí v Lipovej, zadanie nepíše. Na Bulovke údaje zo správ prepisuje do formulára lekár, ktorý pacienta posiela.`,
   who:["koordinátor"],
-  lost:`Chyby sa ľahko prehliadnu: ${T("ECOG")} nikde nie je, váha je raz 63 a raz 65 kg, histológia je „vydaná“ deň pred odberom, dátum lieku nesedí. Lekári môžu dostať podklad neskoro alebo neúplný.`,
+  lost:`Chyby sa ľahko prehliadnu: ${T("ECOG")} nikde nie je, aktuálna váha chýba (posledná je 65 kg z 15. 9.), histológia je „vydaná“ deň pred odberom a dátum vysadenia lieku nesedí. VZP píše, že konzílium môže dostať podklady neskoro alebo neúplné.`,
   app:`AI vytiahne údaje do šablóny a pri každom ukáže presnú vetu zo správy, odkiaľ ho vzala. Červeno označí, čo chýba a čo si odporuje. Koordinátor to len skontroluje a lekár potvrdí.`,
   docs:["01","02","03","04","05","06","07","08","09","10","11"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
  {t:"Konzílium rozhodne", place:"KOC 2 · zasadačka", date:"21. 10.", day:50, ico:"table",
-  s:`Na ${T("konzílium")} sa stretne 5–6 lekárov: chirurg, onkológ, rádiológ, patológ, gastroenterológ. Rozhodnú: najprv ${T("chemoterapia")}, potom zvážiť operáciu.`,
-  who:["chirurg","onkológ","rádiológ","patológ","koordinátor"], why:`Toto je najdôležitejší okamih. Bez kompletných podkladov sa rozhodnutie odloží o týždeň.`,
+  s:`Na ${T("konzílium")} sa stretne 6 lekárov a koordinátorka: chirurg, klinický onkológ, radiačný onkológ, gastroenterológ, rádiológ a patológ. Rozhodnú: najprv ${T("chemoterapia")}, potom znova posúdiť operáciu.`,
+  who:["chirurg","onkológ","gastroenterológ","rádiológ","patológ","koordinátorka"], why:`Tu sa rozhoduje o liečbe. Podľa odborného postupu pre konzíliá sa má rozhodovať, až keď sú k dispozícii všetky dôležité výsledky. Aj v Aleninom prípade konzílium zapísalo, že ${T("ECOG")} v podkladoch chýba a treba ho doplniť pred liečbou. Či a o koľko by chýbajúce podklady rozhodnutie odložili, zadanie nepíše.`,
   docs:["01","02","03","04","05","06","07","08","09","10","11"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
  {t:"Povedia to Alene", place:"KOC 1 + KOC 2", date:"23.–27. 10.", day:52, ico:"talk",
-  s:`Lekár povie Alene a dcére, čo jej je a ako sa bude liečiť. Alena ide k ${T("algeziológ","algeziológovi")} (bolesť) a k ${T("psychológ","psychológovi")}.`,
-  who:["onkológ","Alena","dcéra","algeziológ","psychológ"], why:`Pozor: lekár na bolesť (v KOC 1) a psychológ (v KOC 2) jej odporúčajú lieky, ktoré sa spolu nemusia znášať. Navzájom o sebe nevedia.`,
+  s:`23. 10. sa Alena dozvie diagnózu. Kto jej to povedal, správy nepíšu. Konzílium uložilo koordinátorke informovať Alenu o pláne a s jej súhlasom aj dcéru. Alena potom ide k ${T("algeziológ","algeziológovi")} (26. 10., KOC 1) a k ${T("psychológ","psychologičke")} (27. 10., KOC 2).`,
+  who:["koordinátorka","Alena","dcéra","algeziológ","psychológ"], why:`Pozor: lekár na bolesť (KOC 1) jej predpísal tramadol a upozornil, že spolu s niektorými liekmi na depresiu môže byť nebezpečný. Psychologička (KOC 2) o tramadole vie a posiela Alenu k psychiatrovi, ktorý môže lieky na depresiu nasadiť. Správy sú v dvoch rôznych nemocniciach, tak to musí niekto ustrážiť.`,
   docs:["01","02","03","04","05","06","07","08","09","10","11","12","13"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
- {t:"Späť k praktikovi", place:"KOC 2 → praktik", date:"po 21. 10.", day:55, ico:"mail", loss:"Výstup",
-  s:`Výsledok konzília by mal dostať praktik aj ${T("revízny lekár")} poisťovne. Praktik je ten, kto bude Alenu vidieť najčastejšie.`,
+ {t:"Späť k praktikovi", place:"KOC 2 → praktik", date:"po 21. 10.", day:52, ico:"mail", loss:"Výstup",
+  s:`Záver konzília má dostať praktik. Tak to chce zadanie VZP aj odborný postup pre konzíliá. Prezentácia VZP chce, aby informáciu automaticky dostal aj ${T("revízny lekár")}.`,
   who:["koordinátor","praktik","revízny lekár"],
-  lost:`Zákon neurčuje, ako sa výsledok pošle, a nikto nepotvrdzuje, že ho praktik dostal. Praktik často nevie, či Alenu prijali a čo sa rozhodlo.`,
-  app:`Záver konzília ide praktikovi aj s pôvodným kontextom. Appka ukáže „doručené a prečítané“ a prípad sa uzavrie.`,
+  lost:`Zákon hovorí, že praktik má dostať správu, ale neurčuje, akým kanálom ani ako doložiť, že prišla. VZP píše, že praktik nemá jednoduchý spôsob, ako zistiť, či pacienta prijali a ako konzílium rozhodlo.`,
+  app:`Záver konzília ide praktikovi aj s pôvodnými podkladmi. Informáciu dostane aj revízny lekár. Appka ukáže, že správa bola doručená, a prípad sa uzavrie.`,
   docs:["01","02","03","04","05","06","07","08","09","10","11","12","13"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
- {t:"Začína liečba", place:"KOC 2 · onkológia", date:"4. 11.", day:64, ico:"drip",
-  s:`Alena začína ${T("chemoterapia","chemoterapiu")}. Bude chodiť každé 2 týždne, niekoľko mesiacov. Potom lekári zvážia operáciu.`,
-  who:["onkológ","sestra","Alena","dcéra"], why:`Od prvej návštevy u praktika ubehlo 64 dní. 31 z nich bolo ešte pred KOC a 19 v KOC do konzília. Cieľ ministerstva pri takýchto diagnózach je ideálne pár týždňov.`,
+ {t:"Termín na onkológii", place:"KOC 2 · onkológia", date:"4. 11.", day:64, ico:"doc",
+  s:`4. 11. má Alena termín na onkológii kvôli ${T("chemoterapia","chemoterapii")} pred možnou operáciou. Konzílium chce pred začiatkom liečby ešte určiť ${T("ECOG")}, urobiť nové krvné testy a zistiť, či netreba uvoľniť žlčové cesty. Kedy chemoterapia naozaj začne, v podkladoch nie je. Po chemoterapii lekári znova posúdia operáciu.`,
+  who:["onkológ","koordinátorka","Alena"], why:`Od prvej návštevy u praktika po tento termín prešlo 64 dní: 31 dní pred KOC, 19 dní v KOC do konzília a 14 dní od konzília po termín na onkológii. Ministerstvo píše, že pri rýchlo postupujúcich nádoroch, kam patrí aj pankreas, by čakacie doby mali byť ideálne do dvoch týždňov.`,
   docs:["01","02","03","04","05","06","07","08","09","10","11","12","13"], desk:["01","02","03","04","05","06","07","08","09","10","11"]},
 ];
 const MAXDAY = 64;
@@ -299,7 +299,7 @@ svg.innerHTML = `
   <path d="${pathD}" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="2 16" stroke-linecap="round"/>
   <path id="walked" d="${pathD}" fill="none" stroke="var(--amber)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
   <text x="${pos[0][0]-70}" y="${pos[0][1]-70}" font-family="var(--display)" font-size="22" font-weight="700" fill="var(--soft)">ŠTART</text>
-  <text x="${pos[pos.length-1][0]-30}" y="${pos[pos.length-1][1]+86}" font-family="var(--display)" font-size="22" font-weight="700" fill="var(--green)">LIEČBA</text>
+  <text x="${pos[pos.length-1][0]-30}" y="${pos[pos.length-1][1]+86}" font-family="var(--display)" font-size="22" font-weight="700" fill="var(--green)">ONKOLÓGIA</text>
   ${L.map((l, i) => `<g class="st" data-i="${i}" transform="translate(${pos[i][0]},${pos[i][1]})" style="cursor:pointer">
      ${l.loss ? `<circle class="ring" r="44" fill="none" stroke="var(--red)" stroke-width="4" style="display:none"/>` : ""}
      <circle class="base" r="40" fill="#fff" stroke="${l.loss ? "var(--red)" : "var(--ink)"}" stroke-width="${l.loss ? 5 : 3.5}"/>
@@ -392,21 +392,21 @@ try { const s = +localStorage.getItem("alena-step"); if (s > 0 && s < L.length) 
 render(false);
 
 // ---------- answers ----------
-const QA = [{q:"Koľko je tých koordinátorov?", short:"V jednej nemocnici sú to zatiaľ 1 až 3 ľudia, nie stovky. Celkový počet v Česku nikto nezverejnil.",
+const QA = [{q:"Koľko je tých koordinátorov?", short:"Na jednom onkologickom pracovisku sú to zatiaľ 1 až 3 ľudia. Celkový počet v Česku nikto nezverejnil.",
  html:`<svg viewBox="0 0 520 236" role="img" aria-label="Počet koordinátorov v piatich nemocniciach">
   <g font-family="Nunito,sans-serif" font-weight="700" font-size="14" fill="#1B2A3A">
-  ${[["Nemocnica Jihlava",3,""],["FN Olomouc",3,"2 s menom + 1"],["Nem. Na Pleši",2,""],["KN Zlín",1,""],["FN Ostrava (onkológia)",1,"len pár hodín týždenne"]].map((r,i)=>`
+  ${[["Nemocnica Jihlava",3,""],["FN Olomouc",3,"2 s menom + 1"],["Nem. Na Pleši",2,""],["KN Zlín",1,""],["FN Ostrava (onkológia)",1,"kontakt len ut–št 10–12"]].map((r,i)=>`
    <text x="0" y="${30+i*44}">${r[0]}</text>
    ${Array.from({length:r[1]}).map((_,k)=>`<g transform="translate(${215+k*44},${18+i*44})"><circle cy="-6" r="8" fill="#6B48D6" stroke="#1B2A3A" stroke-width="2"/><path d="M-13 16q0-14 13-14t13 14z" fill="#ECE6FF" stroke="#1B2A3A" stroke-width="2"/></g>`).join("")}
    <text x="${230+r[1]*44}" y="${30+i*44}" font-weight="600" font-size="12.5" fill="#5C6E80">${r[2]}</text>`).join("")}
   </g></svg>
   <ul><li><b>Pravidlo:</b> každé KOC musí mať <b>aspoň jedného koordinátora na plný úväzok</b> (8 hodín denne). Viac môže mať, horná hranica nie je.</li>
   <li><b>Realita:</b> z webov 5 nemocníc vychádza <b>1 až 3 koordinátori</b> na onkologické pracovisko. Často sú rozdelení podľa diagnóz (jedna má prsník, druhá tráviacu sústavu).</li>
-  <li><b>Koľko pacientov má jeden:</b> nikto to nezverejnil. Jediný údaj: koordinátorka v nemocnici Bulovka rieši <b>asi 10 nových pacientov týždenne</b>.</li>
-  <li><b>Pre porovnanie:</b> KOC musí mať aspoň <b>1 000 nových onkologických pacientov ročne</b>. Onkologická klinika VFN prijme asi 1 250 ročne. Koordinátor teda nestihne všetkých, sústredí sa hlavne na rýchle a nebezpečné diagnózy (pľúca, pankreas).</li>
-  <li><b>Kto to je:</b> nemusí byť zdravotník, stačí maturita a 16-hodinový kurz na ČVUT. Kurz zatiaľ absolvovalo asi 140 záujemcov.</li></ul>
-  <p><b>Prečo to je pre nás dôležité:</b> na stovky pacientov sú 1–3 ľudia. Každá minúta, ktorú im appka ušetrí, sa počíta.</p>
-  <p class="src">Zdroje: Věstník MZ 11/2025 (min. 1 úväzok), weby nemocníc Jihlava, FN Olomouc, KN Zlín, FN Ostrava, článok o Na Pleši, Zdravotnický deník 6/2026 (Bulovka), MZ 2. 9. 2026 (kurz ČVUT). Malá vzorka, 5 z 15 KOC.</p>`},
+  <li><b>Koľko pacientov má jeden:</b> systematicky to nikto nezverejnil. Dva údaje z rozhovorov: Bulovka <b>asi 10 pacientov týždenne</b>, FN Olomouc <b>15–20 týždenne</b>.</li>
+  <li><b>Pre porovnanie:</b> KOC musí mať aspoň <b>1 000 nových onkologických pacientov ročne</b>. Onkologická klinika VFN prijme asi 1 250 ročne. Ministerstvo chce, aby koordinátor dával prednosť rýchlo postupujúcim nádorom, napríklad pľúc a pankreasu.</li>
+  <li><b>Kto to je:</b> nemusí byť zdravotník, stačí maturita. Na ČVUT prebehli dve školenia pre zhruba 140 záujemcov. Či je kurz povinný, sme nenašli.</li></ul>
+  <p><b>Prečo to je pre nás dôležité:</b> KOC má aspoň 1 000 nových pacientov ročne a koordinátori sú na pracovisku 1–3. Každá minúta, ktorú im appka ušetrí, sa počíta.</p>
+  <p class="src">Zdroje: Věstník MZ 11/2025 (min. 1 úväzok), weby nemocníc Jihlava, FN Olomouc, KN Zlín, FN Ostrava, článok o Na Pleši, Zdravotnický deník 6/2026 (Bulovka), MZ 2. 9. 2026 (kurz ČVUT). Malá vzorka: 4 KOC a Nemocnica Na Pleši (tá nie je KOC).</p>`},
 {q:"Za čo presne je tých 250 Kč?", short:"Poisťovňa zaplatí nemocnici 250 Kč za každý deň, keď koordinátor niečo urobil pre jedného pacienta. Najviac raz denne na pacienta.",
  html:`<svg viewBox="0 0 520 200" role="img" aria-label="Príklad: 4 dni so zásahom koordinátora = 4 × 250 Kč">
   <g font-family="Nunito,sans-serif" font-weight="700" fill="#1B2A3A" font-size="13">
@@ -418,11 +418,11 @@ const QA = [{q:"Koľko je tých koordinátorov?", short:"V jednej nemocnici sú 
    <text x="260" y="152" text-anchor="middle" font-family="Fredoka,sans-serif" font-size="20">4 dni so zásahom = 4 × 250 = 1 000 Kč pre nemocnicu</text>
    <text x="260" y="180" text-anchor="middle" font-size="12.5" fill="#5C6E80">príklad na Alene, presné dni sú ilustračné</text>
   </g></svg>
-  <ul><li><b>Za čo:</b> za jeden „zásah koordinátora“ (kód výkonu 51887). Zásah je napríklad objednanie vyšetrenia, vyžiadanie správy alebo príprava podkladu.</li>
+  <ul><li><b>Za čo:</b> za jeden zásah koordinátora (v predpise „intervence koordinátora“, kód výkonu 51887). Čo presne je jeden zásah, predpis nedefinuje. Podľa Věstníka koordinátor objednáva konzíliá, vyšetrenia a operácie.</li>
   <li><b>Ako často:</b> najviac <b>1× za deň</b> na jedného pacienta. Keď koordinátor v ten istý deň urobí pre Alenu 5 vecí, je to stále 250 Kč.</li>
   <li><b>Strop za celú liečbu:</b> žiadny. Koľko dní koordinátor pre pacienta niečo robí, toľkokrát 250 Kč.</li>
   <li><b>Komu:</b> peniaze idú <b>nemocnici</b> (KOC), nie koordinátorovi. Ten dostáva bežný plat od nemocnice.</li>
-  <li><b>Podmienka:</b> každý zásah musí byť <b>zapísaný</b> (kto ho požiadal, čo urobil, kedy). Bez zápisu poisťovňa nezaplatí.</li>
+  <li><b>Podmienka:</b> každý zásah musí byť <b>zapísaný</b> v dokumentácii pacienta a v zázname o koordinácii. Čo presne má zápis obsahovať, predpis nepíše. Bez zápisu poisťovňa nezaplatí.</li>
   <li><b>Pre porovnanie:</b> je to malý bonus, nie platba za liečbu. VZP dá na jedného onkologického pacienta v priemere asi 71 tisíc Kč ročne (náš výpočet: 23,7 mld. Kč / 333 tisíc pacientov), a to sa platí inými kódmi.</li></ul>
   <p><b>Prečo to je pre nás dôležité:</b> koordinátor musí každý zásah poctivo zapísať, inak nemocnica nedostane peniaze. Naša appka môže zapisovať automaticky, čo koordinátor kedy urobil.</p>
   <p class="src">Zdroj: vyhláška 134/1998 Sb. (zoznam výkonov, kód 51887, frekvencia „1/1 den“) a úhradová vyhláška 432/2025 Sb., bod 8.5. Čo presne je „jeden zásah“, predpis nedefinuje.</p>`},
@@ -444,26 +444,32 @@ const QA = [{q:"Koľko je tých koordinátorov?", short:"V jednej nemocnici sú 
   <ul><li><b>Ty</b> (a tvoj zamestnávateľ) platíte každý mesiac zdravotné poistenie. Za deti, študentov a dôchodcov ho platí štát.</li>
   <li><b>Poisťovňa</b> (najväčšia je VZP, má 6,17 mil. ľudí) z toho platí nemocniciam: za každé vyšetrenie, za pobyt v nemocnici podľa diagnózy aj za drahé lieky.</li>
   <li><b>Nemocnica</b> z toho platí platy lekárov, sestier aj koordinátora.</li>
-  <li><b>Pacient</b> za liečbu rakoviny v Česku takmer nič neplatí.</li>
   <li>VZP dala na onkológiu v roku 2024 <b>23,7 miliardy Kč</b> pre zhruba 333 tisíc pacientov.</li></ul>`},
 {q:"Čo je KOC a kde sú?", short:"Titul, ktorý dá ministerstvo veľkej nemocnici na liečbu rakoviny. Nie samostatná budova ani firma.",
  html:`<p>V Česku je <b>15 KOC pre dospelých</b> a <b>2 pre deti</b> (zoznam ministerstva, február 2026, platí do roku 2031):</p>
-  <div class="chips"><span>Praha · Motol + Homolka</span><span>Praha · VFN + Thomayerova + ÚVN</span><span>Praha · Vinohrady</span><span>Brno · MOÚ + FN Brno + sv. Anna</span><span>Hradec Králové</span><span>Olomouc</span><span>Ostrava</span><span>Plzeň</span><span>České Budějovice</span><span>Liberec</span><span>Zlín</span><span>Pardubice</span><span>Ústí nad Labem</span><span>Jihlava</span><span>Nový Jičín (AGEL)</span></div>
+  <div class="chips"><span>Praha · Motol + Homolka (+ Karlovy Vary)</span><span>Praha · VFN + Thomayerova + ÚVN</span><span>Praha · Vinohrady</span><span>Brno · MOÚ + FN Brno + sv. Anna</span><span>Hradec Králové</span><span>Olomouc</span><span>Ostrava</span><span>Plzeň</span><span>České Budějovice</span><span>Liberec</span><span>Zlín</span><span>Pardubice</span><span>Ústí nad Labem</span><span>Jihlava</span><span>Nový Jičín (AGEL)</span></div>
   <ul><li>Aby nemocnica dostala titul, musí ročne liečiť <b>aspoň 1 000 nových onkologických pacientov</b>, mať 2 ožarovacie prístroje, konzíliá a <b>koordinátora</b>.</li>
-  <li><b>8</b> KOC sú štátne (fakultné nemocnice), <b>6</b> krajské a <b>1</b> súkromné.</li>
+  <li><b>8</b> KOC sú štátne (fakultné nemocnice a MOÚ) a <b>1</b> súkromné. Ostatné sú väčšinou krajské nemocnice.</li>
   <li>Okolo každého KOC sú menšie nemocnice (asi 23 „regionálnych centier“), ktoré s ním spolupracujú.</li>
   <li>Na Slovensku KOC ešte nie je, buduje sa okolo Národného onkologického ústavu.</li></ul>`},
-{q:"Prečo si lekári nepošlú správu jednoducho e-mailom?", short:"Každý lekár má iný program a tie programy spolu nekomunikujú.",
- html:`<svg viewBox="0 0 520 150" role="img" aria-label="Tri nespojené programy"><g font-family="Nunito,sans-serif" font-weight="700" font-size="13.5" fill="#1B2A3A">
+{q:"Ako si lekári dnes posielajú správy?", short:"Každý inak: telefónom, e-mailom, cez formuláre, poštou, cez pacienta aj cez elektronické siete. Programy lekárov sú rôzne a málo spolu komunikujú.",
+ html:`<svg viewBox="0 0 520 150" role="img" aria-label="Tri rôzne programy, ktoré spolu málo komunikujú"><g font-family="Nunito,sans-serif" font-weight="700" font-size="13.5" fill="#1B2A3A">
    <rect x="10" y="30" width="140" height="80" rx="14" fill="#FFF2DC" stroke="#1B2A3A" stroke-width="2.5"/><text x="80" y="64" text-anchor="middle">Praktik</text><text x="80" y="84" text-anchor="middle" font-weight="600" font-size="12">program A</text>
    <rect x="190" y="30" width="140" height="80" rx="14" fill="#E3EDFB" stroke="#1B2A3A" stroke-width="2.5"/><text x="260" y="64" text-anchor="middle">Poliklinika</text><text x="260" y="84" text-anchor="middle" font-weight="600" font-size="12">program B</text>
    <rect x="370" y="30" width="140" height="80" rx="14" fill="#DFF5EA" stroke="#1B2A3A" stroke-width="2.5"/><text x="440" y="64" text-anchor="middle">Nemocnica</text><text x="440" y="84" text-anchor="middle" font-weight="600" font-size="12">program C</text>
    <g stroke="#D9364B" stroke-width="4" stroke-linecap="round"><path d="M160 60l20 20M180 60l-20 20"/><path d="M340 60l20 20M360 60l-20 20"/></g>
-   <text x="260" y="140" text-anchor="middle" font-size="13" fill="#5C6E80">Medzi nimi: papier, telefón, PDF, CD, pošta</text></g></svg>
-  <ul><li>Praktici majú najčastejšie programy CGM alebo MEDaX, nemocnice zas STAPRO, Asseco, ICZ či Medicalc. Navzájom si nerozumejú.</li>
-  <li>Zdravotné údaje by sa mali posielať šifrovane, preto obyčajný e-mail mnohé nemocnice nepoužívajú.</li>
-  <li>Elektronická žiadanka (eŽádanka) existuje od 1. 1. 2026, ale je zatiaľ <b>dobrovoľná</b>. Centrálne miesto na všetky správy pacienta v Česku neexistuje.</li>
-  <li>Preto pacienti často <b>nosia papiere a CD so snímkami sami</b> a ľudia údaje prepisujú ručne.</li></ul>`},
+   <text x="260" y="140" text-anchor="middle" font-size="13" fill="#5C6E80">Medzi nimi: telefón, e-mail, formulár, ePACS, eZpráva, papier</text></g></svg>
+  <ul><li><b>Telefón a e-mail:</b> koordinátorka vo FN Olomouc opisuje hlavne telefonovanie a e-maily na pracoviská. Obyčajný e-mail sa naozaj používa: jedna nemocnica v tendri z roku 2024 píše, že sa ním zdravotná dokumentácia posiela „mnohdy“.</li>
+  <li><b>Formuláre:</b> na Bulovku v Prahe lekár pošle vyplnený formulár (online alebo ako Word e-mailom). V MOÚ Brno vyplní žiadanku na webe. Pre centrá, ktoré operujú pankreas, ministerstvo od 1. 9. 2026 určuje ako kontakt web, e-mail a telefón koordinátora.</li>
+  <li><b>Snímky</b> (CT, MR) idú medzi nemocnicami cez <b>ePACS</b>, sieť na posielanie snímok (Bulovka ich chce cez ePACS, MOÚ Brno sa pýta, či sú dostupné v PACS). V jednej krajskej nemocnici si 15–20 % pacientov pýta snímky na CD (ČT24, 2024).</li>
+  <li><b>Vo vnútri nemocnice</b> sú správy v nemocničnom systéme (NIS). Ministerstvo chce, aby ho koordinátor používal naplno.</li>
+  <li><b>Z nemocnice k praktikovi:</b> niektoré nemocnice posielajú správy cez <b>eZprávu</b>, elektronickú sieť na lekárske správy (FN Hradec Králové, KN Zlín). FN Hradec Králové v júni 2025 napísala, že lekárom zaregistrovaným v eZpráve už správy nebude posielať poštou. Dovtedy teda chodili poštou; ako dostávajú správy ostatní, nepíše.</li>
+  <li><b>Cez pacienta:</b> pacienti niekedy stále nosia papierové správy sami (NKÚ, 2026).</li>
+  <li><b>Programy:</b> praktici majú najčastejšie CGM alebo MEDaX, nemocnice zas STAPRO, Asseco, ICZ či Medicalc. VZP píše, že sú odlišné a málo spolu komunikujú, takže lekári údaje opakovane prepisujú.</li>
+  <li><b>eŽádanka</b> (elektronická žiadanka) funguje od januára 2026, ale je <b>dobrovoľná</b>. Do konca júna 2026 ich lekári vystavili asi 2 000 skúšobne. Ministerstvo chce, aby bola od júla 2027 povinná, zatiaľ je to len plán.</li>
+  <li>Spoločné miesto pre všetky lekárske správy pacienta v Česku nie je. Štát zatiaľ centrálne zbiera laboratórne výsledky.</li>
+  <li><b>Čo nevieme:</b> koľko správ ide ktorou cestou, nikto nezverejnil. Nikto nezverejnil ani to, ako sa ku koordinátorovi dostanú správy od praktikov a ambulancií mimo nemocnice.</li></ul>
+  <p class="src">Zdroje: FN Olomouc (rozhovor s koordinátorkou, 11/2025), Zdravotnický deník 6/2026 a stránka ÚGO (Bulovka), MOÚ Brno, Metodický pokyn MZ pre HPB centrá (od 1. 9. 2026), Věstník MZ 11/2025, tender nemocnice v Tišnove (2024), FN Hradec Králové (6/2025) a KN Zlín (eZpráva), ČT24 (7/2024), NKÚ (1/2026), MZ (6/2026), Vitalia (6/2026), prezentácia VZP k výzve.</p>`},
 {q:"Čo presne postavíme?", short:"Jednu webovú appku pre koordinátora, ktorá prevedie Alenu celou cestou bez straty informácií.",
  html:`<ol style="padding-left:20px;margin:0 0 8px">
   <li><b>Prevziať:</b> praktik pošle Alenu jedným krokom, len nahrá správy, ktoré má.</li>
