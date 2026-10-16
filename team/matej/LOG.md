@@ -10,3 +10,4 @@ Najnovšie záznamy dole. Formát: `## YYYY-MM-DD HH:MM` + odrážky.
 - Trhový research hotový: docs/research/matej-trh-expanzia-uro.md (+ surové dáta matej-trh-raw.json). 8 klastrov výziev, ÚRO synergia, živá tabuľa prihlášok, 3 nezávislí hodnotitelia.
 - Z pohľadu trhu/expanzie: MDT Copilot (Asseco) + modul „Zobrazovanie a dávka“ (ÚRO); záloha MEDDI ONCO; pre ÚRO najviac PACS Comparator. Mamograf v Prahe 3 tímy, trh outreach nízko ocenený.
 - Ďalej: overiť dáta v #mdt-copilot, rozhodnúť s Brunom do 19:05.
+- 2026-10-16 18:54: Vysvetľujúca stránka „Cesta pacienta krok za krokom“ (z Brunovho researchu + ilustrácie Higgsfield): docs/cesta-krok-za-krokom/index.html, online https://claude.ai/artifact/BTtb1oMoKbUmyytR3EMGDp

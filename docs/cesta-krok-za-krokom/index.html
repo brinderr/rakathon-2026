@@ -1,0 +1,445 @@
+<title>Cesta pacienta krok za krokom</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one reading column (~44rem) of chapters; each chapter = picture + short text + one "príklad" box. Wide bands only for timeline and the 4 levels. */
+:root {
+  --paper: #f6f3ee;
+  --card: #fffdf9;
+  --ink: #23303f;
+  --ink-soft: #4d5a69;
+  --line: #e2dbd0;
+  --slate: #3d5a80;
+  --slate-soft: #e4eaf2;
+  --coral: #d0472c;
+  --coral-soft: #fbe6df;
+  --ok: #2f7a4d; --ok-soft: #e3f1e8;
+  --warn: #a8610b; --warn-soft: #fbefd9;
+  --bad: #b42318; --bad-soft: #fde8e6;
+  --font-display: "Bricolage Grotesque", "Source Sans 3", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Source Sans Pro", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #171c23; --card: #1f2630; --ink: #ece7df; --ink-soft: #b7b0a6; --line: #333c48;
+  --slate: #9db6d8; --slate-soft: #26344a; --coral: #f08467; --coral-soft: #3a2420;
+  --ok: #7fcf9b; --ok-soft: #1f3328; --warn: #f0b45a; --warn-soft: #3a2e19; --bad: #f59a8f; --bad-soft: #3d2220;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #171c23; --card: #1f2630; --ink: #ece7df; --ink-soft: #b7b0a6; --line: #333c48;
+  --slate: #9db6d8; --slate-soft: #26344a; --coral: #f08467; --coral-soft: #3a2420;
+  --ok: #7fcf9b; --ok-soft: #1f3328; --warn: #f0b45a; --warn-soft: #3a2e19; --bad: #f59a8f; --bad-soft: #3d2220;
+  color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.6 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 46rem; margin: 0 auto; }
+.wide { max-width: 68rem; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 800; letter-spacing: -.02em; }
+h2 { font-size: clamp(1.6rem, 3.6vw, 2.2rem); font-weight: 700; letter-spacing: -.01em; }
+h3 { font-size: 1.2rem; font-weight: 700; }
+p { margin: 0; }
+a { color: var(--slate); }
+img { display: block; width: 100%; height: auto; border-radius: 14px; }
+.mono { font-family: var(--font-mono); font-size: .8rem; letter-spacing: .04em; }
+.kicker { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--coral); }
+.muted { color: var(--ink-soft); }
+.tab { font-variant-numeric: tabular-nums; }
+
+/* hero */
+header.hero { padding-block: 3rem 2rem; display: grid; gap: 1.25rem; }
+.hero .lead { font-size: 1.25rem; max-width: 40rem; }
+.oneliner { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.25rem; font-size: 1.1rem; }
+.oneliner b { color: var(--coral); }
+nav.toc { display: flex; flex-wrap: wrap; gap: .5rem; }
+nav.toc a { text-decoration: none; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: .35rem .8rem; font-size: .9rem; }
+nav.toc a:hover, nav.toc a:focus-visible { border-color: var(--slate); outline: none; }
+nav.toc a .n { font-family: var(--font-mono); color: var(--coral); margin-right: .35rem; }
+
+/* chapters */
+section { padding-block: 2.75rem; border-top: 1px solid var(--line); }
+.ch-head { display: grid; gap: .5rem; margin-bottom: 1.25rem; }
+.stack { display: grid; gap: 1rem; }
+.figure { display: grid; gap: .4rem; }
+.figure figcaption { font-size: .9rem; color: var(--ink-soft); }
+
+.example { background: var(--slate-soft); border-radius: 14px; padding: 1rem 1.15rem; display: grid; gap: .35rem; }
+.example .lbl { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--slate); }
+.kid { background: var(--coral-soft); border-radius: 14px; padding: 1rem 1.15rem; display: grid; gap: .35rem; }
+.kid .lbl { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--coral); }
+
+/* glossary */
+.gloss { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .75rem; }
+.term { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: .9rem 1rem; display: grid; gap: .3rem; align-content: start; }
+.term dt { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; }
+.term dt small { font-family: var(--font-body); font-weight: 400; color: var(--ink-soft); font-size: .85rem; margin-left: .3rem; }
+.term dd { margin: 0; }
+.term .like { color: var(--ink-soft); font-size: .92rem; font-style: italic; }
+
+/* cast */
+.cast { display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: .75rem; }
+.who { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: .9rem 1rem; display: grid; gap: .25rem; align-content: start; }
+.who .role { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.who.star { border: 2px solid var(--coral); }
+.who.star .role { color: var(--coral); }
+
+/* timeline */
+.days { display: grid; gap: .6rem; }
+.daybar { display: flex; width: 100%; min-height: 3.4rem; border-radius: 12px; overflow: hidden; }
+.daybar > div { display: grid; align-content: center; padding: .4rem .6rem; color: #fff; min-width: 0; }
+.daybar .b1 { background: #6b7f99; } .daybar .b2 { background: var(--coral); } .daybar .b3 { background: #2f7a4d; }
+.daybar b { font-family: var(--font-display); font-size: 1.25rem; line-height: 1; }
+.daybar span { font-size: .8rem; line-height: 1.2; overflow-wrap: anywhere; }
+.steps { display: grid; gap: 0; position: relative; margin-top: 1rem; }
+.step { display: grid; grid-template-columns: 5.4rem 1fr; gap: 1rem; padding-block: .85rem; border-bottom: 1px dashed var(--line); }
+.step:last-child { border-bottom: 0; }
+.step .date { font-family: var(--font-mono); font-size: .85rem; color: var(--ink-soft); padding-top: .15rem; }
+.step .what { display: grid; gap: .3rem; min-width: 0; }
+.step .oops { font-size: .93rem; color: var(--bad); background: var(--bad-soft); border-radius: 8px; padding: .3rem .6rem; justify-self: start; }
+.step .fine { font-size: .93rem; color: var(--ok); background: var(--ok-soft); border-radius: 8px; padding: .3rem .6rem; justify-self: start; }
+.step.big .what h3 { color: var(--coral); }
+
+/* holes */
+.holes { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); gap: .75rem; }
+.hole { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1rem; display: grid; gap: .45rem; align-content: start; }
+.hole .num { font-family: var(--font-display); font-weight: 800; font-size: 2rem; color: var(--coral); line-height: 1; }
+.hole .ex { font-size: .92rem; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: .45rem; }
+
+/* channels */
+.chan { display: grid; gap: .5rem; }
+.chan-row { display: grid; grid-template-columns: 8.5rem 1fr; gap: .75rem; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: .65rem .9rem; }
+.chan-row b { font-family: var(--font-display); }
+
+/* levels */
+.levels { display: grid; gap: 1rem; }
+.level { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 1.2rem; display: grid; grid-template-columns: 3.2rem 1fr; gap: 1rem; }
+.level .lv { width: 3.2rem; height: 3.2rem; border-radius: 50%; background: var(--slate); color: var(--card); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; }
+.level .body { display: grid; gap: .55rem; min-width: 0; }
+.level .done { font-size: .93rem; color: var(--ok); }
+.level .done b { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; margin-right: .3rem; }
+.screen { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: .9rem; }
+.screen .bar { background: var(--slate-soft); padding: .35rem .7rem; font-family: var(--font-mono); font-size: .72rem; color: var(--slate); }
+.screen table { width: 100%; border-collapse: collapse; }
+.screen td { padding: .4rem .7rem; border-top: 1px solid var(--line); vertical-align: top; }
+.screen td:first-child { width: 42%; color: var(--ink-soft); }
+.pill { display: inline-block; border-radius: 999px; padding: .05rem .55rem; font-size: .78rem; font-weight: 600; white-space: nowrap; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.miss { background: var(--bad-soft); color: var(--bad); }
+.pill.clash { background: var(--warn-soft); color: var(--warn); }
+.pill.info { background: var(--slate-soft); color: var(--slate); }
+.overflow { overflow-x: auto; }
+
+/* traps */
+.traps { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .75rem; }
+.trap { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1rem; display: grid; gap: .45rem; align-content: start; }
+.trap .say { font-size: .92rem; background: var(--paper); border-radius: 8px; padding: .45rem .6rem; }
+
+/* numbers */
+.nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .75rem; }
+.num-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1rem; display: grid; gap: .3rem; align-content: start; }
+.num-card .big { font-family: var(--font-display); font-weight: 800; font-size: 2.1rem; line-height: 1; color: var(--slate); font-variant-numeric: tabular-nums; }
+.num-card .src { font-size: .8rem; color: var(--ink-soft); }
+
+.quote { border-left: 4px solid var(--coral); padding: .4rem 0 .4rem 1rem; font-family: var(--font-display); font-size: 1.3rem; line-height: 1.3; }
+.quote cite { display: block; margin-top: .4rem; font: 400 .9rem/1.4 var(--font-body); color: var(--ink-soft); font-style: normal; }
+
+.rules { display: grid; gap: .5rem; padding: 0; margin: 0; list-style: none; }
+.rules li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: .65rem .9rem; display: grid; grid-template-columns: 1.6rem 1fr; gap: .5rem; }
+.rules li::before { content: "✓"; color: var(--ok); font-weight: 700; }
+.rules li.no::before { content: "✕"; color: var(--bad); }
+
+footer { padding-block: 2.5rem 3rem; border-top: 1px solid var(--line); font-size: .9rem; color: var(--ink-soft); display: grid; gap: .5rem; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: center; }
+@media (max-width: 720px) {
+  .two { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 1fr; gap: .2rem; }
+  .chan-row { grid-template-columns: 1fr; gap: .15rem; }
+  .level { grid-template-columns: 1fr; }
+  .daybar span { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wide">
+<header class="hero">
+  <span class="kicker">Rakathon 2026 · výzva VZP · radiQA</span>
+  <h1>Cesta pacienta<br>krok za krokom</h1>
+  <p class="lead">Čo sa deje, keď má niekto podozrenie na rakovinu, kde sa po ceste strácajú papiere a čo s tým za jednu noc postavíme. Vysvetlené tak, aby to pochopil aj desaťročný chalan.</p>
+  <p class="oneliner">Jednou vetou: <b>správy o pacientovi sú rozhádzané po mnohých lekároch</b>, koordinátor v nemocnici ich ručne naháňa, lekári na porade nemajú všetko včas a obvodný lekár sa nedozvie, ako sa rozhodlo. <b>Pacient tak stráca dni pred liečbou.</b></p>
+  <nav class="toc" aria-label="Obsah">
+    <a href="#slovnik"><span class="n">1</span>Slovníček</a>
+    <a href="#postavy"><span class="n">2</span>Kto je v príbehu</a>
+    <a href="#pribeh"><span class="n">3</span>Príbeh Aleny</a>
+    <a href="#diery"><span class="n">4</span>Tri diery</a>
+    <a href="#kanaly"><span class="n">5</span>Prečo je to ťažké</a>
+    <a href="#riesenie"><span class="n">6</span>Naše riešenie</a>
+    <a href="#pasce"><span class="n">7</span>Pasce v dátach</a>
+    <a href="#snimky"><span class="n">8</span>Snímky a žiarenie</a>
+    <a href="#cisla"><span class="n">9</span>Čísla</a>
+    <a href="#vzp"><span class="n">10</span>Prečo to chce VZP</a>
+  </nav>
+</header>
+</div>
+
+<!-- 1 -->
+<section id="slovnik"><div class="wide">
+  <div class="ch-head wrap" style="margin-left:0">
+    <span class="kicker">Kapitola 1</span>
+    <h2>Slovníček: 8 slov, ktoré budeš počuť</h2>
+    <p class="muted">Ku každému slovu je obyčajné prirovnanie. Keď sa v texte stratíš, vráť sa sem.</p>
+  </div>
+  <dl class="gloss">
+    <div class="term"><dt>Praktik <small>PL, obvodný lekár</small></dt><dd>Tvoj lekár „za rohom“. Väčšinou ako prvý zistí, že niečo nie je v poriadku.</dd><dd class="like">Ako triedna učiteľka: pozná ťa najlepšie a pošle ťa ďalej.</dd></div>
+    <div class="term"><dt>KOC <small>komplexné onkologické centrum</small></dt><dd>Veľká nemocnica, ktorá má všetkých odborníkov na rakovinu pod jednou strechou. V ČR ich je 15 (a 2 pre deti).</dd><dd class="like">Ako hlavná stanica, kam sa zbiehajú všetky vlaky.</dd></div>
+    <div class="term"><dt>Koordinátor</dt><dd>Nová pozícia od 1. 1. 2026. Dispečer pacienta: objednáva vyšetrenia, stráži termíny, zbiera papiere. <b>Nelieči a nemusí byť zdravotník.</b></dd><dd class="like">Ako výpravca na stanici: nešoféruje, ale stráži, aby vlak šiel načas.</dd></div>
+    <div class="term"><dt>Konzílium <small>MDT</small></dt><dd>Porada lekárov rôznych odborov (chirurg, onkológ, rádiológ, patológ), ktorá rozhodne, ako sa bude pacient liečiť.</dd><dd class="like">Ako porada trénerov pred dôležitým zápasom.</dd></div>
+    <div class="term"><dt>Handover <small>podklad pre konzílium</small></dt><dd>Jedno zhrnutie všetkého o pacientovi, ktoré lekári na porade potrebujú.</dd><dd class="like">Ťahák na skúšku, kde je všetko podstatné na jednej strane.</dd></div>
+    <div class="term"><dt>NIS / AIS</dt><dd>Softvér nemocnice (NIS) a softvér ambulancie praktika (AIS). Každý môže mať iný a navzájom sa nepoznajú.</dd><dd class="like">Ako keby každá trieda mala inú žiacku knižku, ktorú tá druhá nevie prečítať.</dd></div>
+    <div class="term"><dt>Histológia, CT, onkomarkery</dt><dd>Výsledky vyšetrení: vzorka tkaniva pod mikroskopom, röntgenové „krájanie“ tela, krvné hodnoty, ktoré stúpajú pri rakovine.</dd><dd class="like">Dôkazy, ktoré si detektív zbiera do spisu.</dd></div>
+    <div class="term"><dt>ECOG <small>výkonnostný stav</small></dt><dd>Číslo 0–4, ako dobre pacient zvláda bežný deň (0 = úplne fit, 4 = leží). Lekári podľa neho vyberajú liečbu.</dd><dd class="like">Ako „energia“ postavy v hre.</dd></div>
+  </dl>
+</div></section>
+
+<!-- 2 -->
+<section id="postavy"><div class="wide">
+  <div class="two">
+    <div class="ch-head">
+      <span class="kicker">Kapitola 2</span>
+      <h2>Kto je v príbehu</h2>
+      <p>Pacient nejde jednou rovnou cestou. Prechádza cez 5 až 7 rôznych miest a každé má vlastné papiere. Medzi nimi stojí jedna osoba, ktorá to celé drží pokope: <b>koordinátor</b>. Pre neho staviame aplikáciu.</p>
+    </div>
+    <figure class="figure" style="margin:0"><img src="img/3.webp" alt="Ilustrácia: koordinátorka pri stole s telefónom, lepiacimi papierikmi, plnou e-mailovou schránkou a kopou šanónov." loading="lazy"><figcaption>Koordinátor dnes: telefón, e-mail, lepiace papieriky a kopa šanónov.</figcaption></figure>
+  </div>
+  <div class="cast" style="margin-top:1.25rem">
+    <div class="who"><span class="role">Pacient</span><b>Alena, 63 rokov</b><span class="muted">Má bolesti brucha. Nevie, čo ju čaká, a bojí sa.</span></div>
+    <div class="who"><span class="role">Praktik</span><b>Obvodná lekárka</b><span class="muted">Prvá na rade. Pošle Alenu ďalej, ale potom sa nedozvie, ako to dopadlo.</span></div>
+    <div class="who"><span class="role">Odborníci</span><b>Laboratórium, rádiológia, gastroenterológ</b><span class="muted">Každý napíše vlastnú správu, každý v inej budove.</span></div>
+    <div class="who star"><span class="role">Náš používateľ</span><b>Koordinátor v KOC</b><span class="muted">Zbiera všetky správy, objednáva vyšetrenia, chystá podklad pre poradu lekárov.</span></div>
+    <div class="who"><span class="role">Rozhodujú</span><b>Konzílium (MDT)</b><span class="muted">Lekári rôznych odborov spolu rozhodnú o liečbe.</span></div>
+    <div class="who"><span class="role">Platí</span><b>Poisťovňa (napr. VZP)</b><span class="muted">Platí liečbu aj prácu koordinátora: 250 Kč za výkon.</span></div>
+  </div>
+</div></section>
+
+<!-- 3 -->
+<section id="pribeh"><div class="wide">
+  <div class="two">
+    <figure class="figure" style="margin:0"><img src="img/1.webp" alt="Ilustrácia: staršia žena pri kuchynskom stole drží sa za brucho, okolo nej rozhádzané lekárske správy, röntgen a CD." loading="lazy"><figcaption>Alena a jej rozhádzané papiere. Vymyslená pacientka zo zadania VZP.</figcaption></figure>
+    <div class="ch-head">
+      <span class="kicker">Kapitola 3</span>
+      <h2>Príbeh Aleny, deň po dni</h2>
+      <p>Toto je súťažný prípad, ktorý nám dala VZP: <b>13 správ z rôznych pracovísk</b>. Alena je vymyslená, ale jej cesta je typická. Sleduj, kde sa stráca čas.</p>
+    </div>
+  </div>
+
+  <div class="days" style="margin-top:1.5rem">
+    <p class="mono muted">Od prvej návštevy u praktika po rozhodnutie lekárov: 50 dní</p>
+    <div class="daybar tab" role="img" aria-label="31 dní pred onkologickým centrom, 19 dní v centre do konzília, 14 dní do začiatku liečby">
+      <div class="b1" style="flex:31"><b>31 dní</b><span>pred centrom: praktik, antibiotiká, čakanie na odborníka a ultrazvuk</span></div>
+      <div class="b2" style="flex:19"><b>19 dní</b><span>v centre: koordinátor zbiera papiere, CT, biopsia</span></div>
+      <div class="b3" style="flex:14"><b>14 dní</b><span>po konzíliu: termín u onkológa</span></div>
+    </div>
+    <p class="muted" style="font-size:.92rem">Pre porovnanie: pán Novák z prezentácie VZP to zvládol za 21 dní od príznaku po operáciu. To je ten dobrý prípad.</p>
+  </div>
+
+  <div class="steps wrap" style="margin-left:0">
+    <div class="step"><span class="date tab">1. 9.</span><div class="what"><h3>Alena ide k praktikovi</h3><p>Bolí ju brucho, má teplotu a mierne žlté oči. Praktik pošle krv a moč do laboratória a nechá urobiť röntgen pľúc.</p><span class="fine">Dobre: rýchla reakcia</span></div></div>
+    <div class="step"><span class="date tab">2.–4. 9.</span><div class="what"><h3>Antibiotiká „naslepo“</h3><p>Praktik si myslí, že ide o infekciu, a dá antibiotiká. Objedná ju ku gastroenterológovi.</p><span class="oops">Pokazilo sa: skutočná príčina sa zatiaľ nehľadá</span></div></div>
+    <div class="step"><span class="date tab">15. 9.</span><div class="what"><h3>U gastroenterológa</h3><p>Čakala 11 dní. Odborník zistí, že schudla 4 kg, a objedná ultrazvuk „na najbližší voľný termín“.</p><span class="oops">Pokazilo sa: 11 + 14 dní čakania na termíny</span></div></div>
+    <div class="step"><span class="date tab">29. 9.</span><div class="what"><h3>Ultrazvuk: nález na pankrease</h3><p>Rádiológ vidí 3,4 cm útvar, podozrivý z rakoviny. Správa ide ku gastroenterológovi, Alena s nálezom sama späť k praktikovi.</p><span class="oops">Pokazilo sa: papier ide inou cestou ako pacientka</span></div></div>
+    <div class="step big"><span class="date tab">2. 10.</span><div class="what"><h3>Praktik pošle Alenu do KOC</h3><p>Napíše žiadosť koordinátorovi. Ale <b>výsledky vyšetrení v nej nie sú</b>, len zoznam, kde sa dajú nájsť.</p><span class="oops">Pokazilo sa: koordinátor musí 6 správ naháňať sám</span></div></div>
+    <div class="step"><span class="date tab">8. 10.</span><div class="what"><h3>CT v inej nemocnici</h3><p>V „domácom“ centre (KOC 2) nebol voľný termín, tak koordinátor objedná CT v inom centre (KOC 1).</p><span class="oops">Pozor: sú snímky z KOC 1 dostupné v KOC 2? Správa to nehovorí.</span></div></div>
+    <div class="step"><span class="date tab">12.–19. 10.</span><div class="what"><h3>Biopsia, krv, histológia</h3><p>Vzorka z pankreasu, kontrolné odbery, výsledok z mikroskopu. Potvrdí sa rakovina.</p><span class="oops">Pokazilo sa: histológia prišla o 2 dni neskôr, než sľúbili</span></div></div>
+    <div class="step big"><span class="date tab">21. 10.</span><div class="what"><h3>Konzílium rozhodne</h3><p>Lekári odporučia najprv chemoterapiu, potom možno operáciu. <b>Ich podklad musí byť hotový a úplný práve k tomuto dňu.</b></p><span class="oops">Chýbalo: výkonnostný stav (ECOG) nikde nebol</span></div></div>
+    <div class="step"><span class="date tab">po 21. 10.</span><div class="what"><h3>Záver by mal ísť praktikovi</h3><p>Zákon hovorí, že praktik má dostať správu „bez zbytočného odkladu“. Ale neurčuje ako, a nikto nepotvrdzuje, že ju dostal.</p><span class="oops">Pokazilo sa: slučka sa neuzavrie</span></div></div>
+  </div>
+
+  <div class="kid wrap" style="margin-left:0;margin-top:1rem"><span class="lbl">Ako pre desaťročného</span><p>Predstav si štafetu, kde si bežci odovzdávajú kolík. Lenže tu má každý bežec iný kolík, niekto ho zabudne odovzdať a posledný bežec sa nikdy nedozvie, či tím vyhral. Koordinátor beží celý čas popri trati a zbiera spadnuté kolíky.</p></div>
+</div></section>
+
+<!-- 4 -->
+<section id="diery"><div class="wide">
+  <div class="two">
+    <div class="ch-head">
+      <span class="kicker">Kapitola 4</span>
+      <h2>Tri diery, kadiaľ informácie unikajú</h2>
+      <p>VZP v zadaní presne pomenovala tri miesta, kde sa veci strácajú. Naša aplikácia má zaplátať všetky tri.</p>
+    </div>
+    <figure class="figure" style="margin:0"><img src="img/2.webp" alt="Ilustrácia: mapa mestečka s piatimi budovami spojenými bodkovanými cestičkami, po ktorých letia papiere a niektoré padajú do trávy." loading="lazy"><figcaption>Papiere letia medzi budovami. Niektoré cestou spadnú do trávy.</figcaption></figure>
+  </div>
+  <div class="holes" style="margin-top:1.25rem">
+    <div class="hole"><span class="num">1</span><h3>Na vstupe</h3><p>Správy chodia neúplné a rôznymi kanálmi. Lekári prepisujú údaje, ktoré už niekde sú.</p><p class="ex">U Aleny: žiadosť z 2. 10. nemala ani jeden výsledok, len zoznam 5 pracovísk.</p></div>
+    <div class="hole"><span class="num">2</span><h3>Vnútri centra</h3><p>Koordinátor dohľadáva papiere namiesto koordinovania. Nikto nevidí, čo chýba a <b>kto je na ťahu</b>.</p><p class="ex">U Aleny: termíny CT, biopsie a odberov má koordinátor v hlave a v e-mailoch.</p></div>
+    <div class="hole"><span class="num">3</span><h3>Na výstupe</h3><p>Praktik sa nedozvie, či centrum pacienta prijalo, čo chýba a ako lekári rozhodli.</p><p class="ex">U Aleny: záver z 21. 10. nemá žiadne potvrdenie, že ho praktik dostal.</p></div>
+  </div>
+</div></section>
+
+<!-- 5 -->
+<section id="kanaly"><div class="wrap">
+  <div class="ch-head">
+    <span class="kicker">Kapitola 5</span>
+    <h2>Prečo to nejde jednoducho</h2>
+    <p>Neexistuje jedna „diaľnica“ pre údaje pacienta. Informácie idú naraz mnohými cestičkami:</p>
+  </div>
+  <div class="chan">
+    <div class="chan-row"><b>Papier a CD</b><span>Úplne legálne a bežné. Pacient často nosí správy a CD so snímkami sám v taške.</span></div>
+    <div class="chan-row"><b>Telefón</b><span>Veľa sa dohodne telefonicky a nikde sa to nezapíše.</span></div>
+    <div class="chan-row"><b>E-mail</b><span>Používa sa, ale zdravotné údaje by mali ísť šifrovane, takže niektoré nemocnice ho nepoužívajú vôbec.</span></div>
+    <div class="chan-row"><b>Siete firiem</b><span>Každá firma má vlastnú sieť (CGM, ICZ, STAPRO, Medicalc). Fungujú len vnútri seba, medzi sebou nie.</span></div>
+    <div class="chan-row"><b>ePACS</b><span>Sieť na posielanie snímok CT a MR. Pripojené sú skoro všetky nemocnice, ale ňou išli len asi 4 % vyšetrení (údaj z roku 2018).</span></div>
+    <div class="chan-row"><b>eŽádanka</b><span>Elektronická žiadanka od 1. 1. 2026. Prijať ju je povinné, vystaviť zatiaľ dobrovoľné.</span></div>
+  </div>
+  <div class="example" style="margin-top:1rem"><span class="lbl">Čo z toho vyplýva</span><p>Správy sú často PDF alebo sken, ktorý počítač „nevie prečítať“. Ľudia preto údaje stále dookola <b>prepisujú</b>. A práve tu pomôže AI: vie čítať aj neusporiadaný text.</p></div>
+</div></section>
+
+<!-- 6 -->
+<section id="riesenie"><div class="wide">
+  <div class="two">
+    <div class="ch-head">
+      <span class="kicker">Kapitola 6</span>
+      <h2>Naše riešenie: 4 levely</h2>
+      <p>VZP chce funkčný prototyp, ktorý prevedie <b>jeden prípad</b> od odoslania až po spätnú väzbu bez straty informácií. Rozdelili sme to na 4 levely, presne podľa zadania. Pri každom je príklad z Aleny.</p>
+    </div>
+    <figure class="figure" style="margin:0"><img src="img/5.webp" alt="Ilustrácia: pomocník premení kopu papierov na jeden úhľadný kontrolný zoznam s fajkami, otáznikom a výstrahou; lupa ukazuje zdrojovú vetu; ľudská ruka s perom potvrdzuje." loading="lazy"><figcaption>AI urobí z kopy papierov jeden prehľad. Pri každom údaji ukáže, odkiaľ ho vzala. Potvrdí človek.</figcaption></figure>
+  </div>
+
+  <div class="levels" style="margin-top:1.5rem">
+    <div class="level"><div class="lv">1</div><div class="body">
+      <h3>Prevziať: jedno miesto na odovzdanie</h3>
+      <p>Praktik vyberie centrum a <b>iba pretiahne</b> správy, ktoré má. Žiadny nový dlhý formulár.</p>
+      <div class="example"><span class="lbl">Príklad z Aleny</span><p>Praktička pretiahne svoju žiadosť z 2. 10. a klikne „Odoslať do KOC 2“. Koordinátor má prípad v jednom kroku.</p></div>
+      <p class="done"><b>Hotovo, keď</b>koordinátor dostane všetko o pacientovi naraz.</p>
+    </div></div>
+
+    <div class="level"><div class="lv">2</div><div class="body">
+      <h3>Vyťažiť: AI urobí prehľad a nájde diery</h3>
+      <p>AI prečíta všetky správy a vyplní šablónu podklad pre konzílium (meno, diagnóza, lieky, alergie, vyšetrenia, laboratórium, histológia…). Pri každom údaji je <b>doslovná veta zo zdroja</b>. Čo chýba alebo si odporuje, je označené. Lekár skontroluje a potvrdí.</p>
+      <div class="screen overflow"><div class="bar">Ukážka: podklad pre konzílium · Alena P. · 18 z 20 polí</div>
+        <table>
+          <tr><td>Diagnóza</td><td>nádor hlavy pankreasu, 34 × 30 mm <span class="pill ok">zdroj: správa 06, ultrazvuk</span></td></tr>
+          <tr><td>Lieky</td><td>apixaban (riedenie krvi) <span class="pill ok">zdroj: správa 01, kardiológ</span></td></tr>
+          <tr><td>Výkonnostný stav (ECOG)</td><td><span class="pill miss">chýba</span> nikde v 13 správach · <a href="#pasce">vyžiadať</a></td></tr>
+          <tr><td>Posledná dávka apixabanu</td><td>„18. 10.“ pri výkone 12. 10. <span class="pill clash">rozpor dátumov</span></td></tr>
+          <tr><td>Váha</td><td>65 kg (15. 9.) <span class="pill info">69 kg v júli, 63 kg až po konzíliu</span></td></tr>
+        </table>
+      </div>
+      <p class="done"><b>Hotovo, keď</b>koordinátor vidí lekárom potvrdený prehľad aj zoznam toho, čo chýba.</p>
+    </div></div>
+
+    <div class="level"><div class="lv">3</div><div class="body">
+      <h3>Koordinovať: kto je na ťahu a dokedy</h3>
+      <p>Nástenka koordinátora so stavmi <b>nový / aktívny / odložený</b>. Pri pacientovi je plán krokov v správnom poradí, každý s vlastníkom a termínom. Keď sa termín minie, aplikácia upozorní.</p>
+      <div class="screen overflow"><div class="bar">Ukážka: plán pre Alenu</div>
+        <table>
+          <tr><td>CT (KOC 1)</td><td>8. 10. <span class="pill ok">hotovo</span></td></tr>
+          <tr><td>Biopsia</td><td>12. 10. · endoskopia KOC 2 <span class="pill ok">hotovo</span></td></tr>
+          <tr><td>Histológia</td><td>sľúbená do 15. 10., prišla 19. 10. <span class="pill clash">meškala</span></td></tr>
+          <tr><td>Doplniť ECOG</td><td>na ťahu: onkologická ambulancia · do 20. 10. <span class="pill miss">otvorené</span></td></tr>
+          <tr><td>Konzílium</td><td>21. 10. <span class="pill info">naplánované</span></td></tr>
+        </table>
+      </div>
+      <p class="done"><b>Hotovo, keď</b>je pri každom pacientovi vidno stav, termín a kto je na ťahu.</p>
+    </div></div>
+
+    <div class="level"><div class="lv">4</div><div class="body">
+      <h3>Spätná väzba: uzavrieť slučku</h3>
+      <p>Po konzíliu aplikácia pošle záver praktikovi aj s pôvodným kontextom, revízny lekár poisťovne dostane informáciu automaticky. Prípad sa uzavrie, až keď je doručenie <b>potvrdené</b>.</p>
+      <div class="example"><span class="lbl">Príklad z Aleny</span><p>22. 10.: „Záver konzília odoslaný MUDr. … (Dolní Břežany). Doručené ✓ Otvorené ✓“. Praktička vie, že Alena ide na chemoterapiu a čo má sledovať.</p></div>
+      <p class="done"><b>Hotovo, keď</b>praktik má výsledok aj s kontextom a odovzdanie je potvrdené.</p>
+    </div></div>
+  </div>
+
+  <div class="two" style="margin-top:1.5rem">
+    <figure class="figure" style="margin:0"><img src="img/6.webp" alt="Ilustrácia: obvodná lekárka s úsmevom dostáva na obrazovke obálku s fajkou; bodkovaná čiara sa vracia z nemocnice späť k nej a uzatvára kruh." loading="lazy"><figcaption>Slučka je uzavretá: praktička dostala výsledok a vie, že ho dostala.</figcaption></figure>
+    <div class="kid"><span class="lbl">Ako pre desaťročného</span><p>Level 1: odovzdáš všetky papiere naraz. Level 2: šikovný pomocník ich prečíta a urobí z nich jeden ťahák, pri každej vete ukáže, z ktorej strany ju opísal. Level 3: na nástenke vidíš, kto má teraz loptu. Level 4: keď je zápas dohraný, výsledok dostane aj tréner, ktorý hráča poslal, a potvrdí „mám to“.</p></div>
+  </div>
+</div></section>
+
+<!-- 7 -->
+<section id="pasce"><div class="wide">
+  <div class="ch-head wrap" style="margin-left:0">
+    <span class="kicker">Kapitola 7</span>
+    <h2>Pasce v dátach: čo musí AI nájsť</h2>
+    <p>V 13 správach Aleny sú schválne aj omylom schované chyby. Bruno ich našiel 13. Dobrá aplikácia ich označí a <b>nič si nedomyslí</b>. Tu je 8 najdôležitejších:</p>
+  </div>
+  <div class="traps">
+    <div class="trap"><span class="pill miss">chýba</span><h3>Výkonnostný stav (ECOG)</h3><p>Nie je v žiadnej správe. Lekári ho na porade potrebujú na výber liečby.</p><p class="say">Aplikácia: „Chýba ECOG. Vyžiadať od onkologickej ambulancie.“</p></div>
+    <div class="trap"><span class="pill clash">rozpor</span><h3>Nemožný dátum lieku</h3><p>Výkon bol 12. 10., ale posledná dávka lieku na riedenie krvi je napísaná na 18. 10.</p><p class="say">Aplikácia: „Dátumy si odporujú. Neopravujem, overte.“</p></div>
+    <div class="trap"><span class="pill clash">rozpor</span><h3>Histológia z budúcnosti</h3><p>Vzorka „odobraná 20. 10.“, ale správa je vydaná 19. 10.</p><p class="say">Aplikácia: označí rozpor, nehádá.</p></div>
+    <div class="trap"><span class="pill info">pozor na čas</span><h3>Správy po konzíliu</h3><p>Správy 12 a 13 (bolesť, psychológ) vznikli až po 21. 10. Do podkladu nepatria.</p><p class="say">Aplikácia: ukáže ich zašednuté s poznámkou „po termíne konzília“.</p></div>
+    <div class="trap"><span class="pill info">viac verzií</span><h3>Tri rôzne váhy</h3><p>69 kg v júli, 65 kg v septembri, 63 kg po konzíliu.</p><p class="say">Aplikácia: použije 65 kg s dátumom a zdrojom.</p></div>
+    <div class="trap"><span class="pill info">všetko, nie výber</span><h3>Onkomarkery</h3><p>Vysoké je CA 19-9, ale mierne zvýšené je aj CA 125. Vzorový záver spomína len prvé.</p><p class="say">Aplikácia: dá do podkladu všetky hodnoty.</p></div>
+    <div class="trap"><span class="pill miss">chýba</span><h3>Snímky z iného centra</h3><p>CT bolo v KOC 1, konzílium je v KOC 2. Nikto nepísal, či rádiológ snímky vidí.</p><p class="say">Aplikácia: „Overiť dostupnosť snímok z KOC 1.“</p></div>
+    <div class="trap"><span class="pill clash">vágne</span><h3>Neurčitá otázka</h3><p>Praktik sa pýta len „dokončiť diagnostiku a určiť postup“.</p><p class="say">Aplikácia: navrhne doplniť konkrétnu otázku pre lekárov.</p></div>
+  </div>
+  <div class="example wrap" style="margin-left:0;margin-top:1rem"><span class="lbl">Zaujímavosť</span><p>Alena má v správach poisťovňu „211“. To nie je VZP (VZP má kód 111). Aplikácia preto nesmie byť len pre VZP, musí fungovať pre každú poisťovňu.</p></div>
+</div></section>
+
+<!-- 8 -->
+<section id="snimky"><div class="wrap">
+  <div class="ch-head">
+    <span class="kicker">Kapitola 8 · Maťova stopa</span>
+    <h2>Riadok „Snímky a žiarenie“</h2>
+    <p>Matej pracuje v radiačnej ochrane. Do podkladu pridáme jeden riadok, ktorý nikto iný mať nebude.</p>
+  </div>
+  <div class="stack">
+    <div class="example"><span class="lbl">Čo ukáže</span><p>Zoznam CT, MR a PET, ktoré pacient už mal, kde sú a či ich rádiológ v centre vidí. Ak by sa malo rovnaké CT robiť znova príliš skoro, aplikácia upozorní. K tomu orientačná dávka žiarenia, jasne označená ako odhad.</p></div>
+    <div class="kid"><span class="lbl">Prečo na tom záleží</span><p>Každé CT je dávka žiarenia, ako keby si stál dlho na slnku. Keď sa snímky stratia, robí sa CT znova a pacient dostane dávku navyše úplne zbytočne. Európske pravidlá (smernica Euratom 2013/59, čl. 55) hovoria, že pred vyšetrením treba zohnať predchádzajúce výsledky.</p></div>
+    <div class="example"><span class="lbl">Príklad z Aleny</span><p>CT 8. 10. v KOC 1 → konzílium 21. 10. v KOC 2 → riadok: „Snímky CT z KOC 1: dostupnosť neoverená. Neobjednávať nové CT, vyžiadať cez ePACS.“</p></div>
+  </div>
+</div></section>
+
+<!-- 9 -->
+<section id="cisla"><div class="wide">
+  <div class="ch-head wrap" style="margin-left:0">
+    <span class="kicker">Kapitola 9</span>
+    <h2>Čísla, ktoré sa oplatí poznať</h2>
+    <p class="muted">Všetky overené z oficiálnych zdrojov. Tieto môžeme použiť v prezentácii.</p>
+  </div>
+  <div class="nums">
+    <div class="num-card"><span class="big">15</span><p>komplexných onkologických centier pre dospelých v ČR (+2 pre deti)</p><span class="src">Zoznam MZ, február 2026</span></div>
+    <div class="num-card"><span class="big">1. 1. 2026</span><p>odkedy musí mať každé centrum aspoň jedného koordinátora</p><span class="src">Věstník MZ 11/2025</span></div>
+    <div class="num-card"><span class="big">250 Kč</span><p>platí poisťovňa nemocnici za jeden výkon koordinátora</p><span class="src">MZ, 2. 9. 2026</span></div>
+    <div class="num-card"><span class="big">0</span><p>špeciálnych programov pre koordinátora. Pracuje v bežnom nemocničnom systéme, e-maile a telefóne.</p><span class="src">MZ, zadanie VZP</span></div>
+    <div class="num-card"><span class="big">&gt; 60 %</span><p>pacientov s rakovinou pľúc nezačne liečbu do 8 týždňov od CT</p><span class="src">MZ ČR, 2. 9. 2026</span></div>
+    <div class="num-card"><span class="big">~60 %</span><p>nových pacientov prejde konzíliom. Odporúča sa 80 %.</p><span class="src">OECD / EK, profil ČR 2025</span></div>
+    <div class="num-card"><span class="big">82 395</span><p>nových prípadov rakoviny ročne v ČR (vrátane kožných), 27 050 úmrtí</p><span class="src">ÚZIS, rok 2021</span></div>
+    <div class="num-card"><span class="big">4 %</span><p>vyšetrení išlo sieťou ePACS na zdieľanie snímok (rok 2018)</p><span class="src">Applied Clinical Informatics 2020</span></div>
+  </div>
+  <div class="example wrap" style="margin-left:0;margin-top:1rem"><span class="lbl">Slovensko na porovnanie</span><p>Komplexné centrá ani oficiálneho koordinátora tam zatiaľ nemajú. Štátny systém OnkoAsist mal skrátiť cestu k liečbe zo 160–185 dní na ~60 dní. Tender za takmer 11 mil. € od roku 2023 stále nie je dodaný. Problém je skutočný a štát ho nevie rýchlo vyriešiť.</p></div>
+</div></section>
+
+<!-- 10 -->
+<section id="vzp"><div class="wrap">
+  <div class="ch-head">
+    <span class="kicker">Kapitola 10</span>
+    <h2>Prečo to chce VZP a čo príde po hackathone</h2>
+  </div>
+  <div class="stack">
+    <figure class="figure" style="margin:0"><img src="img/4.webp" alt="Ilustrácia: konzílium piatich lekárov rôznych odborov pri okrúhlom stole, rádiológ ukazuje CT na obrazovke." loading="lazy"><figcaption>Konzílium. Náš podklad má byť na stole včas a úplný.</figcaption></figure>
+    <p class="quote">„Když zaznamenají odchylku, informují pacienta a zajistí, že se dostane včas k lékaři.“<cite>Ivan Duškov, riaditeľ VZP, o koordinátoroch (apríl 2026). Presne to robí náš level 3.</cite></p>
+    <p class="quote">„Smyslem je, že ušetří lékařům a sestrám čas na odbornou práci.“<cite>Ivan Duškov, riaditeľ VZP</cite></p>
+    <div class="example"><span class="lbl">Cesta po hackathone</span><p>VZP od októbra 2026 otvára na inovace.vzp.cz <b>štvrťročnú výzvu pre digitálne nástroje v onkológii</b>. Postup: pilot v 1–2 centrách s vopred danými cieľmi → dočasná úhrada na 12–24 mesiacov → trvalá úhrada alebo koniec.</p></div>
+  </div>
+  <h3 style="margin-top:1.75rem;margin-bottom:.75rem">Pravidlá, ktorých sa držíme</h3>
+  <ul class="rules">
+    <li>AI iba pripraví návrh. Rozhoduje vždy človek, lekár.</li>
+    <li>Každý údaj má doslovný zdroj. Čo nevieme, napíšeme „chýba“.</li>
+    <li>Iba vymyslené dáta zo zadania. Žiadne skutočné údaje pacientov.</li>
+    <li>Výstup v štandarde FHIR, „spoločnom jazyku“ medzi systémami.</li>
+    <li class="no">Nestanovujeme diagnózu ani liečbu.</li>
+    <li class="no">Nesľubujeme, že vyrobíme voľné termíny na CT. Odstraňujeme prestoje a stratené papiere.</li>
+    <li class="no">Nepoužívame logo VZP a nevydávame sa za ich produkt.</li>
+  </ul>
+</div></section>
+
+<div class="wrap">
+<footer>
+  <p><b>Zdroje:</b> zadanie VZP „Cesta pacienta bez ztráty informací“ (prezentácia + 13 fiktívnych správ), Brunov research (<span class="mono">docs/KONTEXT-PRE-LAIKOV.md</span>, <span class="mono">docs/kontext/raw-*.md</span>, <span class="mono">docs/research/vyzvy/vzp-cesta-pacienta.md</span>), Matejov research (<span class="mono">docs/research/vzp-duskov-branding.md</span>, <span class="mono">matej-trh-expanzia-uro.md</span>). Ilustrácie vygenerované cez Higgsfield.</p>
+  <p>Pacientka Alena a pán Novák sú vymyslené postavy zo zadania. Stav k 16. 10. 2026. Tím radiQA, Rakathon 2026. Nejde o oficiálny materiál VZP.</p>
+</footer>
+</div>
