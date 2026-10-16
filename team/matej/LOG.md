@@ -11,3 +11,4 @@ Najnovšie záznamy dole. Formát: `## YYYY-MM-DD HH:MM` + odrážky.
 - Z pohľadu trhu/expanzie: MDT Copilot (Asseco) + modul „Zobrazovanie a dávka“ (ÚRO); záloha MEDDI ONCO; pre ÚRO najviac PACS Comparator. Mamograf v Prahe 3 tímy, trh outreach nízko ocenený.
 - Ďalej: overiť dáta v #mdt-copilot, rozhodnúť s Brunom do 19:05.
 - 2026-10-16 18:54: Vysvetľujúca stránka „Cesta pacienta krok za krokom“ (z Brunovho researchu + ilustrácie Higgsfield): docs/cesta-krok-za-krokom/index.html, online https://claude.ai/artifact/BTtb1oMoKbUmyytR3EMGDp
+- 2026-10-17 00:45: docs/matej-idealny-system.md – všetkých 27 požiadaviek VZP namapovaných na funkcie (DEMO vs IDEÁL) + vzory DK/SE/NO/NL/UK/EE; navrhnuté „hodiny cesty“ a národný panel merania.
