@@ -1,0 +1,350 @@
+<title>Alena v Dánsku</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: the same board game as „Cesta Aleny“, now in Denmark. Two clocks race (Denmark standard vs Alena in Czechia). Right: the card + the national register stamping each milestone. Below: data, country ranking, best ideas. One light toy world. */
+:root{
+  color-scheme:light;
+  --sky:#EAF1F6; --paper:#FFFFFF; --ink:#1B2A3A; --soft:#5C6E80; --line:#C9D7E3;
+  --path:#F9E0E0; --path-edge:#E7A9A9; --dk:#C8102E; --dk-bg:#FDE8EB;
+  --cz:#2F6FD0; --cz-bg:#E3EDFB; --green:#1F9D6B; --green-bg:#DFF5EA; --violet:#6B48D6; --violet-bg:#ECE6FF;
+  --amber:#F2A93B; --amber-bg:#FFF2DC; --red:#D9364B; --red-bg:#FDE7EA;
+  --display:"Fredoka","Avenir Next Rounded","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  --shadow:0 3px 0 rgba(27,42,58,.18);
+}
+*{box-sizing:border-box}
+body{background:var(--sky);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+.wrap{max-width:1260px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:22px 60px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+.top h1{font-size:clamp(32px,4.6vw,52px);line-height:1}
+.top h1 span{color:var(--dk)}
+.top p{margin:6px 0 0;max-width:66ch;color:var(--soft);font-size:17px}
+.why{background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:12px 16px;box-shadow:4px 4px 0 var(--ink);max-width:470px;font-size:15px}
+.why b{font-family:var(--display);color:var(--dk);display:block;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.game{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:960px){.game{grid-template-columns:1fr}}
+.boardbox,.card{background:var(--paper);border:2px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);min-width:0}
+.boardbox{padding:14px}
+.clocks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.clock{border:2px solid var(--ink);border-radius:16px;padding:8px 12px}
+.clock.dk{background:var(--dk-bg)} .clock.cz{background:var(--cz-bg)}
+.clock .lbl{font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em}
+.clock.dk .lbl{color:var(--dk)} .clock.cz .lbl{color:var(--cz)}
+.clock .big{font-family:var(--display);font-weight:700;font-size:30px;line-height:1.05;font-variant-numeric:tabular-nums}
+.clock .sub{font-size:12.5px;color:var(--soft)}
+.bar{height:10px;border-radius:99px;background:#fff;border:2px solid var(--ink);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;width:0;transition:width .9s cubic-bezier(.3,.8,.3,1)}
+.clock.dk .bar i{background:var(--dk)} .clock.cz .bar i{background:var(--cz)}
+svg.board{width:100%;height:auto;display:block}
+.token{transition:transform 1s cubic-bezier(.45,.05,.25,1)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.token .bobber{animation:bob 1.6s ease-in-out infinite}
+@keyframes pulse{0%{r:44;opacity:.55}100%{r:64;opacity:0}}
+.ring{animation:pulse 1.6s ease-out infinite}
+@media (prefers-reduced-motion:reduce){.token,.bar i{transition:none}.token .bobber,.ring{animation:none}}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.btn{font-family:var(--display);font-weight:600;font-size:18px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:14px;padding:10px 18px;cursor:pointer;box-shadow:var(--shadow)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn.go{background:var(--amber)} .btn[disabled]{opacity:.4;cursor:default}
+.dots{display:flex;gap:5px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.dots button{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);padding:0;cursor:pointer}
+.dots button.done{background:var(--ink)} .dots button.cur{background:var(--amber);transform:scale(1.3)}
+.side{display:grid;gap:14px;min-width:0}
+.card{padding:18px 20px}
+.card .step{font-family:var(--display);font-size:14px;color:var(--soft);letter-spacing:.04em;text-transform:uppercase}
+.card h2{font-size:clamp(24px,3vw,31px);line-height:1.08;margin:4px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pill{display:inline-flex;align-items:center;border-radius:99px;padding:3px 11px;font-weight:800;font-size:13.5px;border:2px solid var(--ink);background:var(--paper)}
+.pill.std{background:var(--dk-bg)} .pill.sys{background:var(--green-bg)}
+.story{font-size:17px;line-height:1.55;margin:0 0 8px}
+.who{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
+.who span{font-size:13.5px;font-weight:700;background:var(--sky);border-radius:10px;padding:3px 9px}
+.box{border-radius:16px;padding:11px 14px;margin-top:10px;font-size:15.5px;border:2px solid}
+.box > b:first-child{font-family:var(--display);display:block;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:2px}
+.box.flow{background:var(--green-bg);border-color:var(--green)} .box.flow > b:first-child{color:var(--green)}
+.box.cz{background:var(--cz-bg);border-color:var(--cz)} .box.cz > b:first-child{color:var(--cz)}
+.box.app{background:var(--violet-bg);border-color:var(--violet)} .box.app > b:first-child{color:var(--violet)}
+.box.real{background:var(--amber-bg);border-color:var(--amber)} .box.real > b:first-child{color:#9A5B00}
+.card.enter{animation:pop .45s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes pop{0%{transform:translateY(10px) scale(.98);opacity:.2}100%{transform:none;opacity:1}}
+.term{font:inherit;color:var(--cz);background:none;border:0;border-bottom:2px dotted var(--cz);padding:0;cursor:help;font-weight:700}
+.tip{position:fixed;z-index:20;max-width:300px;background:var(--ink);color:#fff;border-radius:14px;padding:10px 12px;font-size:14.5px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.tip b{font-family:var(--display);display:block;color:#FFD48A}
+/* register panel */
+.reg h3{font-size:20px;margin-bottom:2px} .reg p.hint{margin:0 0 10px;color:var(--soft);font-size:14px}
+.stamps{display:grid;gap:8px}
+.stamp{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:2px dashed var(--line);border-radius:14px;padding:8px 10px;background:var(--sky);transition:background .4s,border-color .4s}
+.stamp.on{border:2px solid var(--dk);background:var(--dk-bg)}
+.stamp code{font-family:var(--display);font-weight:700;font-size:13px;background:var(--ink);color:#fff;border-radius:7px;padding:2px 7px}
+.stamp.on code{background:var(--dk)}
+.stamp .t{font-weight:700;font-size:14.5px}
+.stamp .d{font-family:var(--display);font-weight:600;font-size:14px;color:var(--soft);font-variant-numeric:tabular-nums}
+.stamp .cz{display:block;font-size:12.5px;color:var(--cz);font-weight:700}
+@keyframes thump{0%{transform:scale(1.25) rotate(-3deg)}100%{transform:none}}
+.stamp.new{animation:thump .45s cubic-bezier(.2,.9,.3,1.4)}
+/* sections */
+section{margin-top:40px}
+section>h2{font-size:clamp(26px,3.4vw,38px);margin-bottom:6px}
+section>p.lead{margin:0 0 16px;color:var(--soft);font-size:17px;max-width:72ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.stat{background:var(--paper);border:2px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink);padding:14px 16px;min-width:0}
+.stat h3{font-size:17px;line-height:1.2;margin-bottom:8px}
+.pair{display:grid;grid-template-columns:76px 1fr auto;gap:8px;align-items:center;margin:6px 0;font-size:14px;font-weight:700}
+.pair .b{height:16px;border-radius:99px;background:var(--sky);border:2px solid var(--ink);overflow:hidden}
+.pair .b i{display:block;height:100%}
+.pair.dk .b i{background:var(--dk)} .pair.cz .b i{background:var(--cz)}
+.pair .v{font-family:var(--display);font-variant-numeric:tabular-nums}
+.stat p{margin:6px 0 0;font-size:14px}
+.src{font-size:12.5px;color:var(--soft)}
+.rank{display:grid;gap:8px;max-width:820px}
+.rank .row{display:grid;grid-template-columns:28px minmax(110px,190px) 1fr 44px;gap:10px;align-items:center;font-weight:700}
+.rank .row .b{height:18px;border-radius:99px;background:var(--paper);border:2px solid var(--ink);overflow:hidden}
+.rank .row .b i{display:block;height:100%;background:var(--amber)}
+.rank .row.win .b i{background:var(--dk)}
+.rank .n{font-family:var(--display);font-variant-numeric:tabular-nums}
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.idea{background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:12px 14px;min-width:0;font-size:15px}
+.idea b{font-family:var(--display);display:block;font-size:16px;margin-bottom:3px}
+.lessons{counter-reset:l;display:grid;gap:10px;max-width:900px;padding:0;margin:0;list-style:none}
+.lessons li{background:var(--violet-bg);border:2px solid var(--violet);border-radius:16px;padding:10px 14px;font-size:15.5px}
+.lessons li b{color:var(--violet)}
+.caveat{background:var(--amber-bg);border:2px solid var(--amber);border-radius:18px;padding:14px 16px;max-width:900px;font-size:15px}
+.caveat ul{margin:6px 0 0;padding-left:20px}
+footer{margin-top:40px;font-size:13px;color:var(--soft)}
+:focus-visible{outline:3px solid var(--cz);outline-offset:3px}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Alena v <span>Dánsku</span></h1>
+      <p>Tá istá pacientka, to isté podozrenie na rakovinu pankreasu, ale v krajine, ktorá podľa nášho porovnania 6 krajín najlepšie rieši cestu pacienta bez straty informácií. Dva hodiny bežia vedľa seba: dánsky štandard a skutočná Alena v Česku.</p>
+    </div>
+    <div class="why"><b>Prečo Dánsko</b>Má národnú cestu pre každú rakovinu s lehotami v dňoch, elektronické žiadanky s potvrdením doručenia a register, ktorý každý krok zapisuje sám. V roku 2025 stihlo štandardnú lehotu 77 % ciest.</div>
+  </div>
+
+  <div class="game">
+    <div class="boardbox">
+      <div class="clocks">
+        <div class="clock dk"><div class="lbl">Dánsko · štandard</div><div class="big" id="dkDay">Deň 0</div><div class="sub" id="dkSub"></div><div class="bar"><i id="dkBar"></i></div></div>
+        <div class="clock cz"><div class="lbl">Alena v Česku</div><div class="big" id="czDay">Deň 0</div><div class="sub" id="czSub"></div><div class="bar"><i id="czBar"></i></div></div>
+      </div>
+      <svg class="board" id="board" viewBox="0 0 1000 620" role="img" aria-label="Herná doska: 9 políčok dánskej cesty pacienta"></svg>
+      <div class="controls">
+        <button class="btn" id="prev" type="button">◀ Späť</button>
+        <button class="btn go" id="next" type="button">Ďalej ▶</button>
+        <button class="btn" id="auto" type="button">▶▶ Prehrať samo</button>
+      </div>
+      <div class="dots" id="dots"></div>
+    </div>
+    <div class="side">
+      <article class="card" id="card" aria-live="polite"></article>
+      <div class="card reg">
+        <h3>Národný register to zapisuje sám</h3>
+        <p class="hint">V Dánsku nemocnica pri každom míľniku zapíše kód do národného registra (LPR). Lehoty sa potom počítajú automaticky, nikto nič nevypĺňa navyše.</p>
+        <div class="stamps" id="stamps"></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="cisla">
+    <h2>Dánsko vs. Česko v číslach</h2>
+    <p class="lead">Len overené čísla z rovnakých zdrojov. Pozor: lepšie prežitie v Dánsku nie je dôkaz, že ho spôsobili práve cesty (viď nižšie).</p>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section id="rebricek">
+    <h2>Ako sme vyberali víťaza</h2>
+    <p class="lead">6 krajín, 5 kritérií (štandardné cesty, koordinátor, tok informácií, dodržiavanie lehôt, výsledky), hodnotil Opus 5.5 podľa faktov. Rozhodoval náš problém: cesta bez straty informácií, nie len prežitie.</p>
+    <div class="rank" id="rank"></div>
+  </section>
+
+  <section id="napady">
+    <h2>Najlepšie nápady z ostatných krajín</h2>
+    <p class="lead">Ideálny systém nie je čisté Dánsko. Toto robia iní lepšie.</p>
+    <div class="ideas" id="ideas"></div>
+  </section>
+
+  <section id="appka">
+    <h2>Čo si z toho berieme do našej appky</h2>
+    <ol class="lessons" id="lessons"></ol>
+  </section>
+
+  <section id="pozor">
+    <h2>Na čo dať pozor</h2>
+    <div class="caveat"><b>Poctivo:</b><ul>
+      <li>Dánske dni sú <b>štandard</b> (cieľ), nie garancia. Pri pankrease ho v roku 2025 stihlo 87 % operovaných a 71 % pacientov s chemoterapiou. Zákonnú lehotu v rokoch 2019–2023 prekročilo 22 % pankreasových ciest (vrátane platných dôvodov).</li>
+      <li>Dni pred žiadankou (praktik a ultrazvuk) v Dánsku oficiálnu lehotu nemajú. Deň 10 v hre je ilustrácia.</li>
+      <li>Dánsko nie je dokonalé: len 67 % pacientov má zodpovedného lekára (cieľ 90 %) a spätnú väzbu praktikovi rieši až nový plán z roku 2025.</li>
+      <li>Prežitie (CONCORD-3) je za roky 2010–2014. Či lepšie výsledky spôsobili práve cesty, štúdie nepotvrdili.</li>
+      <li>Česká Alena je súťažný (fiktívny) prípad VZP, nie štatistika. Čo sa deje po 4. 11. (kedy začne chemoterapia), v podkladoch nie je.</li>
+    </ul></div>
+  </section>
+
+  <footer>Zdroje: Sundhedsdatastyrelsen (monitorovací model cesty B07 2023, ročné vyhodnotenie 2025), Danske Regioner (zákonné lehoty 2024, IT systémy 2024), MedCom (štatistiky 2025), Rigsrevisionen 13/2023, Kræftens Bekæmpelse Barometer 2023, CONCORD-3 (Lancet 2018), OECD/EK Country Cancer Profiles 2025, NHS England, SONCOS, RCC Švédsko, Helsedirektoratet. Česko: zadanie VZP (Rakathon 2026), Věstník MZ 11/2025, MZ ČR, ÚZIS. Podrobnosti a odkazy: <code>docs/kontext/raw-krajina-*.md</code> a <code>raw-vitaz-proces.md</code> v našom repe.</footer>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const TERMS = {
+  "praktik":"Praktický lekár, obvodný lekár. V Dánsku je u praktika zapísaných asi 98 % obyvateľov.",
+  "FMK":"Fælles Medicinkort: spoločný zoznam liekov pacienta, ktorý vidí každý lekár.",
+  "WebReq":"Elektronické objednanie laboratória priamo z ambulancie praktika. Výsledky sa vrátia samy do jeho systému.",
+  "Sundhedsjournalen":"Národná „čítačka“ zdravotných záznamov. Lekár jedným tlačidlom vidí výsledky, správy a popisy snímok z iných nemocníc a regiónov. Asi 500 000 vyhľadaní pacientov mesačne.",
+  "cesta B07":"Národná štandardizovaná cesta (pakkeforløb) pre rakovinu pankreasu a žlčových ciest. Dánsko má 26 takých ciest pre orgány a 2 diagnostické.",
+  "MedCom":"Národné štandardy elektronických správ medzi lekármi, nemocnicami a obcami (od roku 1994). Asi 6,5 milióna správ mesačne, s potvrdením o doručení.",
+  "potvrdenie o doručení":"Automatická spätná správa: „žiadanku sme dostali“ (alebo „nedostali“). Odosielateľ to vidí vo svojom systéme.",
+  "LPR":"Landspatientregistret: národný register všetkých kontaktov s nemocnicou. Z kódov cesty počíta, či sa dodržali lehoty.",
+  "koordinátor cesty":"Forløbskoordinator. Väčšinou zdravotná sestra (62 % v roku 2012). Stráži, aby cesta pokračovala bez prestojov.",
+  "konzílium":"MDT: porada chirurga, onkológa, rádiológa, patológa a gastroenterológa, ktorí spolu rozhodnú o liečbe.",
+  "národné MDT":"Od roku 2018 sa hraničné prípady pankreasu posudzujú na jednom celoštátnom konzíliu v Rigshospitalet v Kodani.",
+  "epikríza":"Zhrnutie lekára: čo pacientovi je, čo sa robilo a čo ďalej.",
+  "eŽádanka":"Česká elektronická žiadanka. Existuje od 1. 1. 2026, ale vystaviť ju je zatiaľ dobrovoľné."
+};
+const T = (k, l) => `<button type="button" class="term" data-t="${k}">${l || k}</button>`;
+const L = [
+ {t:"U praktika", dk:0, czd:0, czDate:"1. 9.", std:"bez oficiálnej lehoty", sys:"FMK, WebReq", ico:"doc",
+  s:`${T("praktik","Praktik")} vyšetrí Alenu, pozrie jej lieky v spoločnom zozname ${T("FMK")} a objedná krv elektronicky cez ${T("WebReq")}. Pri nejasných príznakoch (chudnutie, bolesť brucha, únava) má Dánsko aj samostatnú diagnostickú cestu.`,
+  who:["praktik","laboratórium"], flow:`Žiadanka do laboratória ide elektronicky a výsledky sa vrátia samy do systému praktika.`,
+  cz:`Alena je 1. 9. u praktika, ten ju pošle na odber krvi a moču. Elektronická žiadanka (${T("eŽádanka")}) existuje od 1/2026, ale je dobrovoľná.`},
+ {t:"Ultrazvuk a nález", dk:10, czd:28, czDate:"29. 9.", std:"bez oficiálnej lehoty (deň 10 je ilustrácia)", sys:"Sundhedsjournalen", ico:"scan",
+  s:`Ultrazvuk ukáže ložisko v pankrease. To je presne jedno z pravidiel pre vstup do ${T("cesta B07","národnej cesty B07")}: nádor na snímke alebo žltačka bez príčiny znamenajú „odôvodnené podozrenie“.`,
+  who:["rádiológ","praktik"], flow:`Popis ultrazvuku príde elektronicky praktikovi a ostatní lekári ho vidia v ${T("Sundhedsjournalen")}.`,
+  cz:`Ultrazvuk 29. 9. (deň 28). Pravidlo, ktoré by po náleze automaticky spustilo cestu s lehotami, v Česku nie je. Koordinátorka z Bulovky opisuje, že bežná cesta k diagnóze trvá „minimálne 2 mesiace“.`},
+ {t:"Žiadanka a štart hodín", dk:10, czd:31, czDate:"2. 10.", std:"zákon: vyšetrovanie do 14 dní", sys:"MedCom REF01", ico:"send", stamp:0,
+  s:`Praktik povie Alene, že ide o podozrenie na rakovinu, a pošle elektronickú žiadanku cez ${T("MedCom")}. Žiadanka má povinný obsah: diagnóza, nález, krv a snímky, lieky (aj na riedenie krvi), iné choroby, telefón. Nemocnica pri prijatí zapíše kód do registra a <b>od tej chvíle bežia hodiny</b>.`,
+  who:["praktik","príjem žiadaniek v nemocnici"], flow:`Štruktúrovaná správa ide cez národné smerovanie priamo do správnej nemocnice. Praktik dostane ${T("potvrdenie o doručení")}.`,
+  cz:`Deň 31: praktik pošle koordinátorovi žiadosť <b>bez výsledkov</b>, len so zoznamom, kde sú. Kanál zákon nepredpisuje (overené: telefón, e-mail, formulár). Dátum prijatia žiadanky sa nikde centrálne nezapisuje.`,
+  app:`Kontrolný zoznam povinného obsahu žiadanky a potvrdenie o doručení. Hodiny bežia od prijatia, nie od prvého CT.`},
+ {t:"Prvá návšteva v nemocnici", dk:16, czd:37, czDate:"8. 10.", std:"6 dní od žiadanky", sys:"nemocničný systém + LPR", ico:"home", stamp:1,
+  s:`Nemocnica posúdi žiadanku, pošle Alene pozvánku a vysvetlí, čo ju čaká. Dostane ${T("koordinátor cesty","koordinátora cesty")} a kontaktnú osobu. Prvý príchod (aj videohovor) sa zapíše do registra.`,
+  who:["chirurgia tráviaceho traktu","koordinátor cesty"], flow:`Termín a žiadanka sú v nemocničnom systéme, kód prvej návštevy ide do ${T("LPR")} automaticky.`,
+  cz:`Prvé vyšetrenie v centre je CT 8. 10. (deň 37), a to v inej nemocnici (KOC 1), lebo v KOC 2 nebol termín. Cieľ ministerstva pre pankreas je „ideálne do 2 týždňov“.`},
+ {t:"Vyšetrenia: CT, endoskopia, biopsia", dk:36, czd:48, czDate:"19. 10.", std:"spolu s konzíliom 27 dní", sys:"Sundhedsjournalen", ico:"needle",
+  s:`Vyšetrenia idú v blokoch: CT a krv, potom endoskopia s ultrazvukom a biopsiou, ak treba aj laparoskopia. Diagnóza musí byť jasná najneskôr po treťom bloku.`,
+  who:["rádiológ","endoskopista","patológ","koordinátor cesty"], flow:`Lekár jedným tlačidlom vidí výsledky aj z iných nemocníc a regiónov v ${T("Sundhedsjournalen")}.`,
+  cz:`CT 8. 10., biopsia 12. 10., histológia 19. 10. (deň 48). Snímky medzi nemocnicami cez ePACS. Zdieľaný zdravotný záznam v Česku onkologické správy neobsahuje.`},
+ {t:"Konzílium a rozhodnutie", dk:43, czd:50, czDate:"21. 10.", std:"27 dní od prvej návštevy", sys:"video MDT + kód v LPR", ico:"table", stamp:2,
+  s:`${T("konzílium","Konzílium")} sa koná 1–3× týždenne, často cez video naprieč nemocnicami. Hraničné prípady ako Alena idú na ${T("národné MDT")} v Kodani: z 198 takých pacientov (2018–2020) sa 24 % nakoniec operovalo. Potom rozhovor s Alenou a jej súhlas.`,
+  who:["chirurg","onkológ","rádiológ","patológ","gastroenterológ","koordinátor cesty"], flow:`Rozhodnutie sa zapíše do nemocničného systému a ako kód do registra. Kód národného MDT automaticky založí záznam aj v registri kvality pre pankreas.`,
+  cz:`Konzílium 21. 10. (deň 50). Podklad pripravuje koordinátor ručne z 11 správ. Národné konzílium pre pankreas sme v Česku nenašli.`,
+  app:`Konzílium ako štruktúrovaný záznam: z jedného zápisu vznikne podklad, správa pre praktika aj meranie.`},
+ {t:"Začiatok liečby", dk:54, czd:64, czDate:"4. 11. (termín)", std:"10 dní operácia / 11 dní chemo", sys:"LPR, verejné štatistiky", ico:"drip", stamp:3,
+  s:`Do 14 dní od súhlasu musí liečba začať, inak musí región ponúknuť inú nemocnicu, súkromnú alebo v zahraničí. Štandard: operácia na deň 53, chemoterapia na deň 54. V roku 2025 to stihlo 87 % operovaných a 71 % pacientov s chemoterapiou.`,
+  who:["chirurg alebo onkológ","koordinátor cesty"], flow:`Kód začiatku liečby ide do registra a štát z neho štvrťročne zverejní, ako ktorý región dodržiava lehoty.`,
+  cz:`4. 11. (deň 64) má Alena <b>len termín na onkológii</b>. Kedy chemoterapia naozaj začne, v podkladoch nie je. Zákonnú lehotu špecificky pre onkológiu sme v Česku nenašli.`},
+ {t:"Správa praktikovi", dk:56, czd:null, czDate:"po 21. 10.", std:"lehotu nenašli ani v Dánsku", sys:"MedCom epikríza", ico:"mail",
+  s:`${T("epikríza","Epikríza")} ide praktikovi elektronicky štandardnou správou a je viditeľná aj v Sundhedsjournalen. Ani Dánsko to nemá dokonalé: lepšie odovzdávanie informácií rieši ich nový plán z roku 2025.`,
+  who:["nemocnica","onkológ","praktik"], flow:`Štandardná elektronická správa priamo do systému praktika, s potvrdením o doručení.`,
+  cz:`Zákon hovorí „bez zbytočného odkladu“, ale nepredpisuje kanál ani dôkaz doručenia. VZP v zadaní: praktik „nemá jednoduchý spôsob“ zistiť, ako konzílium rozhodlo.`,
+  app:`Záver konzília ide praktikovi s potvrdením doručenia. U Holanďanov musí ísť zápis z konzília praktikovi do 2 pracovných dní.`},
+ {t:"Všetko sa meria samo", dk:null, czd:null, czDate:"", std:"77 % ciest v lehote (2025)", sys:"LPR", ico:"chart",
+  s:`Z kódov v registri štát sám spočíta, koľko ciest stihlo lehotu, a zverejní to podľa regiónov. Nikto nevypĺňa tabuľky navyše. Vďaka tomu vedia, kde sa čaká najdlhšie, a vedia to opraviť.`,
+  who:["Sundhedsdatastyrelsen","regióny"], flow:`Automatické časové pečiatky z bežnej práce nemocníc → verejné štatistiky každý štvrťrok.`,
+  cz:`Čakacie doby sa v Česku systematicky nesledujú (OECD 2025). ÚZIS meria spätne od prvého zobrazovacieho vyšetrenia, nie od žiadanky.`,
+  app:`Appka automaticky zapisuje 5 udalostí (žiadanka prijatá, prvá návšteva, konzílium, začiatok liečby, podozrenie vyvrátené) a ukazuje „zostáva X dní“.`},
+];
+const STAMPS = [["AFB07A","Žiadanka prijatá, hodiny štartujú",2],["AFB07B","Prvá návšteva",3],["AFB07C","Rozhodnutie o liečbe",5],["AFB07F","Začiatok liečby",6]];
+const MAXD = 64;
+
+const svg = document.getElementById("board");
+const COLS = 3, X0 = 170, X1 = 830, Y0 = 110, DY = 200;
+const pos = L.map((_, i) => { const r = Math.floor(i / COLS), c = i % COLS; return [X0 + (r % 2 ? COLS - 1 - c : c) * ((X1 - X0) / (COLS - 1)), Y0 + r * DY]; });
+const ICON = {
+  doc:'<path d="M-10-14h14l6 6v22h-20z"/><path d="M-5-2h10M-5 4h10M-5 10h6"/>',
+  scan:'<circle r="13"/><circle r="5"/><path d="M0-13v4M0 9v4"/>',
+  send:'<path d="M-15 0l30-12-8 26-6-10z"/><path d="M1 4l14-16"/>',
+  home:'<path d="M-16 2L0-13 16 2"/><path d="M-11-1v14h22V-1"/><path d="M-3 13V5h6v8"/>',
+  needle:'<path d="M-12 12l14-14M2-2l8-8 4 4-8 8zM-14 14l3-3"/>',
+  table:'<ellipse rx="15" ry="7"/><circle cx="-11" cy="-11" r="3.5"/><circle cx="0" cy="-14" r="3.5"/><circle cx="11" cy="-11" r="3.5"/>',
+  drip:'<path d="M-6-15h12v14h-12z"/><path d="M0-1v9M0 8q0 7-8 7"/><circle cx="-8" cy="15" r="2"/>',
+  mail:'<rect x="-15" y="-10" width="30" height="20" rx="3"/><path d="M-15-8L0 3l15-11"/>',
+  chart:'<path d="M-14 14V-14M-14 14h28"/><path d="M-8 8v-8M-1 8v-14M6 8v-5M13 8v-18" stroke-width="4"/>'
+};
+let d = `M${pos[0][0]},${pos[0][1]}`;
+for (let i = 1; i < pos.length; i++) { const [x0,y0] = pos[i-1], [x1,y1] = pos[i]; if (y0 === y1) d += ` L${x1},${y1}`; else { const k = x0 > 500 ? 1 : -1; d += ` C${x0 + 120*k},${y0} ${x1 + 120*k},${y1} ${x1},${y1}`; } }
+svg.innerHTML = `
+  <defs><pattern id="dz" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="#C9D7E3"/></pattern></defs>
+  <rect width="1000" height="620" rx="22" fill="url(#dz)"/>
+  <path d="${d}" fill="none" stroke="var(--path-edge)" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="var(--path)" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="2 16" stroke-linecap="round"/>
+  <path id="walked" d="${d}" fill="none" stroke="var(--dk)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>
+  <text x="${pos[0][0]-80}" y="${pos[0][1]-70}" font-family="var(--display)" font-size="22" font-weight="700" fill="var(--soft)">ŠTART</text>
+  ${L.map((l, i) => `<g class="st" data-i="${i}" transform="translate(${pos[i][0]},${pos[i][1]})" style="cursor:pointer">
+     <circle class="ring" r="44" fill="none" stroke="var(--dk)" stroke-width="4" style="display:none"/>
+     <circle class="base" r="40" fill="#fff" stroke="var(--ink)" stroke-width="3.5"/>
+     <g fill="none" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,-4)">${ICON[l.ico]}</g>
+     <circle cx="28" cy="-28" r="14" fill="var(--ink)"/><text x="28" y="-23" text-anchor="middle" font-size="15" font-family="var(--display)" font-weight="600" fill="#fff">${i + 1}</text>
+     <text y="64" text-anchor="middle" font-size="15" font-family="var(--display)" font-weight="600" fill="var(--dk)">${l.dk === null ? "" : "DK deň " + l.dk}</text>
+   </g>`).join("")}
+  <g class="token" id="token"><g class="bobber">
+    <ellipse cx="0" cy="34" rx="20" ry="6" fill="rgba(27,42,58,.18)"/>
+    <path d="M-17 30q0-24 17-24t17 24z" fill="var(--violet)" stroke="var(--ink)" stroke-width="3"/>
+    <circle cx="0" cy="-6" r="15" fill="#FFD9B8" stroke="var(--ink)" stroke-width="3"/>
+    <path d="M-15-8q2-17 15-17t15 17q-4-8-15-9t-15 9z" fill="#8A5A3C" stroke="var(--ink)" stroke-width="2.5"/>
+    <circle cx="-5" cy="-5" r="1.9" fill="var(--ink)"/><circle cx="5" cy="-5" r="1.9" fill="var(--ink)"/>
+    <path d="M-4 2q4 3 8 0" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>
+    <rect x="-24" y="-48" width="48" height="20" rx="10" fill="var(--dk)"/><text x="0" y="-34" text-anchor="middle" font-family="var(--display)" font-size="13" font-weight="600" fill="#fff">Alena</text>
+  </g></g>`;
+const walked = document.getElementById("walked"); const total = walked.getTotalLength();
+const sLen = pos.map(([x, y]) => { let best = 0, bd = 1e9; for (let s = 0; s <= total; s += 4) { const p = walked.getPointAtLength(s); const dd = (p.x - x) ** 2 + (p.y - y) ** 2; if (dd < bd) { bd = dd; best = s; } } return best; });
+walked.style.strokeDasharray = `${total}`; walked.style.transition = "stroke-dashoffset 1s cubic-bezier(.45,.05,.25,1)";
+
+const $ = id => document.getElementById(id);
+let cur = 0, timer = null, prevStamps = -1;
+$("dots").innerHTML = L.map((l, i) => `<button type="button" aria-label="Políčko ${i + 1}: ${l.t}" data-i="${i}"></button>`).join("");
+function render(anim = true) {
+  const l = L[cur], [x, y] = pos[cur];
+  $("token").style.transform = `translate(${x}px,${y - 66}px)`;
+  walked.style.strokeDashoffset = `${total - sLen[cur]}`;
+  svg.querySelectorAll(".st").forEach((g, i) => { g.querySelector(".base").setAttribute("fill", i < cur ? "#FDE8EB" : i === cur ? "#FFE3A6" : "#fff"); g.querySelector(".ring").style.display = i === cur ? "" : "none"; });
+  const lastDk = [...L.slice(0, cur + 1)].reverse().find(v => v.dk !== null)?.dk ?? 0;
+  const lastCz = [...L.slice(0, cur + 1)].reverse().find(v => v.czd !== null)?.czd ?? 0;
+  $("dkDay").textContent = `Deň ${lastDk}`; $("dkSub").textContent = l.dk === null ? "" : `štandard: ${l.std}`;
+  $("czDay").textContent = l.czd === null && cur === L.length - 1 ? "nemeria sa" : `Deň ${lastCz}`; $("czSub").textContent = l.czDate ? `Alena: ${l.czDate}` : "";
+  $("dkBar").style.width = `${Math.min(100, lastDk / MAXD * 100)}%`; $("czBar").style.width = `${Math.min(100, lastCz / MAXD * 100)}%`;
+  const c = $("card");
+  c.innerHTML = `<div class="step">Políčko ${cur + 1} z ${L.length}</div><h2>${l.t}</h2>
+    <div class="chips"><span class="pill std">Dánsky štandard: ${l.std}</span><span class="pill sys">Systém: ${l.sys}</span></div>
+    <p class="story">${l.s}</p><div class="who">${l.who.map(w => `<span>${w}</span>`).join("")}</div>
+    <div class="box flow"><b>Ako tečie informácia</b>${l.flow}</div>
+    <div class="box cz"><b>A v Česku?</b>${l.cz}</div>
+    ${l.app ? `<div class="box app"><b>Berieme do našej appky</b>${l.app}</div>` : ""}`;
+  if (anim) { c.classList.remove("enter"); void c.offsetWidth; c.classList.add("enter"); }
+  const on = STAMPS.filter(s => cur >= s[2]).length;
+  $("stamps").innerHTML = STAMPS.map((s, i) => { const lit = cur >= s[2]; const dk = L[s[2]].dk; return `<div class="stamp${lit ? " on" : ""}${lit && i === on - 1 && on !== prevStamps ? " new" : ""}"><code>${s[0]}</code><span class="t">${s[1]}<span class="cz">V Česku sa nezapisuje</span></span><span class="d">${lit ? "deň " + dk : "—"}</span></div>`; }).join("");
+  prevStamps = on;
+  $("dots").querySelectorAll("button").forEach((b, i) => { b.classList.toggle("done", i < cur); b.classList.toggle("cur", i === cur); });
+  $("prev").disabled = cur === 0; $("next").textContent = cur === L.length - 1 ? "Znova od začiatku ↺" : "Ďalej ▶";
+}
+const go = i => { cur = (i + L.length) % L.length; render(); };
+const stop = () => { if (timer) { clearInterval(timer); timer = null; $("auto").textContent = "▶▶ Prehrať samo"; } };
+$("next").onclick = () => { stop(); go(cur === L.length - 1 ? 0 : cur + 1); };
+$("prev").onclick = () => { stop(); if (cur > 0) go(cur - 1); };
+$("dots").onclick = e => { const b = e.target.closest("button"); if (b) { stop(); go(+b.dataset.i); } };
+svg.addEventListener("click", e => { const g = e.target.closest(".st"); if (g) { stop(); go(+g.dataset.i); } });
+$("auto").onclick = () => { if (timer) return stop(); $("auto").textContent = "❚❚ Zastaviť"; timer = setInterval(() => { if (cur >= L.length - 1) return stop(); go(cur + 1); }, 7000); };
+addEventListener("keydown", e => { if (e.key === "ArrowRight" && cur < L.length - 1) { stop(); go(cur + 1); } if (e.key === "ArrowLeft" && cur > 0) { stop(); go(cur - 1); } });
+const tip = $("tip");
+document.addEventListener("click", e => { const t = e.target.closest(".term"); if (!t) { tip.hidden = true; return; } const k = t.dataset.t; tip.innerHTML = `<b>${k}</b>${TERMS[k] || ""}`; tip.hidden = false; const r = t.getBoundingClientRect(), w = Math.min(300, innerWidth - 32); tip.style.maxWidth = w + "px"; tip.style.left = Math.max(16, Math.min(r.left, innerWidth - w - 16)) + "px"; tip.style.top = (r.bottom + 170 > innerHeight ? Math.max(16, r.top - 8 - tip.offsetHeight) : r.bottom + 8) + "px"; });
+addEventListener("scroll", () => { tip.hidden = true; }, { passive: true });
+render(false);
+
+// stats
+const ST = [{"label": "5-ročné prežitie, rakovina pankreasu", "dk": 8.0, "cz": 6.1, "dkTxt": "8,0 %", "czTxt": "6,1 %", "max": 20, "src": "CONCORD-3, Lancet 2018, diagnózy 2010–2014, rovnaká metóda"}, {"label": "5-ročné prežitie, rakovina pľúc", "dk": 16.6, "cz": 10.6, "dkTxt": "16,6 %", "czTxt": "10,6 %", "max": 25, "src": "CONCORD-3, Lancet 2018, diagnózy 2010–2014"}, {"label": "5-ročné prežitie, rakovina hrubého čreva", "dk": 61.6, "cz": 56.1, "dkTxt": "61,6 %", "czTxt": "56,1 %", "max": 100, "src": "CONCORD-3, Lancet 2018, diagnózy 2010–2014"}, {"label": "Pacienti, ktorí stihli štandardnú lehotu cesty", "dk": 77, "cz": 0, "dkTxt": "77 %", "czTxt": "nemeria sa", "max": 100, "note": "V Česku sa to nemeria. Pri rakovine pľúc viac ako 60 % pacientov nezačne liečbu do 8 týždňov od CT (MZ ČR).", "src": "Sundhedsdatastyrelsen, rok 2025 (predbežné); OECD 2025; MZ ČR 2. 9. 2026"}, {"label": "Od prvej návštevy u praktika po konzílium (pankreas)", "dk": 43, "cz": 50, "dkTxt": "43 dní", "czTxt": "50 dní", "max": 70, "note": "Dánsko: štandard 33 dní od žiadanky + 10 dní pred ňou (ilustrácia). Česko: súťažná pacientka Alena (fiktívny prípad VZP), 31 dní pred centrom + 19 v centre.", "src": "SDS monitorovací model 2023; zadanie VZP 2026"}, {"label": "Úmrtnosť na rakovinu na 100 000 obyvateľov", "dk": 271, "cz": 257, "dkTxt": "271", "czTxt": "257", "max": 320, "note": "Dánsko má vysoký výskyt rakoviny, preto aj vyššiu úmrtnosť. Toto číslo nehovorí o kvalite cesty.", "src": "OECD/EK Country Cancer Profiles 2025, rok 2021"}];
+$("stats").innerHTML = ST.map(s => { const mx = s.max || Math.max(s.dk, s.cz) * 1.15; return `<div class="stat"><h3>${s.label}</h3>
+  <div class="pair dk"><span>Dánsko</span><span class="b"><i style="width:${s.dk / mx * 100}%"></i></span><span class="v">${s.dkTxt}</span></div>
+  <div class="pair cz"><span>Česko</span><span class="b"><i style="width:${s.cz / mx * 100}%"></i></span><span class="v">${s.czTxt}</span></div>
+  ${s.note ? `<p>${s.note}</p>` : ""}<p class="src">${s.src}</p></div>`; }).join("");
+const RANK = [{"c": "Dánsko", "t": 7.6}, {"c": "Nórsko", "t": 7}, {"c": "Švédsko", "t": 6.9}, {"c": "Anglicko", "t": 6.7}, {"c": "Holandsko", "t": 6.6}, {"c": "Estónsko", "t": 4}];
+$("rank").innerHTML = RANK.map((r, i) => `<div class="row${i === 0 ? " win" : ""}"><span class="n">${i + 1}.</span><span>${r.c}</span><span class="b"><i style="width:${r.t * 10}%"></i></span><span class="n">${r.t.toFixed(1)}</span></div>`).join("");
+const IDEAS = [{"c": "Anglicko", "t": "pravidlo „dňa 38“. Pri prechode do inej nemocnice ide povinný minimálny balík dát (číslo pacienta, list, histologické sklíčka a správa, snímky, súhlas). Neúplné odovzdanie sa vráti do 24 h a zodpovednosť za meškanie sa delí medzi nemocnice (NHS England Breach Allocation Guidance 2016). Priamo to rieši stratu informácií."}, {"c": "Anglicko", "t": "elektronika vynútená peniazmi. Od 10/2018 nemocnica nedostane zaplatené za prvú návštevu z odoslania mimo e-RS. Správy praktikovi musia byť štruktúrované, prepúšťacia do 24 h a ambulantná do 7 dní, a nie poštou, faxom ani e-mailom (NHS Standard Contract 2018)."}, {"c": "Anglicko", "t": "'cancer tracker' sleduje v databáze každého pacienta na 62-dňovej ceste. MDT koordinátor zapisuje závery konzília naživo."}, {"c": "Švédsko", "t": "rádiológ musí v náleze odpovedať áno/nie na otázku, či je odôvodnené podozrenie na rakovinu. Diagnostika má vopred blokované termíny len pre pacientov v ceste (SVF 2024)."}, {"c": "Švédsko", "t": "menovaná kontaktná sestra robí „aktívne odovzdanie“ pri zmene pracoviska. Pacient má digitálny plán liečby Min vårdplan v portáli 1177 (vyše 100 000 plánov, RCC 2026). Pri pankrease mala menovanú kontaktnú sestru vyše 90 % pacientov každý rok od 2019."}, {"c": "Holandsko (normy SONCOS v14, 2026)", "t": "zápis z konzília musí ísť praktikovi do 2 pracovných dní. Podklady na konzílium sú dohodnuté vopred, prednostne digitálne. Každý pacient má mať stálu kontaktnú osobu (VAP), ktorá je členom MDT. Či ju má, nemocnica povinne a verejne hlási ako indikátor."}, {"c": "Nórsko", "t": "povinný obsah žiadanky podľa diagnózy, s označením cesty a kópiou praktikovi. Pri prestupe sa koordinátor priamo dohaduje s koordinátorom druhej nemocnice. Keď v Hammerfeste koordinátor chýbal, zaradenie pacientov do cesty kleslo z 90 na 65 %, čo ukazuje, že na role záleží."}, {"c": "Nórsko", "t": "včasnosť epikrízy sa meria ako národný indikátor (73,0 % do 1 dňa, 86,7 % do 7 dní, 1. tertial 2026)."}, {"c": "Estónsko", "t": "jeden národný systém TIS s povinnými 28 typmi dokumentov. Pri liečbe sa dáta zdieľajú bez súhlasu, pacient to môže zakázať a vidí záznam o tom, kto si ich pozrel. Funguje aj národný archív snímok Pildipank."}, {"c": "Estónsko", "t": "e-konzultácia praktik → špecialista je platený výkon (kód 3039, 27,46 EUR) s typom odpovede „príjem do 7 dní“. V Q1 2026 ich bolo 43 384. Dá sa použiť ako vzor pre platený vstup do cesty v ČR (porov. výkon 51887, 250 Kč)."}, {"c": "Dánsko (sám víťaz)", "t": "konzílium je kódovaný výkon v národnom registri, takže pokrytie MDT aj lehoty sa merajú automaticky. Pre nešpecifické príznaky existuje diagnostická cesta s plnením 84 % do 22 dní."}];
+$("ideas").innerHTML = IDEAS.map(x => `<div class="idea"><b>${x.c}</b>${x.t}</div>`).join("");
+const LESSONS = ["Merať udalosti, nie vypĺňať tabuľky: zapisovať automatické časové pečiatky 5 udalostí (žiadanka prijatá, prvá návšteva, MDT/rozhodnutie, začiatok liečby, podozrenie vyvrátené) a ukazovať „zostáva X dní“. Takto to robí LPR v Dánsku.", "Hodiny spúšťať od prijatia žiadanky, nie od prvého CT. V ČR tento dátum nikto nezapisuje (ÚZIS meria od prvého zobrazenia). Ako kotvy použiť dánske lehoty pre pankreas 6 / 27 / 10–15 dní a jasne ich označiť ako zahraničný vzor, nie českú normu.", "Povinný obsah žiadanky ako kontrolný zoznam (pracovná diagnóza, nález, krv a zobrazenie, lieky vrátane liekov na riedenie krvi, pridružené choroby, telefón, „pacient vie o podozrení“). FN Bulovka žiada takmer to isté vo svojom formulári, takže appka má byť jednotný formulár s kontrolou úplnosti pred MDT.", "Potvrdenie o doručení ako súčasť každej správy (MedCom má pozitívne a negatívne potvrdenia). V ČR zákon dôkaz doručenia správy praktikovi nepredpisuje, preto appka má zavrieť slučku pri žiadanke aj pri závere MDT.", "Nestavať novú dokumentáciu: Dánsko funguje s 2 rôznymi nemocničnými systémami cez štandardné správy a čítací prístup (Sundhedsjournalen). Appka má byť vrstva, ktorá odkazuje na ePACS, eŽádanku a NIS, nie ich kopíruje.", "Jeden spoločný stav cesty pre K1, K2, K3 aj praktika. V Dánsku len asi 10 % koordinátorov sleduje pacienta cez všetky oddelenia a len 67 % pacientov má zodpovedného lekára.", "Alarm pred koncom lehoty a záznam, aká alternatíva sa pacientovi ponúkla. Dánsko má právo na inú nemocnicu, ale audit našiel, že 98 % pacientov, ktorým región nevedel poskytnúť liečbu načas, správnu ponuku nedostalo.", "MDT ako štruktúrovaný záznam (dátum, účastníci, výsledok): z jedného zápisu vznikne podklad pre vykázanie (výkon 51881, pankreas sa platí len po MDT), správa pre praktika a meranie pokrytia MDT. Dánsky kód národného MDT takto automaticky zakladá záznam v registri."];
+$("lessons").innerHTML = LESSONS.map(x => `<li>${x}</li>`).join("");
+</script>
