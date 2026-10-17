@@ -250,7 +250,7 @@ export async function buildCase(input: BuildInput): Promise<CaseData> {
   const nowAt = draft.findIndex((s) => !s.done);
   const steps: Step[] = draft.map(({ done, ...s }, i) => ({ ...s, status: (done ? 'done' : i === nowAt ? 'now' : 'waiting') as Status }));
 
-  return {
+  const data: CaseData = {
     generatedFrom: 'app/src/ai (pravidla) · eKoordinace',
     today,
     mdtDate: mdt,
@@ -280,4 +280,17 @@ export async function buildCase(input: BuildInput): Promise<CaseData> {
     afterMdt: mdt ? docs.filter((d) => d.date > mdt).sort(byDate).map((d) => ({ ...doc(d), what: what(d) })) : [],
     steps,
   };
+  return mdt ? data : undated(data);
+}
+
+/** Without an MDT date the engine looks at the reports "as of the end of time" (31. 12. 9999) – that day must not
+ *  show in any text: "K 31. 12. 9999 v dokumentaci není" → "Zatím v dokumentaci není", "před konziliem 31. 12. 9999" →
+ *  "před konziliem". */
+function undated(data: CaseData): CaseData {
+  const DAY = String.raw`31\.\s12\.\s9999`;
+  const json = JSON.stringify(data)
+    .replace(new RegExp(String.raw`\bK ${DAY} v dokumentaci není`, 'g'), 'Zatím v dokumentaci není')
+    .replace(new RegExp(String.raw`do konzilia ${DAY} v dokumentaci není`, 'g'), 'zatím v dokumentaci není')
+    .replace(new RegExp(String.raw`\s?(?:k datu |po datu )?(?:konzilia |konziliem )?${DAY}`, 'g'), (m) => (/konzili/.test(m) ? m.replace(new RegExp(String.raw`\s?${DAY}`), '') : ''));
+  return JSON.parse(json) as CaseData;
 }

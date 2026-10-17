@@ -4,7 +4,7 @@
 import { findDates } from '../../../app/src/ai/text.ts';
 import * as R from '../../../app/src/ai/rules.ts';
 import type { Progress } from './ocr';
-import { rtfToText } from './rtf';
+import { rtfToText } from './rtf.ts';
 
 export type { Progress } from './ocr';
 
