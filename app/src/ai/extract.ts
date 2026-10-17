@@ -14,6 +14,7 @@ import { FIELD_SPECS, type FieldSpec } from './fields.ts';
 import { parseJsonAnswer, requestHash, type Complete } from './llm.ts';
 import * as N from './narrative.ts';
 import { negationFlip } from './negation.ts';
+import { isPlainText, plainFields } from './plain.ts';
 import { buildRequest, PROMPT_VERSION } from './prompt.ts';
 import { Pseudonymizer } from './pseudo.ts';
 import * as R from './rules.ts';
@@ -31,6 +32,7 @@ export interface ExtractOptions {
   generatedAt?: string;
   log?: (msg: string) => void;
   negationGuard?: boolean;      // reject AI text whose negation differs from the cited sentence (default on)
+  plainText?: boolean;          // read facts from sentences of reports without headings (default on)
 }
 
 export interface Provenance {
@@ -59,6 +61,8 @@ export interface ExtractionResult {
       citations: number; citationsVerified: number; fieldsWithoutVerifiedCitation: number;
       llmFieldsAccepted: number; llmFieldsRejected: number;
     };
+    /** Present when a report is written without headings: how much the rules could read (honest bar for the UI). */
+    plainText?: { docs: string[]; filled: number; total: number; notice: string };
   };
   fields: HandoverField[];
   provenance: Record<string, Provenance>;
@@ -158,6 +162,14 @@ function verifyLlmField(
   return { ok: { value, citations, status: conflict ? 'conflict' : 'proposed', note, conflict, prov } };
 }
 
+function plainNotice(docs: R.Doc[], fields: HandoverField[]): NonNullable<ExtractionResult['meta']['plainText']> {
+  const filled = fields.filter((f) => f.status !== 'missing' && !!f.value && f.citations.length > 0).length;
+  return {
+    docs: docs.map((d) => d.id), filled, total: fields.length,
+    notice: `Text bez nadpisů: pravidla přečetla ${filled} z ${fields.length}. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.`,
+  };
+}
+
 export async function extractHandover(opts: ExtractOptions): Promise<ExtractionResult> {
   const log = opts.log ?? (() => {});
   const asOf = opts.asOf;
@@ -203,6 +215,17 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
     histology: draft(R.histologyField(included)),
     other: draft(N.otherNotesFallback(included)),
   };
+
+  // text without headings: facts read from sentences, only where the structured rules found nothing
+  const plainDocs = opts.plainText === false ? [] : included.filter(isPlainText);
+  const plain = plainFields(plainDocs);
+  const fromPlain = new Set<string>();
+  for (const [key, f] of Object.entries(plain.fields)) {
+    if (!drafts[key] || drafts[key].status !== 'missing') continue;
+    drafts[key] = draft({ ...f, note: [f.note, 'Přečteno z textu bez nadpisů – ověřte.'].filter(Boolean).join(' ') });
+    fromPlain.add(key);
+  }
+  for (const [key, note] of Object.entries(plain.notes)) if (drafts[key]?.status === 'missing') drafts[key].note = note;
 
   // ---- 3. LLM ----
   let model: string | undefined;
@@ -422,13 +445,14 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
         citations: citationsTotal, citationsVerified, fieldsWithoutVerifiedCitation: noCitation,
         llmFieldsAccepted: accepted, llmFieldsRejected: rejectedCount,
       },
+      plainText: plainDocs.length ? plainNotice(plainDocs, fields) : undefined,
     },
     fields,
     provenance,
     findings: [...uniq.values()],
     precheck: { findings: pre.map((f) => ({ text: f.text, severity: f.severity === 'info' ? 'info' : 'missing' })) },
-    labs: lab.labs,
-    exams: ex.exams,
+    labs: fromPlain.has('labs') ? plain.labs : lab.labs,
+    exams: fromPlain.has('exams') ? plain.exams : ex.exams,
     meds: med.meds,
     referringGp: gp ? { name: gp.name, phone: gp.phone, email: gp.email, citations: gp.citations } : undefined,
   };
