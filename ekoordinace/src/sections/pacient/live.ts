@@ -1,6 +1,7 @@
 // The case as it is now: what the reports say plus what the coordinator found out (state/caseStore). An item she filled
 // in or checked counts as ready and its to-do leaves the journey, the counts and the bell. Every tab reads this.
-import { isSettled } from '../../state/caseStore';
+import { isSettled, useCaseStates } from '../../state/caseStore';
+import { useAllCases } from '../../state/patients';
 import type { CaseState } from '../../state/caseStore';
 import type { CaseData, Field } from './types';
 
@@ -61,4 +62,11 @@ export function liveCase(data: CaseData, st: CaseState): CaseData {
       conflicts: todo.filter((t) => t.kind === 'rozpor').length,
     },
   };
+}
+
+/** Every patient as the case is now (reports + what the coordinator did) – for the overview and the MDT sessions. */
+export function useLiveCases(): { id: string; label: string; data: CaseData | null; state: CaseState }[] {
+  const all = useAllCases();
+  const stateOf = useCaseStates();
+  return all.map((x) => { const state = stateOf(x.id); return { ...x, state, data: x.data ? liveCase(x.data, state) : null }; });
 }

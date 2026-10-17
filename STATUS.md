@@ -24,7 +24,7 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | eKoordinace M2 Podklad podľa MDT_zapis + PDF | matej | ✅ | `tabs/Podklad.tsx`: 7 častí MDT_zapis zo živého prípadu, zdroje, potvrdenie lekárom, Tisk/PDF, Kopírovat |
 | eKoordinace M3 Závěr praktikovi + doručenka | matej | ✅ | `tabs/Zaver.tsx` |
 | eKoordinace B1 Žádanka od praktika bez formulára | bruno | ⚪ | `src/sections/zadanka/` (`#/zadanka`) |
-| eKoordinace B2 Fronta prípadov (Přehled) | bruno | ⚪ | `src/sections/prehled/` |
+| eKoordinace B2 Přehled (dashboard koordinátorky) | matej | 🔵 | `src/sections/prehled/` – prevzal Matej na vlastnú žiadosť (Bruno sa toho nedotkol) |
 | eKoordinace B3 Plán cesty (termín, miesto, stav, kto na ťahu) | bruno | ⚪ | `tabs/Plan.tsx` |
 | eKoordinace B4 Zprávy (+ po konziliu zvlášť) | bruno | ⚪ | `tabs/Zpravy.tsx` |
 | Odovzdanie: video, titulný obrázok s logom, formulár | bruno + matej | ⚪ | do 12:30, demo = https://ekoordinace.vercel.app |

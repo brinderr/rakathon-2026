@@ -95,27 +95,56 @@ export function setMdtDate(id: string, date: string) {
 
 const built = new Map<string, { key: string; data: CaseData }>();
 
+interface Source { docs: Report[]; today: string; mdt: string; label: string }
+
+/** What a patient's case is built from (null = the precomputed demo case, or a patient that does not exist). */
+function sourceOf(id: string, stored: StoredPatient | null, mdtOfDemo: string): Source | null {
+  if (id === DEMO_ID) return mdtOfDemo === DEMO_MDT ? null : { docs: demoDocs, today: SIM_TODAY, mdt: mdtOfDemo, label: demo.patient.name };
+  return stored ? { docs: stored.docs, today: todayOf(stored), mdt: stored.mdtDate, label: stored.label } : null;
+}
+const keyOf = (src: Source | null) => (src ? JSON.stringify([src.label, src.mdt, src.docs.map((d) => [d.id, d.date, d.text.length])]) : '');
+const cached = (id: string, src: Source | null): CaseData | null =>
+  id === DEMO_ID && !src ? demo : built.get(id)?.key === keyOf(src) ? built.get(id)!.data : null;
+const build = (id: string, src: Source) => buildCase({ caseId: id, docs: src.docs, today: src.today, mdtDate: src.mdt, label: src.label })
+  .then((d) => { built.set(id, { key: keyOf(src), data: d }); return d; });
+
 /** The case of one patient (null while its reports are being processed). */
 export function useCaseOf(id: string): { data: CaseData | null; stored: StoredPatient | null; missing: boolean } {
   const stored = useStoredPatients().find((p) => p.id === id) ?? null;
   const mdtOfDemo = useSyncExternalStore(subscribe, readDemoMdt, readDemoMdt);
-  const source = id === DEMO_ID
-    ? (mdtOfDemo === DEMO_MDT ? null : { docs: demoDocs, today: SIM_TODAY, mdt: mdtOfDemo, label: demo.patient.name })
-    : stored ? { docs: stored.docs, today: todayOf(stored), mdt: stored.mdtDate, label: stored.label } : null;
-  const key = source ? JSON.stringify([source.label, source.mdt, source.docs.map((d) => [d.id, d.date, d.text.length])]) : '';
-  const ready = (): CaseData | null => (id === DEMO_ID && !source ? demo : built.get(id)?.key === key ? built.get(id)!.data : null);
-  const [data, setData] = useState<CaseData | null>(ready);
+  const source = sourceOf(id, stored, mdtOfDemo);
+  const key = keyOf(source);
+  const [data, setData] = useState<CaseData | null>(() => cached(id, source));
   useEffect(() => {
-    const hit = ready();
+    const hit = cached(id, source);
     if (hit || !source) { setData(hit); return; }
     let alive = true;
-    buildCase({ caseId: id, docs: source.docs, today: source.today, mdtDate: source.mdt, label: source.label })
-      .then((d) => { built.set(id, { key, data: d }); if (alive) setData(d); });
+    void build(id, source).then((d) => { if (alive) setData(d); });
     return () => { alive = false; };
     // the key covers everything the case is built from
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, key]);
   return { data, stored, missing: id !== DEMO_ID && !stored };
+}
+
+/** Every patient's case – the demo and the added ones (data null while being built). For the overview and the MDTs. */
+export function useAllCases(): { id: string; label: string; data: CaseData | null }[] {
+  const stored = useStoredPatients();
+  const mdtOfDemo = useSyncExternalStore(subscribe, readDemoMdt, readDemoMdt);
+  const [, rerender] = useState(0);
+  const all = [
+    { id: DEMO_ID, label: demo.patient.name, src: sourceOf(DEMO_ID, null, mdtOfDemo) },
+    ...stored.map((p) => ({ id: p.id, label: p.label, src: sourceOf(p.id, p, mdtOfDemo) })),
+  ];
+  const keys = all.map((x) => `${x.id}:${keyOf(x.src)}`).join('|');
+  useEffect(() => {
+    let alive = true;
+    for (const x of all) if (x.src && !cached(x.id, x.src)) void build(x.id, x.src).then(() => { if (alive) rerender((n) => n + 1); });
+    return () => { alive = false; };
+    // the keys cover everything the cases are built from
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keys]);
+  return all.map((x) => ({ id: x.id, label: x.label, data: cached(x.id, x.src) }));
 }
 
 export const demoCase = demo;

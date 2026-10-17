@@ -46,7 +46,10 @@ function read(caseId: string): CaseState {
   return state;
 }
 
+let version = 0;
+
 function write(caseId: string, next: CaseState) {
+  version++;
   cache.set(caseId, next);
   try { window.localStorage.setItem(KEY + caseId, JSON.stringify(next)); } catch { /* keep it in memory only */ }
   listeners.forEach((l) => l());
@@ -60,6 +63,12 @@ function subscribe(listener: () => void) {
 /** Current state of one case; re-renders when anything changes it. */
 export function useCase(caseId: string): CaseState {
   return useSyncExternalStore(subscribe, () => read(caseId), () => read(caseId));
+}
+
+/** The state of any case, for views across patients; re-renders when any case changes. */
+export function useCaseStates(): (caseId: string) => CaseState {
+  useSyncExternalStore(subscribe, () => version, () => version);
+  return read;
 }
 
 export function updateCase(caseId: string, fn: (s: CaseState) => CaseState) {
