@@ -1,7 +1,23 @@
 /* Tab "Údaje pro konzilium" (owner: Matej): grouped handover items with value, state, source and copy. */
 .udaje { display: grid; gap: 1rem; }
-.udaje-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 1rem 1.25rem; }
-.udaje-head h2 { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.udaje-head { display: grid; gap: .9rem; padding: 1.1rem 1.25rem; }
+.udaje-title { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.udaje-head h2 { margin: 0 0 .15rem; font-size: 1.2rem; font-weight: 700; }
+.udaje-progress { display: grid; gap: .4rem; }
+.udaje-progress p { color: var(--ink-2); }
+.bar { display: flex; height: .55rem; border-radius: 99px; overflow: hidden; background: var(--soft); box-shadow: inset 0 0 0 1px var(--line); }
+.seg.ok { background: var(--ok); }
+.seg.miss { background: var(--miss); }
+.seg.conf { background: #d99413; }
+.udaje-filter { display: flex; flex-wrap: wrap; gap: .4rem; }
+.filter { display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .75rem; border: 1px solid var(--line); border-radius: var(--r-ctl); background: var(--surface); color: var(--ink-2); font-weight: 600; font-size: .875rem; cursor: pointer; }
+.filter b { font-weight: 700; color: var(--ink); }
+.filter.ok b { color: var(--ok); }
+.filter.miss b { color: var(--miss); }
+.filter.conf b { color: var(--conf); }
+.filter:hover { border-color: var(--red-200); }
+.filter.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.filter.on b { color: #fff; }
 .field-group { padding: .9rem 1.25rem .4rem; }
 .field-group h3 { margin: 0 0 .25rem; font: 600 .75rem var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
 .fields { list-style: none; margin: 0; padding: 0; }
