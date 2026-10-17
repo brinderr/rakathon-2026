@@ -1,0 +1,23 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+ÚSTAV PATOLOGIE
+Oblastní nemocnice Rybníky (fiktivní) | tel. +420 602 000 287 | patologie.onrybniky@example.cz
+
+DODATEK K BIOPTICKÉMU NÁLEZU č. B-2026-07118
+Pacient: BRABEC Vlastimil        RČ: 580314/2158        ZP: 211
+Původní nález vydán: 24.07.2026       Dodatek vydán: 26.08.2026
+Odesílající: Gastroenterologické odd. ON Rybníky, MUDr. Lexa
+Kopie: Chirurgické oddělení ON Rybníky
+
+Imunohistochemické vyšetření proteinů mismatch repair (blok 1A):
+MLH1 – ztráta jaderné exprese v nádorových buňkách (vnitřní pozitivní kontrola zachována)
+PMS2 – ztráta jaderné exprese v nádorových buňkách
+MSH2 – zachovaná jaderná exprese
+MSH6 – zachovaná jaderná exprese
+
+ZÁVĚR DODATKU:
+Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H.
+Doporučujeme vyšetření mutace BRAF V600E, event. metylace promotoru MLH1 (odlišení sporadického a hereditárního původu – Lynchův syndrom) a genetickou konzultaci.
+
+MUDr. Ivana Šrámková, Ph.D.
+patolog

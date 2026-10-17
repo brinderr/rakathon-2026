@@ -1,0 +1,43 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+OBLASTNÍ NEMOCNICE RYBNÍKY (fiktivní)
+Gastroenterologické oddělení – endoskopické pracoviště
+Nemocniční 1, 571 01 Rybníky | tel. +420 602 000 240 | endoskopie.onrybniky@example.cz
+
+PROTOKOL ENDOSKOPICKÉHO VÝKONU                     č. E-26-03391
+----------------------------------------------------------------------
+Pacient:       Vlastimil Brabec
+Narozen:       14. 3. 1958             RČ: 580314/2158
+Pojišťovna:    211
+Odesílající:   MUDr. Hana Vávrová, praktický lékař (fiktivní)
+Datum výkonu:  20. 7. 2026, 9:40
+Výkon:         totální koloskopie s intubací terminálního ilea, biopsie,
+               polypektomie studenou kličkou, tetováž
+Endoskopista:  MUDr. Tomáš Lexa        Sestra: Bc. Marie Novotná
+----------------------------------------------------------------------
+Indikace: hematochezie, sideropenická anémie, pozitivní TOKS
+Příprava: Moviprep dělenou dávkou, očista dobrá (BBPS 2-3-3 = 8)
+Antikoagulace: warfarin vysazen od 15. 7. (bez bridgingu – nízké tromboembolické riziko), INR v den výkonu 1,2
+Alergie: neudává
+Sedace: midazolam 3 mg i.v., pethidin 50 mg i.v., monitorace SpO2 a TK – bez komplikací
+
+NÁLEZ:
+Přístroj zaveden do céka, identifikováno ústí apendixu a Bauhinská chlopeň, terminální ileum intubováno v délce 5 cm – sliznice normální. Cékum, colon ascendens, transversum a descendens bez patologie.
+Sigma: několik divertiklů bez známek zánětu. Ve 35 cm sesilní polyp 6 mm (Paris 0-Is, NICE 2) – snesen studenou kličkou en bloc (lahvička č. 2).
+Rektum: v úseku 7–11 cm od anu (měřeno při vytahování) exofytický, exulcerovaný tumor s kontaktním krvácením, postihuje asi 2/3 obvodu (převážně levá a zadní stěna), lumen průchodné pro přístroj. Odebráno 8 vzorků z okraje tumoru (lahvička č. 1). Aborálně od tumoru tetováž (Spot) – 2 depa 3 cm pod dolním okrajem.
+Anální kanál: vnitřní hemoroidy I. st.
+
+ZÁVĚR:
+1. Tumor rekta 7–11 cm od anu, makroskopicky karcinom – odebrána biopsie.
+2. Polyp sigmatu 6 mm – polypektomie.
+3. Divertikulóza sigmatu bez známek zánětu, hemoroidy I. st.
+Dg.: C20 susp. – tumor rekta
+
+DOPORUČENÍ:
+- histologie cca do 7–10 dnů, výsledek zašleme odesílajícímu lékaři
+- staging: CT hrudníku, břicha a pánve s k. l., MR malé pánve (rektální protokol), CEA
+- warfarin znovu nasadit dnes večer v obvyklé dávce, kontrola INR za 5 dní u PL
+- po histologii chirurgická ambulance ON Rybníky (fiktivní), dále projednání v MDT komplexního onkologického centra
+
+MUDr. Tomáš Lexa
+gastroenterolog

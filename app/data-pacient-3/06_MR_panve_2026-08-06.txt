@@ -1,0 +1,19 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+MR centrum Medicon Plus (fiktivní) | Zámecká 15, 571 01 Rybníky | tel. +420 602 000 371 | mr.medicon@example.cz
+
+Jméno: Vlastimil Brabec | nar. 14. 3. 1958 | RČ 580314/2158 | ZP 211
+Vyšetření: MR malé pánve – rektální protokol (T2 HR sagitálně, axiálně a koronálně vůči ose tumoru, DWI b800), bez i.v. k. l.
+Datum vyšetření: 6. 8. 2026
+Indikující lékař: MUDr. Pavel Doležal, chirurgické odd. ON Rybníky (fiktivní)
+Klinické údaje: adenokarcinom rekta, lokální staging; CT 30. 7.: 3 mezorektální uzliny
+
+Nález:
+Ve středním rektu semicirkulární tumor levé a zadní stěny (cca od 2 do 9 h v litotomické poloze), kraniokaudální rozsah 5,2 cm. Dolní okraj tumoru 7 cm od anokutánní čáry, 3,5 cm nad anorektální junkcí. Tumor prorůstá muscularis propria, extramurální šíření do mezorektálního tuku do hloubky 6 mm. Nejmenší vzdálenost tumoru od mezorektální fascie 1 mm vlevo – MRF pozitivní (ohrožena). Vlevo dorzálně rozšířená žíla s intermediárním signálem tumoru – EMVI pozitivní. V mezorektu 3 uzliny 4–7 mm s nepravidelným okrajem a heterogenním signálem – suspektní z metastatického postižení. Laterální (obturatorní a vnitřní ilické) uzliny nezvětšené, bez suspektních znaků. Tumor nedosahuje peritoneální reflexe. Svěračový komplex a levátory intaktní. Prostata s obrazem benigní hyperplazie.
+
+Závěr:
+Karcinom středního rekta, dolní okraj 7 cm od anu, délka 5,2 cm.
+mrT3c, mrN1b (3 suspektní mezorektální uzliny), MRF+ (1 mm vlevo), EMVI+, laterální uzliny negativní.
+
+MUDr. Zuzana Pelcová
+radiolog

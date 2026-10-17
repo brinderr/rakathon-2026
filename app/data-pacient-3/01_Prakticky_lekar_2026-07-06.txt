@@ -1,0 +1,75 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+MUDr. Hana Vávrová – všeobecné praktické lékařství pro dospělé (fiktivní)
+Nádražní 412, 571 01 Rybníky | IČP 00000417 | tel. +420 602 000 113
+e-mail: ordinace.vavrova@example.cz
+======================================================================
+DOPORUČENÍ K VYŠETŘENÍ – VÝPIS ZE ZDRAVOTNICKÉ DOKUMENTACE
+======================================================================
+Datum: 06.07.2026
+
+Pacient: BRABEC Vlastimil                nar.: 14.03.1958
+RČ: 580314/2158                          Zdrav. pojišťovna: 211
+Adresa: Polní 37, 571 01 Rybníky
+Telefon: 604 000 271                     E-mail: vlastimil.brabec@example.cz
+Kontaktní osoba: dcera Petra Malá, tel. 608 000 945
+
+Doporučuji na: GASTROENTEROLOGII – koloskopie, prosím přednostně
+Důvod: hematochezie, sideropenická anémie, TOKS pozitivní
+
+NO:
+Přichází pro asi 2 měsíce (od poloviny května) trvající příměs krve ve stolici –
+tmavší krev promíchaná se stolicí, občas čerstvá krev na toaletním papíře.
+Změnilo se mu vyprazdňování: střídá zácpu a kašovité stolice, často má pocit
+nedokonalého vyprázdnění. Poslední 3 týdny je výrazně unavený, zadýchá se do
+2. patra. Bolesti břicha nemá, teploty neměl. Na váze prý neubývá.
+
+OA: arteriální hypertenze (od 2012)
+    paroxysmální fibrilace síní (od 2019), antikoagulace warfarinem, INR v posledních měsících kolísá
+    DM 2. typu na PAD (od 2016), bez známých pozdních komplikací
+    dyslipidémie
+    nefrolitiáza vpravo 2021 (CT ledvin na urgentním příjmu, konkrement odešel spontánně)
+    st. p. appendektomii (1969)
+RA: otec – karcinom tlustého střeva v 71 letech, matka – DM 2. typu
+FA: Warfarin Orion 3 mg tbl. dle INR (t. č. 1 tbl. denně, So a Ne 1/2 tbl.)
+    Betaloc ZOK 50 mg 1-0-0
+    Tritace 5 mg 1-0-0
+    Glucophage 1000 mg 1-0-1
+    Atoris 20 mg 0-0-1
+AA: neguje
+Abúzus: nekuřák (kouřil do r. 2000), alkohol příležitostně – pivo o víkendu
+SA: ženatý, bydlí s manželkou v RD; manželka má Alzheimerovu chorobu, pacient o ni doma pečuje.
+    Dcera bydlí v okresním městě, pomáhá.
+PA: starobní důchodce, dříve strojní zámečník
+
+Objektivně:
+TK 142/84, P 78/min nepravidelný, SpO2 97 %, TT 36,6 °C
+hmotnost 86 kg, výška 178 cm, BMI 27,1
+Kůže a spojivky bledší, bez ikteru. Srdce: akce nepravidelná, ozvy ohraničené.
+Plíce: dýchání sklípkové, bez vedlejších fenoménů. Břicho: měkké, prohmatné,
+nebolestivé, bez hmatné rezistence, peristaltika přítomna.
+Per rectum: na rukavici stopy tmavé krve, rezistence v dosahu prstu nehmatná.
+DK bez otoků.
+
+Laboratoř (odběr 02.07.2026, LabMedica Východ s.r.o. (fiktivní)):
+KO: Hb 104 g/l (!), Ery 4,02 x10^12/l, MCV 74 fl, Leu 7,6 x10^9/l, Tr 388 x10^9/l
+Fe 5,1 umol/l, ferritin 6 ug/l
+INR 2,4 (warfarin)
+glykémie 7,9 mmol/l, HbA1c 54 mmol/mol, kreatinin 94 umol/l
+TOKS (kvantitativní imunochemický): 186 ng/ml – POZITIVNÍ
+
+Dg.:
+K62.5  Krvácení z řitního otvoru a konečníku
+D50.0  Anémie z nedostatku železa sekundární po chronické ztrátě krve
+I48.0  Paroxysmální fibrilace síní, antikoagulace warfarinem
+I10    Esenciální hypertenze
+E11.9  Diabetes mellitus 2. typu bez komplikací
+
+Doporučení:
+- koloskopie objednána na 20.07.2026 – Gastroenterologické oddělení Oblastní nemocnice
+  Rybníky (fiktivní); o přerušení warfarinu před výkonem rozhodne gastroenterolog
+- zahájena substituce Fe: Sorbifer Durules 1-0-1
+- kontrola u mne po koloskopii, dříve při zhoršení (krvácení, slabost, dušnost)
+
+MUDr. Hana Vávrová
+praktický lékař

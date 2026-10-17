@@ -1,0 +1,520 @@
+{
+  "meta": {
+    "caseId": "pacient-3",
+    "asOf": "2026-09-02",
+    "generatedAt": "2026-10-17T03:30:36.758Z",
+    "promptVersion": "handover-v1",
+    "mode": "rules",
+    "docsUsed": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09"
+    ],
+    "docsExcluded": [
+      {
+        "id": "10",
+        "date": "2026-09-09",
+        "reason": "po datu konzilia 2. 9. 2026"
+      }
+    ],
+    "stats": {
+      "fields": 20,
+      "withValue": 14,
+      "missing": 6,
+      "conflicts": 1,
+      "citations": 19,
+      "citationsVerified": 19,
+      "fieldsWithoutVerifiedCitation": 1,
+      "llmFieldsAccepted": 0,
+      "llmFieldsRejected": 0
+    }
+  },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Jméno",
+      "group": "Pacient",
+      "value": "Vlastimil",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Pacient: BRABEC Vlastimil"
+        }
+      ]
+    },
+    {
+      "key": "lastName",
+      "label": "Příjmení",
+      "group": "Pacient",
+      "value": "BRABEC",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Pacient: BRABEC Vlastimil"
+        }
+      ]
+    },
+    {
+      "key": "age",
+      "label": "Věk",
+      "group": "Pacient",
+      "value": "68 let",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "68letý"
+        }
+      ]
+    },
+    {
+      "key": "sex",
+      "label": "Pohlaví",
+      "group": "Pacient",
+      "value": "muž",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "68letý pacient"
+        }
+      ],
+      "note": "Podle označení „68letý pacient“ ve zprávě."
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotní pojišťovna",
+      "group": "Pacient",
+      "value": "211",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "ZP: 211"
+        }
+      ],
+      "note": "211 = Zdravotní pojišťovna ministerstva vnitra ČR – není VZP, souhrn pro revizního lékaře jde této pojišťovně."
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacienta",
+      "group": "Kontakty",
+      "value": "tel. 604 000 271                     E-mail: vlastimil.brabec@example.cz · e-mail ordinace.vavrova@example.cz",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "01",
+          "quote": "Telefon: 604 000 271                     E-mail: vlastimil.brabec@example.cz"
+        },
+        {
+          "docId": "01",
+          "quote": "e-mail: ordinace.vavrova@example.cz"
+        }
+      ]
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktní osoba",
+      "group": "Kontakty",
+      "value": "dcera Petra Malá, +420 608 000 945 (pacient souhlasí s podáváním informací dceři)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Kontaktní osoba: dcera Petra Malá, +420 608 000 945 (pacient souhlasí s podáváním informací dceři)"
+        }
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "group": "Diagnóza",
+      "value": "histologicky: Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H. (26. 8. 2026)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H."
+        }
+      ],
+      "sourceDate": "2026-08-26"
+    },
+    {
+      "key": "epicrisis",
+      "label": "Průběh onemocnění ve zkratce",
+      "group": "Diagnóza",
+      "value": "",
+      "status": "missing",
+      "citations": [],
+      "note": "Epikríza není k dispozici."
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pro konzilium",
+      "group": "Diagnóza",
+      "value": "",
+      "status": "missing",
+      "citations": [],
+      "note": "Otázka pro konzilium není v žádance uvedena."
+    },
+    {
+      "key": "comorbidities",
+      "label": "Přidružená onemocnění",
+      "group": "Anamnéza",
+      "value": "AH, paroxysmální FS (CHA2DS2-VASc 3), DM 2. typu na PAD, dyslipidémie, nefrolitiáza 2021, st. p. appendektomii.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "OA: AH, paroxysmální FS (CHA2DS2-VASc 3), DM 2. typu na PAD, dyslipidémie, nefrolitiáza 2021, st. p. appendektomii."
+        }
+      ],
+      "sourceDate": "2026-08-19"
+    },
+    {
+      "key": "medication",
+      "label": "Léky, které užívá",
+      "group": "Anamnéza",
+      "value": "Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "FA: Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1"
+        }
+      ],
+      "sourceDate": "2026-08-19"
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "group": "Anamnéza",
+      "value": "neudává (20. 7. 2026)",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "02",
+          "quote": "Alergie: neudává"
+        }
+      ],
+      "sourceDate": "2026-07-20",
+      "conflict": {
+        "a": {
+          "value": "AA: neguje",
+          "citation": {
+            "docId": "08",
+            "quote": "AA: neguje"
+          }
+        },
+        "b": {
+          "value": "neudává",
+          "citation": {
+            "docId": "02",
+            "quote": "Alergie: neudává"
+          }
+        },
+        "explain": "Zpráva 08 (19. 8. 2026) uvádí „AA: neguje“, ale zpráva 02 z 20. 7. 2026 zaznamenala: neudává. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala."
+      }
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostní stav (ECOG)",
+      "group": "Stav",
+      "value": "",
+      "status": "missing",
+      "citations": [],
+      "note": "Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva 08 uvádí jen slovní popis „soběstačný“ – to není skóre.",
+      "request": {
+        "to": "onkologická ambulance KOC / odesílající lékař",
+        "channel": "e-mail",
+        "draft": "Dobrý den, před konziliem 2. 9. 2026 prosíme o doplnění výkonnostního stavu (ECOG nebo Karnofsky) – Vlastimil BRABEC. V dosavadní dokumentaci není uveden. Děkujeme, koordinátor KOC."
+      }
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "group": "Stav",
+      "value": "82 kg (19. 8. 2026) · výška 178 cm (19. 8. 2026)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Hmotnost 82 kg"
+        },
+        {
+          "docId": "08",
+          "quote": "výška 178 cm"
+        },
+        {
+          "docId": "07",
+          "quote": "hmotnost 83 kg"
+        },
+        {
+          "docId": "01",
+          "quote": "hmotnost 86 kg"
+        }
+      ],
+      "sourceDate": "2026-08-19",
+      "note": "Dříve: 83 kg (11. 8. 2026), 86 kg (6. 7. 2026). Novější hodnota 80 kg (zpráva 10, 9. 9. 2026) vznikla až po 2. 9. 2026, proto do podkladu nepatří."
+    },
+    {
+      "key": "symptoms",
+      "label": "Příznaky a jejich začátek",
+      "group": "Stav",
+      "value": "",
+      "status": "missing",
+      "citations": [],
+      "note": "Příznaky nejsou popsány."
+    },
+    {
+      "key": "exams",
+      "label": "Provedená vyšetření",
+      "group": "Vyšetrenia",
+      "value": "11. 8. 2026 · 07_Kardiologie_2026-08-11.txt · Kardiologická ambulance MUDr. Ondřej Kraus",
+      "status": "proposed",
+      "citations": [],
+      "sourceDate": "2026-08-11",
+      "note": "Plné znění výsledku je v původní zprávě (klik na citaci). Bez ověřené citace – nezobrazovat jako fakt, ověřit ručně."
+    },
+    {
+      "key": "labs",
+      "label": "Laboratoř a nádorové markery",
+      "group": "Laboratórium",
+      "value": "",
+      "status": "missing",
+      "citations": [],
+      "note": "Laboratorní výsledky nejsou k dispozici."
+    },
+    {
+      "key": "histology",
+      "label": "Histologie (výsledek biopsie)",
+      "group": "Histológia",
+      "value": "Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "09",
+          "quote": "Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H."
+        }
+      ],
+      "sourceDate": "2026-08-26"
+    },
+    {
+      "key": "other",
+      "label": "Jiná důležitá sdělení a přání pacienta",
+      "group": "Iné",
+      "value": "",
+      "status": "missing",
+      "citations": [],
+      "note": "Žádné další informace."
+    }
+  ],
+  "provenance": {
+    "firstName": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "lastName": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "age": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "sex": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "insurer": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "patientContact": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "contactPerson": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "diagnosis": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "epicrisis": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    },
+    "mdtQuestion": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    },
+    "comorbidities": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "medication": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "allergies": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "performance": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    },
+    "weightHeight": {
+      "extractor": "rules",
+      "checkedQuotes": 4,
+      "verifiedQuotes": 4,
+      "rejected": []
+    },
+    "symptoms": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    },
+    "exams": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    },
+    "labs": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    },
+    "histology": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "other": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    }
+  },
+  "findings": [
+    {
+      "id": "ecog-missing",
+      "severity": "missing",
+      "fieldKey": "performance",
+      "text": "Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva 08 uvádí jen slovní popis „soběstačný“ – to není skóre.",
+      "citations": []
+    },
+    {
+      "id": "allergy-conflict",
+      "severity": "conflict",
+      "fieldKey": "allergies",
+      "text": "Zpráva 08 (19. 8. 2026) uvádí „AA: neguje“, ale zpráva 02 z 20. 7. 2026 zaznamenala: neudává. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala.",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "AA: neguje"
+        },
+        {
+          "docId": "02",
+          "quote": "Alergie: neudává"
+        }
+      ]
+    },
+    {
+      "id": "after-mdt",
+      "severity": "info",
+      "text": "Zpráva 10 vznikla po 2. 9. 2026 – do podkladu pro konzilium nepatří (zadání VZP: jen to, co bylo známo k datu konzilia).",
+      "citations": []
+    }
+  ],
+  "precheck": {
+    "findings": []
+  },
+  "labs": [],
+  "exams": [
+    {
+      "date": "2026-08-11",
+      "place": "Kardiologická ambulance MUDr. Ondřej Kraus",
+      "type": "07_Kardiologie_2026-08-11.txt",
+      "summary": "",
+      "docId": "07"
+    }
+  ],
+  "meds": [
+    {
+      "name": "Warfarin Orion",
+      "dose": "3 mg dle INR, Betaloc ZOK 50 mg 1-0-0",
+      "citation": {
+        "docId": "08",
+        "quote": "Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0"
+      }
+    },
+    {
+      "name": "Tritace",
+      "dose": "5 mg 1-0-0",
+      "citation": {
+        "docId": "08",
+        "quote": "Tritace 5 mg 1-0-0"
+      }
+    },
+    {
+      "name": "Glucophage",
+      "dose": "1000 mg 1-0-1",
+      "citation": {
+        "docId": "08",
+        "quote": "Glucophage 1000 mg 1-0-1"
+      }
+    },
+    {
+      "name": "Atoris",
+      "dose": "20 mg 0-0-1, Sorbifer Durules 1-0-1",
+      "citation": {
+        "docId": "08",
+        "quote": "Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1"
+      }
+    }
+  ]
+}

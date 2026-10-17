@@ -1,0 +1,237 @@
+{
+  "caseId": "pacient-3",
+  "label": "Slepý test",
+  "generatedAt": "2026-10-17T03:30:56.622Z",
+  "asOf": "2026-09-02",
+  "gold": "data-pacient-3/gold-pacient-3.json",
+  "extraction": {
+    "file": "public/data/extracted-pacient-3.json",
+    "mode": "rules",
+    "model": null,
+    "generatedAt": "2026-10-17T03:30:36.758Z",
+    "promptVersion": "handover-v1"
+  },
+  "headline": "Slepý test: 10/20 položek správně · 1/4 pastí zachyceno · 1 vymyšlená hodnota · 1 položka bez ověřené citace · 19/19 citací doslova ve zprávách",
+  "summary": {
+    "fieldsCorrect": 10,
+    "fieldsTotal": 20,
+    "trapsCaught": 1,
+    "trapsTotal": 4,
+    "fieldsWithoutVerifiedCitation": 1,
+    "inventedValues": 1,
+    "citationsVerified": 19,
+    "citationsTotal": 19,
+    "goldIntegrity": true
+  },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Jméno",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "lastName",
+      "label": "Příjmení",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "age",
+      "label": "Věk",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "sex",
+      "label": "Pohlaví",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotní pojišťovna",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacientku",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktní osoba",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "ok": false,
+      "status": "proposed",
+      "problems": [
+        "chýba: C20",
+        "chýba: rekt / rect / konečník / konecnik",
+        "chýba: karcin / carcin / novotvar / zhoubn / malign",
+        "chýba citát zo správy 02 alebo 03 alebo 05 alebo 08"
+      ]
+    },
+    {
+      "key": "epicrisis",
+      "label": "Průběh onemocnění ve zkratce",
+      "ok": false,
+      "status": "missing",
+      "problems": [
+        "chýba hodnota"
+      ]
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pro konzilium",
+      "ok": false,
+      "status": "missing",
+      "problems": [
+        "chýba hodnota"
+      ]
+    },
+    {
+      "key": "comorbidities",
+      "label": "Přidružená onemocnění",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "medication",
+      "label": "Léky, které užívá",
+      "ok": false,
+      "status": "proposed",
+      "problems": [
+        "chýba: apixaban / Eliquis",
+        "chýba citát zo správy 07"
+      ]
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "ok": false,
+      "status": "conflict",
+      "problems": [
+        "chýba: jod / jód / kontrast / contrast / iodin",
+        "chýba citát zo správy 04"
+      ]
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostní stav (ECOG)",
+      "ok": true,
+      "status": "missing",
+      "problems": []
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "symptoms",
+      "label": "Příznaky a jejich začátek",
+      "ok": false,
+      "status": "missing",
+      "problems": [
+        "chýba hodnota"
+      ]
+    },
+    {
+      "key": "exams",
+      "label": "Provedená vyšetření",
+      "ok": false,
+      "status": "proposed",
+      "problems": [
+        "bez overeného citátu",
+        "chýba: kolonoskop / koloskop / colonoscop / endoskop",
+        "chýba: CT",
+        "chýba: MR / MRI / magnet",
+        "chýba: S7 / jater / játr / hepat / liver / pečeň / pečen",
+        "chýba: T3 / T3c / mrT3 / cT3",
+        "chýba citát zo správy 02 alebo 04 alebo 06 alebo 08"
+      ]
+    },
+    {
+      "key": "labs",
+      "label": "Laboratoř a nádorové markery",
+      "ok": false,
+      "status": "missing",
+      "problems": [
+        "chýba hodnota"
+      ]
+    },
+    {
+      "key": "histology",
+      "label": "Histologie (výsledek biopsie)",
+      "ok": false,
+      "status": "proposed",
+      "problems": [
+        "chýba: adenokarcin / adenocarcin"
+      ]
+    },
+    {
+      "key": "other",
+      "label": "Jiná důležitá sdělení a přání pacientky",
+      "ok": false,
+      "status": "missing",
+      "problems": [
+        "chýba hodnota"
+      ]
+    }
+  ],
+  "traps": [
+    {
+      "id": "T1-jaterni-lozisko-vs-cM0",
+      "title": "Nejasné ložisko v S7 jater vs. „cM0“ v žádosti o MDT",
+      "why": "CT 30. 7. popisuje v S7 jater hypodenzní ložisko 8 mm nejasného charakteru (metastázu nelze vyloučit) a doporučuje MR jater. Žádost o MDT z toho udělala „bez známek vzdálených metastáz (cM0)“, MR jater do MDT provedena nebyla. Koordinátor musí MDT upozornit, že M-stadium není uzavřené – rozhoduje mezi kurativní léčbou lokálního nádoru a léčbou možného M1. Výsledek MR jater (prostá cysta) je až ve zprávě 10 po MDT a nesmí se objevit v předávce.",
+      "caught": false
+    },
+    {
+      "id": "T2-alergie-kontrastni-latka",
+      "title": "Alergie na jodovou kontrastní látku je jen v popisu CT, jinde „AA: neguje“",
+      "why": "Pacient má kopřivku po jodové kontrastní látce (2021); zjistilo to jen radiodiagnostické oddělení, které podalo premedikaci. PL, gastroenterolog i žádost o MDT (novější než CT!) uvádějí „AA: neguje / neudává“. KOC bude plánovat další CT s kontrastem a perioperační péči – alergie se v předávce nesmí ztratit a musí být doložena citací z CT.",
+      "caught": false
+    },
+    {
+      "id": "T3-warfarin-vs-apixaban",
+      "title": "Neaktuální lékový seznam v žádosti: warfarin místo apixabanu",
+      "why": "Kardiolog 11. 8. trvale vysadil warfarin a převedl pacienta na apixaban (Eliquis 5 mg 1-0-1). Žádost o MDT z 19. 8. – tedy novější dokument – ale kopíruje starý seznam od PL s warfarinem. Pravidlo „nejnovější dokument vyhrává“ zde selže. Pro plánování operace, biopsií a radioterapie je zásadní vědět, jaké antikoagulans pacient skutečně užívá (jiný způsob vysazení, riziko zdvojení antikoagulace). Koordinátor musí uvést apixaban a rozpor nahlásit.",
+      "caught": false
+    },
+    {
+      "id": "T4-dodatek-dMMR-po-zadosti",
+      "title": "Dodatek k histologii (dMMR) přišel až po odeslání žádosti na MDT",
+      "why": "Původní histologie (24. 7.) i žádost o MDT (19. 8.) uvádějí, že výsledek MMR zatím chybí. Dodatek patologie z 26. 8. – poslaný jen gastroenterologii a chirurgii, ne do KOC – prokazuje dMMR (ztráta MLH1 a PMS2, MSI-H). To zásadně mění otázku pro MDT: u dMMR karcinomu rekta přichází v úvahu imunoterapie místo chemoradioterapie. Navíc je potřeba genetická konzultace (Lynchův syndrom). Tady naopak platí novější dokument – předávka musí obsahovat dMMR s citací dodatku.",
+      "caught": true
+    }
+  ],
+  "invented": [
+    {
+      "where": "exams",
+      "value": "08",
+      "reason": "číslo nie je v citovanej správe"
+    }
+  ],
+  "uncited": [
+    "exams"
+  ],
+  "badCitations": [],
+  "goldProblems": []
+}

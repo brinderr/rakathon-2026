@@ -1,0 +1,25 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+FAKULTNÍ NEMOCNICE HRADNÍ (fiktivní)
+Komplexní onkologické centrum – Onkologická klinika, ambulance GIT onkologie
+tel. +420 602 000 590 | onkologie.fnhradni@example.cz
+
+AMBULANTNÍ ZPRÁVA – vstupní vyšetření                         Datum: 09.09.2026
+Pacient: Vlastimil Brabec, RČ 580314/2158, ZP 211
+
+Závěr MDT ze dne 2. 9. 2026: adenokarcinom středního rekta cT3c N1b, MRF+, EMVI+, dMMR (ztráta MLH1/PMS2). Doplnit MR jater k objasnění ložiska v S7. Při vyloučení metastatického postižení indikována neoadjuvantní imunoterapie dostarlimabem s restagingem (MR pánve, endoskopie) po 3 měsících; genetická konzultace.
+
+MR jater s hepatospecifickou k. l. (FN Hradní, 7. 9. 2026): ložisko v S7 velikosti 8 mm odpovídá prosté cystě, jiná ložiska nejsou, bez známek metastatického postižení.
+
+Anamnéza viz předchozí zprávy.
+AA: jodová kontrastní látka – kopřivka (2021)
+FA: Eliquis 5 mg 1-0-1, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1
+
+Objektivně: ECOG PS 0, hmotnost 80 kg, výška 178 cm, TK 138/80, bez ikteru, břicho měkké, nebolestivé.
+Lab. 9. 9. 2026: Hb 121 g/l, CEA 6,9 ug/l, TSH a fT4 v normě, kortizol v normě.
+
+Závěr: Adenokarcinom středního rekta cT3c N1b M0, dMMR.
+Plán: neoadjuvantní imunoterapie dostarlimab 500 mg i.v. á 3 týdny, 1. cyklus 16. 9. 2026 (žádost o úhradu dle § 16 zák. č. 48/1997 Sb. odeslána ZP 211). Genetická konzultace 22. 9. 2026. Pacient s plánem souhlasí, informována i dcera.
+
+MUDr. Lenka Horká
+onkolog

@@ -1,0 +1,1141 @@
+{
+  "caseId": "pacient-3",
+  "title": "Pacient 3 – Vlastimil Brabec (fiktivní), adenokarcinom středního rekta – slepý test",
+  "source": "data-pacient-3/source-pacient-3.json",
+  "asOf": "2026-09-02",
+  "author": "slepý test – napsal agent bez přístupu k pravidlům",
+  "fields": [
+    {
+      "key": "firstName",
+      "expect": "Vlastimil",
+      "accept": [
+        [
+          "Vlastimil"
+        ]
+      ],
+      "citeDocs": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Pacient: pan Vlastimil BRABEC, nar. 14. 3. 1958"
+        },
+        {
+          "docId": "06",
+          "quote": "Jméno: Vlastimil Brabec"
+        }
+      ],
+      "why": "Jméno je shodně v hlavičce všech zpráv."
+    },
+    {
+      "key": "lastName",
+      "expect": "Brabec",
+      "accept": [
+        [
+          "Brabec"
+        ]
+      ],
+      "citeDocs": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Pacient: pan Vlastimil BRABEC, nar. 14. 3. 1958"
+        },
+        {
+          "docId": "01",
+          "quote": "Pacient: BRABEC Vlastimil"
+        }
+      ],
+      "why": "Příjmení je shodně v hlavičce všech zpráv (často velkými písmeny)."
+    },
+    {
+      "key": "age",
+      "expect": "68 let (nar. 14. 3. 1958)",
+      "accept": [
+        [
+          "68"
+        ]
+      ],
+      "citeDocs": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09"
+      ],
+      "evidence": [
+        {
+          "docId": "01",
+          "quote": "nar.: 14.03.1958"
+        },
+        {
+          "docId": "08",
+          "quote": "68letý pacient"
+        }
+      ],
+      "why": "Narozen 14. 3. 1958 → k datu MDT 2. 9. 2026 je mu 68 let; žádost o MDT uvádí „68letý pacient“."
+    },
+    {
+      "key": "sex",
+      "expect": "muž",
+      "accept": [
+        [
+          "muž",
+          "muz",
+          "mužsk",
+          "male",
+          "M"
+        ]
+      ],
+      "reject": [
+        "female",
+        "ženské",
+        "pacientka"
+      ],
+      "citeDocs": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09"
+      ],
+      "evidence": [
+        {
+          "docId": "05",
+          "quote": "Pohlaví: M"
+        },
+        {
+          "docId": "08",
+          "quote": "Pacient: pan Vlastimil BRABEC"
+        }
+      ],
+      "why": "Laboratoř uvádí pohlaví M, žádost „pan“, rodné číslo nemá měsíc +50."
+    },
+    {
+      "key": "insurer",
+      "expect": "211 (Zdravotní pojišťovna ministerstva vnitra ČR)",
+      "accept": [
+        [
+          "211"
+        ]
+      ],
+      "citeDocs": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Zdravotní pojišťovna: 211"
+        },
+        {
+          "docId": "01",
+          "quote": "Zdrav. pojišťovna: 211"
+        }
+      ],
+      "why": "Kód zdravotní pojišťovny 211 je shodně ve všech zprávách."
+    },
+    {
+      "key": "patientContact",
+      "expect": "tel. +420 604 000 271, e-mail vlastimil.brabec@example.cz",
+      "accept": [
+        [
+          "604 000 271",
+          "604000271",
+          "+420604000271",
+          "420 604 000 271"
+        ],
+        [
+          "vlastimil.brabec@example.cz",
+          "brabec@example.cz"
+        ]
+      ],
+      "citeDocs": [
+        "01",
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Kontakt na pacienta: +420 604 000 271, vlastimil.brabec@example.cz"
+        },
+        {
+          "docId": "01",
+          "quote": "Telefon: 604 000 271"
+        },
+        {
+          "docId": "01",
+          "quote": "E-mail: vlastimil.brabec@example.cz"
+        }
+      ],
+      "why": "Telefon i e-mail pacienta jsou v doporučení PL i v žádosti o MDT (shodně)."
+    },
+    {
+      "key": "contactPerson",
+      "expect": "dcera Petra Malá, tel. +420 608 000 945 (pacient souhlasí s podáváním informací dceři)",
+      "accept": [
+        [
+          "Petra",
+          "Malá",
+          "Mala"
+        ],
+        [
+          "608 000 945",
+          "608000945",
+          "+420608000945"
+        ]
+      ],
+      "citeDocs": [
+        "01",
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Kontaktní osoba: dcera Petra Malá, +420 608 000 945 (pacient souhlasí s podáváním informací dceři)"
+        },
+        {
+          "docId": "01",
+          "quote": "Kontaktní osoba: dcera Petra Malá, tel. 608 000 945"
+        }
+      ],
+      "why": "Kontaktní osoba je dcera – shodně u PL i v žádosti; pacient souhlasí s podáváním informací."
+    },
+    {
+      "key": "diagnosis",
+      "expect": "C20 – adenokarcinom středního rekta (zhoubný novotvar konečníku), cT3c N1b (MR), MRF+, EMVI+; M-stadium není uzavřeno (nejasné ložisko 8 mm v S7 jater)",
+      "accept": [
+        [
+          "C20"
+        ],
+        [
+          "rekt",
+          "rect",
+          "konečník",
+          "konecnik"
+        ],
+        [
+          "karcin",
+          "carcin",
+          "novotvar",
+          "zhoubn",
+          "malign"
+        ]
+      ],
+      "citeDocs": [
+        "02",
+        "03",
+        "05",
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Diagnóza: C20 – adenokarcinom středního rekta, cT3c N1b (MR), MRF+, EMVI+, cM0"
+        },
+        {
+          "docId": "03",
+          "quote": "1) Rektum, biopsie: ADENOKARCINOM, low-grade (dříve G2), MKN-O 8140/3."
+        }
+      ],
+      "why": "Histologicky ověřený adenokarcinom rekta, MKN-10 C20 (K62.5/D50.0 od PL jsou jen symptomové kódy). Údaj „cM0“ ze žádosti není podložený – viz past T1."
+    },
+    {
+      "key": "epicrisis",
+      "expect": "68letý muž, od poloviny května 2026 krev ve stolici, změna defekačního stereotypu, sideropenická anémie (Hb 104 g/l), TOKS pozitivní. Koloskopie 20. 7. 2026: exulcerovaný tumor rekta 7–11 cm od anu, histologie adenokarcinom low-grade; dodatek 26. 8. 2026: dMMR (ztráta MLH1/PMS2). CT 30. 7. 2026: 3 mezorektální uzliny do 7 mm, nejasné ložisko 8 mm v S7 jater (metastázu nelze vyloučit, doporučená MR jater do MDT neprovedena). MR pánve 6. 8. 2026: mrT3c mrN1b, MRF+ (1 mm), EMVI+. CEA 7,8 µg/l. Odeslán k MDT do KOC.",
+      "accept": [
+        [
+          "rekt",
+          "rect",
+          "konečník",
+          "konecnik"
+        ],
+        [
+          "karcin",
+          "carcin",
+          "novotvar",
+          "zhoubn",
+          "malign"
+        ],
+        [
+          "T3",
+          "T3c",
+          "mrT3",
+          "cT3",
+          "N1",
+          "N1b",
+          "mrN1",
+          "cN1",
+          "MRF",
+          "EMVI",
+          "stádi",
+          "stadi",
+          "stagin"
+        ]
+      ],
+      "reject": [
+        "dostarlimab",
+        "cyst"
+      ],
+      "citeDocs": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "68letý pacient s cca 3měsíční anamnézou hematochezie, změny defekačního stereotypu a sideropenické anémie (Hb 104 g/l), TOKS pozitivní."
+        },
+        {
+          "docId": "02",
+          "quote": "1. Tumor rekta 7–11 cm od anu, makroskopicky karcinom – odebrána biopsie."
+        },
+        {
+          "docId": "04",
+          "quote": "2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit."
+        },
+        {
+          "docId": "06",
+          "quote": "mrT3c, mrN1b (3 suspektní mezorektální uzliny), MRF+ (1 mm vlevo), EMVI+, laterální uzliny negativní."
+        },
+        {
+          "docId": "09",
+          "quote": "Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H."
+        }
+      ],
+      "why": "Souhrn k datu MDT: symptomy → koloskopie s biopsií → CT a MR staging → CEA → dodatek dMMR. Nesmí obsahovat závěr MDT, imunoterapii ani výsledek MR jater (zpráva 10 je až po MDT)."
+    },
+    {
+      "key": "mdtQuestion",
+      "expect": "Stanovení dalšího léčebného postupu: indikace neoadjuvantní léčby (chemoradioterapie, event. TNT) vs. primární operace (TME); event. převzetí k neoadjuvantní léčbě do KOC.",
+      "accept": [
+        [
+          "neoadjuv",
+          "předoperač",
+          "predoperač"
+        ],
+        [
+          "operac",
+          "operác",
+          "TME",
+          "resekc",
+          "chirurg"
+        ]
+      ],
+      "reject": [
+        "dostarlimab"
+      ],
+      "citeDocs": [
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Otázka pro MDT: Prosíme o stanovení dalšího léčebného postupu – indikace neoadjuvantní léčby (chemoradioterapie, event. TNT) vs. primární operace (TME); event. převzetí k neoadjuvantní léčbě do KOC."
+        }
+      ],
+      "why": "Otázka je výslovně v žádosti chirurga. Vznikla před dodatkem s dMMR, takže je neúplná (viz T4) – ale je to otázka odesílajícího, ne odpověď MDT."
+    },
+    {
+      "key": "comorbidities",
+      "expect": "Arteriální hypertenze; paroxysmální fibrilace síní (CHA2DS2-VASc 3, HAS-BLED 2); DM 2. typu na PAD; dyslipidémie; nefrolitiáza vpravo 2021; st. p. appendektomii (1969); sideropenická anémie; divertikulóza sigmatu, hemoroidy I. st.",
+      "accept": [
+        [
+          "fibrilac",
+          "fibrilác",
+          "FS",
+          "AF",
+          "fibrillation"
+        ],
+        [
+          "diabet",
+          "DM",
+          "DM2"
+        ],
+        [
+          "hypertenz",
+          "hypertens",
+          "AH",
+          "HT",
+          "HN"
+        ]
+      ],
+      "citeDocs": [
+        "01",
+        "07",
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "OA: AH, paroxysmální FS (CHA2DS2-VASc 3), DM 2. typu na PAD, dyslipidémie, nefrolitiáza 2021, st. p. appendektomii."
+        },
+        {
+          "docId": "01",
+          "quote": "OA: arteriální hypertenze (od 2012)"
+        },
+        {
+          "docId": "07",
+          "quote": "1. Paroxysmální fibrilace síní, t. č. sinusový rytmus, CHA2DS2-VASc 3"
+        }
+      ],
+      "why": "Osobní anamnéza je shodně u PL, kardiologa i v žádosti."
+    },
+    {
+      "key": "medication",
+      "expect": "Eliquis (apixaban) 5 mg 1-0-1 od 12. 8. 2026 (warfarin trvale vysazen – kardiolog 11. 8. 2026); Betaloc ZOK 50 mg 1-0-0; Tritace 5 mg 1-0-0; Glucophage 1000 mg 1-0-1; Atoris 20 mg 0-0-1; Sorbifer Durules 1-0-1. Rozpor: žádost o MDT (19. 8.) stále uvádí Warfarin Orion 3 mg.",
+      "accept": [
+        [
+          "apixaban",
+          "Eliquis"
+        ],
+        [
+          "Glucophage",
+          "metformin"
+        ],
+        [
+          "Betaloc",
+          "metoprolol"
+        ]
+      ],
+      "citeDocs": [
+        "07"
+      ],
+      "evidence": [
+        {
+          "docId": "07",
+          "quote": "převádím z warfarinu na apixaban: warfarin trvale vysazen, Eliquis (apixaban) 5 mg 1-0-1 zahájit od 12. 8. 2026"
+        },
+        {
+          "docId": "07",
+          "quote": "Ostatní medikace beze změny: Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1."
+        },
+        {
+          "docId": "08",
+          "quote": "FA: Warfarin Orion 3 mg dle INR"
+        }
+      ],
+      "why": "Kardiolog 11. 8. trvale vysadil warfarin a nasadil Eliquis; novější žádost o MDT kopíruje starý seznam s warfarinem. Aktuální je seznam z kardiologie (viz T3)."
+    },
+    {
+      "key": "allergies",
+      "expect": "Jodová kontrastní látka – kopřivka (při CT ledvin 2021); CT 30. 7. 2026 provedeno po premedikaci (prednison, bisulepin). Rozpor: PL, gastroenterolog i žádost o MDT uvádějí „AA: neguje / neudává“.",
+      "accept": [
+        [
+          "jod",
+          "jód",
+          "kontrast",
+          "contrast",
+          "iodin"
+        ]
+      ],
+      "citeDocs": [
+        "04"
+      ],
+      "evidence": [
+        {
+          "docId": "04",
+          "quote": "pacient udává kopřivku po jodové kontrastní látce při CT ledvin v r. 2021"
+        },
+        {
+          "docId": "04",
+          "quote": "Vyšetření provedeno po premedikaci dle protokolu oddělení"
+        },
+        {
+          "docId": "08",
+          "quote": "AA: neguje"
+        }
+      ],
+      "why": "Alergie na jodovou k. l. je jen v popisu CT; ostatní zprávy ji neuvádějí (viz T2)."
+    },
+    {
+      "key": "performance",
+      "expect": "missing",
+      "accept": [],
+      "reject": [
+        "ECOG PS 0",
+        "ECOG 0",
+        "NYHA"
+      ],
+      "rejectRegex": [
+        "ECOG\\s*(PS)?\\s*[:=]?\\s*0(?![0-9])",
+        "[Kk]arnofsk"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "PS dle ECOG: ---"
+        },
+        {
+          "docId": "08",
+          "quote": "celkově dobrý stav, soběstačný, chodí bez omezení, je však unavenější"
+        }
+      ],
+      "why": "Do data MDT nikde skóre ECOG/PS/Karnofsky – v žádosti je kolonka ECOG prázdná, je tam jen slovní popis. ECOG PS 0 je až ve zprávě 10 (po MDT) a nesmí se použít."
+    },
+    {
+      "key": "weightHeight",
+      "expect": "82 kg, 178 cm (19. 8. 2026); úbytek 4 kg za 2 měsíce (6. 7. 2026: 86 kg, BMI 27,1; 11. 8. 2026: 83 kg)",
+      "accept": [
+        [
+          "82"
+        ],
+        [
+          "178"
+        ]
+      ],
+      "reject": [
+        "80 kg"
+      ],
+      "citeDocs": [
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Hmotnost 82 kg, výška 178 cm (za 2 měsíce úbytek 4 kg)."
+        },
+        {
+          "docId": "01",
+          "quote": "hmotnost 86 kg, výška 178 cm, BMI 27,1"
+        },
+        {
+          "docId": "07",
+          "quote": "hmotnost 83 kg"
+        }
+      ],
+      "why": "Nejnovější údaj před MDT je ze žádosti 19. 8. (82 kg). 86 kg (PL) a 83 kg (kardiologie) jsou starší; 80 kg je až po MDT."
+    },
+    {
+      "key": "symptoms",
+      "expect": "Od poloviny května 2026 příměs krve ve stolici (hematochezie), změna vyprazdňování (střídání zácpy a kašovité stolice), pocit nedokonalého vyprázdnění; od poloviny června výrazná únava a námahová dušnost (anémie); úbytek 4 kg za 2 měsíce. Bolesti břicha a teploty neguje.",
+      "accept": [
+        [
+          "krv",
+          "krev",
+          "hematoch",
+          "enteroragi",
+          "bleed",
+          "melén",
+          "melen"
+        ],
+        [
+          "květ",
+          "5/2026",
+          "05/2026",
+          "5. 2026",
+          "05. 2026",
+          "5.2026",
+          "2 měs",
+          "2měs",
+          "dvou měs",
+          "dva měs",
+          "3 měs",
+          "3měs",
+          "tří měs",
+          "May",
+          "máj"
+        ],
+        [
+          "zácp",
+          "zápch",
+          "průjm",
+          "hnačk",
+          "kašovit",
+          "vyprazd",
+          "vyprázd",
+          "defekač",
+          "tenesm",
+          "únav",
+          "dušn",
+          "hubn",
+          "úbytek"
+        ]
+      ],
+      "citeDocs": [
+        "01",
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "01",
+          "quote": "asi 2 měsíce (od poloviny května) trvající příměs krve ve stolici"
+        },
+        {
+          "docId": "01",
+          "quote": "Změnilo se mu vyprazdňování: střídá zácpu a kašovité stolice, často má pocit"
+        },
+        {
+          "docId": "01",
+          "quote": "Poslední 3 týdny je výrazně unavený, zadýchá se do"
+        },
+        {
+          "docId": "08",
+          "quote": "68letý pacient s cca 3měsíční anamnézou hematochezie, změny defekačního stereotypu a sideropenické anémie (Hb 104 g/l), TOKS pozitivní."
+        }
+      ],
+      "why": "Počátek obtíží: polovina května 2026 (PL 6. 7.: „asi 2 měsíce“, žádost 19. 8.: „cca 3 měsíce“). Hlavní symptom je krev ve stolici, dále změna vyprazdňování a únava."
+    },
+    {
+      "key": "exams",
+      "expect": "20. 7. 2026 koloskopie (gastroenterologie ON Rybníky): exulcerovaný tumor rekta 7–11 cm od anu, 2/3 obvodu, biopsie; polyp sigmatu 6 mm odstraněn; tetováž. 30. 7. 2026 CT hrudníku, břicha a pánve s k. l. (RDG ON Rybníky): ztluštění stěny středního rekta 5 cm, 3 mezorektální uzliny do 7 mm, hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – doporučena MR jater (do MDT neprovedena), jinak bez generalizace. 6. 8. 2026 MR malé pánve (MR centrum Medicon Plus): mrT3c, mrN1b, MRF+ (1 mm vlevo), EMVI+, dolní okraj 7 cm od anu, délka 5,2 cm, laterální uzliny negativní. 11. 8. 2026 echokardiografie (kardiologie): EF LK 55 %.",
+      "accept": [
+        [
+          "kolonoskop",
+          "koloskop",
+          "colonoscop",
+          "endoskop"
+        ],
+        [
+          "CT"
+        ],
+        [
+          "MR",
+          "MRI",
+          "magnet"
+        ],
+        [
+          "S7",
+          "jater",
+          "játr",
+          "hepat",
+          "liver",
+          "pečeň",
+          "pečen"
+        ],
+        [
+          "T3",
+          "T3c",
+          "mrT3",
+          "cT3"
+        ]
+      ],
+      "reject": [
+        "cyst"
+      ],
+      "citeDocs": [
+        "02",
+        "04",
+        "06",
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "02",
+          "quote": "1. Tumor rekta 7–11 cm od anu, makroskopicky karcinom – odebrána biopsie."
+        },
+        {
+          "docId": "04",
+          "quote": "1. Ztluštění stěny středního rekta v délce cca 5 cm odpovídající známému tumoru, 3 mezorektální uzliny do 7 mm."
+        },
+        {
+          "docId": "04",
+          "quote": "2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit."
+        },
+        {
+          "docId": "04",
+          "quote": "Doporučeno doplnit MR jater s hepatospecifickou kontrastní látkou."
+        },
+        {
+          "docId": "06",
+          "quote": "mrT3c, mrN1b (3 suspektní mezorektální uzliny), MRF+ (1 mm vlevo), EMVI+, laterální uzliny negativní."
+        },
+        {
+          "docId": "07",
+          "quote": "ECHO: LK nedilatovaná, bez poruchy kinetiky, EF LK 55 %"
+        }
+      ],
+      "why": "Koloskopie, CT a MR jsou jádro stagingu. Ložisko v S7 jater je otevřené (MR jater do MDT neprovedena) a nesmí se ztratit. Výsledek „cysta“ je až po MDT."
+    },
+    {
+      "key": "labs",
+      "expect": "2. 7. 2026: Hb 104 g/l, MCV 74 fl, Fe 5,1 µmol/l, ferritin 6 µg/l, INR 2,4, TOKS 186 ng/ml (pozitivní). 3. 8. 2026: Hb 109 g/l, MCV 78,2 fl, ferritin 14 µg/l, INR 2,1 (warfarin), kreatinin 96 µmol/l, eGFR 1,18 ml/s, jaterní testy v normě, albumin 39 g/l, CRP 6 mg/l, glukóza 8,1 mmol/l, HbA1c 53 mmol/mol; CEA 7,8 µg/l (zvýšený, ref. < 5,0), CA 19-9 18 kU/l (v normě).",
+      "accept": [
+        [
+          "CEA"
+        ],
+        [
+          "7,8",
+          "7.8"
+        ],
+        [
+          "Hb",
+          "hemoglobin",
+          "hemoglobín"
+        ]
+      ],
+      "rejectRegex": [
+        "CEA[^0-9]{0,25}6[,.]9",
+        "Hb[^0-9]{0,15}121"
+      ],
+      "citeDocs": [
+        "05",
+        "01",
+        "08"
+      ],
+      "evidence": [
+        {
+          "docId": "05",
+          "quote": "CEA                        7,8        ug/l             < 5,0              H"
+        },
+        {
+          "docId": "05",
+          "quote": "Hemoglobin                 109        g/l              135 - 175          L"
+        },
+        {
+          "docId": "08",
+          "quote": "Onkomarkery 3. 8. 2026: CEA 7,8 ug/l, CA 19-9 18 kU/l."
+        },
+        {
+          "docId": "01",
+          "quote": "KO: Hb 104 g/l (!)"
+        },
+        {
+          "docId": "01",
+          "quote": "TOKS (kvantitativní imunochemický): 186 ng/ml – POZITIVNÍ"
+        }
+      ],
+      "why": "Onkomarker CEA je zvýšený (7,8 µg/l, 3. 8.), CA 19-9 v normě, sideropenická anémie. Hodnoty ze zprávy po MDT (CEA 6,9, Hb 121) se nesmí použít."
+    },
+    {
+      "key": "histology",
+      "expect": "Biopsie rekta B-2026-07118 (Ústav patologie ON Rybníky, 24. 7. 2026): adenokarcinom, low-grade (dříve G2), MKN-O 8140/3; polyp sigmatu – tubulární adenom s low-grade dysplazií, odstraněn radikálně. Dodatek 26. 8. 2026: ztráta exprese MLH1 a PMS2 = dMMR (fenotyp MSI-H); doporučeno vyšetření BRAF V600E / metylace promotoru MLH1 a genetická konzultace.",
+      "accept": [
+        [
+          "adenokarcin",
+          "adenocarcin"
+        ],
+        [
+          "dMMR",
+          "MLH1",
+          "PMS2",
+          "MSI",
+          "deficit",
+          "deficien"
+        ]
+      ],
+      "citeDocs": [
+        "03",
+        "09"
+      ],
+      "evidence": [
+        {
+          "docId": "03",
+          "quote": "1) Rektum, biopsie: ADENOKARCINOM, low-grade (dříve G2), MKN-O 8140/3."
+        },
+        {
+          "docId": "09",
+          "quote": "Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H."
+        },
+        {
+          "docId": "09",
+          "quote": "Dodatek vydán: 26.08.2026"
+        }
+      ],
+      "why": "Původní nález i dodatek jsou datované před MDT. Dodatek s dMMR je klíčový a v žádosti chybí (viz T4)."
+    },
+    {
+      "key": "other",
+      "expect": "Pacient si přeje, pokud to bude onkologicky bezpečné, zachovat svěrač a vyhnout se trvalé stomii. Pečuje doma o manželku s Alzheimerovou chorobou – preferuje co nejkratší hospitalizace a ambulantní léčbu v místě bydliště; souhlasí s podáváním informací dceři. Patolog doporučuje genetickou konzultaci (dMMR; otec měl karcinom tlustého střeva).",
+      "accept": [
+        [
+          "stomi",
+          "stómi"
+        ],
+        [
+          "manžel",
+          "manzel",
+          "pečuj",
+          "pečov",
+          "Alzheimer",
+          "wife"
+        ]
+      ],
+      "reject": [
+        "dostarlimab"
+      ],
+      "citeDocs": [
+        "08",
+        "01"
+      ],
+      "evidence": [
+        {
+          "docId": "08",
+          "quote": "Výslovně si přeje, pokud to bude onkologicky bezpečné, zachovat svěrač a vyhnout se trvalé stomii."
+        },
+        {
+          "docId": "08",
+          "quote": "Protože pečuje o manželku, preferuje co nejkratší hospitalizace a léčbu ambulantně, pokud možno v místě bydliště."
+        },
+        {
+          "docId": "01",
+          "quote": "manželka má Alzheimerovu chorobu, pacient o ni doma pečuje."
+        },
+        {
+          "docId": "09",
+          "quote": "a genetickou konzultaci"
+        }
+      ],
+      "why": "Přání pacienta (zachovat svěrač, bez trvalé stomie) a sociální situace (pečuje o manželku) mění plánování léčby i hospitalizace."
+    }
+  ],
+  "traps": [
+    {
+      "id": "T1-jaterni-lozisko-vs-cM0",
+      "title": "Nejasné ložisko v S7 jater vs. „cM0“ v žádosti o MDT",
+      "why": "CT 30. 7. popisuje v S7 jater hypodenzní ložisko 8 mm nejasného charakteru (metastázu nelze vyloučit) a doporučuje MR jater. Žádost o MDT z toho udělala „bez známek vzdálených metastáz (cM0)“, MR jater do MDT provedena nebyla. Koordinátor musí MDT upozornit, že M-stadium není uzavřené – rozhoduje mezi kurativní léčbou lokálního nádoru a léčbou možného M1. Výsledek MR jater (prostá cysta) je až ve zprávě 10 po MDT a nesmí se objevit v předávce.",
+      "evidence": [
+        {
+          "docId": "04",
+          "quote": "v segmentu S7 subkapsulárně hypodenzní ložisko 8 mm, pro malou velikost denzitně nehodnotitelné, nelze spolehlivě charakterizovat"
+        },
+        {
+          "docId": "04",
+          "quote": "2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit."
+        },
+        {
+          "docId": "04",
+          "quote": "Doporučeno doplnit MR jater s hepatospecifickou kontrastní látkou."
+        },
+        {
+          "docId": "08",
+          "quote": "CT hrudníku, břicha a pánve 30. 7. 2026 bez známek vzdálených metastáz (cM0)."
+        }
+      ],
+      "checks": [
+        {
+          "type": "any",
+          "checks": [
+            {
+              "type": "flagged",
+              "docId": "04",
+              "all": [
+                "S7"
+              ]
+            },
+            {
+              "type": "flagged",
+              "docId": "04",
+              "all": [
+                "MR jater"
+              ]
+            },
+            {
+              "type": "flagged",
+              "docId": "08",
+              "all": [
+                "cM0"
+              ]
+            },
+            {
+              "type": "flagged",
+              "docId": "08",
+              "all": [
+                "vzdálených metastáz"
+              ]
+            },
+            {
+              "type": "messageMatches",
+              "all": [
+                "\\bS ?7\\b|j[aá]te?r|hepat|pe[čc]e[nň]|[Ll]iver",
+                "\\bMR\\b|\\bMRI\\b|\\bMRT\\b|[Mm]agnet"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "valuesNotContain",
+          "any": [
+            "cyst",
+            "Cyst"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T2-alergie-kontrastni-latka",
+      "title": "Alergie na jodovou kontrastní látku je jen v popisu CT, jinde „AA: neguje“",
+      "why": "Pacient má kopřivku po jodové kontrastní látce (2021); zjistilo to jen radiodiagnostické oddělení, které podalo premedikaci. PL, gastroenterolog i žádost o MDT (novější než CT!) uvádějí „AA: neguje / neudává“. KOC bude plánovat další CT s kontrastem a perioperační péči – alergie se v předávce nesmí ztratit a musí být doložena citací z CT.",
+      "evidence": [
+        {
+          "docId": "04",
+          "quote": "pacient udává kopřivku po jodové kontrastní látce při CT ledvin v r. 2021"
+        },
+        {
+          "docId": "01",
+          "quote": "AA: neguje"
+        },
+        {
+          "docId": "02",
+          "quote": "Alergie: neudává"
+        },
+        {
+          "docId": "08",
+          "quote": "AA: neguje"
+        }
+      ],
+      "checks": [
+        {
+          "type": "any",
+          "checks": [
+            {
+              "type": "valueContains",
+              "field": "allergies",
+              "all": [
+                "jod"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "allergies",
+              "all": [
+                "Jod"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "allergies",
+              "all": [
+                "jód"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "allergies",
+              "all": [
+                "Jód"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "allergies",
+              "all": [
+                "kontrast"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "allergies",
+              "all": [
+                "Kontrast"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "allergies",
+              "all": [
+                "contrast"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "allergies",
+              "all": [
+                "iodin"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "citesDoc",
+          "field": "allergies",
+          "docId": "04"
+        }
+      ]
+    },
+    {
+      "id": "T3-warfarin-vs-apixaban",
+      "title": "Neaktuální lékový seznam v žádosti: warfarin místo apixabanu",
+      "why": "Kardiolog 11. 8. trvale vysadil warfarin a převedl pacienta na apixaban (Eliquis 5 mg 1-0-1). Žádost o MDT z 19. 8. – tedy novější dokument – ale kopíruje starý seznam od PL s warfarinem. Pravidlo „nejnovější dokument vyhrává“ zde selže. Pro plánování operace, biopsií a radioterapie je zásadní vědět, jaké antikoagulans pacient skutečně užívá (jiný způsob vysazení, riziko zdvojení antikoagulace). Koordinátor musí uvést apixaban a rozpor nahlásit.",
+      "evidence": [
+        {
+          "docId": "07",
+          "quote": "převádím z warfarinu na apixaban: warfarin trvale vysazen, Eliquis (apixaban) 5 mg 1-0-1 zahájit od 12. 8. 2026"
+        },
+        {
+          "docId": "08",
+          "quote": "FA: Warfarin Orion 3 mg dle INR"
+        }
+      ],
+      "checks": [
+        {
+          "type": "any",
+          "checks": [
+            {
+              "type": "valueContains",
+              "field": "medication",
+              "all": [
+                "apixaban"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "medication",
+              "all": [
+                "Apixaban"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "medication",
+              "all": [
+                "Eliquis"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "medication",
+              "all": [
+                "ELIQUIS"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "citesDoc",
+          "field": "medication",
+          "docId": "07"
+        },
+        {
+          "type": "any",
+          "checks": [
+            {
+              "type": "fieldStatus",
+              "field": "medication",
+              "status": "conflict"
+            },
+            {
+              "type": "flagged",
+              "docId": "08",
+              "all": [
+                "Warfarin"
+              ]
+            },
+            {
+              "type": "flagged",
+              "docId": "07",
+              "all": [
+                "warfarin",
+                "apixaban"
+              ]
+            },
+            {
+              "type": "messageMatches",
+              "all": [
+                "[Ww]arfarin|WARFARIN",
+                "[Aa]pixaban|APIXABAN|[Ee]liquis|ELIQUIS"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T4-dodatek-dMMR-po-zadosti",
+      "title": "Dodatek k histologii (dMMR) přišel až po odeslání žádosti na MDT",
+      "why": "Původní histologie (24. 7.) i žádost o MDT (19. 8.) uvádějí, že výsledek MMR zatím chybí. Dodatek patologie z 26. 8. – poslaný jen gastroenterologii a chirurgii, ne do KOC – prokazuje dMMR (ztráta MLH1 a PMS2, MSI-H). To zásadně mění otázku pro MDT: u dMMR karcinomu rekta přichází v úvahu imunoterapie místo chemoradioterapie. Navíc je potřeba genetická konzultace (Lynchův syndrom). Tady naopak platí novější dokument – předávka musí obsahovat dMMR s citací dodatku.",
+      "evidence": [
+        {
+          "docId": "03",
+          "quote": "výsledek bude sdělen formou dodatku"
+        },
+        {
+          "docId": "08",
+          "quote": "Vyšetření MMR/MSI zatím není k dispozici."
+        },
+        {
+          "docId": "09",
+          "quote": "Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H."
+        }
+      ],
+      "checks": [
+        {
+          "type": "any",
+          "checks": [
+            {
+              "type": "valueContains",
+              "field": "histology",
+              "all": [
+                "dMMR"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "histology",
+              "all": [
+                "MLH1"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "histology",
+              "all": [
+                "MSI"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "histology",
+              "all": [
+                "deficit"
+              ]
+            },
+            {
+              "type": "valueContains",
+              "field": "histology",
+              "all": [
+                "deficien"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "citesDoc",
+          "field": "histology",
+          "docId": "09"
+        }
+      ]
+    }
+  ]
+}

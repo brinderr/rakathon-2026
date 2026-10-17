@@ -1,0 +1,55 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+OBLASTNÍ NEMOCNICE RYBNÍKY (fiktivní)
+Chirurgické oddělení – primář MUDr. Pavel Doležal
+Nemocniční 1, 571 01 Rybníky | tel. +420 602 000 215 | chirurgie.onrybniky@example.cz
+
+Komplexní onkologické centrum
+Fakultní nemocnice Hradní (fiktivní)
+Onkologická klinika – koordinátor MDT kolorektum
+mdt.kolorektum.fnhradni@example.cz
+
+V Rybníkách dne 19. 8. 2026
+
+Věc: ŽÁDOST O PROJEDNÁNÍ PACIENTA V MULTIDISCIPLINÁRNÍM TÝMU (MDT)
+
+Vážené kolegyně, vážení kolegové,
+žádáme o projednání našeho pacienta v kolorektálním MDT Vašeho centra.
+
+Pacient: pan Vlastimil BRABEC, nar. 14. 3. 1958, RČ 580314/2158
+Zdravotní pojišťovna: 211
+Bydliště: Polní 37, 571 01 Rybníky
+Kontakt na pacienta: +420 604 000 271, vlastimil.brabec@example.cz
+Kontaktní osoba: dcera Petra Malá, +420 608 000 945 (pacient souhlasí s podáváním informací dceři)
+
+Diagnóza: C20 – adenokarcinom středního rekta, cT3c N1b (MR), MRF+, EMVI+, cM0
+
+Anamnéza onemocnění:
+68letý pacient s cca 3měsíční anamnézou hematochezie, změny defekačního stereotypu a sideropenické anémie (Hb 104 g/l), TOKS pozitivní.
+20. 7. 2026 koloskopie (ON Rybníky): tumor rekta 7–11 cm od anu, biopsie – adenokarcinom low-grade (B-2026-07118).
+CT hrudníku, břicha a pánve 30. 7. 2026 bez známek vzdálených metastáz (cM0).
+MR malé pánve 6. 8. 2026 (Medicon Plus): mrT3c N1b, MRF+ (1 mm vlevo), EMVI+, dolní okraj 7 cm od anu.
+Onkomarkery 3. 8. 2026: CEA 7,8 ug/l, CA 19-9 18 kU/l.
+Vyšetření MMR/MSI zatím není k dispozici.
+
+OA: AH, paroxysmální FS (CHA2DS2-VASc 3), DM 2. typu na PAD, dyslipidémie, nefrolitiáza 2021, st. p. appendektomii.
+RA: otec – karcinom tlustého střeva (71 let).
+FA: Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1
+AA: neguje
+Abúzus: nekuřák, alkohol příležitostně.
+SA: ženatý, pečuje o manželku s Alzheimerovou chorobou, dcera pomáhá.
+
+Současný stav: celkově dobrý stav, soběstačný, chodí bez omezení, je však unavenější. Hmotnost 82 kg, výška 178 cm (za 2 měsíce úbytek 4 kg).
+PS dle ECOG: ---
+
+Přání pacienta: Pacient je informován o diagnóze a dosavadních výsledcích. Výslovně si přeje, pokud to bude onkologicky bezpečné, zachovat svěrač a vyhnout se trvalé stomii. Protože pečuje o manželku, preferuje co nejkratší hospitalizace a léčbu ambulantně, pokud možno v místě bydliště.
+
+Otázka pro MDT: Prosíme o stanovení dalšího léčebného postupu – indikace neoadjuvantní léčby (chemoradioterapie, event. TNT) vs. primární operace (TME); event. převzetí k neoadjuvantní léčbě do KOC.
+
+Přílohy: protokol koloskopie E-26-03391, histologie B-2026-07118, CT 30. 7. 2026, MR 6. 8. 2026, laboratoř 3. 8. 2026
+
+S pozdravem
+
+MUDr. Pavel Doležal
+primář chirurgického oddělení
+Oblastní nemocnice Rybníky (fiktivní)

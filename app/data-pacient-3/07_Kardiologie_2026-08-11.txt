@@ -1,0 +1,30 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+Kardiologická ambulance MUDr. Ondřej Kraus (fiktivní)
+Sokolská 77, 571 01 Rybníky – tel. +420 602 000 452 – kardio.kraus@example.cz
+
+AMBULANTNÍ ZPRÁVA                                                11. 8. 2026
+Pacient: Vlastimil Brabec, nar. 14.03.1958, RČ 580314/2158, pojišťovna 211
+
+Důvod návštěvy: pravidelná kontrola FS, nyní nově zjištěný karcinom rekta – zhodnocení před onkologickou léčbou, labilní INR.
+
+Anamnéza: paroxysmální FS od 2019, CHA2DS2-VASc 3 b. (věk, AH, DM), HAS-BLED 2 b. Dlouhodobě warfarin, TTR za posledních 6 měsíců jen cca 45 % (INR 1,4–3,6). Před koloskopií 20. 7. warfarin přerušen. Dále AH, DM 2. typu na PAD, dyslipidémie. Subjektivně bez palpitací, bez stenokardií, únava – při anémii.
+
+Objektivně: TK 136/82, AS pravidelná 72/min, hmotnost 83 kg, eupnoe, bez otoků DK.
+EKG: sinusový rytmus 72/min, osa intermediární, PQ 0,18 s, QRS 0,09 s, bez známek akutní ischemie.
+ECHO: LK nedilatovaná, bez poruchy kinetiky, EF LK 55 %, LS 44 mm, chlopně bez významné vady, PK nedilatovaná.
+
+Závěr:
+1. Paroxysmální fibrilace síní, t. č. sinusový rytmus, CHA2DS2-VASc 3
+2. Labilní INR na warfarinu (TTR cca 45 %)
+3. Arteriální hypertenze – kompenzovaná
+4. Karcinom rekta – před stanovením léčby
+
+Doporučení:
+Vzhledem k labilnímu INR a plánované onkologické léčbě (operace, event. chemoterapie) převádím z warfarinu na apixaban: warfarin trvale vysazen, Eliquis (apixaban) 5 mg 1-0-1 zahájit od 12. 8. 2026, jakmile bude INR < 2 (kontrola INR 12. 8. ráno u PL).
+Před výkony s vysokým rizikem krvácení Eliquis vysadit 48 h předem, bez bridgingu; obnovit dle chirurga.
+Ostatní medikace beze změny: Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1.
+Kontrola za 6 měsíců, dříve dle potřeby.
+
+MUDr. Ondřej Kraus, kardiolog
+Na vědomí: MUDr. H. Vávrová (PL); chirurgické odd. ON Rybníky

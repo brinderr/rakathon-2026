@@ -255,7 +255,8 @@ const summary = {
   goldIntegrity: goldProblems.length === 0,
 };
 const label = arg('label', /slep/i.test(gold.author ?? '') ? 'Slepý test' : 'Kontrolní sada');
-const headline = `${label}: ${fieldsCorrect}/${fieldResults.length} položek správně · ${trapsCaught}/${trapResults.length} pastí zachyceno · ${invented.length} vymyšlených hodnot · ${citationsVerified}/${citationsTotal} citací doslova ve zprávách`;
+const czCount = (n, one, few, many) => `${n} ${n === 1 ? one : n >= 2 && n <= 4 ? few : many}`;
+const headline = `${label}: ${fieldsCorrect}/${fieldResults.length} položek správně · ${trapsCaught}/${trapResults.length} pastí zachyceno · ${czCount(invented.length, 'vymyšlená hodnota', 'vymyšlené hodnoty', 'vymyšlených hodnot')}${uncited.length ? ` · ${czCount(uncited.length, 'položka', 'položky', 'položek')} bez ověřené citace` : ''} · ${citationsVerified}/${citationsTotal} citací doslova ve zprávách`;
 const report = {
   caseId,
   label,

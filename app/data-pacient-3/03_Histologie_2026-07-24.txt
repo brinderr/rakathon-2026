@@ -1,0 +1,30 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+ÚSTAV PATOLOGIE
+Oblastní nemocnice Rybníky (fiktivní) | Nemocniční 1, 571 01 Rybníky | tel. +420 602 000 287 | patologie.onrybniky@example.cz
+
+BIOPTICKÝ NÁLEZ                                        č. biopsie: B-2026-07118
+Pacient: BRABEC Vlastimil        RČ: 580314/2158        ZP: 211
+Odesílající: Gastroenterologické odd. ON Rybníky, MUDr. Lexa
+Přijato: 20.07.2026              Vydáno: 24.07.2026
+Klinická diagnóza: C20 susp. – tumor rekta 7–11 cm od anu; polyp sigmatu
+
+MAKROSKOPICKY:
+1) „rektum“ – 8 úlomků šedobělavé tkáně 2–4 mm, zpracováno celé (bloky 1A, 1B)
+2) „sigma 35 cm, polyp“ – 1 útvar 6 mm, zpracováno celé (blok 2A)
+
+MIKROSKOPICKY:
+1) Ve všech úlomcích infiltrace adenokarcinomu tvořeného nepravidelnými tubulárními
+a kribriformními strukturami s výraznou jadernou atypií a intraluminální „špinavou“
+nekrózou. Zastižena invaze přes muscularis mucosae do submukózy. Hlenotvorba pod 10 %.
+Lymfovaskulární invaze v bioptickém materiálu nehodnotitelná.
+2) Tubulární adenom s low-grade dysplazií, okraje bez dysplazie.
+
+ZÁVĚR:
+1) Rektum, biopsie: ADENOKARCINOM, low-grade (dříve G2), MKN-O 8140/3.
+2) Sigma, polyp: tubulární adenom s low-grade dysplazií, odstraněn radikálně.
+
+Poznámka: Imunohistochemické vyšetření proteinů MMR (MLH1, PMS2, MSH2, MSH6) bylo indikováno, výsledek bude sdělen formou dodatku.
+
+MUDr. Ivana Šrámková, Ph.D.
+patolog

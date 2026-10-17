@@ -1,0 +1,27 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+Oblastní nemocnice Rybníky (fiktivní) – RADIODIAGNOSTICKÉ ODDĚLENÍ
+Nemocniční 1, 571 01 Rybníky * tel. +420 602 000 260 * rdg.onrybniky@example.cz
+
+Pacient:     BRABEC VLASTIMIL, 580314/2158, pojišťovna 211
+Vyšetření:   CT hrudníku, břicha a pánve s i.v. k. l.
+Datum:       30.07.2026
+Žádající:    MUDr. T. Lexa, gastroenterologie ON Rybníky
+Klin. údaje: adenokarcinom rekta (histol. B-2026-07118), staging
+
+Alergická anamnéza: pacient udává kopřivku po jodové kontrastní látce při CT ledvin v r. 2021. Vyšetření provedeno po premedikaci dle protokolu oddělení (prednison 50 mg p.o. 13, 7 a 1 h před výkonem, bisulepin 1 mg i.v. 1 h před výkonem), bez alergické reakce.
+Kontrastní látka: iomeprol (Iomeron 350) 90 ml i.v., portální fáze.
+
+POPIS:
+Hrudník: Plicní parenchym bez ložiskových a infiltrativních změn, bez fluidothoraxu. Mediastinální a hilové uzliny nezvětšené. Srdce nezvětšené, perikard bez výpotku.
+Břicho: Játra normální velikosti, homogenní denzity; v segmentu S7 subkapsulárně hypodenzní ložisko 8 mm, pro malou velikost denzitně nehodnotitelné, nelze spolehlivě charakterizovat. Jinak bez ložisek. Portální žíla průchodná. Žlučník bez konkrementů, žlučové cesty nerozšířené. Pankreas, slezina a nadledviny bez patologie. Ledviny bez městnání a bez konkrementů, symetrické vylučování. Bez ascitu. Retroperitoneální uzliny nezvětšené.
+Pánev: Cirkulární, vlevo dorzálně akcentované ztluštění stěny středního rekta v délce cca 5 cm s mírným zastřením perirektálního tuku. V mezorektu 3 uzliny do 7 mm. Uzliny podél ilických cév nezvětšené. Močový měchýř bez patologie, prostata mírně zvětšená.
+Skelet: degenerativní změny páteře, bez osteolytických či osteoplastických ložisek.
+
+ZÁVĚR:
+1. Ztluštění stěny středního rekta v délce cca 5 cm odpovídající známému tumoru, 3 mezorektální uzliny do 7 mm. K lokálnímu stagingu doporučena MR malé pánve.
+2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit. Doporučeno doplnit MR jater s hepatospecifickou kontrastní látkou.
+3. Jinak bez známek generalizace.
+
+MUDr. Karel Bednář
+radiolog

@@ -1,0 +1,47 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+
+LabMedica Východ s.r.o. (fiktivní)
+Laboratoř klinické biochemie a hematologie
+Průmyslová 9, 571 01 Rybníky | tel. +420 602 000 333 | laborator.labmedica@example.cz
+
+VÝSLEDKY LABORATORNÍCH VYŠETŘENÍ                          vytištěno: 03.08.2026 14:12
+-------------------------------------------------------------------------------------
+Pacient:    BRABEC VLASTIMIL                 RČ: 580314/2158      Pohlaví: M
+Pojišťovna: 211                              Odběr: 03.08.2026 07:35
+Žadatel:    Chirurgická ambulance ON Rybníky (fiktivní), MUDr. P. Doležal
+Dg.:        C20
+-------------------------------------------------------------------------------------
+Vyšetření                  Výsledek   Jednotka         Ref. rozmezí       Příznak
+-------------------------------------------------------------------------------------
+HEMATOLOGIE
+Leukocyty                  7,1        10^9/l           4,0 - 10,0
+Erytrocyty                 4,21       10^12/l          4,30 - 5,80        L
+Hemoglobin                 109        g/l              135 - 175          L
+Hematokrit                 0,342      1                0,400 - 0,500      L
+MCV                        78,2       fl               82,0 - 98,0        L
+Trombocyty                 352        10^9/l           150 - 400
+KOAGULACE
+Protrombinový test - INR   2,1                         0,8 - 1,2          H
+BIOCHEMIE - sérum
+Sodík                      139        mmol/l           136 - 145
+Draslík                    4,4        mmol/l           3,5 - 5,1
+Chloridy                   102        mmol/l           98 - 107
+Urea                       5,9        mmol/l           2,8 - 8,1
+Kreatinin                  96         umol/l           64 - 104
+eGFR (CKD-EPI)             1,18       ml/s/1,73m2      > 1,50             L
+Bilirubin celkový          9          umol/l           < 21
+ALT                        0,41       ukat/l           < 0,85
+AST                        0,38       ukat/l           < 0,85
+ALP                        1,12       ukat/l           0,67 - 2,15
+GMT                        0,62       ukat/l           < 1,19
+Albumin                    39         g/l              35 - 52
+CRP                        6          mg/l             < 5                H
+Glukóza                    8,1        mmol/l           3,9 - 5,6          H
+HbA1c (IFCC)               53         mmol/mol         20 - 42            H
+Ferritin                   14         ug/l             30 - 400           L
+NÁDOROVÉ MARKERY
+CEA                        7,8        ug/l             < 5,0              H
+CA 19-9                    18         kU/l             < 37
+-------------------------------------------------------------------------------------
+Poznámka: INR mimo referenční meze – pacient užívá warfarin (dle žadatele).
+Výsledky validovala: RNDr. Jitka Holá
