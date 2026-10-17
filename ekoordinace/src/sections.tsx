@@ -23,5 +23,5 @@ export const SECTIONS: Section[] = [
   { id: 'prehled', label: 'Přehled', icon: 'grid', render: () => <Fronta /> },
   { id: 'pacienti', label: 'Pacienti', icon: 'user', render: (path) => <PatientPage path={path} /> },
   { id: 'konzilia', label: 'Konzilia', icon: 'calendar', render: () => <Konzilia /> },
-  { id: 'zadanka', label: 'Žádanka od praktika', icon: 'note', hidden: true, render: () => <Zadanka /> }, // Bruno
+  { id: 'zadanka', label: 'Žádanka od praktika', icon: 'note', render: () => <Zadanka /> }, // Bruno – the GP's entry (VZP slide 7), shown in the menu for the demo
 ];
