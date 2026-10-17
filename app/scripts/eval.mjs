@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// npm run eval -- [--case alena|pacient-2] [--extracted <file>] [--out <file>]
+// npm run eval -- [--case alena|pacient-2|pacient-3] [--extracted <file>] [--out <file>] [--label "Slepý test"]
 //
 // Compares the extractor output (public/data/extracted-<case>.json) with the hand-made gold set (eval/gold-<case>.json)
 // and re-checks everything against the original reports, independently of the extractor's own statistics:
 //   X/20 fields correct · Y traps caught · fields without a verified citation · invented values.
 // "Invented value" = a date, number, phone or e-mail in a value that does not occur in the cited report,
 // or a value filled in where the gold set says the reports contain nothing.
-// Writes public/data/eval-<case>.json (the UI can show "Na kontrolnej sade: …").
+// Writes public/data/eval-<case>.json; its Czech "headline" is meant for the UI ("Kontrolní sada: …" / "Slepý test: …").
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -18,6 +18,8 @@ const APP = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const CASES = {
   alena: { gold: 'eval/gold-alena.json', extracted: 'public/data/extracted-alena.json', out: 'public/data/eval-alena.json' },
   'pacient-2': { gold: 'eval/gold-pacient-2.json', extracted: 'public/data/extracted-pacient-2.json', out: 'public/data/eval-pacient-2.json' },
+  // blind test: patient and gold set written by an agent that never saw the rules
+  'pacient-3': { gold: 'data-pacient-3/gold-pacient-3.json', extracted: 'public/data/extracted-pacient-3.json', out: 'public/data/eval-pacient-3.json' },
 };
 
 function arg(name, fallback) {
@@ -252,9 +254,11 @@ const summary = {
   citationsTotal,
   goldIntegrity: goldProblems.length === 0,
 };
-const headline = `Na kontrolnej sade: ${fieldsCorrect}/${fieldResults.length} polí správne · ${trapsCaught}/${trapResults.length} pascí zachytených · ${invented.length} vymyslených hodnôt · ${citationsVerified}/${citationsTotal} citátov doslova v správach`;
+const label = arg('label', /slep/i.test(gold.author ?? '') ? 'Slepý test' : 'Kontrolní sada');
+const headline = `${label}: ${fieldsCorrect}/${fieldResults.length} položek správně · ${trapsCaught}/${trapResults.length} pastí zachyceno · ${invented.length} vymyšlených hodnot · ${citationsVerified}/${citationsTotal} citací doslova ve zprávách`;
 const report = {
   caseId,
+  label,
   generatedAt: new Date().toISOString(),
   asOf,
   gold: cfg.gold,

@@ -1,6 +1,7 @@
 {
   "caseId": "alena",
-  "generatedAt": "2026-10-17T01:52:16.257Z",
+  "label": "Kontrolní sada",
+  "generatedAt": "2026-10-17T03:09:07.102Z",
   "asOf": "2026-10-21",
   "gold": "eval/gold-alena.json",
   "extraction": {
@@ -10,7 +11,7 @@
     "generatedAt": "2026-10-17T00:06:56.877Z",
     "promptVersion": "handover-v1"
   },
-  "headline": "Na kontrolnej sade: 20/20 polí správne · 17/17 pascí zachytených · 0 vymyslených hodnôt · 72/72 citátov doslova v správach",
+  "headline": "Kontrolní sada: 20/20 položek správně · 17/17 pastí zachyceno · 0 vymyšlených hodnot · 72/72 citací doslova ve zprávách",
   "summary": {
     "fieldsCorrect": 20,
     "fieldsTotal": 20,

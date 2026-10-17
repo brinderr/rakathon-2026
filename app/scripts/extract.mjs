@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// npm run extract -- [--case alena|pacient-2] [--provider azure|openai|cache|none|fixture] [--asof 2026-10-21] [--out <file>]
+// npm run extract -- [--case alena|pacient-2|pacient-3] [--provider azure|openai|cache|none|fixture] [--asof 2026-10-21] [--out <file>]
 //
 // Runs the handover extractor (src/ai/extract.ts) on the fictional reports and writes
 // public/data/extracted-<case>.json. LLM credentials are read ONLY from app/.env (git-ignored):
@@ -20,6 +20,7 @@ const CACHE = join(APP, 'eval', 'llm-cache');
 const CASES = {
   alena: { source: 'public/data/source.json', asOf: '2026-10-21', out: 'public/data/extracted-alena.json' },
   'pacient-2': { source: 'data-pacient-2/source-pacient-2.json', asOf: null, out: 'public/data/extracted-pacient-2.json' },
+  'pacient-3': { source: 'data-pacient-3/source-pacient-3.json', asOf: null, out: 'public/data/extracted-pacient-3.json' },
 };
 
 function arg(name, fallback) {

@@ -1,6 +1,7 @@
 {
   "caseId": "pacient-2",
-  "generatedAt": "2026-10-17T01:52:30.597Z",
+  "label": "Kontrolní sada",
+  "generatedAt": "2026-10-17T03:09:07.351Z",
   "asOf": "2026-10-22",
   "gold": "eval/gold-pacient-2.json",
   "extraction": {
@@ -10,7 +11,7 @@
     "generatedAt": "2026-10-17T00:03:41.238Z",
     "promptVersion": "handover-v1"
   },
-  "headline": "Na kontrolnej sade: 20/20 polí správne · 13/13 pascí zachytených · 0 vymyslených hodnôt · 49/49 citátov doslova v správach",
+  "headline": "Kontrolní sada: 20/20 položek správně · 13/13 pastí zachyceno · 0 vymyšlených hodnot · 49/49 citací doslova ve zprávách",
   "summary": {
     "fieldsCorrect": 20,
     "fieldsTotal": 20,
