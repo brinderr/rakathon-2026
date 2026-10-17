@@ -3143,7 +3143,7 @@
     "id": "apixaban",
     "from": "2026-10-02",
     "kind": "safety",
-    "label": "Antikoagulace – apixaban",
+    "label": "Upozornění lékaře (zpráva 07)",
     "citations": [
      {
       "docId": "07",
@@ -3155,7 +3155,7 @@
     "id": "tramadol",
     "from": "2026-10-26",
     "kind": "forward",
-    "label": "Tramadol + antidepresiva: riziko serotoninového syndromu",
+    "label": "Upozornění algeziologa (zpráva 12)",
     "citations": [
      {
       "docId": "12",
@@ -3217,10 +3217,10 @@
  "callNotes": {
   "alena": {
    "performance": {
-    "date": "2026-10-20",
+    "date": "2026-10-19",
     "with": "MUDr. Lenka Marková (onkologická ambulance KOC)",
-    "note": "Telefonát 20. 10. 2026 s MUDr. Lenkou Markovou (onkologická ambulance KOC): ECOG 1.",
-    "value": "ECOG 1"
+    "note": "Telefonát 19. 10. 2026 s MUDr. Lenkou Markovou:",
+    "value": ""
    }
   }
  }

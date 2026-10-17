@@ -44,20 +44,22 @@ const cite = (docId: string, quote: string): Citation => ({ docId, quote });
 // NENÍ to zpráva ani citát: je to její vlastní zápis, v demu ho zapíše prezentující (může cokoli změnit).
 // Hodnota do pole se bere z toho, co koordinátorka zadá; zdroj = „telefonát · zapsala koordinátorka · datum“.
 // Jméno lékařky je ze zadání (členka MDT „MUDr. Lenka Marková – klinická onkologie“, šablona „MDT zaver“).
+// Hodnota (např. ECOG) se NEPŘEDVYPLŇUJE – určuje ji lékař, zapíše ji člověk podle skutečného hovoru;
+// okno „Zapsat telefonát“ bez hodnoty neuloží (kritici 05, 12).
 // ---------------------------------------------------------------------------------------------
 export interface CallNoteDraft {
   date: ISODate;    // datum telefonátu (koordinátorka může změnit)
   with: string;     // s kým
   note: string;     // text poznámky = citát v poli (vstup koordinátorky, neověřuje se proti zprávám)
-  value: string;    // co se zapíše do pole
+  value: string;    // co se zapíše do pole – v návrhu prázdné, dopíše člověk
 }
 export const CALL_NOTES: Record<string, Record<string, CallNoteDraft>> = {
   alena: {
     performance: {
-      date: '2026-10-20',
+      date: '2026-10-19',
       with: 'MUDr. Lenka Marková (onkologická ambulance KOC)',
-      note: 'Telefonát 20. 10. 2026 s MUDr. Lenkou Markovou (onkologická ambulance KOC): ECOG 1.',
-      value: 'ECOG 1',
+      note: 'Telefonát 19. 10. 2026 s MUDr. Lenkou Markovou:',
+      value: '',
     },
   },
 };
@@ -362,6 +364,7 @@ export const LATER_VALUES: Record<string, LaterValue[]> = {
 /**
  * Upozornění, která nesmí zapadnout v řádcích podkladu: pás v hlavičce případu (QA R5 #1, #9).
  * Jen fakta ze zpráv, každé s doslovným citátem, žádné doporučení léčby. `from` = doručení zprávy, která ho přináší.
+ * `label` = kdo upozorňuje a odkud („Upozornění lékaře (zpráva 07)“) – nic vlastními slovy, obsah je citát (kritici 09).
  * kind 'forward' = varování lékařů, které je třeba poslat dál (karta na Přehledu + koncept zprávy, odeslání v prototypu).
  */
 export interface CaseAlert {
@@ -376,11 +379,11 @@ export interface CaseAlert {
 export const ALERTS: Record<string, CaseAlert[]> = {
   alena: [
     {
-      id: 'apixaban', from: '2026-10-02', kind: 'safety', label: 'Antikoagulace – apixaban',
+      id: 'apixaban', from: '2026-10-02', kind: 'safety', label: 'Upozornění lékaře (zpráva 07)',
       citations: [cite('07', 'Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa.')],
     },
     {
-      id: 'tramadol', from: '2026-10-26', kind: 'forward', label: 'Tramadol + antidepresiva: riziko serotoninového syndromu',
+      id: 'tramadol', from: '2026-10-26', kind: 'forward', label: 'Upozornění algeziologa (zpráva 12)',
       citations: [
         cite('12', 'Upozornění: tramadol zvyšuje riziko serotoninového syndromu v kombinaci s antidepresivy (SSRI, SNRI).'),
         cite('13', 'Pacientka užívá tramadol – při volbě antidepresiva zohlednit riziko serotoninového syndromu.'),

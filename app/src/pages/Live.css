@@ -55,6 +55,22 @@
 .lv-chip:hover { border-color: var(--accent); color: var(--accent); }
 @keyframes lv-fade { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
 
+/* "Dnes 19. 10. · konzilium 21. 10." – playback stopped at today; later reports only on request */
+.lv-today {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding: 10px 16px;
+  border-radius: var(--r-md); background: var(--sky-soft); border: 1px solid color-mix(in srgb, var(--sky) 30%, transparent);
+  animation: lv-fade .35s var(--ease) backwards;
+}
+.lv-today__text { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; min-width: 0; }
+.lv-today__text strong { font-size: 14px; color: var(--sky-ink); }
+
+/* edit window: honest strip – this is a test mode, reports are read-only in production */
+.lv-testmode {
+  margin: 0; padding: 8px 22px; font-size: 12.5px; line-height: 1.4; color: var(--amber-ink); background: var(--amber-soft);
+  border-bottom: 1px solid color-mix(in srgb, var(--amber) 35%, transparent);
+}
+.lv-testmode strong { letter-spacing: .04em; }
+
 /* three columns */
 .lv-grid { display: grid; grid-template-columns: minmax(250px, 300px) minmax(0, 1fr) minmax(290px, 360px); gap: var(--gap); align-items: start; }
 .lv-side { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
@@ -156,7 +172,10 @@
 .lv-trap--conflict { border-left-color: var(--orange); }
 .lv-trap--missing { border-left-color: var(--coral); }
 .lv-trap--info { border-left-color: var(--sky); }
-.lv-trap.is-new { animation: lv-flash 2s var(--ease); }
+.lv-trap.is-new {
+  border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  animation: lv-flash 2s var(--ease);
+}
 .lv-trap__head { display: flex; align-items: center; gap: 6px 8px; flex-wrap: wrap; }
 .lv-trap__head strong { font-size: 13.5px; line-height: 1.3; }
 .lv-new { font-size: 10.5px; font-weight: 750; color: var(--accent); text-transform: uppercase; letter-spacing: .08em; }

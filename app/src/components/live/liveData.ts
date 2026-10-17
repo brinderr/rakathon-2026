@@ -213,12 +213,6 @@ export const ALENA_PRESETS: Preset[] = [
     apply: (t) => t.replace('poslední dávka 18. 10. 2026 večer', 'poslední dávka 10. 10. 2026 večer'),
   },
   {
-    id: 'ecog', docId: '07',
-    title: 'Doplnit „ECOG 1“ do žádanky (zpráva 07)',
-    detail: 'Před slovo „Soběstačná,“ se vloží věta „Stav výkonnosti: ECOG 1.“',
-    apply: (t) => t.replace('Soběstačná, v práci', 'Stav výkonnosti: ECOG 1. Soběstačná, v práci'),
-  },
-  {
     id: 'kauda', docId: '08',
     title: 'Jiné umístění nádoru ve zprávě 08 (CT)',
     detail: '„Tumor hlavy pankreatu 35 mm“ se změní na „Tumor kaudy pankreatu 35 mm“.',
@@ -232,8 +226,8 @@ export const ALENA_PRESETS: Preset[] = [
   },
 ];
 
-/** Suggested text of the phone note in the demo (the coordinator writes it; it is not a report of a workplace). */
+/** Prefilled heading of the phone note in the demo – only who and when; the value (e.g. ECOG) is typed by the person. */
 export const PHONE_NOTE_SUGGESTION: Record<LiveCaseId, string> = {
-  alena: 'Telefonát 20. 10. 2026 s MUDr. Lenkou Markovou (onkologická ambulance KOC):\nECOG 1.',
+  alena: 'Telefonát 19. 10. 2026 s MUDr. Lenkou Markovou:\n',
   novak: '',
 };

@@ -270,7 +270,7 @@ export default function Shell({ children }: { children: ReactNode }) {
 
         <main className="content">{children}</main>
 
-        <footer className="foot">Prototyp · fiktivní data · odesílání je v prototypu simulované · není zdravotnický prostředek</footer>
+        <footer className="foot">Prototyp · fiktivní data · odesílání je v prototypu simulované · není zdravotnický prostředek · účel: úplnost podkladu a hlídání termínů · nenavrhuje diagnózu ani léčbu</footer>
       </div>
 
       {tour !== null && <Tour step={tour} onStep={goStep} onClose={() => setTour(null)} onRestart={startTour} />}

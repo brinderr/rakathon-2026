@@ -3,7 +3,8 @@ import { SK_CASE_STATUS, fmtDate, fmtShort, initials } from './caseUtils';
 import { Btn, Pill, SourceChip } from './ui';
 import { IcAlert, IcCalendar, IcCheck, IcMail, IcPerson, IcPhone, IcPin, IcPlay, IcPrint, IcReply } from './icons';
 
-/** A safety fact from the reports shown under the name (QA R5 #9): label + verbatim sources, no advice. */
+/** A doctor's warning from the reports shown under the name (QA R5 #9): label = who warns and where
+ *  („Upozornění lékaře (zpráva 07)“), the text itself is the doctor's verbatim sentence – nothing in our own words. */
 export interface HeaderAlert { id: string; label: string; citations: Citation[] }
 
 /** Optional `ai` block on Case (added by the data side for machine-extracted cases); read tolerantly.
@@ -64,7 +65,8 @@ export function CaseHeader({ c, referral, asOf, closedAt, reopened, accepted, al
             <span className="cs-safety-k"><IcAlert size={14} /> Pozor</span>
             {alerts.map((a) => (
               <span key={a.id} className="cs-safety-item">
-                {a.label}
+                {a.label}{a.citations[0] ? ':' : ''}
+                {a.citations[0] && <q style={{ fontWeight: 500 }}>{a.citations[0].quote}</q>}
                 {a.citations.filter((ci, i, all) => all.findIndex((x) => x.docId === ci.docId) === i).map((ci) => (
                   <SourceChip key={ci.docId} docId={ci.docId} onClick={() => onOpenDoc?.(ci.docId, ci.quote)} />
                 ))}

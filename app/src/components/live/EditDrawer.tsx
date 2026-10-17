@@ -37,6 +37,9 @@ export function EditDrawer({ doc, text, edited, removed, onApply, onToggleRemove
           </div>
           <button type="button" className="lv-icon-btn" onClick={onClose} aria-label="Zavřít"><Icon name="x" size={18} /></button>
         </header>
+        <div className="lv-testmode" role="note">
+          <strong>TESTOVACÍ REŽIM</strong> – simulace opravené zprávy. V provozu jsou zprávy jen ke čtení.
+        </div>
         <div className="lv-editor">
           <label className="lv-edit__label" htmlFor="lv-edit-area">Přepište v textu cokoli – motor zprávu přečte znovu a ukáže, co se změnilo.</label>
           <textarea id="lv-edit-area" className="lv-edit__area lv-editor__area" value={draft} spellCheck={false}

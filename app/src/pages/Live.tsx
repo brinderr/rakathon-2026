@@ -24,6 +24,9 @@ import { PhoneNoteModal } from '../components/live/PhoneNoteModal';
 import './Live.css';
 
 const STEP_MS = 1200;
+/** "Today" of the demo: playback stops here; reports received later come only after "Ukázat, co přijde po konziliu". */
+const TODAY = '2026-10-19';
+const dayMonth = (iso: string) => `${Number(iso.slice(8, 10))}. ${Number(iso.slice(5, 7))}.`;
 
 type Cause = { kind: 'start' } | { kind: 'arrival' } | { kind: 'text'; text: string };
 
@@ -47,6 +50,7 @@ export function LiveScreen({ caseId: initialCase }: { caseId: string }) {
   const [arrived, setArrived] = useState(1);
   const [playing, setPlaying] = useState(false);
   const [atMdt, setAtMdt] = useState(false);
+  const [showFuture, setShowFuture] = useState(false); // reports received after TODAY are let in
   const [edits, setEdits] = useState<Record<string, string>>({});
   const [removed, setRemoved] = useState<string[]>([]);
   const [notes, setNotes] = useState<LiveDoc[]>([]);
@@ -71,7 +75,7 @@ export function LiveScreen({ caseId: initialCase }: { caseId: string }) {
   }, [caseId]);
 
   const resetAll = useCallback(() => {
-    setArrived(1); setPlaying(false); setAtMdt(false); setEdits({}); setRemoved([]); setNotes([]);
+    setArrived(1); setPlaying(false); setAtMdt(false); setShowFuture(false); setEdits({}); setRemoved([]); setNotes([]);
     setConfirmed({}); setOpenField(null); setEditing(null); setViewer(null); setCause({ kind: 'start' });
   }, []);
 
@@ -87,6 +91,9 @@ export function LiveScreen({ caseId: initialCase }: { caseId: string }) {
 
   // ---- what the extractor reads now
   const total = lc?.docs.length ?? 0;
+  // how many reports had arrived by TODAY (all of them when none is dated later)
+  const todayCount = useMemo(() => (lc ? lc.docs.filter((d) => d.receivedAt <= TODAY).length || lc.docs.length : 0), [lc]);
+  const limit = showFuture ? total : todayCount;
   const arrivedDocs = useMemo(() => (lc ? lc.docs.slice(0, arrived) : []), [lc, arrived]);
   const engineDocs = useMemo<EngineDoc[] | null>(() => {
     if (!lc) return null;
@@ -123,26 +130,33 @@ export function LiveScreen({ caseId: initialCase }: { caseId: string }) {
   // ---- playback of arrivals
   useEffect(() => {
     if (!playing || !lc) return;
-    const t = window.setInterval(() => setArrived((n) => Math.min(n + 1, lc.docs.length)), STEP_MS);
+    const t = window.setInterval(() => setArrived((n) => Math.min(n + 1, limit)), STEP_MS);
     return () => window.clearInterval(t);
-  }, [playing, lc]);
+  }, [playing, lc, limit]);
   useEffect(() => {
-    if (playing && lc && arrived >= lc.docs.length) setPlaying(false);
-  }, [playing, lc, arrived]);
+    if (playing && lc && arrived >= limit) setPlaying(false);
+  }, [playing, lc, arrived, limit]);
 
-  const allArrived = arrived >= total;
+  const allArrived = arrived >= limit;
   const togglePlay = () => {
     if (playing) { setPlaying(false); return; }
     if (allArrived) return;
     setCause({ kind: 'arrival' });
-    setArrived((n) => Math.min(n + 1, total));
+    setArrived((n) => Math.min(n + 1, limit));
     setPlaying(true);
   };
   const next = () => {
     setPlaying(false);
     if (allArrived) return;
     setCause({ kind: 'arrival' });
+    setArrived((n) => Math.min(n + 1, limit));
+  };
+  // "Ukázat, co přijde po konziliu": lets the reports received after TODAY arrive, one by one
+  const showAfterMdt = () => {
+    setShowFuture(true);
+    setCause({ kind: 'arrival' });
     setArrived((n) => Math.min(n + 1, total));
+    setPlaying(true);
   };
 
   // ---- edits ("Zkuste to rozbít")
@@ -278,6 +292,8 @@ export function LiveScreen({ caseId: initialCase }: { caseId: string }) {
   const presets = lc?.id === 'alena' ? ALENA_PRESETS : [];
   const appliedPreset = presets.find(presetOn)?.id ?? null;
   const dirty = Object.keys(edits).length > 0 || removed.length > 0 || notes.length > 0;
+  const nFields = result?.fields.length ?? 20;
+  const atToday = !!lc && !showFuture && todayCount < total && arrived >= todayCount;
 
   return (
     <div className="lv">
@@ -326,13 +342,23 @@ export function LiveScreen({ caseId: initialCase }: { caseId: string }) {
             </div>
             {run && stats && (
               <div className="lv-engine">
-                zpracováno za {run.cur.ms < 10 ? run.cur.ms.toFixed(1) : Math.round(run.cur.ms)} ms · v prohlížeči · bez internetu ·
-                {' '}citáty ověřeny doslova {stats.citationsVerified}/{stats.citations}
+                {stats.citationsVerified}/{stats.citations} citací nalezeno doslova · správnost potvrzuje člověk ({nConfirmed}/{nFields})
+                {' '}· zpracováno za {run.cur.ms < 10 ? run.cur.ms.toFixed(1) : Math.round(run.cur.ms)} ms · v prohlížeči · bez internetu
               </div>
             )}
           </div>
         </div>
       </section>
+
+      {atToday && lc && (
+        <section className="lv-today" role="status" aria-label="Dnes">
+          <div className="lv-today__text">
+            <strong>Dnes {dayMonth(TODAY)} · konzilium {dayMonth(lc.mdtDate)}</strong>
+            <span className="lv-muted">Přehrávání se zastavilo u dneška. Zprávy z pozdějších dnů ještě nepřišly.</span>
+          </div>
+          <Button variant="ghost" size="sm" iconRight="arrow-right" onClick={showAfterMdt}>Ukázat, co přijde po konziliu</Button>
+        </section>
+      )}
 
       <section className="lv-changes" aria-live="polite" key={run?.cur.n ?? 0}>
         <div className="lv-changes__cause">{causeText || 'Načítám…'}</div>
@@ -374,6 +400,7 @@ export function LiveScreen({ caseId: initialCase }: { caseId: string }) {
         <div className="lv-side">
           {result && (
             <FindingsPanel findings={result.findings} added={addedFindings} removed={diff?.removed ?? []} female={female}
+              focusNew={cause.kind === 'text'}
               docsById={docsById} onView={(docId, quotes) => setViewer({ docId, quotes })}
               onPhone={() => setPhoneOpen(true)} canPhone={canPhone} />
           )}

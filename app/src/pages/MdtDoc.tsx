@@ -10,6 +10,7 @@ import { useSource } from '../components/docs/useSource';
 import { useCaseSessionSafe } from '../components/docs/useCaseSessionSafe';
 import { copyText, findCase, fmtDate, PROTO_NOTE } from '../components/docs/docUtils';
 import { lastTimeOn, nextDemoTime } from '../components/case/demoClock';
+import { fmtShort } from '../components/case/caseUtils';
 import { buildMdtModel, documentText, groupNotes, parseMembers, parsePresenter, parseTemplate, sectionText } from '../components/docs/mdtModel';
 import type { Section, Val } from '../components/docs/mdtModel';
 import { IconArrowRight, IconCheck, IconClock, IconCopy, IconPrint, IconSend } from '../components/docs/DocIcons';
@@ -42,7 +43,9 @@ Výsledek
 6 Závěr MDT
 7 Doporučení MDT`;
 
-function ValueView({ v, sep }: { v: Val; sep?: boolean }) {
+/** `verifyBy` = the day before the MDT: a conflict in the records (typo, date) is checked by the coordinator
+ *  BEFORE the meeting – the MDT decides treatment, it does not collect information (kritici 05). */
+function ValueView({ v, sep, verifyBy }: { v: Val; sep?: boolean; verifyBy?: string }) {
   return (
     <>
       {sep && <span className="paper-line__sep">·</span>}
@@ -53,14 +56,21 @@ function ValueView({ v, sep }: { v: Val; sep?: boolean }) {
       {v.note && <span className="doc-faint doc-small"> ({v.note})</span>}
       {v.conflict && (
         <div className="paper-conflict">
-          Rozpor v dokumentaci – rozhodne konzilium: „{v.conflict.a.citation.quote}“ (zpráva {v.conflict.a.citation.docId}) vs. „{v.conflict.b.citation.quote}“ (zpráva {v.conflict.b.citation.docId}) · {v.conflict.explain}
+          Rozpor v dokumentaci – ověřit před konziliem – koordinátorka{verifyBy ? ` do ${verifyBy}` : ''}: „{v.conflict.a.citation.quote}“ (zpráva {v.conflict.a.citation.docId}) vs. „{v.conflict.b.citation.quote}“ (zpráva {v.conflict.b.citation.docId}) · {v.conflict.explain}
         </div>
       )}
     </>
   );
 }
 
-function SectionView({ s, copied, onCopy }: { s: Section; copied: boolean; onCopy: (s: Section) => void }) {
+/** ISO date of the day before (UTC, no time zone drift). */
+function dayBefore(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function SectionView({ s, copied, onCopy, verifyBy }: { s: Section; copied: boolean; onCopy: (s: Section) => void; verifyBy?: string }) {
   return (
     <section className="paper-sec">
       <div className="paper-sec__head">
@@ -75,7 +85,7 @@ function SectionView({ s, copied, onCopy }: { s: Section; copied: boolean; onCop
           <tbody>
             {s.table.rows.length === 0 && <tr><td colSpan={3} className="doc-missing">není v dokumentaci</td></tr>}
             {s.table.rows.map((r, ri) => (
-              <tr key={ri}>{r.map((v, ci) => <td key={ci}><ValueView v={v} /></td>)}</tr>
+              <tr key={ri}>{r.map((v, ci) => <td key={ci}><ValueView v={v} verifyBy={verifyBy} /></td>)}</tr>
             ))}
           </tbody>
         </table>
@@ -86,13 +96,14 @@ function SectionView({ s, copied, onCopy }: { s: Section; copied: boolean; onCop
           {g.lines.map(line => (
             <div className="paper-line" key={line.label}>
               <span className="paper-line__label">{line.label}</span>
-              <span className="paper-line__val">{line.values.map((v, i) => <ValueView key={i} v={v} sep={i > 0} />)}</span>
+              <span className="paper-line__val">{line.values.map((v, i) => <ValueView key={i} v={v} sep={i > 0} verifyBy={verifyBy} />)}</span>
             </div>
           ))}
+          {g.placeholder && <div className="paper-placeholder">{g.placeholder}</div>}
         </div>
       ))}
       {s.list && s.list.length > 0 && (
-        <ul className="paper-list">{s.list.map((v, i) => <li key={i}><ValueView v={v} /></li>)}</ul>
+        <ul className="paper-list">{s.list.map((v, i) => <li key={i}><ValueView v={v} verifyBy={verifyBy} /></li>)}</ul>
       )}
       {s.placeholder && <div className="paper-placeholder">{s.placeholder}</div>}
     </section>
@@ -139,7 +150,7 @@ export default function MdtDoc() {
     act.confirmMdt(when, who);
     act.addLog({
       date: when, time, action: 'Podklad pro konzilium potvrzen lékařem KOC',
-      detail: `${who} · ${cnt(model.stats.missing, 'údaj chybí', 'údaje chybějí', 'údajů chybí')} · ${cnt(model.stats.conflicts, 'rozpor ponechán', 'rozpory ponechány', 'rozporů ponecháno')} konziliu`, billable: true,
+      detail: `${who} · ${cnt(model.stats.missing, 'údaj chybí', 'údaje chybějí', 'údajů chybí')} · ${cnt(model.stats.conflicts, 'rozpor k ověření', 'rozpory k ověření', 'rozporů k ověření')} koordinátorkou před konziliem`, billable: true,
     });
   }
 
@@ -154,11 +165,13 @@ export default function MdtDoc() {
 
   const patient = `${c.patient.firstName} ${c.patient.lastName}`;
   const mdtLabel = model.mdtDate ? fmtDate(model.mdtDate) : 'termín ještě není určen';
+  // typos and date conflicts are for the coordinator to check the day before the meeting, not for the MDT (kritici 05)
+  const verifyBy = model.mdtDate ? fmtShort(dayBefore(model.mdtDate)) : undefined;
   const presenterLabel = presenter ? `${presenter} (prezentuje případ)` : 'lékař KOC';
   const { conflicts, missingLabels, proposed } = model.stats;
   const preConfirm = [
     proposed > 0 ? cnt(proposed, 'návrh není potvrzen', 'návrhy nejsou potvrzeny', 'návrhů není potvrzeno') : '',
-    conflicts > 0 ? `${conflicts} ${conflicts === 1 ? 'rozpor označen' : conflicts < 5 ? 'rozpory označeny' : 'rozporů označeno'} pro konzilium` : '',
+    conflicts > 0 ? `${conflicts} ${conflicts === 1 ? 'rozpor označen' : conflicts < 5 ? 'rozpory označeny' : 'rozporů označeno'} k ověření koordinátorkou před konziliem` : '',
     missingLabels.length ? `chybí: ${missingLabels.join(' · ')}` : '',
   ].filter(Boolean).join(' · ');
   const noteGroups = groupNotes(model.notes);
@@ -224,7 +237,7 @@ export default function MdtDoc() {
           <p className="mdt-pre">Před potvrzením: {preConfirm}. {proposed > 0 ? 'Návrhy jsou v podkladu označeny „návrh – nepotvrzeno“. ' : ''}Rozpory a chybějící údaje zůstávají v podkladu označené – nic nedomýšlíme.</p>
         )}
         {confirmed && conflicts > 0 && (
-          <p className="mdt-pre">Rozpory ponechány na rozhodnutí konzilia. Podklad je uzamčen v tomto znění.</p>
+          <p className="mdt-pre">Rozpory v dokumentaci ověří koordinátorka před konziliem{verifyBy ? ` (do ${verifyBy})` : ''}. Podklad je uzamčen v tomto znění.</p>
         )}
         <p className="mdt-pre mdt-lang">Hodnoty jsou doslovné věty ze zpráv lékařů (v uvozovkách), číslo u hodnoty odkazuje na zprávu v poznámkách pod čarou. Nic není přeformulováno.</p>
       </div>
@@ -243,7 +256,7 @@ export default function MdtDoc() {
           </div>
         </div>
 
-        {model.sections.map(s => <SectionView key={s.no} s={s} copied={copied === s.no} onCopy={copySection} />)}
+        {model.sections.map(s => <SectionView key={s.no} s={s} copied={copied === s.no} onCopy={copySection} verifyBy={verifyBy} />)}
 
         <div className="paper-notes">
           <div className="paper-notes__title">Zdroje (poznámky pod čarou, seskupené podle zpráv)</div>

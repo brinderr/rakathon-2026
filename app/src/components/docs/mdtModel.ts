@@ -4,7 +4,7 @@
 import type { Case, HandoverField, ISODate, SourceDoc } from '../../types';
 import { DEMO_TODAY } from '../../types';
 import type { FieldOverride } from '../case/caseUtils';
-import { stepStateAt } from '../case/caseUtils';
+import { fmtShort, stepStateAt } from '../case/caseUtils';
 import { docById, docKnownAt, findField, fmtDate, MISSING, plain } from './docUtils';
 import type { Resolved } from './docUtils';
 
@@ -53,7 +53,8 @@ export interface Footnote {
 }
 export interface Val extends Resolved { n?: number; prefix?: string }
 export interface Line { label: string; values: Val[] }
-export interface Group { heading?: string; lines: Line[] }
+/** `placeholder` = a line nobody fills from the reports (e.g. „Otázka pro konzilium – doplní lékař KOC“); not counted in stats. */
+export interface Group { heading?: string; lines: Line[]; placeholder?: string }
 export interface Section {
   no: string; title: string;
   groups: Group[];
@@ -407,7 +408,17 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
       const q = field(/^mdtQuestion$/i, /otázk/i);
       const r = verbatimValues(c, q, asOf);
       if (q && !r[0].missing) {
-        sec.groups.unshift({ heading: 'Otázka praktika pro konzilium · doplněno nad rámec šablony', lines: [{ label: 'Otázka', values: vals(r) }] });
+        // when the GP asked, and which examinations came only afterwards – the question may be outdated (kritici 05)
+        const asked = q.sourceDate;
+        const laterSteps = asked ? c.steps.filter(st => { const done = st.history.find(h => h.state === 'delivered')?.date; return !!done && done > asked && done <= asOf; }) : [];
+        const before = [laterSteps.some(st => /\bCT\b/.test(st.title)) ? 'CT' : '', laterSteps.some(st => /histol/i.test(st.title)) ? 'histologií' : ''].filter(Boolean);
+        const askedNote = asked ? `položena ${fmtShort(asked)}${before.length ? `, před ${before.join(' a ')}` : ''}` : undefined;
+        const qVals = vals(r).map((v, i) => (i === 0 && askedNote ? { ...v, note: v.note ? `${v.note} · ${askedNote}` : askedNote } : v));
+        sec.groups.unshift({
+          heading: 'Otázka praktika pro konzilium · doplněno nad rámec šablony',
+          lines: [{ label: 'Otázka', values: qVals }],
+          placeholder: 'Otázka pro konzilium – doplní lékař KOC',
+        });
       }
     }
     return sec;
@@ -445,6 +456,7 @@ export function sectionText(s: Section): string {
   for (const g of s.groups) {
     if (g.heading) out.push(`${g.heading}:`);
     for (const l of g.lines) out.push(`${l.label}: ${l.values.map(valText).join(' · ')}`);
+    if (g.placeholder) out.push(g.placeholder);
   }
   if (s.table) {
     out.push(s.table.head.join('\t'));

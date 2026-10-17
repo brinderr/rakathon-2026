@@ -1,26 +1,38 @@
 // Right column: traps and conflicts the extractor found in the reports received so far, each with its quotes.
-// A new item is marked; an item that disappeared after the last recalculation stays visible, crossed out.
+// A new item goes first and is marked; after an edit ("Zkuste to rozbít") the panel scrolls to it.
+// An item that disappeared after the last recalculation stays visible, crossed out.
+import { useEffect, useRef } from 'react';
 import { czDate } from '../../ai/text.ts';
 import { Icon, Pill } from '../ui';
 import { cz } from './cesky';
 import { findingTitle, SEVERITY_CZ, SEVERITY_TONE, sortFindings, type Finding } from './engine';
 import type { LiveDoc } from './liveData';
 
-export function FindingsPanel({ findings, added, removed, female, docsById, onView, onPhone, canPhone }: {
+export function FindingsPanel({ findings, added, removed, female, focusNew = false, docsById, onView, onPhone, canPhone }: {
   findings: Finding[];
   added: Set<string>;
   removed: Finding[];
   female: boolean;
+  focusNew?: boolean;       // scroll to the first new finding (after an edit, not during playback)
   docsById: Map<string, LiveDoc>;
   onView: (docId: string, quotes: string[]) => void;
   onPhone: () => void;
   canPhone: boolean;
 }) {
-  // by severity; within the same severity the ones that just appeared go first
+  // the ones that just appeared go first, then by severity
   const rank = { conflict: 0, missing: 1, info: 2 } as const;
-  const list = sortFindings(findings).sort((a, b) => rank[a.severity] - rank[b.severity] || Number(added.has(b.id)) - Number(added.has(a.id)));
+  const list = sortFindings(findings).sort((a, b) => Number(added.has(b.id)) - Number(added.has(a.id)) || rank[a.severity] - rank[b.severity]);
   const counts = { conflict: 0, missing: 0, info: 0 };
   for (const f of list) counts[f.severity]++;
+
+  const firstNew = useRef<HTMLLIElement | null>(null);
+  const newKey = [...added].sort().join(',');
+  useEffect(() => {
+    if (!focusNew || !newKey || !firstNew.current) return;
+    const el = firstNew.current;
+    if (typeof el.scrollIntoView === 'function') el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [focusNew, newKey]);
+
   return (
     <section className="lv-card lv-traps" aria-label="Pasti a rozpory">
       <div className="lv-card__head">
@@ -29,8 +41,9 @@ export function FindingsPanel({ findings, added, removed, female, docsById, onVi
       </div>
       {list.length === 0 && <p className="lv-muted">Zatím nic.</p>}
       <ul className="lv-traplist">
-        {list.map((f) => (
-          <li key={f.id} className={`lv-trap lv-trap--${f.severity} ${added.has(f.id) ? 'is-new' : ''}`}>
+        {list.map((f, i) => (
+          <li key={f.id} ref={i === 0 && added.has(f.id) ? firstNew : undefined}
+            className={`lv-trap lv-trap--${f.severity} ${added.has(f.id) ? 'is-new' : ''}`}>
             <div className="lv-trap__head">
               <Pill tone={SEVERITY_TONE[f.severity]} size="sm">{SEVERITY_CZ[f.severity]}</Pill>
               <strong>{findingTitle(f, female)}</strong>

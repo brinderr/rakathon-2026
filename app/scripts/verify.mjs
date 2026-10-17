@@ -191,10 +191,13 @@ for (const c of CASES) {
     if (!f) { err(`${w}: neznáme pole`); continue; }
     if (f.status !== 'missing') err(`${w}: telefonát dopĺňa len chýbajúce pole (stav je ${f.status})`);
     if (f.resolvedBy) err(`${w}: pole má aj resolvedBy (vymyslená odpoveď) – telefonát ju nahrádza, resolvedBy vymaž`);
-    for (const k of ['date', 'with', 'note', 'value']) if (typeof cn[k] !== 'string' || !cn[k].trim()) err(`${w}: chýba ${k}`);
+    for (const k of ['date', 'with', 'note']) if (typeof cn[k] !== 'string' || !cn[k].trim()) err(`${w}: chýba ${k}`);
+    // hodnota (napr. ECOG) sa v návrhu NEPREDVYPĹŇA – určuje ju lekár, dopíše ju človek v okne „Zapsat telefonát“
+    if (typeof cn.value !== 'string') err(`${w}: value musí byť reťazec (prázdny = dopíše človek)`);
+    else if (cn.value.trim()) warn(`${w}: hodnota „${cn.value}“ je predvyplnená – má ju dopísať človek podľa hovoru`);
     if (cn.note && cn.value && !cn.note.includes(cn.value)) warn(`${w}: hodnota „${cn.value}“ nie je v poznámke`);
     if (cn.date && !/^\d{4}-\d{2}-\d{2}$/.test(cn.date)) err(`${w}: dátum musí byť ISO (YYYY-MM-DD)`);
-    callNotes.push(`[${c.id}] ${f?.label ?? key}: „${cn.note}“ → ${cn.value} · ${cn.date} · vstup koordinátorky, NEOVERUJE SA proti správam`);
+    callNotes.push(`[${c.id}] ${f?.label ?? key}: „${cn.note}“ → ${cn.value?.trim() ? cn.value : '(hodnotu dopíše človek)'} · ${cn.date} · vstup koordinátorky, NEOVERUJE SA proti správam`);
   }
   // Žiadne pole nesmie mať vymyslenú „odpoveď“ (resolvedBy správa 14 bola zrušená).
   c.fields.forEach((f, i) => { if (f.resolvedBy && !docIds.has(f.resolvedBy.docId)) err(`fields[${i}] ${f.key}: resolvedBy odkazuje na správu ${f.resolvedBy.docId}, ktorá v prípade nie je`); });

@@ -24,7 +24,7 @@ export function PhoneNoteModal({ suggestion, onSave, onClose }: {
         </div>
         <p className="lv-muted">
           Zápis píše koordinátorka sama – není to zpráva z pracoviště. V podkladu se u údaje objeví zdroj
-          „telefonát · zapsala koordinátorka“. {suggestion && 'V ukázce je text předvyplněný, můžete ho přepsat.'}
+          „telefonát · zapsala koordinátorka“. {suggestion && 'Předvyplněná je jen hlavička – hodnotu (např. ECOG) dopíšete sami.'}
         </p>
         <label className="lv-edit__label" htmlFor="lv-phone-text">Co zaznělo v telefonátu (s kým, kdy, jaký údaj)</label>
         <textarea id="lv-phone-text" className="lv-edit__area" rows={4} value={text} onChange={(e) => setText(e.target.value)} />
