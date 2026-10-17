@@ -40,7 +40,8 @@ telefonem a e-mailem. A v těch zprávách jsou díry a rozpory, které musí n�
 i bez ní, protože čísla a data berou pravidla; AI jen navrhuje volný text a kód ho ověří. Význam vět potvrzuje člověk.
 Kontrolní sady jsme ale psali sami. Proto jsme nechali agenta, který naše pravidla neviděl, napsat **třetího pacienta naslepo**:
 motor dal **10 z 20 položek a 1 ze 4 pastí**. Co neznal, nechal prázdné; jediná hodnota bez opory byl název souboru místo názvu vyšetření. Pravidla jsme pak zobecnili (20 z 20), ale poctivé číslo je to první. Jsou to fiktivní pacienti, ne klinická validace.
-A když jsme AI záměrně podstrčili vymyšlené stadium a čísla, **kód zahodil všechny 4 vymyšlené návrhy** a jediný správný přijal.“
+A když jsme AI záměrně podstrčili vymyšlené stadium a čísla, **kód zahodil všechny 4 vymyšlené návrhy** a jediný správný přijal.
+Věty s opačným významem – „souhlasí“ místo „nesouhlasí“ – pojistka zachytí **5 z 5**; opak jiným slovem nechytí, proto význam potvrzuje člověk.“
 
 ## 2:30–2:45 · Cesta k realitě (Maťo)
 
@@ -69,7 +70,7 @@ díry nalezené před konziliem, odložená konzilia a minuty koordinátora.
 
 | Otázka | Odpověď (1–2 věty) |
 |---|---|
-| Co když AI halucinuje? | AI jen navrhuje. Program ověří, že každá citace je ve zprávě doslova a že každé číslo v hodnotě je v citaci; jinak návrh zahodí a použije větu přímo ze zprávy. Test se záměrně chybnou odpovědí (stadium T3N1M0, „úbytek 8 kg“, citace ze zprávy po konziliu, vymyšlené přání): všechny 4 vymyšlené návrhy zamítnuté, jediný správný přijat (`app/eval/vysledok-test-halucinacii.json`). |
+| Co když AI halucinuje? | AI jen navrhuje. Program ověří, že každá citace je ve zprávě doslova, že každé číslo v hodnotě je v citaci a že zápor sedí s citovanou větou (podle metody NegEx); jinak návrh zahodí a použije větu přímo ze zprávy. Test se záměrně chybnou odpovědí (stadium T3N1M0, „úbytek 8 kg“, citace ze zprávy po konziliu, vymyšlené přání): všechny 4 vymyšlené návrhy zamítnuté, jediný správný přijat (`app/eval/vysledok-test-halucinacii.json`). Věty s opačným významem („souhlasí“ → „nesouhlasí“, „s perineurální invazí“ → „bez“): zachyceno 5 z 5, bez pojistky 0 z 5, falešné poplachy 0 z 18. Opak bez záporu („úzkostná“ → „klidná“) pojistka nechytí, proto význam potvrzuje člověk (`app/eval/vysledok-opacny-vyznam.json`). |
 | Jak jste to měřili? | Ručně ověřená správná odpověď pro 20 položek + pasti, každý důkaz ověřený doslova v textu; `npm run eval` to přepočítá při každé změně. Kontrolní sady psal náš tým, proto slepý test na třetím pacientovi od agenta bez přístupu k pravidlům. |
 | Kolik toho dělá AI? | Čísla přesnosti vycházejí stejně bez AI – položky a pasti čtou pravidla. AI navrhuje pět volných textů (diagnóza, epikríza, otázka na MDT, symptomy, jiná sdělení) a kód je ověřuje. |
 | Kam jdou data pacienta? | AI je volitelná: v EU, nebo lokálně v nemocnici; v prototypu náhradní model a jen fiktivní data. Před voláním nahradíme rodné číslo, telefony, e-maily, adresu, datum narození a jméno pacienta i kontaktní osoby tokeny ([RČ_1] …). Jména lékařů zatím zůstávají a i pseudonymizovaná data jsou stále osobní údaje (DPIA dělá nemocnice). |

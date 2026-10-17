@@ -1,6 +1,6 @@
 # Meranie presnosti AI vyťaženia (`npm run eval`)
 
-Všetko je na **fiktívnych dátach**. Cieľ: dokázať číslom, že podklad pre konzílium je úplný a **nič si nevymýšľa**.
+Všetko je na **fiktívnych dátach**. Cieľ: dokázať číslom, že podklad pre konzílium je úplný, **nemá čísla ani dátumy bez opory v správach** a AI neprevráti zmysel vety. Význam viet aj tak potvrdzuje človek.
 
 | Súbor | Čo to je |
 |---|---|
@@ -10,6 +10,7 @@ Všetko je na **fiktívnych dátach**. Cieľ: dokázať číslom, že podklad pr
 | `llm-cache/<hash>.json` | Odpoveď AI na tú požiadavku (offline prehrávanie, demo funguje bez internetu). Pole `model` hovorí, odkiaľ odpoveď je. |
 | `llm-fixtures/halucinujuci-model-alena.json` | **Test poistky:** úmyselne chybná AI odpoveď (vymyslené štádium T3N1M0, vymyslené čísla, citát zo správy po konzíliu, vymyslené želanie pacientky). |
 | `vysledok-test-halucinacii.json` | Výsledok testu poistky: 4 z 5 AI návrhov zamietnuté s dôvodom, správny prešiel, podklad stále 20/20 a 0 vymyslených hodnôt. |
+| `vysledok-opacny-vyznam.json` | Test poistky proti opačnému významu (`npm run eval:guard`): 5 z 5 viet kritika 06 zamietnutých (bez poistky 0 z 5), ďalšie varianty 3 z 5, falošné poplachy 0 z 18. Kópia pre UI: `public/data/pojistka.json`. |
 
 ## Ako sa počíta
 - **Pole správne** = správny stav (vyplnené / chýba), v hodnote sú všetky povinné údaje (`accept`), nie je tam nič zakázané (`reject`), má aspoň jeden overený citát a necituje správu po konzíliu.
@@ -53,3 +54,16 @@ Porotca mení text správ priamo v appke. `scripts/eval-mutations.mjs` urobí ti
 - **Prečo:** motor nepoznal žiadosť o MDT („žádáme o projednání“), štítkové bloky namiesto nadpisov, laboratórium po riadkoch, CT/MR so štítkom „Vyšetření:“, endoskopický protokol, dodatok histológie a zmenu liekov u kardiológa. Kde nevedel, nechal pole prázdne – nič klinické si nevymyslel.
 - **Po úprave (už nie slepé):** 20/20, 4/4, 0 vymyslených, 60/60 citátov → `eval/vysledok-pacient-3-po-uprave.json`. Zmeny sú všeobecné (nové typy správ a formátov + 3 nové detektory: zmena liekov „převádím z X na Y / trvale vysazen“, odporúčané vyšetrenie, ktoré sa pred konzíliom neurobilo, „cM0“ × „metastázu nelze vyloučit“). Alena a Novák ostali 20/20, testy úprav 14/14.
 - **Čo z toho plynie:** na novom formáte motor bez úprav zvládol polovicu a radšej nechal prázdne, než by si vymýšľal. Skutočný test je ďalší slepý pacient od niekoho iného.
+
+## Poistka proti opačnému významu (`npm run eval:guard`)
+Kritik 06 ukázal, že AI návrh s doslovným citátom môže povedať opak („Souhlasí“ → „nesouhlasí“, „s perineurální invazí“ → „bez“) a starú poistku prejde 5 z 5. Nová poistka `src/ai/negation.ts` (podľa NegEx, Chapman 2001, po česky): každú časť vety návrhu priradí k citovanej časti vety, z ktorej vznikla (najviac spoločných slov, pri zhode novšia správa a neskoršia veta), a ak je slovo v jednej zápor (ne-, bez, vyloučil, neprokázal, negativní, žádný, neguje) a v druhej nie, návrh zamietne a použije vetu priamo zo správy. Časové slová (september, týždeň…) sa nepočítajú.
+
+`scripts/eval-guard.mjs` vezme uloženú AI odpoveď k Alene a v každom poli zmení jednu vec; beží s poistkou aj bez nej:
+
+| Skupina | Výsledok |
+|---|---|
+| A – 5 viet kritika 06 (4 popísal doslova, 5. doplnená rovnako: „nezajištěnému termínu CT“ → „zajištěnému“) | **zamietnuté 5 z 5** (bez poistky 0 z 5) |
+| B – ďalšie záludné varianty („nekuřačka“ → „kuřačka“, „Murphyho znamení negativní“ → „pozitivní“, …) | zamietnuté 3 z 5 – **nechytí** opak bez záporu („úzkostná“ → „klidná“) a zápor predponou a- („afebrilní“ → „febrilní“) |
+| C – neškodné preformulovanie (iný slovosled, „neměla“ → „bez teplot“, „bez nutnosti“ → „není nutná“) + uložené odpovede Aleny a Nováka | **falošné poplachy 0 z 18** |
+
+Poctivo: varianty aj poistku sme písali sami a poistku sme na nich ladili (časové slová, delenie viet) – nie je to slepý test. Skript zároveň znova pustí `llm-fixtures/halucinujuci-model-alena.json` celým vyťažením a evalom a prepíše `vysledok-test-halucinacii.json` (4 z 5 zamietnuté, správny prešiel, podklad 20/20).

@@ -1,0 +1,166 @@
+{
+  "generatedAt": "2026-10-17T05:00:53.871Z",
+  "headline": "Pojistka proti opačnému významu: zachyceno 5 z 5 vět kritika 06 (bez ní 0 z 5) · další záludné varianty 3 z 5 · falešné poplachy 0 z 18 správných návrhů",
+  "hallucinationHeadline": "Záměrně chybná AI: zamítnuto 4 z 5 návrhů, přijat 1 správný · podklad poté 20/20",
+  "summary": {
+    "criticCaught": 5,
+    "criticTotal": 5,
+    "criticCaughtWithoutGuard": 0,
+    "extraCaught": 3,
+    "extraTotal": 5,
+    "falseAlarms": 0,
+    "harmlessTotal": 18,
+    "storedAnswersAccepted": 10,
+    "storedAnswersTotal": 10
+  },
+  "limits": [
+    "Pojistka hlídá zápor (ne-, bez, vyloučil, neprokázal, negativní, žádný, neguje). Opak jiným slovem („úzkostná“ × „klidná“) ani zápor předponou a- („afebrilní“) nechytí – význam vět proto dál potvrzuje člověk.",
+    "Varianty i pojistku jsme psali sami a pojistku jsme na nich ladili (časová slova, dělení vět) – není to slepý test ani klinická validace."
+  ],
+  "cases": [
+    {
+      "group": "A",
+      "field": "other",
+      "what": "„Souhlasí se sdílením informací s dcerou“ → „nesouhlasí“",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „nesouhlasí“ se záporem, ve zprávě 07: „Souhlasí se sdílením informací s dcerou.“",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "A",
+      "field": "epicrisis",
+      "what": "„UZ prokázalo ložisko“ → „UZ vyloučilo ložisko“",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „ložisko“ se záporem, ve zprávě 07: „UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity.“",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "A",
+      "field": "diagnosis",
+      "what": "„s perineurální invazí“ → „bez perineurální invaze“",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „perineurální“ se záporem, ve zprávě 11: „s perineurální invazí.“",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "A",
+      "field": "symptoms",
+      "what": "„Teploty od září neměla“ → „teploty přetrvávají“",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „Teploty“ bez záporu, ve zprávě 07: „Teploty od září neměla.“",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "A",
+      "field": "mdtQuestion",
+      "what": "„nezajištěnému termínu CT“ → „zajištěnému termínu CT“ (5. věta doplněná stejným způsobem)",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „zajištěnému“ bez záporu, ve zprávě 07: „Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení.“",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "B",
+      "field": "symptoms",
+      "what": "„Teploty od září neměla“ → „Teploty od září přetrvávají“",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „Teploty“ bez záporu, ve zprávě 07: „Teploty od září neměla.“",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "B",
+      "field": "other",
+      "what": "„nekuřačka“ → „kuřačka“",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „Kuřačka“ bez záporu, ve zprávě 07: „nekuřačka“",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "B",
+      "field": "symptoms",
+      "what": "„Murphyho znamení negativní“ → „pozitivní“",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „znamení“ bez záporu, ve zprávě 04: „Murphyho znamení negativní“",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "B",
+      "field": "other",
+      "what": "„velmi úzkostná, špatně spí“ → „klidná, spí dobře“ (opak bez záporu – víme, že nechytí)",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "B",
+      "field": "epicrisis",
+      "what": "„poté afebrilní“ → „poté febrilní“ (zápor předponou a- – víme, že nechytí)",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "C",
+      "field": "other",
+      "what": "jiný slovosled, stejný význam",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "C",
+      "field": "symptoms",
+      "what": "jiný slovosled, stejný význam",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "C",
+      "field": "epicrisis",
+      "what": "zápor zůstal, přidané slovo",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "C",
+      "field": "symptoms",
+      "what": "zápor jinými slovy („neměla“ → „bez teplot“)",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "C",
+      "field": "other",
+      "what": "zápor jinými slovy („bez nutnosti“ → „není nutná“)",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "C",
+      "field": "epicrisis",
+      "what": "jiná citovaná zpráva, stejný význam",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "C",
+      "field": "symptoms",
+      "what": "jiná slova, stejný význam",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    },
+    {
+      "group": "C",
+      "field": "other",
+      "what": "zápor jinými slovy („špatně spí“ → „nespí dobře“)",
+      "accepted": true,
+      "reason": "přijato",
+      "withoutGuard": "přijato"
+    }
+  ]
+}

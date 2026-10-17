@@ -2,7 +2,7 @@
   "meta": {
     "caseId": "alena",
     "asOf": "2026-10-21",
-    "generatedAt": "2026-10-17T04:47:17.182Z",
+    "generatedAt": "2026-10-17T04:57:28.562Z",
     "promptVersion": "handover-v1",
     "mode": "rules+llm",
     "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",

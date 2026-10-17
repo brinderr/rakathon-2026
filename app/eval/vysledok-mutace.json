@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T04:47:40.177Z",
+  "generatedAt": "2026-10-17T05:00:23.383Z",
   "headline": "Zkuste to rozbít: 14/14 úprav otestováno bez chyby, 0 vymyšlených hodnot",
   "results": [
     {
@@ -7,7 +7,7 @@
       "id": "zakladni-stav",
       "label": "Beze změny (výchozí stav)",
       "ok": true,
-      "ms": 80,
+      "ms": 75,
       "checks": [
         {
           "label": "19/20 položek vyplněno",
@@ -57,7 +57,7 @@
       "id": "oprava-apixabanu",
       "label": "Oprava data poslední dávky apixabanu na 10. 10. (zpráva 09)",
       "ok": true,
-      "ms": 29,
+      "ms": 28,
       "checks": [
         {
           "label": "rozpor apixabanu zmizel",
@@ -80,7 +80,7 @@
       "id": "doplneny-ecog",
       "label": "Doplněný „ECOG 1“ v žádance praktika (zpráva 07)",
       "ok": true,
-      "ms": 27,
+      "ms": 26,
       "checks": [
         {
           "label": "výkonnostní stav vyplněn",
@@ -103,7 +103,7 @@
       "id": "smazana-histologie",
       "label": "Smazaná zpráva 11 (histologie)",
       "ok": true,
-      "ms": 25,
+      "ms": 24,
       "checks": [
         {
           "label": "histologie chybí",
@@ -126,7 +126,7 @@
       "id": "lokalizace-kauda",
       "label": "Ve zprávě CT (08) „kaudy“ místo „hlavy“ slinivky",
       "ok": true,
-      "ms": 49,
+      "ms": 27,
       "checks": [
         {
           "label": "nový rozpor lokalizace",
@@ -145,7 +145,7 @@
       "id": "nadpis-jmeno",
       "label": "Nadpis „Jméno a příjmení:“ místo „Pacientka:“ ve všech zprávách",
       "ok": true,
-      "ms": 29,
+      "ms": 25,
       "checks": [
         {
           "label": "jméno a příjmení nalezeno",
@@ -172,7 +172,7 @@
       "id": "nadpis-pacient",
       "label": "Nadpis „Pacient:“ místo „Pacientka:“ ve všech zprávách",
       "ok": true,
-      "ms": 31,
+      "ms": 26,
       "checks": [
         {
           "label": "jméno nalezeno",
@@ -195,7 +195,7 @@
       "id": "prijmeni-velkymi",
       "label": "Příjmení velkými písmeny a první („PROCHÁZKOVÁ Alena“, zpráva 07)",
       "ok": true,
-      "ms": 27,
+      "ms": 26,
       "checks": [
         {
           "label": "jméno a příjmení správně rozděleno",
@@ -210,7 +210,7 @@
       "id": "bez-veku",
       "label": "Smazaný věk i datum narození",
       "ok": true,
-      "ms": 107,
+      "ms": 26,
       "checks": [
         {
           "label": "věk chybí (nepočítá se z rodného čísla)",
@@ -225,7 +225,7 @@
       "id": "bez-kontaktni-osoby",
       "label": "Smazaná kontaktní osoba",
       "ok": true,
-      "ms": 30,
+      "ms": 24,
       "checks": [
         {
           "label": "kontaktní osoba chybí",
@@ -240,7 +240,7 @@
       "id": "novak-strana-opravena",
       "label": "Novák: bronchoskopie opravena na pravou stranu (zpráva 06)",
       "ok": true,
-      "ms": 16,
+      "ms": 15,
       "checks": [
         {
           "label": "rozpor strany zmizel",
@@ -255,7 +255,7 @@
       "id": "novak-rc-opraveno",
       "label": "Novák: opravené rodné číslo v laboratoři (zpráva 04)",
       "ok": true,
-      "ms": 19,
+      "ms": 13,
       "checks": [
         {
           "label": "rozpor rodného čísla zmizel",

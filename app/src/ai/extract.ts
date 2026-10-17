@@ -13,6 +13,7 @@ import type { Citation, Exam, HandoverField, ISODate, LabRow, Medication } from 
 import { FIELD_SPECS, type FieldSpec } from './fields.ts';
 import { parseJsonAnswer, requestHash, type Complete } from './llm.ts';
 import * as N from './narrative.ts';
+import { negationFlip } from './negation.ts';
 import { buildRequest, PROMPT_VERSION } from './prompt.ts';
 import { Pseudonymizer } from './pseudo.ts';
 import * as R from './rules.ts';
@@ -29,6 +30,7 @@ export interface ExtractOptions {
   llmKeys?: string[];
   generatedAt?: string;
   log?: (msg: string) => void;
+  negationGuard?: boolean;      // reject AI text whose negation differs from the cited sentence (default on)
 }
 
 export interface Provenance {
@@ -95,7 +97,7 @@ function rawCitations(x: unknown): RawCitation[] {
 
 /** Check one LLM proposal. Returns a verified draft or the reason for rejection. */
 function verifyLlmField(
-  raw: Record<string, unknown>, docsById: Map<string, R.Doc>, excludedIds: Set<string>, pseudo: Pseudonymizer,
+  raw: Record<string, unknown>, docsById: Map<string, R.Doc>, excludedIds: Set<string>, pseudo: Pseudonymizer, negationGuard = true,
 ): { ok: Draft } | { reason: string; rejected: Provenance['rejected'] } {
   const status = raw.status === 'missing' || raw.status === 'conflict' ? raw.status : 'proposed';
   const value = pseudo.restore(typeof raw.value === 'string' ? raw.value : '').trim();
@@ -134,6 +136,11 @@ function verifyLlmField(
   const support = vw.length ? vw.filter((w) => qw.has(w)).length / vw.length : 1;
   prov.support = Math.round(support * 100) / 100;
   if (support < 0.5) return { reason: `text má slabou oporu v citacích (${Math.round(support * 100)} %)`, rejected };
+  if (negationGuard) {
+    const cited = citations.map((c) => { const d = docsById.get(c.docId); return { docId: c.docId, date: d?.date ?? '', quote: c.quote, at: d ? d.text.normalize('NFC').indexOf(c.quote) : 0 }; });
+    const flip = negationFlip(value, cited);
+    if (flip) return { reason: `opačný význam – v návrhu „${flip.word}“ ${flip.proposalNegated ? 'se záporem' : 'bez záporu'}, ve zprávě ${flip.docId}: „${flip.clause}“`, rejected };
+  }
 
   let conflict: R.RuleField['conflict'];
   if (status === 'conflict' && raw.conflict && typeof raw.conflict === 'object') {
@@ -222,7 +229,7 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
       for (const key of llmKeys) {
         const raw = list.find((f) => f?.key === key);
         if (!raw) { drafts[key].prov.llmNote = 'AI pole nevrátila – použita pravidla'; rejectedCount++; continue; }
-        const v = verifyLlmField(raw, docsById, excludedIds, pseudo);
+        const v = verifyLlmField(raw, docsById, excludedIds, pseudo, opts.negationGuard !== false);
         if ('ok' in v) {
           // LLM says "missing" but rules found verified text → keep the verified text
           if (v.ok.status === 'missing' && drafts[key].citations.length) {

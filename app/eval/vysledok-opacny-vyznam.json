@@ -1,0 +1,221 @@
+{
+  "what": "Test pojistky proti opačnému významu (podle NegEx, Chapman 2001): uložená AI odpověď k Aleně, v každém poli změněn jeden význam. Skupina A = 5 vět kritika 06 (4 popsal doslova, 5. doplněna stejným způsobem), B = další záludné varianty včetně těch, které pojistka nechytí, C = neškodné přeformulování (musí projít).",
+  "command": "npm run eval:guard",
+  "generatedAt": "2026-10-17T05:00:53.871Z",
+  "headline": "Pojistka proti opačnému významu: zachyceno 5 z 5 vět kritika 06 (bez ní 0 z 5) · další záludné varianty 3 z 5 · falešné poplachy 0 z 18 správných návrhů",
+  "summary": {
+    "criticCaught": 5,
+    "criticTotal": 5,
+    "criticCaughtWithoutGuard": 0,
+    "extraCaught": 3,
+    "extraTotal": 5,
+    "falseAlarms": 0,
+    "harmlessTotal": 18,
+    "storedAnswersAccepted": 10,
+    "storedAnswersTotal": 10
+  },
+  "limits": [
+    "Pojistka hlídá zápor (ne-, bez, vyloučil, neprokázal, negativní, žádný, neguje). Opak jiným slovem („úzkostná“ × „klidná“) ani zápor předponou a- („afebrilní“) nechytí – význam vět proto dál potvrzuje člověk.",
+    "Varianty i pojistku jsme psali sami a pojistku jsme na nich ladili (časová slova, dělení vět) – není to slepý test ani klinická validace."
+  ],
+  "cases": [
+    {
+      "group": "A",
+      "id": "souhlas",
+      "field": "other",
+      "what": "„Souhlasí se sdílením informací s dcerou“ → „nesouhlasí“",
+      "aiValue": "Informována o podezření na nádorové onemocnění, nesouhlasí se sdílením informací s dcerou (kontaktní osoba [KONTAKT_1]). Velmi úzkostná, špatně spí – zvážení psychologické podpory. Užívá apixaban – před invazivním výkonem nutno vysadit 48 h předem, bez nutnosti překlenovací léčby.",
+      "withoutGuard": "přijato",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „nesouhlasí“ se záporem, ve zprávě 07: „Souhlasí se sdílením informací s dcerou.“",
+      "negation": true
+    },
+    {
+      "group": "A",
+      "id": "uz-vyloucilo",
+      "field": "epicrisis",
+      "what": "„UZ prokázalo ložisko“ → „UZ vyloučilo ložisko“",
+      "aiValue": "63letá pacientka, od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří, teploty se zimnicí a tmavší moč; léčena ciprofloxacinem, poté afebrilní. Pro přetrvávající cholestázu UZ 29. 9. 2026 vyloučilo ložisko hlavy pankreatu. CT se nepodařilo zajistit, bolesti přetrvávají.",
+      "withoutGuard": "přijato",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „ložisko“ se záporem, ve zprávě 07: „UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity.“",
+      "negation": true
+    },
+    {
+      "group": "A",
+      "id": "perineuralni",
+      "field": "diagnosis",
+      "what": "„s perineurální invazí“ → „bez perineurální invaze“",
+      "aiValue": "C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom; ložisko hlavy pankreatu, EUS-FNB 22G: duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), bez perineurální invaze, MKN-O 8500/3.",
+      "withoutGuard": "přijato",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „perineurální“ se záporem, ve zprávě 11: „s perineurální invazí.“",
+      "negation": true
+    },
+    {
+      "group": "A",
+      "id": "teploty",
+      "field": "symptoms",
+      "what": "„Teploty od září neměla“ → „teploty přetrvávají“",
+      "aiValue": "Od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří; na přelomu srpna a září teploty do 38,6 °C se zimnicí, únava, nechutenství, tmavší moč, subikterus sklér. Bolesti s propagací do zad, horší po jídle a v noci, úbytek hmotnosti 4 kg za poslední měsíc, stolice občas světlejší. Teploty přetrvávají.",
+      "withoutGuard": "přijato",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „Teploty“ bez záporu, ve zprávě 07: „Teploty od září neměla.“",
+      "negation": true
+    },
+    {
+      "group": "A",
+      "id": "ct-zajisteno",
+      "field": "mdtQuestion",
+      "what": "„nezajištěnému termínu CT“ → „zajištěnému termínu CT“ (5. věta doplněná stejným způsobem)",
+      "aiValue": "Převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT; urgentní řešení vzhledem k progresi obtíží a zajištěnému termínu CT.",
+      "withoutGuard": "přijato",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „zajištěnému“ bez záporu, ve zprávě 07: „Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení.“",
+      "negation": true
+    },
+    {
+      "group": "B",
+      "id": "teploty-od-zari",
+      "field": "symptoms",
+      "what": "„Teploty od září neměla“ → „Teploty od září přetrvávají“",
+      "aiValue": "Od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří; na přelomu srpna a září teploty do 38,6 °C se zimnicí, únava, nechutenství, tmavší moč, subikterus sklér. Bolesti s propagací do zad, horší po jídle a v noci, úbytek hmotnosti 4 kg za poslední měsíc, stolice občas světlejší. Teploty od září přetrvávají.",
+      "withoutGuard": "přijato",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „Teploty“ bez záporu, ve zprávě 07: „Teploty od září neměla.“",
+      "negation": true
+    },
+    {
+      "group": "B",
+      "id": "nekuracka",
+      "field": "other",
+      "what": "„nekuřačka“ → „kuřačka“",
+      "aiValue": "Informována o podezření na nádorové onemocnění, souhlasí se sdílením informací s dcerou (kontaktní osoba [KONTAKT_1]). Velmi úzkostná, špatně spí – zvážení psychologické podpory. Užívá apixaban – před invazivním výkonem nutno vysadit 48 h předem, bez nutnosti překlenovací léčby. Kuřačka.",
+      "withoutGuard": "přijato",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „Kuřačka“ bez záporu, ve zprávě 07: „nekuřačka“",
+      "negation": true
+    },
+    {
+      "group": "B",
+      "id": "murphy",
+      "field": "symptoms",
+      "what": "„Murphyho znamení negativní“ → „pozitivní“",
+      "aiValue": "Od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří; na přelomu srpna a září teploty do 38,6 °C se zimnicí, únava, nechutenství, tmavší moč, subikterus sklér. Bolesti s propagací do zad, horší po jídle a v noci, úbytek hmotnosti 4 kg za poslední měsíc, stolice občas světlejší. Murphyho znamení pozitivní.",
+      "withoutGuard": "přijato",
+      "accepted": false,
+      "reason": "opačný význam – v návrhu „znamení“ bez záporu, ve zprávě 04: „Murphyho znamení negativní“",
+      "negation": true
+    },
+    {
+      "group": "B",
+      "id": "uzkostna",
+      "field": "other",
+      "what": "„velmi úzkostná, špatně spí“ → „klidná, spí dobře“ (opak bez záporu – víme, že nechytí)",
+      "aiValue": "Informována o podezření na nádorové onemocnění, souhlasí se sdílením informací s dcerou (kontaktní osoba [KONTAKT_1]). Psychicky klidná, spí dobře – zvážení psychologické podpory. Užívá apixaban – před invazivním výkonem nutno vysadit 48 h předem, bez nutnosti překlenovací léčby.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "B",
+      "id": "afebrilni",
+      "field": "epicrisis",
+      "what": "„poté afebrilní“ → „poté febrilní“ (zápor předponou a- – víme, že nechytí)",
+      "aiValue": "63letá pacientka, od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří, teploty se zimnicí a tmavší moč; léčena ciprofloxacinem, poté febrilní. Pro přetrvávající cholestázu UZ 29. 9. 2026: ložisko hlavy pankreatu suspektní z malignity. CT se nepodařilo zajistit, bolesti přetrvávají.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "C",
+      "id": "poradi-souhlas",
+      "field": "other",
+      "what": "jiný slovosled, stejný význam",
+      "aiValue": "Informována o podezření na nádorové onemocnění, se sdílením informací s dcerou souhlasí (kontaktní osoba [KONTAKT_1]). Velmi úzkostná, špatně spí – zvážení psychologické podpory. Užívá apixaban – před invazivním výkonem nutno vysadit 48 h předem, bez nutnosti překlenovací léčby.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "C",
+      "id": "poradi-ubytek",
+      "field": "symptoms",
+      "what": "jiný slovosled, stejný význam",
+      "aiValue": "Od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří; na přelomu srpna a září teploty do 38,6 °C se zimnicí, únava, nechutenství, tmavší moč, subikterus sklér. Bolesti s propagací do zad, horší po jídle a v noci, za poslední měsíc úbytek hmotnosti 4 kg, stolice občas světlejší.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "C",
+      "id": "termin-ct",
+      "field": "epicrisis",
+      "what": "zápor zůstal, přidané slovo",
+      "aiValue": "63letá pacientka, od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří, teploty se zimnicí a tmavší moč; léčena ciprofloxacinem, poté afebrilní. Pro přetrvávající cholestázu UZ 29. 9. 2026: ložisko hlavy pankreatu suspektní z malignity. Termín CT se nepodařilo zajistit, bolesti přetrvávají.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "C",
+      "id": "bez-teplot",
+      "field": "symptoms",
+      "what": "zápor jinými slovy („neměla“ → „bez teplot“)",
+      "aiValue": "Od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří; na přelomu srpna a září teploty do 38,6 °C se zimnicí, únava, nechutenství, tmavší moč, subikterus sklér. Bolesti s propagací do zad, horší po jídle a v noci, úbytek hmotnosti 4 kg za poslední měsíc, stolice občas světlejší. Od září bez teplot.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "C",
+      "id": "apixaban",
+      "field": "other",
+      "what": "zápor jinými slovy („bez nutnosti“ → „není nutná“)",
+      "aiValue": "Informována o podezření na nádorové onemocnění, souhlasí se sdílením informací s dcerou (kontaktní osoba [KONTAKT_1]). Velmi úzkostná, špatně spí – zvážení psychologické podpory. Užívá apixaban – před invazivním výkonem nutno vysadit 48 h předem, překlenovací léčba není nutná.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "C",
+      "id": "afebrilni-05",
+      "field": "epicrisis",
+      "what": "jiná citovaná zpráva, stejný význam",
+      "aiValue": "63letá pacientka, od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří, teploty se zimnicí a tmavší moč; po ciprofloxacinu afebrilní. Pro přetrvávající cholestázu UZ 29. 9. 2026: ložisko hlavy pankreatu suspektní z malignity. CT se nepodařilo zajistit, bolesti přetrvávají.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "C",
+      "id": "vyzaruji",
+      "field": "symptoms",
+      "what": "jiná slova, stejný význam",
+      "aiValue": "Od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří; na přelomu srpna a září teploty do 38,6 °C se zimnicí, únava, nechutenství, tmavší moč, subikterus sklér. Bolesti vyzařují do zad, zhoršují se po jídle a v noci, úbytek hmotnosti 4 kg za poslední měsíc, stolice občas světlejší.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    },
+    {
+      "group": "C",
+      "id": "nespi",
+      "field": "other",
+      "what": "zápor jinými slovy („špatně spí“ → „nespí dobře“)",
+      "aiValue": "Informována o podezření na nádorové onemocnění, souhlasí se sdílením informací s dcerou (kontaktní osoba [KONTAKT_1]). Velmi úzkostná, nespí dobře – zvážení psychologické podpory. Užívá apixaban – před invazivním výkonem nutno vysadit 48 h předem, bez nutnosti překlenovací léčby.",
+      "withoutGuard": "přijato",
+      "accepted": true,
+      "reason": "přijato",
+      "negation": false
+    }
+  ]
+}

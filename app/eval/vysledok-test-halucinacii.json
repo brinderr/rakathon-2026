@@ -1,11 +1,11 @@
 {
-  "what": "Test poistky: úmyselne chybná AI odpoveď (eval/llm-fixtures/halucinujuci-model-alena.json) prešla celým vyťažením.",
-  "command": "npm run extract -- --provider fixture --fixture eval/llm-fixtures/halucinujuci-model-alena.json --out <súbor> && npm run eval -- --extracted <súbor>",
-  "generatedAt": "2026-10-17T00:01:38+00:00",
+  "what": "Test pojistky: záměrně chybná odpověď AI (eval/llm-fixtures/halucinujuci-model-alena.json – vymyšlené stadium, čísla, citace ze zprávy po konziliu, vymyšlené přání) prošla celým vytěžením.",
+  "command": "npm run eval:guard",
+  "generatedAt": "2026-10-17T05:00:54.106Z",
   "aiProposals": 5,
   "accepted": 1,
   "rejected": 4,
-  "evalHeadline": "Na kontrolnej sade: 20/20 polí správne · 17/17 pascí zachytených · 0 vymyslených hodnôt · 63/63 citátov doslova v správach",
+  "evalHeadline": "Kontrolní sada: 20/20 položek správně · 17/17 pastí zachyceno · 0 vymyšlených hodnot · 64/64 citací doslova ve zprávách",
   "evalSummary": {
     "fieldsCorrect": 20,
     "fieldsTotal": 20,
@@ -13,8 +13,8 @@
     "trapsTotal": 17,
     "fieldsWithoutVerifiedCitation": 0,
     "inventedValues": 0,
-    "citationsVerified": 63,
-    "citationsTotal": 63,
+    "citationsVerified": 64,
+    "citationsTotal": 64,
     "goldIntegrity": true
   },
   "fields": [
@@ -22,15 +22,15 @@
       "field": "diagnosis",
       "aiValue": "Duktální adenokarcinom hlavy pankreatu, stadium T3N1M0 (C25.0).",
       "accepted": false,
-      "reason": "AI návrh zamietnutý: čísla bez opory v citáte: 1, 0, 25,0 – použitý text priamo zo správy",
+      "reason": "AI návrh zamítnut: čísla bez opory v citaci: 1, 0, 25,0 – použit text přímo ze zprávy",
       "rejectedQuotes": [],
-      "shownValue": "C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom (podozrenie v žiadanke, 2. 10. 2026); histologicky: Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. (19. 10. 2026)"
+      "shownValue": "C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom (podezření v žádance, 2. 10. 2026); histologicky: Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. (19. 10. 2026)"
     },
     {
       "field": "epicrisis",
       "aiValue": "63letá pacientka se 3 měsíce trvajícími bolestmi břicha a úbytkem hmotnosti 8 kg.",
       "accepted": false,
-      "reason": "AI návrh zamietnutý: čísla bez opory v citáte: 3, 8 – použitý text priamo zo správy",
+      "reason": "AI návrh zamítnut: čísla bez opory v citaci: 3, 8 – použit text přímo ze zprávy",
       "rejectedQuotes": [],
       "shownValue": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Pro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha. UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity. Gastroenterolog doporučil doplnit CT břicha dle pankreatického protokolu, případně EUS."
     },
@@ -38,7 +38,7 @@
       "field": "mdtQuestion",
       "aiValue": "Převzetí do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT.",
       "accepted": true,
-      "reason": "prijaté – citát aj čísla overené",
+      "reason": "přijato – citace i čísla ověřeny",
       "rejectedQuotes": [],
       "shownValue": "Převzetí do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT."
     },
@@ -46,12 +46,12 @@
       "field": "symptoms",
       "aiValue": "Klidová bolest NRS 6/10, průlomová bolest po jídle a v noci NRS 8/10.",
       "accepted": false,
-      "reason": "AI návrh zamietnutý: žiadny overený citát – použitý text priamo zo správy",
+      "reason": "AI návrh zamítnut: žádná ověřená citace – použit text přímo ze zprávy",
       "rejectedQuotes": [
         {
           "docId": "12",
           "quote": "Klidová bolest NRS 6/10, průlomová bolest po jídle a v noci NRS 8/10.",
-          "reason": "správa je po dátume konzília"
+          "reason": "zpráva je po datu konzilia"
         }
       ],
       "shownValue": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Při vyšetření 1. 9. 2026 febrilní (38,1 °C), se subikterem sklér. Při kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva. Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší."
@@ -60,12 +60,12 @@
       "field": "other",
       "aiValue": "Pacientka si nepřeje chemoterapii a žádá paliativní péči.",
       "accepted": false,
-      "reason": "AI návrh zamietnutý: žiadny overený citát – použitý text priamo zo správy",
+      "reason": "AI návrh zamítnut: žádná ověřená citace – použit text přímo ze zprávy",
       "rejectedQuotes": [
         {
           "docId": "07",
           "quote": "Pacientka si nepřeje chemoterapii.",
-          "reason": "citát sa v správe nenašiel"
+          "reason": "citace se ve zprávě nenašla"
         }
       ],
       "shownValue": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa. Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory. Pacientka je o podezření na nádorové onemocnění informována. Souhlasí se sdílením informací s dcerou."
