@@ -44,12 +44,12 @@ export function diagnosisFallback(docs: Doc[]): RuleField {
   const susp = ref ? labeledLine(ref.text, /^(Suspektní diagnóza|Pracovní diagnóza|Diagnóza):/) : null;
   if (ref && susp) {
     const suspected = /^(Suspektní|Pracovní)/.test(susp.line);
-    parts.push(`${susp.value} (${suspected ? 'podozrenie v žiadanke' : 'v žiadanke'}, ${czDate(ref.date)})`);
+    parts.push(`${susp.value} (${suspected ? 'podezření v žádance' : 'v žádance'}, ${czDate(ref.date)})`);
     citations.push(...citeAll(ref, [susp.line]));
   }
   const z = histo ? section(histo.text, /^ZÁVĚR/)?.split('\n')[0] : undefined;
   if (histo && z) { parts.push(`histologicky: ${z} (${czDate(histo.date)})`); citations.push(...citeAll(histo, [z])); }
-  if (!parts.length) return { value: '', citations: [], status: 'missing', note: 'Diagnóza nie je v dokumentácii uvedená.' };
+  if (!parts.length) return { value: '', citations: [], status: 'missing', note: 'Diagnóza není v dokumentaci uvedena.' };
   return { value: parts.join('; '), citations, sourceDate: histo?.date ?? ref?.date };
 }
 
@@ -60,7 +60,7 @@ const ONSET = /^(Od |Asi |Přibližně |Před )|(od poloviny|trvající)/i;
 export function epicrisisFallback(docs: Doc[]): RuleField {
   const ref = latestReferral(docs);
   const block = ref ? section(ref.text, /^EPIKRÍZA/) : null;
-  if (!ref || !block) return { value: '', citations: [], status: 'missing', note: 'Epikríza nie je k dispozícii.' };
+  if (!ref || !block) return { value: '', citations: [], status: 'missing', note: 'Epikríza není k dispozici.' };
   const all = sentences(block);
   const onset = all.findIndex((s) => ONSET.test(s));
   const picked = all.filter((s, i) => i === onset || KEY_FINDING.test(s)).slice(0, 4);
@@ -72,13 +72,13 @@ export function mdtQuestionFallback(docs: Doc[]): RuleField {
   const ref = latestReferral(docs);
   const block = ref ? section(ref.text, /^ŽÁDOST/) : null;
   const ask = block ? sentences(block).find((s) => /^(Žádám|Prosím|Žádost)/.test(s)) : undefined;
-  if (!ref || !ask) return { value: '', citations: [], status: 'missing', note: 'Otázka pre konzílium nie je v žiadanke uvedená.' };
+  if (!ref || !ask) return { value: '', citations: [], status: 'missing', note: 'Otázka pro konzilium není v žádance uvedena.' };
   const general = /(stanovení dalšího postupu|další postup|dalšího postupu)/i.test(ask);
   return {
     value: ask,
     citations: citeAll(ref, [ask]),
     sourceDate: ref.date,
-    note: general ? 'Otázka je všeobecná (dokončiť diagnostiku a určiť postup) – lekár KOC ju pred konzíliom môže spresniť.' : undefined,
+    note: general ? 'Otázka je obecná (dokončit diagnostiku a určit postup) – lékař KOC ji před konziliem může upřesnit.' : undefined,
   };
 }
 
@@ -87,17 +87,17 @@ const SYMPTOM = /(bolest|teplot|horečk|tmavší moč|nechutenství|úbyt|ikter|
 export function symptomsFallback(docs: Doc[]): RuleField {
   const ref = latestReferral(docs);
   const block = ref ? section(ref.text, /^EPIKRÍZA/) : null;
-  if (!ref || !block) return { value: '', citations: [], status: 'missing', note: 'Príznaky nie sú opísané.' };
+  if (!ref || !block) return { value: '', citations: [], status: 'missing', note: 'Příznaky nejsou popsány.' };
   const hits = sentences(block).filter((s) => SYMPTOM.test(s)).slice(0, 4);
-  if (!hits.length) return { value: '', citations: [], status: 'missing', note: 'Príznaky nie sú opísané.' };
+  if (!hits.length) return { value: '', citations: [], status: 'missing', note: 'Příznaky nejsou popsány.' };
   return { value: hits.join(' '), citations: citeAll(ref, hits), sourceDate: ref.date };
 }
 
 export function otherNotesFallback(docs: Doc[]): RuleField {
   const ref = latestReferral(docs);
-  if (!ref) return { value: '', citations: [], status: 'missing', note: 'Žiadne ďalšie informácie.' };
+  if (!ref) return { value: '', citations: [], status: 'missing', note: 'Žádné další informace.' };
   const block = section(ref.text, /^ŽÁDOST/) ?? '';
   const hits = sentences(block).filter((s) => /(Upozorňuji|úzkost|psycholog|informován|Souhlasí|přeje|přání)/i.test(s));
-  if (!hits.length) return { value: '', citations: [], status: 'missing', note: 'Žiadne ďalšie informácie ani želania pacienta.' };
+  if (!hits.length) return { value: '', citations: [], status: 'missing', note: 'Žádné další informace ani přání pacienta.' };
   return { value: hits.join(' '), citations: citeAll(ref, hits), sourceDate: ref.date };
 }

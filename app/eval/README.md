@@ -30,3 +30,19 @@ npm run eval -- --extracted /tmp/halu.json --out /tmp/eval-halu.json
 ## Poctivo
 - Zlaté sady a pravidlá písal ten istý tím. Pravidlá sme po prvom behu na pacientovi 2 zovšeobecnili (predtým 18/20 polí, 6/13 pascí). Ďalší pacient by mal prísť **naslepo** od niekoho iného.
 - Bez kľúča k Azure OpenAI v pracovnom prostredí odpovedal na presne tú istú pseudonymizovanú požiadavku náhradný model (vidno v poli `model`); s kľúčom v `app/.env` stačí spustiť `npm run extract` a odpoveď sa nahrá nanovo.
+
+## „Zkuste to rozbít“ – testy úprav (`npm run eval:mutations`)
+Porotca mení text správ priamo v appke. `scripts/eval-mutations.mjs` urobí tie isté úpravy, spustí motor (len pravidlá, ako v prehliadači) a overí reakciu aj to, že sa nič nevymyslelo (každý citát doslova v upravenej správe, každé číslo/dátum hodnoty v citovanej správe). Výsledok: `eval/vysledok-mutace.json`; úpravy pre tlačidlá v UI: `public/data/mutace.json`.
+
+| Úprava | Očakávaná reakcia |
+|---|---|
+| iné RČ v laboratórnej správe 10 | nový rozpor „jiné rodné číslo“, laboratórium = rozpor, obe citácie |
+| poslednú dávku apixabanu (09) opraviť na 10. 10. | rozpor apixabanu zmizne, histológia ostane |
+| doplniť „ECOG 1“ do žiadanky (07) | výkonnostný stav vyplnený, 20/20 |
+| zmazať správu 11 | histológia „chybí“, diagnóza si adenokarcinóm nevymyslí |
+| v CT (08) „kaudy“ namiesto „hlavy“ slinivky | nový rozpor lokalizácie s citátom zo správy 08 |
+| nadpis „Jméno a příjmení:“ / „Pacient:“ namiesto „Pacientka:“ | meno, pohlavie, vek, poisťovňa ostanú (pohlavie z „63letá pacientka“, nie z mena) |
+| priezvisko veľkými písmenami prvé („PROCHÁZKOVÁ Alena“) | meno a priezvisko správne rozdelené |
+| zmazať vek aj dátum narodenia / kontaktnú osobu | „chybí“ (vek sa nepočíta z rodného čísla) |
+| Novák: opraviť stranu v bronchoskopii / RČ v laboratóriu | rozpor zmizne |
+| podstrčený chybný výstup (ECOG 1, 63 kg, e-mail, citát mimo správ) | eval nedá 20/20 a nájde vymyslené hodnoty |

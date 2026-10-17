@@ -1,14 +1,14 @@
 {
   "caseId": "alena",
   "label": "Kontrolní sada",
-  "generatedAt": "2026-10-17T03:09:07.102Z",
+  "generatedAt": "2026-10-17T03:17:07.366Z",
   "asOf": "2026-10-21",
   "gold": "eval/gold-alena.json",
   "extraction": {
     "file": "public/data/extracted-alena.json",
     "mode": "rules+llm",
-    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
-    "generatedAt": "2026-10-17T00:06:56.877Z",
+    "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
+    "generatedAt": "2026-10-17T03:17:07.191Z",
     "promptVersion": "handover-v1"
   },
   "headline": "Kontrolní sada: 20/20 položek správně · 17/17 pastí zachyceno · 0 vymyšlených hodnot · 72/72 citací doslova ve zprávách",
@@ -26,35 +26,35 @@
   "fields": [
     {
       "key": "firstName",
-      "label": "Meno",
+      "label": "Jméno",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "lastName",
-      "label": "Priezvisko",
+      "label": "Příjmení",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "age",
-      "label": "Vek",
+      "label": "Věk",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "sex",
-      "label": "Pohlavie",
+      "label": "Pohlaví",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "insurer",
-      "label": "Zdravotná poisťovňa",
+      "label": "Zdravotní pojišťovna",
       "ok": true,
       "status": "proposed",
       "problems": []
@@ -68,7 +68,7 @@
     },
     {
       "key": "contactPerson",
-      "label": "Kontaktná osoba",
+      "label": "Kontaktní osoba",
       "ok": true,
       "status": "proposed",
       "problems": []
@@ -82,28 +82,28 @@
     },
     {
       "key": "epicrisis",
-      "label": "Priebeh ochorenia v skratke",
+      "label": "Průběh onemocnění ve zkratce",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "mdtQuestion",
-      "label": "Otázka pre konzílium",
+      "label": "Otázka pro konzilium",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "comorbidities",
-      "label": "Pridružené ochorenia",
+      "label": "Přidružená onemocnění",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "medication",
-      "label": "Lieky, ktoré užíva",
+      "label": "Léky, které užívá",
       "ok": true,
       "status": "conflict",
       "problems": []
@@ -117,7 +117,7 @@
     },
     {
       "key": "performance",
-      "label": "Výkonnostný stav (ECOG)",
+      "label": "Výkonnostní stav (ECOG)",
       "ok": true,
       "status": "missing",
       "problems": []
@@ -131,35 +131,35 @@
     },
     {
       "key": "symptoms",
-      "label": "Príznaky a ich začiatok",
+      "label": "Příznaky a jejich začátek",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "exams",
-      "label": "Vykonané vyšetrenia",
+      "label": "Provedená vyšetření",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "labs",
-      "label": "Laboratórium a nádorové markery",
+      "label": "Laboratoř a nádorové markery",
       "ok": true,
       "status": "proposed",
       "problems": []
     },
     {
       "key": "histology",
-      "label": "Histológia (výsledok biopsie)",
+      "label": "Histologie (výsledek biopsie)",
       "ok": true,
       "status": "conflict",
       "problems": []
     },
     {
       "key": "other",
-      "label": "Iné dôležité a želania pacientky",
+      "label": "Jiná důležitá sdělení a přání pacientky",
       "ok": true,
       "status": "proposed",
       "problems": []

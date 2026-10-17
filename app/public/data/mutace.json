@@ -1,0 +1,82 @@
+{
+  "caseId": "alena",
+  "mutations": [
+    {
+      "id": "jine-rc",
+      "label": "Jiné rodné číslo v laboratorní zprávě 10",
+      "edits": [
+        {
+          "docId": "10",
+          "find": "RČ 635722/1013",
+          "replace": "RČ 635722/1031"
+        }
+      ],
+      "expect": [
+        "nový rozpor: jiné rodné číslo ve zprávě 10",
+        "laboratoř označena jako rozpor",
+        "rozpor cituje obě zprávy"
+      ]
+    },
+    {
+      "id": "oprava-apixabanu",
+      "label": "Oprava data poslední dávky apixabanu na 10. 10. (zpráva 09)",
+      "edits": [
+        {
+          "docId": "09",
+          "find": "poslední dávka 18. 10. 2026",
+          "replace": "poslední dávka 10. 10. 2026"
+        }
+      ],
+      "expect": [
+        "rozpor apixabanu zmizel",
+        "léky už nejsou v rozporu",
+        "rozpor histologie zůstal"
+      ]
+    },
+    {
+      "id": "doplneny-ecog",
+      "label": "Doplněný „ECOG 1“ v žádance praktika (zpráva 07)",
+      "edits": [
+        {
+          "docId": "07",
+          "find": "Soběstačná, v práci",
+          "replace": "Soběstačná, ECOG 1, v práci"
+        }
+      ],
+      "expect": [
+        "výkonnostní stav vyplněn",
+        "20/20 položek vyplněno",
+        "žádné „chybí ECOG“"
+      ]
+    },
+    {
+      "id": "smazana-histologie",
+      "label": "Smazaná zpráva 11 (histologie)",
+      "edits": [
+        {
+          "delete": "11"
+        }
+      ],
+      "expect": [
+        "histologie chybí",
+        "rozpor histologie zmizel",
+        "diagnóza si nevymyslela adenokarcinom"
+      ]
+    },
+    {
+      "id": "lokalizace-kauda",
+      "label": "Ve zprávě CT (08) „kaudy“ místo „hlavy“ slinivky",
+      "edits": [
+        {
+          "docId": "08",
+          "find": "Tumor hlavy pankreatu 35 mm",
+          "replace": "Tumor kaudy pankreatu 35 mm"
+        }
+      ],
+      "expect": [
+        "nový rozpor lokalizace",
+        "rozpor cituje zprávu 08"
+      ]
+    }
+  ]
+}

@@ -66,7 +66,7 @@ export function docTitle(doc: Doc): string {
     if (m) return m[1];
     if (/^(Bioptický nález|Výsledky laboratorního vyšetření|Zpráva klinického psychologa|Epikríza.*)$/.test(l)) return l;
   }
-  return doc.title ?? 'Správa';
+  return doc.title ?? 'Zpráva';
 }
 
 /** The report's own issue/exam date with the line it comes from. */
@@ -101,66 +101,144 @@ function byPreference(docs: Doc[]): Doc[] {
 
 // ---------- identity and contacts ----------
 
-const NAME_RE = /^(Pacient(?:ka)?):\s*([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+)\s+([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+)/m;
+const NAME_LABEL = /^(Pacientka|Pacient|Jméno a příjmení|Příjmení a jméno|Jméno pacienta|Jméno pacientky|Jméno)\s*:\s*(.+)$/m;
+const NAME_WORD = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][A-Za-zÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýžäöü'-]+$/;
+const TITLE = /^(?:MUDr|MDDr|Ing|Mgr|Bc|PhDr|JUDr|RNDr|doc|prof|Dr|DiS|Ph\.D|CSc)\.?,?$/i;
 
-export function identity(docs: Doc[]): Record<'firstName' | 'lastName' | 'sex' | 'age' | 'insurer', RuleField> | null {
-  for (const doc of byPreference(docs)) {
-    const m = doc.text.match(NAME_RE);
-    if (!m) continue;
-    const nameQuote = m[0];
-    const c = cite(doc, nameQuote);
-    const sex = m[1] === 'Pacientka' ? 'žena' : 'muž';
-    const out = {
-      firstName: { value: m[2], citations: cites(c) },
-      lastName: { value: m[3], citations: cites(c) },
-      sex: { value: sex, citations: cites(c), note: `Podľa označenia „${m[1]}“ v správe.` },
-      age: { value: '', citations: [] as Citation[], status: 'missing' as const, note: 'Vek nie je v správach výslovne uvedený.' },
-      insurer: { value: '', citations: [] as Citation[], status: 'missing' as const, note: 'Kód poisťovne nie je uvedený.' },
-    } as Record<'firstName' | 'lastName' | 'sex' | 'age' | 'insurer', RuleField>;
+type IdKey = 'firstName' | 'lastName' | 'sex' | 'age' | 'insurer';
 
-    for (const d of byPreference(docs)) {
-      const born = labeledLine(d.text, /^Datum narození:/);
-      const yrs = born?.line.match(/\((\d{1,3}) let\)/);
-      if (born && yrs) {
-        out.age = { value: `${yrs[1]} rokov (nar. ${born.value.replace(/\s*\(.*\)$/, '')})`, citations: cites(cite(d, born.line)) };
-        break;
-      }
-      const inline = d.text.match(/(\d{1,3})let[áý]/);
-      if (inline) { out.age = { value: `${inline[1]} rokov`, citations: cites(cite(d, inline[0])) }; break; }
+/** Name from a labelled line in one report: "Pacientka: Alena Procházková, RČ …", "Jméno a příjmení: NOVÁK Josef", "Jméno: … / Příjmení: …". */
+function nameIn(doc: Doc): { first: string; last: string; quote: string } | null {
+  const m = doc.text.match(NAME_LABEL);
+  if (!m) return null;
+  const line = m[0];
+  const head = m[2].split(/[,;(]|\s+RČ\b|\s+r\. ?č\./)[0].trim();
+  const words = head.split(/\s+/).filter((w) => !TITLE.test(w)).filter((w) => NAME_WORD.test(w));
+  const upper = (w: string) => w === w.toLocaleUpperCase('cs') && /\p{Lu}{2}/u.test(w);
+  let first = words[0];
+  let last = words[1];
+  if (words.length === 1 && /^Jméno/.test(m[1])) {
+    const sur = labeledLine(doc.text, /^Příjmení\s*:/);
+    if (sur && NAME_WORD.test(sur.value.split(/\s+/)[0])) {
+      const q = locateQuote(doc.text, line);
+      return q ? { first: words[0], last: sur.value.split(/\s+/)[0], quote: q } : null;
     }
-    for (const d of byPreference(docs)) {
-      const zp = d.text.match(/Zdravotní pojišťovna:\s*(\d{3})/) ?? d.text.match(/\bZP (\d{3})\b/);
-      if (!zp) continue;
-      const name = INSURERS[zp[1]];
-      out.insurer = {
-        value: zp[1],
-        citations: cites(cite(d, zp[0])),
-        note: name
-          ? `${zp[1]} = ${name}${zp[1] !== '111' ? ' – nie VZP, súhrn pre revízneho lekára ide tejto poisťovni' : ''}.`
-          : 'Kód poisťovne nie je v číselníku – overiť.',
-      };
-      break;
-    }
-    return out;
   }
-  return null;
+  if (!first || !last) return null;
+  if ((upper(first) && !upper(last)) || m[1] === 'Příjmení a jméno') [first, last] = [last, first];
+  const end = line.indexOf(words[1]) + words[1].length;
+  const quote = locateQuote(doc.text, line.slice(0, end));
+  return quote ? { first, last, quote } : null;
+}
+
+interface Cue { doc: Doc; quote: string; label: string }
+
+/** Sex only from explicit wording: "Pacientka", "63letá", "Pohlaví: žena" (strong) or the generic label "Pacient:" (weak). Never from the name. */
+function sexCues(docs: Doc[]): { female: Cue[]; male: Cue[]; weakMale: Cue[] } {
+  const female: Cue[] = [];
+  const male: Cue[] = [];
+  const weakMale: Cue[] = [];
+  for (const doc of docs) {
+    const f = doc.text.match(/(?<!\p{N})\d{1,3}\s?-?\s?let[áa](?!\p{L})(?:\s+\p{L}+)?|[Pp]acientk(?:a|y|u|ou)(?!\p{L})|Pohlaví\s*:\s*(?:žena|ženské|F)(?!\p{L})/u);
+    if (f) { const q = locateQuote(doc.text, f[0].trim()); if (q) female.push({ doc, quote: q, label: f[0].trim() }); }
+    const mm = doc.text.match(/(?<!\p{N})\d{1,3}\s?-?\s?let[ýy](?!\p{L})(?:\s+\p{L}+)?|Pohlaví\s*:\s*(?:muž|mužské|M)(?!\p{L})/u);
+    if (mm) { const q = locateQuote(doc.text, mm[0].trim()); if (q) male.push({ doc, quote: q, label: mm[0].trim() }); }
+    const w = doc.text.match(/^Pacient\s*:/m);
+    if (w) { const q = locateQuote(doc.text, w[0]); if (q) weakMale.push({ doc, quote: q, label: 'Pacient:' }); }
+  }
+  return { female, male, weakMale };
+}
+
+/** Identity fields, each found independently (a missing name must not hide age or insurer). Nothing is derived from the birth number. */
+export function identity(docs: Doc[]): Record<IdKey, RuleField> {
+  const missing = (note: string): RuleField => ({ value: '', citations: [], status: 'missing', note });
+  const out: Record<IdKey, RuleField> = {
+    firstName: missing('Jméno není uvedeno.'),
+    lastName: missing('Příjmení není uvedeno.'),
+    sex: missing('Pohlaví není ve zprávách výslovně uvedeno.'),
+    age: missing('Věk není ve zprávách výslovně uveden.'),
+    insurer: missing('Kód pojišťovny není uveden.'),
+  };
+  for (const doc of byPreference(docs)) {
+    const n = nameIn(doc);
+    if (!n) continue;
+    const c = cites({ docId: doc.id, quote: n.quote });
+    out.firstName = { value: n.first, citations: c };
+    out.lastName = { value: n.last, citations: c };
+    break;
+  }
+
+  const cues = sexCues(byPreference(docs));
+  if (cues.female.length && cues.male.length) {
+    const a = cues.female[0];
+    const b = cues.male[0];
+    out.sex = {
+      value: 'žena', status: 'conflict', citations: cites({ docId: a.doc.id, quote: a.quote }),
+      conflict: {
+        a: { value: 'žena', citation: { docId: a.doc.id, quote: a.quote } },
+        b: { value: 'muž', citation: { docId: b.doc.id, quote: b.quote } },
+        explain: `Zpráva ${a.doc.id} uvádí „${a.label}“, zpráva ${b.doc.id} „${b.label}“ – ověřte, zda jde o stejného pacienta.`,
+      },
+    };
+  } else if (cues.female.length) {
+    const a = cues.female[0];
+    out.sex = { value: 'žena', citations: cites({ docId: a.doc.id, quote: a.quote }), note: `Podle označení „${a.label}“ ve zprávě.` };
+  } else if (cues.male.length) {
+    const a = cues.male[0];
+    out.sex = { value: 'muž', citations: cites({ docId: a.doc.id, quote: a.quote }), note: `Podle označení „${a.label}“ ve zprávě.` };
+  } else if (cues.weakMale.length) {
+    const a = cues.weakMale[0];
+    out.sex = { value: 'muž', citations: cites({ docId: a.doc.id, quote: a.quote }), note: 'Jen podle obecného označení „Pacient:“ – ověřit.' };
+  }
+
+  for (const d of byPreference(docs)) {
+    const born = labeledLine(d.text, /^Datum narození\s*:/);
+    const yrs = born?.line.match(/\((\d{1,3})\s*let\)/);
+    if (born && yrs) { out.age = { value: `${yrs[1]} let (nar. ${born.value.replace(/\s*\(.*\)$/, '')})`, citations: cites(cite(d, born.line)) }; break; }
+    const vek = labeledLine(d.text, /^Věk\s*:/);
+    const vn = vek?.value.match(/^(\d{1,3})\b/);
+    if (vek && vn) { out.age = { value: `${vn[1]} let`, citations: cites(cite(d, vek.line)) }; break; }
+    const inline = d.text.match(/(?<!\p{N})(\d{1,3})\s?-?\s?let[áýay](?!\p{L})/u);
+    if (inline) { out.age = { value: `${inline[1]} let`, citations: cites(cite(d, inline[0])) }; break; }
+  }
+  if (out.age.status === 'missing') {
+    for (const d of byPreference(docs)) {
+      const born = labeledLine(d.text, /^Datum narození\s*:/);
+      if (born) { out.age = { value: `nar. ${born.value}`, citations: cites(cite(d, born.line)), note: 'Věk není uveden, jen datum narození – nepočítáme ho.' }; break; }
+    }
+  }
+
+  for (const d of byPreference(docs)) {
+    const zp = d.text.match(/(?:Zdravotní pojišťovna|Pojišťovna|Kód ZP|ZP)\s*:?\s*(\d{3})\b/);
+    if (!zp) continue;
+    const name = INSURERS[zp[1]];
+    out.insurer = {
+      value: zp[1],
+      citations: cites(cite(d, zp[0])),
+      note: name
+        ? `${zp[1]} = ${name}${zp[1] !== '111' ? ' – není VZP, souhrn pro revizního lékaře jde této pojišťovně' : ''}.`
+        : 'Kód pojišťovny není v číselníku – ověřit.',
+    };
+    break;
+  }
+  return out;
 }
 
 export function contacts(docs: Doc[]): { patientContact: RuleField; contactPerson: RuleField; findings: Finding[] } {
   const findings: Finding[] = [];
-  let patientContact: RuleField = { value: '', citations: [], status: 'missing', note: 'Telefón ani e-mail pacienta nie sú uvedené.' };
-  let contactPerson: RuleField = { value: '', citations: [], status: 'missing', note: 'Kontaktná osoba nie je uvedená.' };
+  let patientContact: RuleField = { value: '', citations: [], status: 'missing', note: 'Telefon ani e-mail pacienta nejsou uvedeny.' };
+  let contactPerson: RuleField = { value: '', citations: [], status: 'missing', note: 'Kontaktní osoba není uvedena.' };
   for (const doc of byPreference(docs)) {
     const tel = labeledLine(doc.text, /^Telefon:/);
     if (!tel || patientContact.value) continue;
     const email = doc.text.match(/^E-?mail:\s*(\S+@\S+)/im);
-    const parts = [`tel. ${tel.value}`, email ? `e-mail ${email[1]}` : 'e-mail neuvedený'];
+    const parts = [`tel. ${tel.value}`, email ? `e-mail ${email[1]}` : 'e-mail neuveden'];
     patientContact = {
       value: parts.join(' · '),
       citations: cites(cite(doc, tel.line), email ? cite(doc, email[0]) : null),
-      note: email ? undefined : 'E-mail pacienta v dokumentácii chýba (zápis pre konzílium ho vyžaduje).',
+      note: email ? undefined : 'E-mail pacienta v dokumentaci chybí (zápis pro konzilium ho vyžaduje).',
     };
-    if (!email) findings.push({ id: 'patient-email-missing', severity: 'missing', fieldKey: 'patientContact', text: 'Chýba e-mail pacienta – zápis pre konzílium (MDT_zapis) vyžaduje telefón aj e-mail.', citations: [] });
+    if (!email) findings.push({ id: 'patient-email-missing', severity: 'missing', fieldKey: 'patientContact', text: 'Chybí e-mail pacienta – zápis pro konzilium (MDT_zapis) vyžaduje telefon i e-mail.', citations: [] });
   }
   for (const doc of byPreference(docs)) {
     const cp = labeledLine(doc.text, /^Kontaktní osoba:/);
@@ -181,7 +259,7 @@ export function referringDoctor(docs: Doc[]): { name: string; phone?: string; em
   const tel = header.match(/Tel\.?:\s*(\+?[\d ]{9,}\d)/) ?? ref.text.match(/Tel\.?:\s*(\+?[\d ]{9,}\d)/);
   const email = header.match(/[\w.+-]+@[\w-]+\.[\w.]*\w/);
   const findings: Finding[] = [];
-  if (!email) findings.push({ id: 'gp-email-missing', severity: 'info', text: 'Chýba e-mail odosielajúceho lekára (zápis pre konzílium ho vyžaduje) – telefón je uvedený.', citations: cites(tel ? cite(ref, tel[0]) : null) });
+  if (!email) findings.push({ id: 'gp-email-missing', severity: 'info', text: 'Chybí e-mail odesílajícího lékaře (zápis pro konzilium ho vyžaduje) – telefon je uveden.', citations: cites(tel ? cite(ref, tel[0]) : null) });
   return {
     name: nameLine ?? '',
     phone: tel?.[1].trim(),
@@ -203,7 +281,7 @@ export function weightHeight(included: Doc[], excluded: Doc[], asOf: ISODate): R
     for (const m of doc.text.matchAll(/[Vv]ýška\s+(\d{3})\s?cm/g)) heights.push({ cm: m[1], doc, quote: m[0] });
   }
   if (!weights.length && !heights.length) {
-    return { value: '', citations: [], status: 'missing', note: 'Váha ani výška nie sú v správach uvedené.' };
+    return { value: '', citations: [], status: 'missing', note: 'Váha ani výška nejsou ve zprávách uvedeny.' };
   }
   weights.sort((a, b) => b.doc.date.localeCompare(a.doc.date));
   heights.sort((a, b) => b.doc.date.localeCompare(a.doc.date));
@@ -211,15 +289,15 @@ export function weightHeight(included: Doc[], excluded: Doc[], asOf: ISODate): R
   const h = heights[0];
   const parts: string[] = [];
   if (w) parts.push(`${w.kg} kg (${czDate(w.doc.date)})`);
-  else parts.push('váha neuvedená');
+  else parts.push('váha neuvedena');
   if (h) parts.push(`výška ${h.cm} cm (${czDate(h.doc.date)})`);
-  else parts.push('výška neuvedená');
+  else parts.push('výška neuvedena');
   const notes: string[] = [];
   const older = weights.slice(1).filter((x) => x.kg !== w?.kg);
-  if (older.length) notes.push(`Skôr: ${older.map((x) => `${x.kg} kg (${czDate(x.doc.date)})`).join(', ')}.`);
+  if (older.length) notes.push(`Dříve: ${older.map((x) => `${x.kg} kg (${czDate(x.doc.date)})`).join(', ')}.`);
   const later = excluded.flatMap((d) => [...d.text.matchAll(WEIGHT_RE)].map((m) => ({ kg: m[1], d })));
-  if (later.length) notes.push(`Novšia hodnota ${later.map((x) => `${x.kg} kg (správa ${x.d.id}, ${czDate(x.d.date)})`).join(', ')} vznikla až po ${czDate(asOf)}, preto do podkladu nepatrí.`);
-  if (!h) notes.push('Výška chýba.');
+  if (later.length) notes.push(`Novější hodnota ${later.map((x) => `${x.kg} kg (zpráva ${x.d.id}, ${czDate(x.d.date)})`).join(', ')} vznikla až po ${czDate(asOf)}, proto do podkladu nepatří.`);
+  if (!h) notes.push('Výška chybí.');
   return {
     value: parts.join(' · '),
     citations: cites(w ? cite(w.doc, w.quote) : null, h ? cite(h.doc, h.quote) : null, ...older.map((x) => cite(x.doc, x.quote))),
@@ -240,8 +318,8 @@ export function performanceStatus(included: Doc[], patientLabel: string, mdtDate
   }
   const verbal = included.map((d) => ({ d, m: d.text.match(/[Ss]oběstačn[áéý]/) })).find((x) => x.m);
   const note = verbal?.m
-    ? `Skóre ECOG ani Karnofsky nie je v žiadnej správe. Správa ${verbal.d.id} uvádza len slovný popis „${verbal.m[0]}“ – to nie je skóre.`
-    : 'Skóre ECOG ani Karnofsky nie je v žiadnej správe.';
+    ? `Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva ${verbal.d.id} uvádí jen slovní popis „${verbal.m[0]}“ – to není skóre.`
+    : 'Skóre ECOG ani Karnofsky není v žádné zprávě.';
   return {
     field: {
       value: '',
@@ -249,9 +327,9 @@ export function performanceStatus(included: Doc[], patientLabel: string, mdtDate
       status: 'missing',
       note,
       request: {
-        to: 'onkologická ambulancia KOC / odosielajúci lekár',
+        to: 'onkologická ambulance KOC / odesílající lékař',
         channel: 'e-mail',
-        draft: `Dobrý deň, pred konzíliom ${czDate(mdtDate)} prosíme o doplnenie výkonnostného stavu (ECOG alebo Karnofsky) – ${patientLabel}. V doterajšej dokumentácii nie je uvedený. Ďakujeme, koordinátor KOC.`,
+        draft: `Dobrý den, před konziliem ${czDate(mdtDate)} prosíme o doplnění výkonnostního stavu (ECOG nebo Karnofsky) – ${patientLabel}. V dosavadní dokumentaci není uveden. Děkujeme, koordinátor KOC.`,
       },
     },
     finding: { id: 'ecog-missing', severity: 'missing', fieldKey: 'performance', text: note, citations: [] },
@@ -280,7 +358,7 @@ export function allergies(included: Doc[]): { field: RuleField; finding?: Findin
   positives.sort((a, b) => a.doc.date.localeCompare(b.doc.date));
   if (!positives.length) {
     const n = negatives[0];
-    if (!n) return { field: { value: '', citations: [], status: 'missing', note: 'Alergická anamnéza nie je uvedená.' } };
+    if (!n) return { field: { value: '', citations: [], status: 'missing', note: 'Alergická anamnéza není uvedena.' } };
     return { field: { value: n.line.replace(/^(AA|Alergie):\s*/, ''), citations: cites(cite(n.doc, n.line)), sourceDate: n.doc.date, note: 'Alergie pacient neguje.' } };
   }
   const seen = new Set<string>();
@@ -291,11 +369,11 @@ export function allergies(included: Doc[]): { field: RuleField; finding?: Findin
   const stale = negatives.find((n) => n.doc.date >= first.doc.date);
   if (!stale) {
     const older = negatives[0];
-    return { field: { value, citations, sourceDate: positives[positives.length - 1].doc.date, note: older ? `Staršia správa ${older.doc.id} uvádza „${older.line}“ – alergia bola zistená neskôr (${czDate(first.doc.date)}).` : undefined } };
+    return { field: { value, citations, sourceDate: positives[positives.length - 1].doc.date, note: older ? `Starší zpráva ${older.doc.id} uvádí „${older.line}“ – alergie byla zjištěna později (${czDate(first.doc.date)}).` : undefined } };
   }
   const a = cite(stale.doc, stale.line);
   const b = cite(first.doc, first.quote);
-  const explain = `Správa ${stale.doc.id} (${czDate(stale.doc.date)}) uvádza „${stale.line}“, ale správa ${first.doc.id} z ${czDate(first.doc.date)} zaznamenala: ${first.allergen}. Overiť pred ďalším vyšetrením alebo liečbou – novšia správa alergiu pravdepodobne neprevzala.`;
+  const explain = `Zpráva ${stale.doc.id} (${czDate(stale.doc.date)}) uvádí „${stale.line}“, ale zpráva ${first.doc.id} z ${czDate(first.doc.date)} zaznamenala: ${first.allergen}. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala.`;
   return {
     field: {
       value, citations, status: a && b ? 'conflict' : undefined, sourceDate: first.doc.date,
@@ -310,7 +388,7 @@ export function comorbidities(included: Doc[]): RuleField {
     const oa = labeledLine(doc.text, /^OA:/);
     if (oa) return { value: oa.value, citations: cites(cite(doc, oa.line)), sourceDate: doc.date };
   }
-  return { value: '', citations: [], status: 'missing', note: 'Osobná anamnéza nie je uvedená.' };
+  return { value: '', citations: [], status: 'missing', note: 'Osobní anamnéza není uvedena.' };
 }
 
 export function medications(included: Doc[]): { field: RuleField; meds: Medication[] } {
@@ -329,7 +407,7 @@ export function medications(included: Doc[]): { field: RuleField; meds: Medicati
     });
     return { field: { value: fa.value, citations: cites(c), sourceDate: doc.date }, meds };
   }
-  return { field: { value: '', citations: [], status: 'missing', note: 'Lieková anamnéza nie je uvedená.' }, meds: [] };
+  return { field: { value: '', citations: [], status: 'missing', note: 'Léková anamnéza není uvedena.' }, meds: [] };
 }
 
 // ---------- labs ----------
@@ -374,7 +452,7 @@ export function parseLabs(doc: Doc): LabRow[] {
 export function labsField(included: Doc[]): { field: RuleField; labs: LabRow[] } {
   const labDocs = included.filter((d) => docKind(d) === 'lab').sort((a, b) => b.date.localeCompare(a.date));
   const labs = labDocs.flatMap(parseLabs);
-  if (!labs.length) return { field: { value: '', citations: [], status: 'missing', note: 'Laboratórne výsledky nie sú k dispozícii.' }, labs };
+  if (!labs.length) return { field: { value: '', citations: [], status: 'missing', note: 'Laboratorní výsledky nejsou k dispozici.' }, labs };
   const parts: string[] = [];
   const citations: Citation[] = [];
   const fmt = (r: LabRow) => `${r.test} ${r.value}${r.unit ? ' ' + r.unit : ''}${r.flag === 'H' ? ' ↑' : r.flag === 'L' ? ' ↓' : ''}`;
@@ -399,7 +477,7 @@ export function labsField(included: Doc[]): { field: RuleField; labs: LabRow[] }
       value: parts.join('\n'),
       citations,
       sourceDate: labDocs[0].date,
-      note: allMarkers.length ? `Uvedené všetky nádorové markery (${[...new Set(allMarkers.map((r) => r.test))].join(', ')}), nielen zvýšené.` : 'Nádorové markery v dokumentácii nie sú.',
+      note: allMarkers.length ? `Uvedeny všechny nádorové markery (${[...new Set(allMarkers.map((r) => r.test))].join(', ')}), nejen zvýšené.` : 'Nádorové markery v dokumentaci nejsou.',
     },
     labs,
   };
@@ -438,17 +516,17 @@ export function examsField(included: Doc[]): { field: RuleField; exams: Exam[] }
     exams.push({ date: d.date, place: facility(d), type, summary, docId: d.id });
     out.push(`${czDate(d.date)} · ${type} · ${facility(d)}${summary ? ` – ${summary}` : ''}`);
   }
-  if (!exams.length) return { field: { value: '', citations: [], status: 'missing', note: 'Žiadne vyšetrenia v dokumentácii.' }, exams };
-  return { field: { value: out.join('\n'), citations, sourceDate: docs[docs.length - 1].date, note: 'Plné znenie výsledku je v pôvodnej správe (klik na citát).' }, exams };
+  if (!exams.length) return { field: { value: '', citations: [], status: 'missing', note: 'Žádná vyšetření v dokumentaci.' }, exams };
+  return { field: { value: out.join('\n'), citations, sourceDate: docs[docs.length - 1].date, note: 'Plné znění výsledku je v původní zprávě (klik na citaci).' }, exams };
 }
 
 export function histologyField(included: Doc[]): RuleField {
   const docs = included.filter((d) => docKind(d) === 'histology').sort((a, b) => b.date.localeCompare(a.date));
   const d = docs[0];
-  if (!d) return { value: '', citations: [], status: 'missing', note: 'Histológia zatiaľ nie je k dispozícii.' };
+  if (!d) return { value: '', citations: [], status: 'missing', note: 'Histologie zatím není k dispozici.' };
   const z = conclusion(d);
   const issued = issueDate(d);
-  const value = `${z ?? 'bioptický nález'}${issued ? ` · vydané ${czDate(issued.iso)}` : ''}`;
+  const value = `${z ?? 'bioptický nález'}${issued ? ` · vydáno ${czDate(issued.iso)}` : ''}`;
   return { value, citations: cites(z ? cite(d, z) : null, issued ? cite(d, issued.quote) : null), sourceDate: d.date };
 }
 
@@ -508,18 +586,18 @@ export function referralPrecheck(referral: Doc): Finding[] {
     const items = (listed ?? '').split('\n').filter((l) => /^\d+\./.test(l));
     f.push({
       id: 'results-not-attached', severity: 'missing',
-      text: `Žiadanka neobsahuje výsledky vyšetrení – uvádza len, kde sú (${items.length || 'viac'} pracovísk). Treba ich vyžiadať.`,
+      text: `Žádanka neobsahuje výsledky vyšetření – uvádí jen, kde jsou (${items.length || 'více'} pracovišť). Je třeba je vyžádat.`,
       citations: cites(cite(referral, 'VÝSLEDKY K DISPOZICI NA JEDNOTLIVÝCH PRACOVIŠTÍCH')),
     });
-    for (const it of items) f.push({ id: `request-${it.slice(0, 2)}`, severity: 'info', text: `Vyžiadať: ${it.replace(/^\d+\.\s*/, '')}`, citations: cites(cite(referral, it)) });
+    for (const it of items) f.push({ id: `request-${it.slice(0, 2)}`, severity: 'info', text: `Vyžádat: ${it.replace(/^\d+\.\s*/, '')}`, citations: cites(cite(referral, it)) });
   }
-  if (!/\bECOG\b|Karnofsk|\bPS\s?[0-4]\b/.test(t)) f.push({ id: 'ecog-missing', severity: 'missing', fieldKey: 'performance', text: 'Chýba výkonnostný stav (ECOG/Karnofsky).', citations: [] });
-  if (!/\S+@\S+\.\S+/.test(t)) f.push({ id: 'emails-missing', severity: 'info', text: 'Chýba e-mail pacienta aj odosielajúceho lekára.', citations: [] });
+  if (!/\bECOG\b|Karnofsk|\bPS\s?[0-4]\b/.test(t)) f.push({ id: 'ecog-missing', severity: 'missing', fieldKey: 'performance', text: 'Chybí výkonnostní stav (ECOG/Karnofsky).', citations: [] });
+  if (!/\S+@\S+\.\S+/.test(t)) f.push({ id: 'emails-missing', severity: 'info', text: 'Chybí e-mail pacienta i odesílajícího lékaře.', citations: [] });
   const request = section(t, /^ŽÁDOST/) ?? t;
   const anti = request.split(/(?<=\.)\s+/).find((s) => /(apixaban|warfarin|rivaroxaban|dabigatran|edoxaban|antikoagula)/i.test(s));
-  if (anti) f.push({ id: 'anticoagulation', severity: 'info', text: 'Pacient užíva liek na riedenie krvi – pred invazívnym výkonom treba postup podľa lekára.', citations: cites(cite(referral, anti.trim())) });
+  if (anti) f.push({ id: 'anticoagulation', severity: 'info', text: 'Pacient užívá lék na ředění krve – před invazivním výkonem je třeba postup podle lékaře.', citations: cites(cite(referral, anti.trim())) });
   const consent = t.match(/[^.\n]*[Ss]ouhlasí se sdílením[^.\n]*\./);
-  if (consent) f.push({ id: 'consent-sharing', severity: 'info', text: 'Súhlas so zdieľaním informácií s blízkou osobou je v žiadanke.', citations: cites(cite(referral, consent[0].trim())) });
+  if (consent) f.push({ id: 'consent-sharing', severity: 'info', text: 'Souhlas se sdílením informací s blízkou osobou je v žádance.', citations: cites(cite(referral, consent[0].trim())) });
   return f;
 }
 
@@ -532,7 +610,7 @@ export function plannedButMissing(included: Doc[], asOf: ISODate): Finding[] {
       if (!/^\d+\.\s/.test(l) || !/(Kontrola|kontrol)/.test(l)) continue;
       for (const d of findDates(l)) {
         if (d.iso > doc.date && d.iso <= asOf && !dates.has(d.iso)) {
-          f.push({ id: `planned-${d.iso}`, severity: 'info', text: `Správa ${doc.id} plánuje kontrolu ${czDate(d.iso)}, ale správa z nej v dokumentácii nie je – možno chýba.`, citations: cites(cite(doc, l)) });
+          f.push({ id: `planned-${d.iso}`, severity: 'info', text: `Zpráva ${doc.id} plánuje kontrolu ${czDate(d.iso)}, ale zpráva z ní v dokumentaci není – možná chybí.`, citations: cites(cite(doc, l)) });
         }
       }
     }
@@ -543,38 +621,62 @@ export function plannedButMissing(included: Doc[], asOf: ISODate): Finding[] {
 // ---------- consistency across reports (trap detectors) ----------
 
 const SIDE_RE = /\b(prav|lev)(?:ý|é|ého|ém|á|ou|ým|ých)\s+(?:[a-záčďéěíňóřšťúůýž]+\s+){0,2}?(?:lalok\w*|plic\w*|plíc\w*|hil\w*|ledvin\w*|prs\w*|nadledvin\w*|vaječník\w*|varl\w*)/i;
-const SIDE_LINES = /^(Indikace|Výkon|Materiál|Diagnóza|Suspektní diagnóza|Pracovní diagnóza):/;
+const PANCREAS_RE = /\b(hlav|těl|kaud|ocas)\w*\s+(?:pankreat\w*|slinivk\w*)/i;
+const LOC_LINES = /^(Indikace|Výkon|Materiál|Diagnóza|Suspektní diagnóza|Pracovní diagnóza|Závěr)\s*:/;
+const TUMOUR_WORD = /(ložisk|tumor|nádor|léze|expanz|infiltrát|opacit|útvar)/i;
+/** "Levá plíce bez ložiskových změn" describes the healthy side – never a location of the finding. */
+const NEGATED = /(^|\s)bez\s+(?:\p{L}+\s+){0,2}?(?:ložisk|patolog|změn|nález|tumor|expanz|metast)/iu;
 
-export interface SideHit { doc: Doc; side: 'pravá' | 'ľavá'; phrase: string; quote: string }
+export type LocDim = 'strana' | 'část slinivky';
+export interface LocHit { doc: Doc; dim: LocDim; value: string; phrase: string; quote: string }
 
-/** Side of the main finding in each report (conclusion, indication, diagnosis line), e.g. "pravého horního laloku". */
-export function sideMentions(included: Doc[]): SideHit[] {
-  const out: SideHit[] = [];
+const LOC_DIMS: { dim: LocDim; re: RegExp; value: (m: RegExpMatchArray) => string }[] = [
+  { dim: 'strana', re: SIDE_RE, value: (m) => (m[1].toLowerCase() === 'prav' ? 'pravá' : 'levá') },
+  { dim: 'část slinivky', re: PANCREAS_RE, value: (m) => ({ hlav: 'hlava', těl: 'tělo', kaud: 'kauda', ocas: 'kauda' } as Record<string, string>)[m[1].toLowerCase()] },
+];
+
+/** Where the main finding is, per report: conclusion, labelled lines (indication, material, diagnosis) and the first tumour sentence of the description. */
+export function locationMentions(included: Doc[]): LocHit[] {
+  const out: LocHit[] = [];
   for (const doc of included) {
     const z = section(doc.text, /^ZÁVĚR/);
-    const candidates = [...(z ? z.split('\n').slice(0, 2) : []), ...lines(doc.text).filter((l) => SIDE_LINES.test(l))];
-    for (const l of candidates) {
-      const m = l.match(SIDE_RE);
-      if (!m) continue;
-      const exact = locateQuote(doc.text, l);
-      if (exact) out.push({ doc, side: m[1].toLowerCase() === 'prav' ? 'pravá' : 'ľavá', phrase: m[0], quote: exact });
-      break;
+    const popis = section(doc.text, /^POPIS/);
+    const firstTumour = popis?.split(/(?<=\.)\s+/).find((x) => TUMOUR_WORD.test(x) && !NEGATED.test(x));
+    const candidates = [...(z ? z.split('\n').slice(0, 2) : []), ...lines(doc.text).filter((l) => LOC_LINES.test(l)), ...(firstTumour ? [firstTumour] : [])]
+      .flatMap((l) => l.split(/(?<=\.)\s+(?=\p{Lu})/u))
+      .filter((l) => !NEGATED.test(l));
+    for (const { dim, re, value } of LOC_DIMS) {
+      for (const l of candidates) {
+        const m = l.match(re);
+        if (!m) continue;
+        const exact = locateQuote(doc.text, l.trim());
+        if (exact) out.push({ doc, dim, value: value(m), phrase: m[0], quote: exact });
+      }
     }
   }
   return out;
 }
 
-/** Reports that disagree on the side of the tumour (decisive for surgery and radiotherapy). */
-export function sideConflict(included: Doc[]): { a: SideHit; b: SideHit; explain: string } | null {
-  const hits = sideMentions(included);
-  const right = hits.filter((h) => h.side === 'pravá');
-  const left = hits.filter((h) => h.side === 'ľavá');
-  if (!right.length || !left.length) return null;
-  const [major, minor] = right.length >= left.length ? [right, left] : [left, right];
-  const ids = (xs: SideHit[]) => xs.map((h) => h.doc.id).join(', ');
-  const explain = `Strana nálezu nesedí: ${major.length > 1 ? 'správy' : 'správa'} ${ids(major)} ${major.length > 1 ? 'uvádzajú' : 'uvádza'} ${major[0].side === 'pravá' ? 'pravú' : 'ľavú'} stranu, ${minor.length > 1 ? 'správy' : 'správa'} ${ids(minor)} ${minor[0].side === 'pravá' ? 'pravú' : 'ľavú'}. Overiť s pracoviskom – strana rozhoduje o operácii aj ožarovaní.`;
-  const newest = (xs: SideHit[]) => [...xs].sort((x, y) => y.doc.date.localeCompare(x.doc.date))[0];
-  return { a: newest(major), b: newest(minor), explain };
+const LOC_WORD: Record<string, string> = { pravá: 'pravou stranu', levá: 'levou stranu', hlava: 'hlavu', tělo: 'tělo', kauda: 'kaudu (ocas)' };
+
+/** Reports that disagree on where the tumour is (side, part of the pancreas) – decisive for surgery and radiotherapy. */
+export function locationConflicts(included: Doc[]): { dim: LocDim; a: LocHit; b: LocHit; explain: string }[] {
+  const hits = locationMentions(included);
+  const out: { dim: LocDim; a: LocHit; b: LocHit; explain: string }[] = [];
+  for (const dim of ['strana', 'část slinivky'] as LocDim[]) {
+    const byValue = new Map<string, LocHit[]>();
+    for (const h of hits.filter((x) => x.dim === dim)) byValue.set(h.value, [...(byValue.get(h.value) ?? []), h]);
+    if (byValue.size < 2) continue;
+    const groups = [...byValue.values()].sort((x, y) => y.length - x.length);
+    const major = groups[0];
+    const minor = groups.slice(1).flat();
+    const ids = (xs: LocHit[]) => [...new Set(xs.map((h) => h.doc.id))];
+    const say = (xs: LocHit[]) => { const d = ids(xs); return `${d.length > 1 ? 'zprávy' : 'zpráva'} ${d.join(', ')} ${d.length > 1 ? 'uvádějí' : 'uvádí'} ${LOC_WORD[xs[0].value] ?? xs[0].value}`; };
+    const newest = (xs: LocHit[]) => [...xs].sort((x, y) => y.doc.date.localeCompare(x.doc.date))[0];
+    const what = dim === 'strana' ? 'Strana nálezu' : 'Lokalizace ve slinivce';
+    out.push({ dim, a: newest(major), b: newest(minor), explain: `${what} nesedí: ${say(major)}, ${say(minor)}. Ověřte s pracovištěm – lokalizace rozhoduje o operaci i ozařování.` });
+  }
+  return out;
 }
 
 const RC_RE = /(?:Rodné číslo:\s*|\bRČ\s+)(\d{6}\/\d{3,4})/;

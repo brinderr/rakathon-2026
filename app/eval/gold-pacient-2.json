@@ -201,7 +201,7 @@
       "title": "Prediktívne markery (EGFR, ALK, ROS1, PD-L1) neprišli",
       "why": "Patológ 23. 9. avizuje dodatok, do konzília 22. 10. v dokumentácii nie je. Pri adenokarcinóme pľúc rozhoduje o liečbe.",
       "evidence": [{ "docId": "07", "quote": "Prediktivní vyšetření (EGFR, ALK, ROS1, PD-L1) probíhá – výsledek bude doplněn dodatkem." }],
-      "checks": [{ "type": "messageMatches", "all": ["(EGFR|PD-L1)", "(nie je|chýba|chybí|vyžiadať)"] }]
+      "checks": [{ "type": "messageMatches", "all": ["(EGFR|PD-L1)", "(nie je|není|chýba|chybí|vyžiadať|vyžádat)"] }]
     },
     {
       "id": "weight-73-after-mdt",
@@ -248,7 +248,7 @@
       "evidence": [{ "docId": "03", "quote": "Výkonnostní stav ECOG 1." }],
       "checks": [
         { "type": "fieldNotStatus", "field": "performance", "status": "missing" },
-        { "type": "noMessageMatches", "all": ["Chýba výkonnostný stav"] }
+        { "type": "noMessageMatches", "all": ["Ch[ýy]b[aí] výkonnostn"] }
       ]
     },
     {

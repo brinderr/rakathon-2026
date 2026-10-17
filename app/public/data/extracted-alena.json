@@ -2,10 +2,10 @@
   "meta": {
     "caseId": "alena",
     "asOf": "2026-10-21",
-    "generatedAt": "2026-10-17T00:06:56.877Z",
+    "generatedAt": "2026-10-17T03:17:07.191Z",
     "promptVersion": "handover-v1",
     "mode": "rules+llm",
-    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
+    "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
     "requestHash": "4234a107c7884be5",
     "docsUsed": [
       "01",
@@ -24,12 +24,12 @@
       {
         "id": "12",
         "date": "2026-10-26",
-        "reason": "po dátume konzília 21. 10. 2026"
+        "reason": "po datu konzilia 21. 10. 2026"
       },
       {
         "id": "13",
         "date": "2026-10-27",
-        "reason": "po dátume konzília 21. 10. 2026"
+        "reason": "po datu konzilia 21. 10. 2026"
       }
     ],
     "stats": {
@@ -47,7 +47,7 @@
   "fields": [
     {
       "key": "firstName",
-      "label": "Meno",
+      "label": "Jméno",
       "group": "Pacient",
       "value": "Alena",
       "status": "proposed",
@@ -60,7 +60,7 @@
     },
     {
       "key": "lastName",
-      "label": "Priezvisko",
+      "label": "Příjmení",
       "group": "Pacient",
       "value": "Procházková",
       "status": "proposed",
@@ -73,9 +73,9 @@
     },
     {
       "key": "age",
-      "label": "Vek",
+      "label": "Věk",
       "group": "Pacient",
-      "value": "63 rokov (nar. 22. 7. 1963)",
+      "value": "63 let (nar. 22. 7. 1963)",
       "status": "proposed",
       "citations": [
         {
@@ -86,21 +86,21 @@
     },
     {
       "key": "sex",
-      "label": "Pohlavie",
+      "label": "Pohlaví",
       "group": "Pacient",
       "value": "žena",
       "status": "proposed",
       "citations": [
         {
           "docId": "07",
-          "quote": "Pacientka: Alena Procházková"
+          "quote": "Pacientka"
         }
       ],
-      "note": "Podľa označenia „Pacientka“ v správe."
+      "note": "Podle označení „Pacientka“ ve zprávě."
     },
     {
       "key": "insurer",
-      "label": "Zdravotná poisťovňa",
+      "label": "Zdravotní pojišťovna",
       "group": "Pacient",
       "value": "211",
       "status": "proposed",
@@ -110,13 +110,13 @@
           "quote": "Zdravotní pojišťovna: 211"
         }
       ],
-      "note": "211 = Zdravotní pojišťovna ministerstva vnitra ČR – nie VZP, súhrn pre revízneho lekára ide tejto poisťovni."
+      "note": "211 = Zdravotní pojišťovna ministerstva vnitra ČR – není VZP, souhrn pro revizního lékaře jde této pojišťovně."
     },
     {
       "key": "patientContact",
       "label": "Kontakt na pacientku",
       "group": "Kontakty",
-      "value": "tel. +420 777 000 541 · e-mail neuvedený",
+      "value": "tel. +420 777 000 541 · e-mail neuveden",
       "status": "proposed",
       "citations": [
         {
@@ -124,11 +124,11 @@
           "quote": "Telefon: +420 777 000 541"
         }
       ],
-      "note": "E-mail pacienta v dokumentácii chýba (zápis pre konzílium ho vyžaduje)."
+      "note": "E-mail pacienta v dokumentaci chybí (zápis pro konzilium ho vyžaduje)."
     },
     {
       "key": "contactPerson",
-      "label": "Kontaktná osoba",
+      "label": "Kontaktní osoba",
       "group": "Kontakty",
       "value": "Petra Horká (dcera), tel. +420 777 000 542",
       "status": "proposed",
@@ -163,7 +163,7 @@
     },
     {
       "key": "epicrisis",
-      "label": "Priebeh ochorenia v skratke",
+      "label": "Průběh onemocnění ve zkratce",
       "group": "Diagnóza",
       "value": "63letá pacientka, od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří, teploty se zimnicí a tmavší moč; léčena ciprofloxacinem, poté afebrilní. Pro přetrvávající cholestázu UZ 29. 9. 2026: ložisko hlavy pankreatu suspektní z malignity. CT se nepodařilo zajistit, bolesti přetrvávají.",
       "status": "proposed",
@@ -197,7 +197,7 @@
     },
     {
       "key": "mdtQuestion",
-      "label": "Otázka pre konzílium",
+      "label": "Otázka pro konzilium",
       "group": "Diagnóza",
       "value": "Převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT; urgentní řešení vzhledem k progresi obtíží a nezajištěnému termínu CT.",
       "status": "proposed",
@@ -215,7 +215,7 @@
     },
     {
       "key": "comorbidities",
-      "label": "Pridružené ochorenia",
+      "label": "Přidružená onemocnění",
       "group": "Anamnéza",
       "value": "paroxysmální fibrilace síní od r. 2021 na antikoagulaci (kardiolog MUDr. Petr Malý, Jesenice), arteriální hypertenze, hypercholesterolémie, st. p. hysterektomii pro myomy (2010), v r. 2019 po úmrtí manžela přechodně depresivní ladění, neléčena",
       "status": "proposed",
@@ -229,7 +229,7 @@
     },
     {
       "key": "medication",
-      "label": "Lieky, ktoré užíva",
+      "label": "Léky, které užívá",
       "group": "Anamnéza",
       "value": "apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně",
       "status": "conflict",
@@ -255,7 +255,7 @@
             "quote": "Datum výkonu: 12. 10. 2026"
           }
         },
-        "explain": "Posledná dávka je zapísaná na 18. 10. 2026, teda po dátume výkonu 12. 10. 2026. Dátum je nemožný – overte s pracoviskom, kedy bol liek naozaj vysadený."
+        "explain": "Poslední dávka je zapsána na 18. 10. 2026, tedy po datu výkonu 12. 10. 2026. Datum je nemožné – ověřte s pracovištěm, kdy byl lék skutečně vysazen."
       }
     },
     {
@@ -275,16 +275,16 @@
     },
     {
       "key": "performance",
-      "label": "Výkonnostný stav (ECOG)",
+      "label": "Výkonnostní stav (ECOG)",
       "group": "Stav",
       "value": "",
       "status": "missing",
       "citations": [],
-      "note": "Skóre ECOG ani Karnofsky nie je v žiadnej správe. Správa 07 uvádza len slovný popis „Soběstačná“ – to nie je skóre.",
+      "note": "Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva 07 uvádí jen slovní popis „Soběstačná“ – to není skóre.",
       "request": {
-        "to": "onkologická ambulancia KOC / odosielajúci lekár",
+        "to": "onkologická ambulance KOC / odesílající lékař",
         "channel": "e-mail",
-        "draft": "Dobrý deň, pred konzíliom 21. 10. 2026 prosíme o doplnenie výkonnostného stavu (ECOG alebo Karnofsky) – Alena Procházková. V doterajšej dokumentácii nie je uvedený. Ďakujeme, koordinátor KOC."
+        "draft": "Dobrý den, před konziliem 21. 10. 2026 prosíme o doplnění výkonnostního stavu (ECOG nebo Karnofsky) – Alena Procházková. V dosavadní dokumentaci není uveden. Děkujeme, koordinátor KOC."
       }
     },
     {
@@ -308,11 +308,11 @@
         }
       ],
       "sourceDate": "2026-09-15",
-      "note": "Skôr: 69 kg (20. 7. 2026). Novšia hodnota 63 kg (správa 12, 26. 10. 2026) vznikla až po 21. 10. 2026, preto do podkladu nepatrí."
+      "note": "Dříve: 69 kg (20. 7. 2026). Novější hodnota 63 kg (zpráva 12, 26. 10. 2026) vznikla až po 21. 10. 2026, proto do podkladu nepatří."
     },
     {
       "key": "symptoms",
-      "label": "Príznaky a ich začiatok",
+      "label": "Příznaky a jejich začátek",
       "group": "Stav",
       "value": "Od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří; na přelomu srpna a září teploty do 38,6 °C se zimnicí, únava, nechutenství, tmavší moč, subikterus sklér. Bolesti s propagací do zad, horší po jídle a v noci, úbytek hmotnosti 4 kg za poslední měsíc, stolice občas světlejší.",
       "status": "proposed",
@@ -346,7 +346,7 @@
     },
     {
       "key": "exams",
-      "label": "Vykonané vyšetrenia",
+      "label": "Provedená vyšetření",
       "group": "Vyšetrenia",
       "value": "20. 7. 2026 · kontrolní vyšetření · Kardiologická ambulance Jesenice – Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027).\n3. 9. 2026 · RTG hrudníku PA · Radiologické centrum Modřany – Bez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích.\n15. 9. 2026 · vstupní vyšetření · Poliklinika Jižní – Gastroenterologická ambulance – Cholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu.\n29. 9. 2026 · UZ břicha · Poliklinika Jižní – Radiodiagnostické pracoviště – Ložisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS.\n8. 10. 2026 · CT břicha a hrudníku s k. l., pankreatický protokol · KOC Nemocnice Severní – Radiologická klinika – Tumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz.\n12. 10. 2026 · EUS-FNB · KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika – Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB) Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm.",
       "status": "proposed",
@@ -381,11 +381,11 @@
         }
       ],
       "sourceDate": "2026-10-12",
-      "note": "Plné znenie výsledku je v pôvodnej správe (klik na citát)."
+      "note": "Plné znění výsledku je v původní zprávě (klik na citaci)."
     },
     {
       "key": "labs",
-      "label": "Laboratórium a nádorové markery",
+      "label": "Laboratoř a nádorové markery",
       "group": "Laboratórium",
       "value": "15. 10. 2026 (KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie): nádorové markery: CA 19-9 312 kU/l ↑, CEA 4,1 µg/l, CA 125 48 kU/l ↑; mimo normy: Hemoglobin 118 g/l ↓, Glukóza 6,2 mmol/l ↑, Bilirubin celkový 23 µmol/l ↑, Bilirubin konjugovaný 6 µmol/l ↑, ALT 1,62 µkat/l ↑, AST 1,20 µkat/l ↑, GGT 5,00 µkat/l ↑, ALP 3,40 µkat/l ↑, CRP 18 mg/l ↑\n1. 9. 2026 (Laboratoř LabJih s.r.o.): mimo normy: Leukocyty 12,8 10⁹/l ↑, Neutrofily 82 % ↑, Lymfocyty 12 % ↓, Glukóza 6,4 mmol/l ↑, Bilirubin celkový 38 µmol/l ↑, ALT 1,92 µkat/l ↑, AST 1,45 µkat/l ↑, GGT 4,20 µkat/l ↑, ALP 3,10 µkat/l ↑, CRP 86 mg/l ↑",
       "status": "proposed",
@@ -480,13 +480,13 @@
         }
       ],
       "sourceDate": "2026-10-15",
-      "note": "Uvedené všetky nádorové markery (CA 19-9, CEA, CA 125), nielen zvýšené."
+      "note": "Uvedeny všechny nádorové markery (CA 19-9, CEA, CA 125), nejen zvýšené."
     },
     {
       "key": "histology",
-      "label": "Histológia (výsledok biopsie)",
+      "label": "Histologie (výsledek biopsie)",
       "group": "Histológia",
-      "value": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. · vydané 19. 10. 2026",
+      "value": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. · vydáno 19. 10. 2026",
       "status": "conflict",
       "citations": [
         {
@@ -514,12 +514,12 @@
             "quote": "Datum vydání: 19. 10. 2026"
           }
         },
-        "explain": "Materiál má dátum odberu 20. 10. 2026, ale správa bola vydaná 19. 10. 2026 a biopsia prebehla 12. 10. 2026 (správa 09). Pravdepodobne preklep – overte s patológiou."
+        "explain": "Materiál má datum odběru 20. 10. 2026, ale zpráva byla vydána 19. 10. 2026 a biopsie proběhla 12. 10. 2026 (zpráva 09). Ověřte s patologií."
       }
     },
     {
       "key": "other",
-      "label": "Iné dôležité a želania pacientky",
+      "label": "Jiná důležitá sdělení a přání pacientky",
       "group": "Iné",
       "value": "Informována o podezření na nádorové onemocnění, souhlasí se sdílením informací s dcerou (kontaktní osoba Petra Horká). Velmi úzkostná, špatně spí – zvážení psychologické podpory. Užívá apixaban – před invazivním výkonem nutno vysadit 48 h předem, bez nutnosti překlenovací léčby.",
       "status": "proposed",
@@ -688,21 +688,21 @@
       "id": "patient-email-missing",
       "severity": "missing",
       "fieldKey": "patientContact",
-      "text": "Chýba e-mail pacienta – zápis pre konzílium (MDT_zapis) vyžaduje telefón aj e-mail.",
+      "text": "Chybí e-mail pacienta – zápis pro konzilium (MDT_zapis) vyžaduje telefon i e-mail.",
       "citations": []
     },
     {
       "id": "ecog-missing",
       "severity": "missing",
       "fieldKey": "performance",
-      "text": "Skóre ECOG ani Karnofsky nie je v žiadnej správe. Správa 07 uvádza len slovný popis „Soběstačná“ – to nie je skóre.",
+      "text": "Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva 07 uvádí jen slovní popis „Soběstačná“ – to není skóre.",
       "citations": []
     },
     {
       "id": "date-conflict-09",
       "severity": "conflict",
       "fieldKey": "medication",
-      "text": "Posledná dávka je zapísaná na 18. 10. 2026, teda po dátume výkonu 12. 10. 2026. Dátum je nemožný – overte s pracoviskom, kedy bol liek naozaj vysadený.",
+      "text": "Poslední dávka je zapsána na 18. 10. 2026, tedy po datu výkonu 12. 10. 2026. Datum je nemožné – ověřte s pracovištěm, kdy byl lék skutečně vysazen.",
       "citations": [
         {
           "docId": "09",
@@ -718,7 +718,7 @@
       "id": "date-conflict-11",
       "severity": "conflict",
       "fieldKey": "histology",
-      "text": "Materiál má dátum odberu 20. 10. 2026, ale správa bola vydaná 19. 10. 2026 a biopsia prebehla 12. 10. 2026 (správa 09). Pravdepodobne preklep – overte s patológiou.",
+      "text": "Materiál má datum odběru 20. 10. 2026, ale zpráva byla vydána 19. 10. 2026 a biopsie proběhla 12. 10. 2026 (zpráva 09). Ověřte s patologií.",
       "citations": [
         {
           "docId": "11",
@@ -733,7 +733,7 @@
     {
       "id": "planned-2026-09-09",
       "severity": "info",
-      "text": "Správa 04 plánuje kontrolu 9. 9. 2026, ale správa z nej v dokumentácii nie je – možno chýba.",
+      "text": "Zpráva 04 plánuje kontrolu 9. 9. 2026, ale zpráva z ní v dokumentaci není – možná chybí.",
       "citations": [
         {
           "docId": "04",
@@ -744,13 +744,13 @@
     {
       "id": "after-mdt",
       "severity": "info",
-      "text": "Správy 12, 13 vznikli po 21. 10. 2026 – do podkladu pre konzílium nepatria (zadanie VZP: len to, čo bolo známe k dátumu konzília).",
+      "text": "Zprávy 12, 13 vznikly po 21. 10. 2026 – do podkladu pro konzilium nepatří (zadání VZP: jen to, co bylo známo k datu konzilia).",
       "citations": []
     },
     {
       "id": "gp-email-missing",
       "severity": "info",
-      "text": "Chýba e-mail odosielajúceho lekára (zápis pre konzílium ho vyžaduje) – telefón je uvedený.",
+      "text": "Chybí e-mail odesílajícího lékaře (zápis pro konzilium ho vyžaduje) – telefon je uveden.",
       "citations": [
         {
           "docId": "07",
@@ -761,7 +761,7 @@
     {
       "id": "results-not-attached",
       "severity": "missing",
-      "text": "Žiadanka neobsahuje výsledky vyšetrení – uvádza len, kde sú (5 pracovísk). Treba ich vyžiadať.",
+      "text": "Žádanka neobsahuje výsledky vyšetření – uvádí jen, kde jsou (5 pracovišť). Je třeba je vyžádat.",
       "citations": [
         {
           "docId": "07",
@@ -773,43 +773,43 @@
   "precheck": {
     "findings": [
       {
-        "text": "Žiadanka neobsahuje výsledky vyšetrení – uvádza len, kde sú (5 pracovísk). Treba ich vyžiadať.",
+        "text": "Žádanka neobsahuje výsledky vyšetření – uvádí jen, kde jsou (5 pracovišť). Je třeba je vyžádat.",
         "severity": "missing"
       },
       {
-        "text": "Vyžiadať: Laboratorní vyšetření 1. 9. 2026 – krevní obraz, biochemie, moč chemicky a sediment, kultivace moči (LabJih)",
+        "text": "Vyžádat: Laboratorní vyšetření 1. 9. 2026 – krevní obraz, biochemie, moč chemicky a sediment, kultivace moči (LabJih)",
         "severity": "info"
       },
       {
-        "text": "Vyžiadať: RTG plic 3. 9. 2026 (Radiologické centrum Modřany)",
+        "text": "Vyžádat: RTG plic 3. 9. 2026 (Radiologické centrum Modřany)",
         "severity": "info"
       },
       {
-        "text": "Vyžiadať: Gastroenterologické vyšetření 15. 9. 2026 (MUDr. Ivana Křížová, Poliklinika Jižní)",
+        "text": "Vyžádat: Gastroenterologické vyšetření 15. 9. 2026 (MUDr. Ivana Křížová, Poliklinika Jižní)",
         "severity": "info"
       },
       {
-        "text": "Vyžiadať: UZ břicha 29. 9. 2026 (RDG pracoviště, Poliklinika Jižní)",
+        "text": "Vyžádat: UZ břicha 29. 9. 2026 (RDG pracoviště, Poliklinika Jižní)",
         "severity": "info"
       },
       {
-        "text": "Vyžiadať: Kardiologická kontrola 20. 7. 2026 (MUDr. Petr Malý)",
+        "text": "Vyžádat: Kardiologická kontrola 20. 7. 2026 (MUDr. Petr Malý)",
         "severity": "info"
       },
       {
-        "text": "Chýba výkonnostný stav (ECOG/Karnofsky).",
+        "text": "Chybí výkonnostní stav (ECOG/Karnofsky).",
         "severity": "missing"
       },
       {
-        "text": "Chýba e-mail pacienta aj odosielajúceho lekára.",
+        "text": "Chybí e-mail pacienta i odesílajícího lékaře.",
         "severity": "info"
       },
       {
-        "text": "Pacient užíva liek na riedenie krvi – pred invazívnym výkonom treba postup podľa lekára.",
+        "text": "Pacient užívá lék na ředění krve – před invazivním výkonem je třeba postup podle lékaře.",
         "severity": "info"
       },
       {
-        "text": "Súhlas so zdieľaním informácií s blízkou osobou je v žiadanke.",
+        "text": "Souhlas se sdílením informací s blízkou osobou je v žádance.",
         "severity": "info"
       }
     ]

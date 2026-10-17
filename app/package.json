@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "verify": "node scripts/verify.mjs",
     "extract": "node --experimental-strip-types scripts/extract.mjs",
-    "eval": "node --experimental-strip-types scripts/eval.mjs"
+    "eval": "node --experimental-strip-types scripts/eval.mjs",
+    "eval:mutations": "node --experimental-strip-types scripts/eval-mutations.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",

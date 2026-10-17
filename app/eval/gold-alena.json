@@ -289,7 +289,7 @@
       "title": "Žiadanka neobsahuje výsledky, len kde sú",
       "why": "Žiadanka do KOC len vymenúva 5 pracovísk, kde sú výsledky. Koordinátor ich musí vyžiadať.",
       "evidence": [{ "docId": "07", "quote": "PROVEDENÁ VYŠETŘENÍ (VÝSLEDKY K DISPOZICI NA JEDNOTLIVÝCH PRACOVIŠTÍCH)" }],
-      "checks": [{ "type": "messageMatches", "all": ["výsledk", "(neobsahuje|chýba|chybí|vyžiadať|nie sú|nejsou)"] }]
+      "checks": [{ "type": "messageMatches", "all": ["výsledk", "(neobsahuje|chýba|chybí|vyžiadať|vyžádat|nie sú|nejsou)"] }]
     },
     {
       "id": "medication-latest-list",
@@ -314,14 +314,14 @@
       "title": "Otázka na konzílium je všeobecná",
       "why": "„Stanovení dalšího postupu“ nie je konkrétna otázka – systém na to má upozorniť, aby ju lekár KOC pred konzíliom spresnil.",
       "evidence": [{ "docId": "07", "quote": "stanovení dalšího postupu v rámci MDT" }],
-      "checks": [{ "type": "noteMatches", "field": "mdtQuestion", "regex": "(všeobecn|obecn|spresn|upresn|nekonkr)" }]
+      "checks": [{ "type": "noteMatches", "field": "mdtQuestion", "regex": "(všeobecn|obecn|spresn|upresn|upřesn|nekonkr)" }]
     },
     {
       "id": "anticoagulation-before-procedure",
       "title": "Antikoagulácia pred invazívnym výkonom",
       "why": "Apixaban treba pred biopsiou alebo operáciou riešiť podľa lekára – informácia sa nesmie stratiť.",
       "evidence": [{ "docId": "07", "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa." }],
-      "checks": [{ "type": "textMatches", "fields": ["other"], "messages": true, "all": ["(apixaban|antikoagul|riedenie krvi)"] }]
+      "checks": [{ "type": "textMatches", "fields": ["other"], "messages": true, "all": ["(apixaban|antikoagul|riedenie krvi|ředění krve)"] }]
     },
     {
       "id": "daughter-consent-before-mdt",

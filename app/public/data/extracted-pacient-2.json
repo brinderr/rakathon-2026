@@ -2,10 +2,10 @@
   "meta": {
     "caseId": "pacient-2",
     "asOf": "2026-10-22",
-    "generatedAt": "2026-10-17T00:03:41.238Z",
+    "generatedAt": "2026-10-17T03:17:07.576Z",
     "promptVersion": "handover-v1",
     "mode": "rules+llm",
-    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
+    "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
     "requestHash": "f4dc2cba7d5cf0d0",
     "docsUsed": [
       "01",
@@ -22,7 +22,7 @@
       {
         "id": "10",
         "date": "2026-10-27",
-        "reason": "po dátume konzília 22. 10. 2026"
+        "reason": "po datu konzilia 22. 10. 2026"
       }
     ],
     "stats": {
@@ -40,7 +40,7 @@
   "fields": [
     {
       "key": "firstName",
-      "label": "Meno",
+      "label": "Jméno",
       "group": "Pacient",
       "value": "Josef",
       "status": "proposed",
@@ -53,7 +53,7 @@
     },
     {
       "key": "lastName",
-      "label": "Priezvisko",
+      "label": "Příjmení",
       "group": "Pacient",
       "value": "Novák",
       "status": "proposed",
@@ -66,9 +66,9 @@
     },
     {
       "key": "age",
-      "label": "Vek",
+      "label": "Věk",
       "group": "Pacient",
-      "value": "60 rokov (nar. 14. 3. 1966)",
+      "value": "60 let (nar. 14. 3. 1966)",
       "status": "proposed",
       "citations": [
         {
@@ -79,21 +79,21 @@
     },
     {
       "key": "sex",
-      "label": "Pohlavie",
+      "label": "Pohlaví",
       "group": "Pacient",
       "value": "muž",
       "status": "proposed",
       "citations": [
         {
           "docId": "09",
-          "quote": "Pacient: Josef Novák"
+          "quote": "60letý kuřák"
         }
       ],
-      "note": "Podľa označenia „Pacient“ v správe."
+      "note": "Podle označení „60letý kuřák“ ve zprávě."
     },
     {
       "key": "insurer",
-      "label": "Zdravotná poisťovňa",
+      "label": "Zdravotní pojišťovna",
       "group": "Pacient",
       "value": "111",
       "status": "proposed",
@@ -124,7 +124,7 @@
     },
     {
       "key": "contactPerson",
-      "label": "Kontaktná osoba",
+      "label": "Kontaktní osoba",
       "group": "Kontakty",
       "value": "Marie Nováková (manželka), tel. +420 603 000 119",
       "status": "proposed",
@@ -172,7 +172,7 @@
     },
     {
       "key": "epicrisis",
-      "label": "Priebeh ochorenia v skratke",
+      "label": "Průběh onemocnění ve zkratce",
       "group": "Diagnóza",
       "value": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg. CT 10. 9. 2026: tumor pravého horního laloku 42 × 35 mm, suspektní uzliny 10R a 4R. EBUS-TBNA 17. 9. 2026: adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez vzdálených metastáz.",
       "status": "proposed",
@@ -198,7 +198,7 @@
     },
     {
       "key": "mdtQuestion",
-      "label": "Otázka pre konzílium",
+      "label": "Otázka pro konzilium",
       "group": "Diagnóza",
       "value": "Převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R.",
       "status": "proposed",
@@ -211,7 +211,7 @@
     },
     {
       "key": "comorbidities",
-      "label": "Pridružené ochorenia",
+      "label": "Přidružená onemocnění",
       "group": "Anamnéza",
       "value": "diabetes mellitus 2. typu na PAD, arteriální hypertenze, dyslipidémie",
       "status": "proposed",
@@ -225,7 +225,7 @@
     },
     {
       "key": "medication",
-      "label": "Lieky, ktoré užíva",
+      "label": "Léky, které užívá",
       "group": "Anamnéza",
       "value": "metformin 1000 mg 1-0-1, amlodipin 5 mg 1-0-0, atorvastatin 20 mg 0-0-1",
       "status": "proposed",
@@ -269,12 +269,12 @@
             "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku"
           }
         },
-        "explain": "Správa 09 (7. 10. 2026) uvádza „AA: neguje“, ale správa 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Overiť pred ďalším vyšetrením alebo liečbou – novšia správa alergiu pravdepodobne neprevzala."
+        "explain": "Zpráva 09 (7. 10. 2026) uvádí „AA: neguje“, ale zpráva 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala."
       }
     },
     {
       "key": "performance",
-      "label": "Výkonnostný stav (ECOG)",
+      "label": "Výkonnostní stav (ECOG)",
       "group": "Stav",
       "value": "Výkonnostní stav ECOG 1.",
       "status": "proposed",
@@ -307,11 +307,11 @@
         }
       ],
       "sourceDate": "2026-10-07",
-      "note": "Skôr: 78 kg (3. 9. 2026). Novšia hodnota 73 kg (správa 10, 27. 10. 2026) vznikla až po 22. 10. 2026, preto do podkladu nepatrí."
+      "note": "Dříve: 78 kg (3. 9. 2026). Novější hodnota 73 kg (zpráva 10, 27. 10. 2026) vznikla až po 22. 10. 2026, proto do podkladu nepatří."
     },
     {
       "key": "symptoms",
-      "label": "Príznaky a ich začiatok",
+      "label": "Příznaky a jejich začátek",
       "group": "Stav",
       "value": "Suchý dráždivý kašel asi 6 týdnů (vyšetřen praktickou lékařkou 24. 8. 2026), poslední týden 2× drobná příměs krve ve sputu, mírná námahová dušnost, bez teplot; za 2 měsíce zhubl asi 3 kg. Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater, váha 76 kg, nadále ubývá.",
       "status": "proposed",
@@ -337,7 +337,7 @@
     },
     {
       "key": "exams",
-      "label": "Vykonané vyšetrenia",
+      "label": "Provedená vyšetření",
       "group": "Vyšetrenia",
       "value": "26. 8. 2026 · RTG hrudníku PA · Nemocnice Benešov – Radiologické oddělení – Opacita v pravém horním plicním poli suspektní z tumoru, rozšířený pravý hilus. Doporučeno CT hrudníku s k. l.\n3. 9. 2026 · vstupní vyšetření · Nemocnice Benešov – Plicní ambulance – Suspektní tumor pravého horního laloku plíce u kuřáka 40 balíčkoroků. Výkonnostní stav ECOG 1.\n10. 9. 2026 · CT hrudníku a horního břicha s k. l. · Nemocnice Benešov – Radiologické oddělení – Tumor pravého horního laloku 42 × 35 mm, suspektní metastatické uzliny 10R a 4R. Bez známek vzdálených metastáz v rozsahu vyšetření.\n17. 9. 2026 · bronchoskopie s EBUS-TBNA · KOC Nemocnice Lipová – Bronchologické pracoviště, Klinika pneumologie – Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření. EBUS: uzlina 4R 13 × 10 mm a uzlina 10R 15 × 11 mm, z každé 3 vpichy jehlou 22G.\n1. 10. 2026 · PET/CT (18F-FDG) celotělové · KOC Nemocnice Severní – Oddělení nukleární medicíny – Metabolicky aktivní tumor pravého horního laloku s postižením uzlin 10R a 4R, bez známek vzdálených metastáz.",
       "status": "proposed",
@@ -368,11 +368,11 @@
         }
       ],
       "sourceDate": "2026-10-01",
-      "note": "Plné znenie výsledku je v pôvodnej správe (klik na citát)."
+      "note": "Plné znění výsledku je v původní zprávě (klik na citaci)."
     },
     {
       "key": "labs",
-      "label": "Laboratórium a nádorové markery",
+      "label": "Laboratoř a nádorové markery",
       "group": "Laboratórium",
       "value": "8. 9. 2026 (Laboratoř Benešov s.r.o.): nádorové markery: CEA 8,2 µg/l ↑, CYFRA 21-1 6,4 µg/l ↑, NSE 14,1 µg/l; mimo normy: Hemoglobin 128 g/l ↓, Glukóza 8,4 mmol/l ↑, CRP 12 mg/l ↑",
       "status": "conflict",
@@ -403,7 +403,7 @@
         }
       ],
       "sourceDate": "2026-09-08",
-      "note": "Uvedené všetky nádorové markery (CEA, CYFRA 21-1, NSE), nielen zvýšené.",
+      "note": "Uvedeny všechny nádorové markery (CEA, CYFRA 21-1, NSE), nejen zvýšené.",
       "conflict": {
         "a": {
           "value": "Rodné číslo: 660314/1243",
@@ -419,14 +419,14 @@
             "quote": "RČ 660314/1234"
           }
         },
-        "explain": "Správa 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má iné rodné číslo (660314/1234) ako ostatné správy (660314/1243). Overiť, či patrí tomuto pacientovi – dovtedy jej údaje nepoužívať ako fakt."
+        "explain": "Zpráva 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má jiné rodné číslo (660314/1234) než ostatní zprávy (660314/1243). Ověřte, zda patří tomuto pacientovi – do té doby její údaje nepoužívat jako fakt."
       }
     },
     {
       "key": "histology",
-      "label": "Histológia (výsledok biopsie)",
+      "label": "Histologie (výsledek biopsie)",
       "group": "Histológia",
-      "value": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. · vydané 23. 9. 2026",
+      "value": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. · vydáno 23. 9. 2026",
       "status": "proposed",
       "citations": [
         {
@@ -439,16 +439,16 @@
         }
       ],
       "sourceDate": "2026-09-23",
-      "note": "Chýba avizovaný dodatok (EGFR, ALK, ROS1, PD-L1).",
+      "note": "Chybí avizovaný dodatek (EGFR, ALK, ROS1, PD-L1).",
       "request": {
         "to": "KOC Nemocnice Lipová – Ústav patologie",
         "channel": "e-mail",
-        "draft": "Dobrý deň, pred konzíliom 22. 10. 2026 prosíme o zaslanie dodatku (EGFR, ALK, ROS1, PD-L1) k vyšetreniu B-2026/14388 – Josef Novák. Ďakujeme, koordinátor KOC."
+        "draft": "Dobrý den, před konziliem 22. 10. 2026 prosíme o zaslání dodatku (EGFR, ALK, ROS1, PD-L1) k vyšetření B-2026/14388 – Josef Novák. Děkujeme, koordinátor KOC."
       }
     },
     {
       "key": "other",
-      "label": "Iné dôležité a želania pacienta",
+      "label": "Jiná důležitá sdělení a přání pacienta",
       "group": "Iné",
       "value": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka. Kontaktní osoba: Marie Nováková (manželka), tel. +420 603 000 119.",
       "status": "proposed",
@@ -597,7 +597,7 @@
       "id": "allergy-conflict",
       "severity": "conflict",
       "fieldKey": "allergies",
-      "text": "Správa 09 (7. 10. 2026) uvádza „AA: neguje“, ale správa 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Overiť pred ďalším vyšetrením alebo liečbou – novšia správa alergiu pravdepodobne neprevzala.",
+      "text": "Zpráva 09 (7. 10. 2026) uvádí „AA: neguje“, ale zpráva 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala.",
       "citations": [
         {
           "docId": "09",
@@ -613,7 +613,7 @@
       "id": "side-conflict",
       "severity": "conflict",
       "fieldKey": "diagnosis",
-      "text": "Strana nálezu nesedí: správy 02, 03, 05, 08, 09 uvádzajú pravú stranu, správa 06 ľavú. Overiť s pracoviskom – strana rozhoduje o operácii aj ožarovaní.",
+      "text": "Strana nálezu nesedí: zprávy 02, 03, 05, 08, 09 uvádějí pravou stranu, zpráva 06 uvádí levou stranu. Ověřte s pracovištěm – lokalizace rozhoduje o operaci i ozařování.",
       "citations": [
         {
           "docId": "09",
@@ -621,7 +621,7 @@
         },
         {
           "docId": "06",
-          "quote": "Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření."
+          "quote": "Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R."
         }
       ]
     },
@@ -629,7 +629,7 @@
       "id": "rc-mismatch-04",
       "severity": "conflict",
       "fieldKey": "labs",
-      "text": "Správa 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má iné rodné číslo (660314/1234) ako ostatné správy (660314/1243). Overiť, či patrí tomuto pacientovi – dovtedy jej údaje nepoužívať ako fakt.",
+      "text": "Zpráva 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má jiné rodné číslo (660314/1234) než ostatní zprávy (660314/1243). Ověřte, zda patří tomuto pacientovi – do té doby její údaje nepoužívat jako fakt.",
       "citations": [
         {
           "docId": "09",
@@ -645,7 +645,7 @@
       "id": "pending-07",
       "severity": "missing",
       "fieldKey": "histology",
-      "text": "Správa 07 (Bioptický nález, 23. 9. 2026) avizuje doplnenie: EGFR, ALK, ROS1, PD-L1. K 22. 10. 2026 v dokumentácii nie je – vyžiadať pred konzíliom.",
+      "text": "Zpráva 07 (Bioptický nález, 23. 9. 2026) avizuje doplnění: EGFR, ALK, ROS1, PD-L1. K 22. 10. 2026 v dokumentaci není – vyžádat před konziliem.",
       "citations": [
         {
           "docId": "07",
@@ -656,14 +656,14 @@
     {
       "id": "after-mdt",
       "severity": "info",
-      "text": "Správa 10 vznikla po 22. 10. 2026 – do podkladu pre konzílium nepatrí (zadanie VZP: len to, čo bolo známe k dátumu konzília).",
+      "text": "Zpráva 10 vznikla po 22. 10. 2026 – do podkladu pro konzilium nepatří (zadání VZP: jen to, co bylo známo k datu konzilia).",
       "citations": []
     }
   ],
   "precheck": {
     "findings": [
       {
-        "text": "Žiadanka neuvádza výkonnostný stav – je v správe 03: „Výkonnostní stav ECOG 1.“.",
+        "text": "Žádanka neuvádí výkonnostní stav – je ve zprávě 03: „Výkonnostní stav ECOG 1.“.",
         "severity": "info"
       }
     ]

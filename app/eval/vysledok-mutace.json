@@ -1,0 +1,292 @@
+{
+  "generatedAt": "2026-10-17T03:16:59.852Z",
+  "headline": "Zkuste to rozbít: 14/14 úprav otestováno bez chyby, 0 vymyšlených hodnot",
+  "results": [
+    {
+      "case": "alena",
+      "id": "zakladni-stav",
+      "label": "Beze změny (výchozí stav)",
+      "ok": true,
+      "ms": 53,
+      "checks": [
+        {
+          "label": "19/20 položek vyplněno",
+          "ok": true
+        },
+        {
+          "label": "chybí ECOG",
+          "ok": true
+        },
+        {
+          "label": "rozpor apixaban (zpráva 09)",
+          "ok": true
+        },
+        {
+          "label": "rozpor histologie (zpráva 11)",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "19/20"
+    },
+    {
+      "case": "alena",
+      "id": "jine-rc",
+      "label": "Jiné rodné číslo v laboratorní zprávě 10",
+      "ok": true,
+      "ms": 25,
+      "checks": [
+        {
+          "label": "nový rozpor: jiné rodné číslo ve zprávě 10",
+          "ok": true
+        },
+        {
+          "label": "laboratoř označena jako rozpor",
+          "ok": true
+        },
+        {
+          "label": "rozpor cituje obě zprávy",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "19/20"
+    },
+    {
+      "case": "alena",
+      "id": "oprava-apixabanu",
+      "label": "Oprava data poslední dávky apixabanu na 10. 10. (zpráva 09)",
+      "ok": true,
+      "ms": 23,
+      "checks": [
+        {
+          "label": "rozpor apixabanu zmizel",
+          "ok": true
+        },
+        {
+          "label": "léky už nejsou v rozporu",
+          "ok": true
+        },
+        {
+          "label": "rozpor histologie zůstal",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "19/20"
+    },
+    {
+      "case": "alena",
+      "id": "doplneny-ecog",
+      "label": "Doplněný „ECOG 1“ v žádance praktika (zpráva 07)",
+      "ok": true,
+      "ms": 22,
+      "checks": [
+        {
+          "label": "výkonnostní stav vyplněn",
+          "ok": true
+        },
+        {
+          "label": "20/20 položek vyplněno",
+          "ok": true
+        },
+        {
+          "label": "žádné „chybí ECOG“",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "20/20"
+    },
+    {
+      "case": "alena",
+      "id": "smazana-histologie",
+      "label": "Smazaná zpráva 11 (histologie)",
+      "ok": true,
+      "ms": 23,
+      "checks": [
+        {
+          "label": "histologie chybí",
+          "ok": true
+        },
+        {
+          "label": "rozpor histologie zmizel",
+          "ok": true
+        },
+        {
+          "label": "diagnóza si nevymyslela adenokarcinom",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "18/20"
+    },
+    {
+      "case": "alena",
+      "id": "lokalizace-kauda",
+      "label": "Ve zprávě CT (08) „kaudy“ místo „hlavy“ slinivky",
+      "ok": true,
+      "ms": 25,
+      "checks": [
+        {
+          "label": "nový rozpor lokalizace",
+          "ok": true
+        },
+        {
+          "label": "rozpor cituje zprávu 08",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "19/20"
+    },
+    {
+      "case": "alena",
+      "id": "nadpis-jmeno",
+      "label": "Nadpis „Jméno a příjmení:“ místo „Pacientka:“ ve všech zprávách",
+      "ok": true,
+      "ms": 29,
+      "checks": [
+        {
+          "label": "jméno a příjmení nalezeno",
+          "ok": true
+        },
+        {
+          "label": "pohlaví z textu („63letá pacientka“)",
+          "ok": true
+        },
+        {
+          "label": "věk a pojišťovna zůstaly",
+          "ok": true
+        },
+        {
+          "label": "žádné pole navíc nechybí",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "19/20"
+    },
+    {
+      "case": "alena",
+      "id": "nadpis-pacient",
+      "label": "Nadpis „Pacient:“ místo „Pacientka:“ ve všech zprávách",
+      "ok": true,
+      "ms": 21,
+      "checks": [
+        {
+          "label": "jméno nalezeno",
+          "ok": true
+        },
+        {
+          "label": "pohlaví zůstalo žena (obecné „Pacient:“ nepřebije „pacientka“)",
+          "ok": true
+        },
+        {
+          "label": "žádné pole navíc nechybí",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "19/20"
+    },
+    {
+      "case": "alena",
+      "id": "prijmeni-velkymi",
+      "label": "Příjmení velkými písmeny a první („PROCHÁZKOVÁ Alena“, zpráva 07)",
+      "ok": true,
+      "ms": 21,
+      "checks": [
+        {
+          "label": "jméno a příjmení správně rozděleno",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "19/20"
+    },
+    {
+      "case": "alena",
+      "id": "bez-veku",
+      "label": "Smazaný věk i datum narození",
+      "ok": true,
+      "ms": 20,
+      "checks": [
+        {
+          "label": "věk chybí (nepočítá se z rodného čísla)",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "18/20"
+    },
+    {
+      "case": "alena",
+      "id": "bez-kontaktni-osoby",
+      "label": "Smazaná kontaktní osoba",
+      "ok": true,
+      "ms": 19,
+      "checks": [
+        {
+          "label": "kontaktní osoba chybí",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "18/20"
+    },
+    {
+      "case": "pacient-2",
+      "id": "novak-strana-opravena",
+      "label": "Novák: bronchoskopie opravena na pravou stranu (zpráva 06)",
+      "ok": true,
+      "ms": 11,
+      "checks": [
+        {
+          "label": "rozpor strany zmizel",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "20/20"
+    },
+    {
+      "case": "pacient-2",
+      "id": "novak-rc-opraveno",
+      "label": "Novák: opravené rodné číslo v laboratoři (zpráva 04)",
+      "ok": true,
+      "ms": 9,
+      "checks": [
+        {
+          "label": "rozpor rodného čísla zmizel",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "20/20"
+    },
+    {
+      "case": "alena",
+      "id": "eval-chyti-podvrh",
+      "label": "Eval chytí podstrčený chybný výstup",
+      "ok": true,
+      "ms": 0,
+      "checks": [
+        {
+          "label": "eval nedá 20/20",
+          "ok": true
+        },
+        {
+          "label": "eval najde vymyšlený ECOG a e-mail",
+          "ok": true
+        },
+        {
+          "label": "eval najde citace mimo zprávy a po konziliu",
+          "ok": true
+        }
+      ],
+      "invariants": [],
+      "filled": "15/20 správně"
+    }
+  ]
+}
