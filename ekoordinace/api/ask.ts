@@ -29,13 +29,17 @@ interface Req { method?: string; headers: Record<string, string | string[] | und
 interface Res { status: (n: number) => Res; json: (b: unknown) => void; setHeader: (k: string, v: string) => void }
 const send = (res: Res, status: number, body: unknown) => res.status(status).json(body);
 
-/** The AI SDK (v4) always sends `temperature: 0`; the current Claude models reject sampling parameters – drop them. */
-const tuned: typeof fetch = (url, init) => {
+/** The AI SDK (v4) always sends `temperature: 0` and knows only the old way of switching thinking on; the current
+ *  Claude models reject both. Here: no sampling parameters, adaptive thinking (Claude thinks as much as the question
+ *  needs) with medium effort. If a model refuses that, the request goes again without thinking. */
+const tuned: typeof fetch = async (url, init) => {
   if (typeof init?.body !== 'string') return fetch(url, init);
   const body = JSON.parse(init.body) as Record<string, unknown>;
   delete body.temperature;
   delete body.top_p;
   delete body.top_k;
+  const first = await fetch(url, { ...init, body: JSON.stringify({ ...body, thinking: { type: 'adaptive' }, output_config: { effort: 'medium' } }) });
+  if (first.status !== 400) return first;
   return fetch(url, { ...init, body: JSON.stringify(body) });
 };
 
@@ -58,13 +62,13 @@ export default async function handler(req: Req, res: Res) {
 
   try {
     const anthropic = createAnthropic({ apiKey: key, fetch: tuned });
-    // Claude thinks first (its own budget, so the answer always has room) and the coordinator can read how it got there
+    // Claude thinks first and the coordinator can read how it got there
     const { text, reasoning, usage, finishReason } = await generateText({
       model: anthropic(MODEL),
       system: `${SYSTEM}\n\n<data>\n${context}\n</data>`,
       messages: [...history, { role: 'user', content: question }],
-      maxTokens: 3000,
-      providerOptions: { anthropic: { thinking: { type: 'enabled', budgetTokens: 4000 } } },
+      // thinking and the answer share this limit – enough for both
+      maxTokens: 12000,
     });
     if (!text.trim()) return send(res, 502, { error: `AI nevrátila odpověď (${finishReason}) – zkuste otázku zúžit.` });
     return send(res, 200, { model: MODEL, answer: text, reasoning: reasoning ?? '', usage });
