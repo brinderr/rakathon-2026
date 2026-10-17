@@ -12,7 +12,7 @@ Kontext: odovzdanie sobota 17. 10. 13:00 (formulár submit.rakathon.cz), 3-min p
 - **Upratanie**: necháva na Claudovi → vymazať bilanciu v korunách, kartu 20/20 z hlavnej obrazovky, falošnú kontrolu PDF, štítky „simulované“ (jedna poznámka v päte); z hodín cesty ostane „deň X od prijatia žiadosti“ (kolo 1)
 - **ECOG**: doplnenie cez zápis telefonátu, ktorý koordinátorka napíše sama (žiadne dáta o telefonáte neexistujú, v deme to vpíše prezentujúci, označené ako vstup koordinátorky); vymyslená správa 14 preč (kolo 1)
 - **Jazyk**: VŠETKO česky – appka, dokumenty, video, titulný obrázok (kolo 1, Bruno: „Appka musí byť česky“)
-- **Prezentácia**: sobota 14:00 = zadávatelia VZP chodia k stolom (nie javisko) → funkčné demo na notebooku + krátke video ako otvárák; 3 min pitch nie je zverejnený, javisko je až nedeľné finále. Odporúčanie: jedno video do ~2:20 (zlá cesta → čo sa musí stať → platforma na Alene), česky, ElevenLabs hlas, použije sa vo formulári, pri stole aj vo finále; naživo 20–30 s úvod + „pokazte to sami“ pri stole (kolo 1, čaká na potvrdenie)
+- **Prezentácia (sobota pri stole)**: video MAX 1:30 (≈1:00 problém Aleny dnes, ≈0:30 riešenie v skratke), potom ~2 min klikanie naživo v appke; funkčnosť pri klikaní je kľúčová. Nedeľné finále: lepšie dlhšie video neskôr. Prezentáciu (slidy) vymyslíme neskôr (kolo 2, Bruno)
 
 ## Zistené fakty
 Celé hodnotenie: docs/kontext/raw-kriticke-hodnotenie.md (5 kritikov + syntéza + tech lead).

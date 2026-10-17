@@ -39,14 +39,11 @@ Porotca bude meniť text správ priamo v appke. Otestuj a zlepši pravidlá tak,
 - nikdy si nič nevymysleli (radšej „chybí“).
 Pridaj na to testy (`npm run eval` alebo nový `scripts/eval-mutations.mjs`). Alena aj Novák musia ostať 20/20 a 0 vymyslených.
 
-### 4. Scenár videa (česky, ~2:15–2:25)
-Prepíš `docs/pitch/VIDEO.md`:
-- **0:00–0:40** dnešná zlá cesta Aleny: 13 správ, 7 pracovísk, e-mail, telefón, eZpráva; čo sa stratí (ECOG, nemožný dátum apixabanu, histológia „vydaná“ pred odberom).
-- **0:40–1:00** čo sa musí stať: 3–4 princípy (nič sa nestratí, každý údaj so zdrojom, čo chýba je vidieť, vždy vieš, kto je na ťahu).
-- **1:00–2:15** platforma na Alene podľa novej „Ukázky v 8 krocích“.
-- **Záver:** jedna veta + „prototyp, fiktivní data, není zdravotnický prostředek“.
-
-Ku každému záberu: čo je na obrazovke (presná obrazovka appky) a text hlasu po česky (pôjde do ElevenLabs). Video vyrobí Brunov Claude po 10:30.
+### 4. Scenár videa (česky, MAX 1:30) – zmena 05:00
+Sobota 14:00 = zadávatelia VZP chodia k stolom. Video pustíme pri stole ako úvod, potom ~2 min klikáme naživo. Prepíš `docs/pitch/VIDEO.md`:
+- **0:00–1:00** dnešná zlá cesta Aleny: 13 správ zo 7 pracovísk, e-mail, telefón, eZpráva; čo sa stratí (ECOG chýba, nemožný dátum apixabanu, histológia „vydaná“ pred odberom), kto na čo čaká.
+- **1:00–1:30** riešenie veľmi v skratke: jedna obrazovka, správy sa spracujú naživo, každý údaj s citátom, čo chýba je vidieť, vždy vieš, kto je na ťahu. Posledná veta + „prototyp, fiktivní data“.
+Ku každému záberu: čo je na obrazovke a text hlasu po česky (ElevenLabs). Dlhšie video pre nedeľné finále urobíme neskôr.
 
 ### 5. (Len ak Bruno zoženie Azure kľúč) Ostrá AI
 Malý lokálny server `app/scripts/ai-server.mjs`: kľúč z `app/.env` (nikdy do gitu ani do prehliadača), volá Azure len s pseudonymizovaným textom, voliteľný endpoint `/api/extract`. Nízka priorita.
