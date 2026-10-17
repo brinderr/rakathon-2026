@@ -1,7 +1,12 @@
-// Reads a report the coordinator adds: .docx (Word) or .txt, in the browser, without uploading it anywhere.
-// A .docx is a zip; we take word/document.xml and keep one line per paragraph, the way the engine reads reports.
+// Reads a report the coordinator adds, in the browser, without uploading it anywhere: Word (.docx), text, RTF, PDF
+// (its text, or OCR of a scanned page), photos and screenshots (OCR). A .docx is a zip; we take word/document.xml and
+// keep one line per paragraph, the way the engine reads reports. PDF and OCR text get their wrapped lines rejoined.
 import { findDates } from '../../../app/src/ai/text.ts';
 import * as R from '../../../app/src/ai/rules.ts';
+import type { Progress } from './ocr';
+import { rtfToText } from './rtf';
+
+export type { Progress } from './ocr';
 
 const W = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
 
@@ -49,11 +54,81 @@ function docxText(xml: string): string {
   return out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
 
+/** How the text was obtained; 'ocr' = recognized from a picture, the coordinator should check it. */
+export type ReadSource = 'docx' | 'text' | 'rtf' | 'pdf' | 'ocr';
+
+const LABEL = /^[\p{Lu}][\p{L}\d .()/-]{0,40}:/u; // "Datum vydání:", "Pacient:", "FA:"
+const ITEM = /^(?:\d{1,2}[.)]\s|[-•–]\s)/; // "1. Gastroskopie …", "- …"
+
+/** Lines of a PDF or OCR text: a paragraph broken at the page edge becomes one line again (as in Word), labels,
+ *  headings and list items stay on their own line, an empty line ends a paragraph. A long dash becomes the Czech one
+ *  ("Výsledek vyšetření – CT"), as the reports and the engine write it. */
+export function tidyLines(text: string): string {
+  const lines = text.replace(/\u00ad/g, '').replace(/[ﬁﬂ]/g, (c) => (c === 'ﬁ' ? 'fi' : 'fl')).replace(/\u2014/g, '–').split(/\r?\n/)
+    .map((l) => l.replace(/[ \t]+/g, ' ').trim());
+  const full = Math.max(40, ...lines.map((l) => l.length));
+  const out: string[] = [];
+  let paragraphEnd = true;
+  for (const line of lines) {
+    if (!line) { paragraphEnd = true; continue; }
+    const prev = out[out.length - 1];
+    const heading = line.length > 2 && line === line.toLocaleUpperCase('cs') && /\p{Lu}{3}/u.test(line);
+    // "… st. p." + "appendektomii" is one sentence: an abbreviation at the end does not end the line
+    const open = !/[:.;!?]$/.test(prev ?? '') || (/(?:^|\s)\p{Ll}{1,3}\.$/u.test(prev ?? '') && /^\p{Ll}/u.test(line));
+    if (!paragraphEnd && prev && prev.length >= full * 0.6 && open && !LABEL.test(line) && !ITEM.test(line) && !heading) {
+      out[out.length - 1] = prev.endsWith('-') && /^\p{Ll}/u.test(line) ? prev.slice(0, -1) + line : `${prev} ${line}`;
+    } else out.push(line);
+    paragraphEnd = false;
+  }
+  return out.join('\n');
+}
+
+const kind = (file: File) => {
+  const name = file.name.toLowerCase();
+  if (/\.docx$/.test(name)) return 'docx';
+  if (/\.rtf$/.test(name) || /rtf/.test(file.type)) return 'rtf';
+  if (/\.(txt|md|csv)$/.test(name) || file.type.startsWith('text/')) return 'text';
+  if (/\.pdf$/.test(name) || file.type === 'application/pdf') return 'pdf';
+  if (/\.(heic|heif)$/.test(name) || /heic|heif/.test(file.type)) return 'heic';
+  if (/\.(doc|odt|pages)$/.test(name)) return 'old';
+  if (file.type.startsWith('image/') || /\.(jpe?g|png|webp|gif|bmp|tiff?|avif)$/.test(name)) return 'image';
+  return 'unknown';
+};
+
+/** Text of an added file and how it was read. `report` shows the progress of slow steps (OCR). */
+export async function readReport(file: File, report?: Progress): Promise<{ text: string; source: ReadSource }> {
+  switch (kind(file)) {
+    case 'docx': return { text: docxText(await unzipEntry(await file.arrayBuffer(), 'word/document.xml')), source: 'docx' };
+    case 'text': return { text: (await file.text()).trim(), source: 'text' };
+    case 'rtf': return { text: rtfToText(await file.text()), source: 'rtf' };
+    case 'pdf': {
+      report?.('Čtu PDF');
+      const { pdfText } = await import('./pdfText');
+      const { text, ocr } = await pdfText(file, report);
+      if (!text.trim()) throw new Error(`${file.name}: v PDF jsme nenašli žádný text.`);
+      return { text: tidyLines(text), source: ocr ? 'ocr' : 'pdf' };
+    }
+    case 'image': {
+      const { recognize, toCanvas } = await import('./ocr');
+      // TIFF (often from a scanner) cannot be drawn by the browser; the OCR reads it itself
+      let picture: HTMLCanvasElement | Blob;
+      try { picture = await toCanvas(file); } catch {
+        if (!/\.tiff?$/i.test(file.name) && file.type !== 'image/tiff') throw new Error(`${file.name}: obrázek se nepodařilo otevřít.`);
+        picture = file;
+      }
+      const text = tidyLines(await recognize(picture, 'Rozpoznávám text z obrázku', report));
+      if (text.replace(/\s/g, '').length < 20) throw new Error(`${file.name}: na obrázku jsme nenašli čitelný text.`);
+      return { text, source: 'ocr' };
+    }
+    case 'heic': throw new Error(`${file.name}: fotku z iPhonu (HEIC) uložte jako JPG.`);
+    case 'old': throw new Error(`${file.name}: tento formát neumíme – uložte zprávu jako .docx nebo PDF.`);
+    default: throw new Error(`${file.name}: umíme Word (.docx), PDF, RTF, text a obrázky (fotka, snímek obrazovky).`);
+  }
+}
+
 /** Text of an added file. */
 export async function readFile(file: File): Promise<string> {
-  if (/\.docx$/i.test(file.name)) return docxText(await unzipEntry(await file.arrayBuffer(), 'word/document.xml'));
-  if (/\.(txt|md)$/i.test(file.name) || file.type.startsWith('text/')) return (await file.text()).trim();
-  throw new Error(`${file.name}: umíme Word (.docx) a text (.txt). PDF zatím ne – text z něj vložte ručně.`);
+  return (await readReport(file)).text;
 }
 
 /** Date of a report: the blood draw of a lab report, its labelled date ("Datum vydání:", "Datum výkonu:" …), else the

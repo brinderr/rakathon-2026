@@ -11,7 +11,9 @@ import type { CaseData } from '../sections/pacient/types';
 /** The simulated "today" of the demo (the VZP case is set in October 2026). */
 export const SIM_TODAY = alena.today;
 
-export interface StoredPatient { id: string; label: string; created: string; mdtDate: string; docs: Report[] }
+/** An added report; `source` = how its text was read ('ocr' = recognized from a picture, to be checked). */
+export interface StoredReport extends Report { source?: 'docx' | 'text' | 'rtf' | 'pdf' | 'ocr' }
+export interface StoredPatient { id: string; label: string; created: string; mdtDate: string; docs: StoredReport[] }
 
 export const DEMO_ID = 'alena';
 const demo = alena as unknown as CaseData;
