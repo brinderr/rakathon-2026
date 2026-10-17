@@ -1,16 +1,14 @@
 {
-  "what": "Text bez nadpisů: žádanky psané běžnými větami (eval/bez-nadpisu/, napsal agent bez přístupu k pravidlům). Motor jen s pravidly, jako v prohlížeči; před = bez vzorů pro text bez nadpisů, po = s nimi.",
-  "command": "npm run eval:plain",
+  "set": "bez-nadpisu",
   "author": "slepý agent bez přístupu k pravidlům",
-  "generatedAt": "2026-10-17T05:19:04.357Z",
-  "headline": "Text bez nadpisů (4 žádanky od agenta bez přístupu k pravidlům): pravidla přečetla 41 z 80 údajů, správně 48 z 80, vymyšlené 0 · před úpravou přečetla 6 z 80",
+  "generatedAt": "2026-10-17T05:26:02.061Z",
   "summary": {
     "letters": 4,
     "total": 80,
     "readBefore": 6,
-    "read": 41,
+    "read": 66,
     "correctBefore": 18,
-    "correct": 48,
+    "correct": 78,
     "invented": 0,
     "wrongFill": 0
   },
@@ -24,48 +22,48 @@
         "invented": 0
       },
       "after": {
-        "read": 11,
-        "correct": 14,
+        "read": 16,
+        "correct": 20,
         "wrongFill": 0,
         "invented": 0
       },
-      "notice": "Text bez nadpisů: pravidla přečetla 11 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
+      "notice": "Text bez nadpisů: pravidla přečetla 16 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
       "fields": [
         {
           "key": "firstName",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Bohumil",
           "expected": [
             "Bohumil"
           ],
           "ungrounded": [],
-          "note": "Jméno je v textu jen v jiném pádě („pana Bohumila Kratochvíla“) – do 1. pádu ho nepřevádíme, doplní člověk."
+          "note": "Převedeno do 1. pádu z „pana Bohumila Kratochvíla“ – ověřte. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "lastName",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Kratochvíl",
           "expected": [
             "Kratochvíl"
           ],
           "ungrounded": [],
-          "note": "Příjmení není uvedeno."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "age",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "72 let",
           "expected": [
             "72"
           ],
           "ungrounded": [],
-          "note": "Věk není ve zprávách výslovně uveden."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "sex",
@@ -118,7 +116,7 @@
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "posílám Vám pana Bohumila Kratochvíla (72 let, pojišťovna 111, tel. 603 482 715) se suspektním karcinomem hlavy pankreatu – od poloviny září je žlutý, svědí ho kůže a od začátku srpna zhubl asi 9 kg, CT břicha 24. 9. 2026 ukázalo v hlavě pankreatu ložisko 31 mm bez jasných metastáz, CA 19-9 je 386 kU/l a bilirubin 148 µmol/l",
+          "value": "posílám Vám pana Bohumila Kratochvíla (72 let, pojišťovna 111, tel. 603 482 715) se suspektním karcinomem hlavy pankreatu – od poloviny září je žlutý, svědí ho kůže a od začátku srpna zhubl asi 9 kg, CT břicha 24. 9. 2026 ukázalo v hlavě pankreatu ložisko 31 mm bez jasných metastáz, CA 19-9 je 386 kU/l a bilirubin 148 µmol/l. Na interně Nemocnice Lipová mu 29. 9. při ERCP zavedli stent do žlučovodu a žloutenka od té doby ustupuje",
           "expected": [
             "pankreatu"
           ],
@@ -129,8 +127,8 @@
           "key": "epicrisis",
           "present": true,
           "shown": true,
-          "correct": false,
-          "value": "posílám Vám pana Bohumila Kratochvíla (72 let, pojišťovna 111, tel. 603 482 715) se suspektním karcinomem hlavy pankreatu – od poloviny září je žlutý, svědí ho kůže a od začátku srpna zhubl asi 9 kg, CT břicha 24. 9. 2026 ukázalo v hlavě pankreatu ložisko 31 mm bez jasných metastáz, CA 19-9 je 386 kU/l a bilirubin 148 µmol/l.",
+          "correct": true,
+          "value": "posílám Vám pana Bohumila Kratochvíla (72 let, pojišťovna 111, tel. 603 482 715) se suspektním karcinomem hlavy pankreatu – od poloviny září je žlutý, svědí ho kůže a od začátku srpna zhubl asi 9 kg, CT břicha 24. 9. 2026 ukázalo v hlavě pankreatu ložisko 31 mm bez jasných metastáz, CA 19-9 je 386 kU/l a bilirubin 148 µmol/l. Na interně Nemocnice Lipová mu 29. 9. při ERCP zavedli stent do žlučovodu a žloutenka od té doby ustupuje.",
           "expected": [
             "stent"
           ],
@@ -164,14 +162,14 @@
         {
           "key": "medication",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Glucophage 1000 mg 1-0-1 a Prestarium Neo 5 mg 1-0-0",
           "expected": [
             "Glucophage"
           ],
           "ungrounded": [],
-          "note": "Léková anamnéza není uvedena."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "allergies",
@@ -209,7 +207,7 @@
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "posílám Vám pana Bohumila Kratochvíla (72 let, pojišťovna 111, tel. 603 482 715) se suspektním karcinomem hlavy pankreatu – od poloviny září je žlutý, svědí ho kůže a od začátku srpna zhubl asi 9 kg, CT břicha 24. 9. 2026 ukázalo v hlavě pankreatu ložisko 31 mm bez jasných metastáz, CA 19-9 je 386 kU/l a bilirubin 148 µmol/l.",
+          "value": "posílám Vám pana Bohumila Kratochvíla (72 let, pojišťovna 111, tel. 603 482 715) se suspektním karcinomem hlavy pankreatu – od poloviny září je žlutý, svědí ho kůže a od začátku srpna zhubl asi 9 kg, CT břicha 24. 9. 2026 ukázalo v hlavě pankreatu ložisko 31 mm bez jasných metastáz, CA 19-9 je 386 kU/l a bilirubin 148 µmol/l. Na interně Nemocnice Lipová mu 29. 9. při ERCP zavedli stent do žlučovodu a žloutenka od té doby ustupuje.",
           "expected": [
             "žlutý"
           ],
@@ -221,7 +219,7 @@
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "24. 9. 2026 · CT břicha – CT břicha 24. 9. 2026 ukázalo v hlavě pankreatu ložisko 31 mm bez jasných metastáz, CA 19-9 je 386 kU/l a bilirubin 148 µmol/l.",
+          "value": "24. 9. 2026 · CT břicha – CT břicha 24. 9. 2026 ukázalo v hlavě pankreatu ložisko 31 mm bez jasných metastáz, CA 19-9 je 386 kU/l a bilirubin 148 µmol/l. Na interně Nemocnice Lipová mu 29. 9. při",
           "expected": [
             "CT břicha 24. 9. 2026"
           ],
@@ -253,14 +251,14 @@
         {
           "key": "other",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Prosím o projednání na MDT, zda je nález resekabilní a jestli může jít rovnou na operaci – pan Kratochvíl o podezření ví a chce to řešit co nejrychleji.",
           "expected": [
             "o podezření ví"
           ],
           "ungrounded": [],
-          "note": "Žádné další informace."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         }
       ]
     },
@@ -273,36 +271,36 @@
         "invented": 0
       },
       "after": {
-        "read": 12,
-        "correct": 11,
+        "read": 18,
+        "correct": 20,
         "wrongFill": 0,
         "invented": 0
       },
-      "notice": "Text bez nadpisů: pravidla přečetla 12 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
+      "notice": "Text bez nadpisů: pravidla přečetla 18 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
       "fields": [
         {
           "key": "firstName",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Jiřina",
           "expected": [
             "Jiřina"
           ],
           "ungrounded": [],
-          "note": "Jméno není uvedeno."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "lastName",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Pospíšilová",
           "expected": [
             "Pospíšilová"
           ],
           "ungrounded": [],
-          "note": "Příjmení není uvedeno."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "age",
@@ -331,14 +329,14 @@
         {
           "key": "insurer",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "211",
           "expected": [
             "211"
           ],
           "ungrounded": [],
-          "note": "Kód pojišťovny není uveden."
+          "note": "211 = Zdravotní pojišťovna ministerstva vnitra ČR – není VZP. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "patientContact",
@@ -378,8 +376,8 @@
           "key": "epicrisis",
           "present": true,
           "shown": true,
-          "correct": false,
-          "value": "posílám k projednání na MDT pacientku s nově dg. adenokarcinomem rekta a susp. meta v S7 jater. Na kolonoskopii 9. 9. 2026 v rektu 8–12 cm od anu semicirkulární exulcerovaný tumor, endoskopem neprostupný, histol. adenokarcinom G2, pMMR. CT hrudníku a břicha 18. 9. popisuje zesílení stěny rekta, regionální LU do 12 mm a hypodenzní ložisko 9 mm v S7 jater, plíce bez ložisek. MR pánve 29. 9.",
+          "correct": true,
+          "value": "posílám k projednání na MDT pacientku s nově dg. adenokarcinomem rekta a susp. meta v S7 jater. Pí Jiřina Pospíšilová, nar. 14. 2. 1961, pojišť. 211, byla odeslána PL pro pozit. TOKS a sideropenickou anemii, subj. od 08/2026 intermit. enteroragie a tenesmy, váhový úbytek neudává. Na kolonoskopii 9. 9. 2026 v rektu 8–12 cm od anu semicirkulární exulcerovaný tumor, endoskopem neprostupný, histol. adenokarcinom G2, pMMR. CT hrudníku a břicha 18. 9. popisuje zesílení stěny rekta, regionální LU do 12 mm a hypodenzní ložisko 9 mm v S7 jater, plíce bez ložisek.",
           "expected": [
             "TOKS"
           ],
@@ -389,14 +387,14 @@
         {
           "key": "mdtQuestion",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Prosím o stanovisko, zda neoadjuvance (TNT vs. CHRT) a zda před rozhodnutím doplnit MR jater s hepatospecifickou k. l. k objasnění ložiska v S7",
           "expected": [
             "neoadjuvance"
           ],
           "ungrounded": [],
-          "note": "Otázka pro konzilium není v žádance uvedena."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "comorbidities",
@@ -426,8 +424,8 @@
           "key": "allergies",
           "present": true,
           "shown": true,
-          "correct": false,
-          "value": "neguje",
+          "correct": true,
+          "value": "AA neguje",
           "expected": [
             "AA neguje"
           ],
@@ -448,21 +446,21 @@
         {
           "key": "weightHeight",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "82 kg · výška 164 cm (6. 10. 2026)",
           "expected": [
             "82 kg"
           ],
           "ungrounded": [],
-          "note": "Váha ani výška nejsou ve zprávách uvedeny."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "symptoms",
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "TOKS a sideropenickou anemii, subj. od 08/2026 intermit. enteroragie a tenesmy, váhový úbytek neudává.",
+          "value": "Pí Jiřina Pospíšilová, nar. 14. 2. 1961, pojišť. 211, byla odeslána PL pro pozit. TOKS a sideropenickou anemii, subj. od 08/2026 intermit. enteroragie a tenesmy, váhový úbytek neudává.",
           "expected": [
             "enteroragie"
           ],
@@ -473,13 +471,13 @@
           "key": "exams",
           "present": true,
           "shown": true,
-          "correct": false,
-          "value": "9. 9. 2026 · kolonoskopii – kolonoskopii 9. 9. 2026 v rektu 8–12 cm od anu semicirkulární exulcerovaný tumor, endoskopem neprostupný, histol. adenokarcinom G2, pMMR.",
+          "correct": true,
+          "value": "9. 9. 2026 · kolonoskopii – kolonoskopii 9. 9. 2026 v rektu 8–12 cm od anu semicirkulární exulcerovaný tumor, endoskopem neprostupný, histol. adenokarcinom G2, pMMR.\n18. 9. · CT hrudníku – CT hrudníku a břicha 18. 9. popisuje zesílení stěny rekta, regionální LU do 12 mm a hypodenzní ložisko 9 mm v S7 jater, plíce bez ložisek.\n29. 9. · MR pánve – MR pánve 29. 9.\n1. 10. · UZ jater – UZ jater 1. 10. ložisko v S7 nezobrazil.",
           "expected": [
             "MR pánve 29. 9."
           ],
           "ungrounded": [],
-          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. Přečteno z textu bez nadpisů – ověřte."
+          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. U data bez roku je pro řazení použit rok žádanky. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "labs",
@@ -496,14 +494,14 @@
         {
           "key": "histology",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Na kolonoskopii 9. 9. 2026 v rektu 8–12 cm od anu semicirkulární exulcerovaný tumor, endoskopem neprostupný, histol. adenokarcinom G2, pMMR",
           "expected": [
             "adenokarcinom"
           ],
           "ungrounded": [],
-          "note": "Histologie zatím není k dispozici."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "other",
@@ -526,36 +524,36 @@
         "invented": 0
       },
       "after": {
-        "read": 10,
-        "correct": 13,
+        "read": 16,
+        "correct": 19,
         "wrongFill": 0,
         "invented": 0
       },
-      "notice": "Text bez nadpisů: pravidla přečetla 10 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
+      "notice": "Text bez nadpisů: pravidla přečetla 16 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
       "fields": [
         {
           "key": "firstName",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Vladimír",
           "expected": [
             "Vladimír"
           ],
           "ungrounded": [],
-          "note": "Jméno je v textu jen v jiném pádě („pana Vladimíra Šindeláře“) – do 1. pádu ho nepřevádíme, doplní člověk."
+          "note": "Převedeno do 1. pádu z „pana Vladimíra Šindeláře“ – ověřte. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "lastName",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Šindelář",
           "expected": [
             "Šindelář"
           ],
           "ungrounded": [],
-          "note": "Příjmení není uvedeno."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "age",
@@ -605,34 +603,34 @@
         {
           "key": "contactPerson",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "dcerou, paní Lenkou Hájkovou, na čísle +420 776 902 341",
           "expected": [
             "776 902 341"
           ],
           "ungrounded": [],
-          "note": "Kontaktní osoba není uvedena."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "diagnosis",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "omlouvám se, že píšu takhle narychlo e-mailem a asi trochu dlouze, ale rád bych k vám poslal jednoho pána s nově zjištěným karcinomem plic, o kterého mám opravdu starost",
           "expected": [
             "karcinom",
             "plic"
           ],
           "ungrounded": [],
-          "note": "Diagnóza není v dokumentaci uvedena."
+          "note": "Diagnóza převzata doslovně z věty v žádance. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "epicrisis",
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "omlouvám se, že píšu takhle narychlo e-mailem a asi trochu dlouze, ale rád bych k vám poslal jednoho pána s nově zjištěným karcinomem plic, o kterého mám opravdu starost. Koncem srpna jsem ho kvůli tomu kašli poslal na RTG hrudníku a tam bylo zastínění vpravo nahoře. Na CT hrudníku 2. září se pak potvrdil tumor pravého horního laloku zhruba 4,5 cm se zvětšenými uzlinami v mediastinu. Bronchoskopii jsme dělali 16. 9. a z biopsie vyšel dlaždicobuněčný karcinom, PD-L1 (TPS) 60 %.",
+          "value": "omlouvám se, že píšu takhle narychlo e-mailem a asi trochu dlouze, ale rád bych k vám poslal jednoho pána s nově zjištěným karcinomem plic, o kterého mám opravdu starost. Od srpna mu přišlo, že kašle víc než obvykle, v září párkrát vykašlal trochu krve, víc se zadýchává a za poslední dva měsíce zhubl asi 6 kilo, takže teď váží 71 kg při výšce 182 cm. Koncem srpna jsem ho kvůli tomu kašli poslal na RTG hrudníku a tam bylo zastínění vpravo nahoře. Na CT hrudníku 2. září se pak potvrdil tumor pravého horního laloku zhruba 4,5 cm se zvětšenými uzlinami v mediastinu.",
           "expected": [
             "zastínění"
           ],
@@ -642,14 +640,14 @@
         {
           "key": "mdtQuestion",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Chtěl bych poprosit o projednání na MDT, hlavně jestli je ještě operabilní, nebo jestli je vhodnější rovnou chemoradioterapie, případně s imunoterapií, a jestli je potřeba ještě EBUS na uzlinu 4R",
           "expected": [
             "operabilní"
           ],
           "ungrounded": [],
-          "note": "Otázka pro konzilium není v žádance uvedena."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "comorbidities",
@@ -666,14 +664,14 @@
         {
           "key": "medication",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Eliquis 5 mg ráno a večer, Betaloc ZOK 50 mg ráno, Spirivu Respimat dva vdechy ráno a podle potřeby Ventolin",
           "expected": [
             "Eliquis"
           ],
           "ungrounded": [],
-          "note": "Léková anamnéza není uvedena."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "allergies",
@@ -702,7 +700,7 @@
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "71 kg (7. 10. 2026)",
+          "value": "71 kg · výška 182 cm (7. 10. 2026)",
           "expected": [
             "71 kg"
           ],
@@ -726,12 +724,12 @@
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "30. 9. 2026 · PET/CT – PET/CT 30. 9. 2026 ukázalo zvýšenou aktivitu v nádoru a v uzlině 4R, jinde nic, takže to zatím vypadá na lokálně pokročilé onemocnění bez vzdálených metastáz.",
+          "value": "2. září · CT hrudníku – CT hrudníku 2. září se pak potvrdil tumor pravého horního laloku zhruba 4,5 cm se zvětšenými uzlinami v mediastinu.\n30. 9. 2026 · PET/CT – PET/CT 30. 9. 2026 ukázalo zvýšenou aktivitu v nádoru a v uzlině 4R, jinde nic, takže to zatím vypadá na lokálně pokročilé onemocnění bez vzdálených metastáz.",
           "expected": [
             "PET/CT 30. 9. 2026"
           ],
           "ungrounded": [],
-          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. Přečteno z textu bez nadpisů – ověřte."
+          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. U data bez roku je pro řazení použit rok žádanky. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "labs",
@@ -778,36 +776,36 @@
         "invented": 0
       },
       "after": {
-        "read": 8,
-        "correct": 10,
+        "read": 16,
+        "correct": 19,
         "wrongFill": 0,
         "invented": 0
       },
-      "notice": "Text bez nadpisů: pravidla přečetla 8 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
+      "notice": "Text bez nadpisů: pravidla přečetla 16 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
       "fields": [
         {
           "key": "firstName",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Dagmar",
           "expected": [
             "Dagmar"
           ],
           "ungrounded": [],
-          "note": "Jméno je v textu jen v jiném pádě („paní Dagmar Křížovou“) – do 1. pádu ho nepřevádíme, doplní člověk."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "lastName",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Křížová",
           "expected": [
             "Křížov"
           ],
           "ungrounded": [],
-          "note": "Příjmení není uvedeno."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "age",
@@ -846,21 +844,21 @@
         {
           "key": "patientContact",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "tel. 721 640 593 · e-mail neuveden",
           "expected": [
             "721 640 593"
           ],
           "ungrounded": [],
-          "note": "Telefon ani e-mail pacienta nejsou uvedeny."
+          "note": "E-mail pacienta v textu není. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "contactPerson",
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "Paní Křížová je z toho celého hodně vystrašená a souhlasí, aby se všechno probíralo i s dcerou Monikou Vávrovou, tel. 605 377 120",
+          "value": "dcerou Monikou Vávrovou, tel. 605 377 120",
           "expected": [
             "605 377 120"
           ],
@@ -870,21 +868,21 @@
         {
           "key": "diagnosis",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Jde o paní Dagmar Křížovou s podezřením na zhoubný nádor levého vaječníku",
           "expected": [
             "vaječníku"
           ],
           "ungrounded": [],
-          "note": "Diagnóza není v dokumentaci uvedena."
+          "note": "Diagnóza převzata doslovně z věty v žádance. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "epicrisis",
           "present": true,
           "shown": true,
-          "correct": false,
-          "value": "Jde o paní Dagmar Křížovou s podezřením na zhoubný nádor levého vaječníku. Na UZ malé pánve 22. 9. 2026 paní doktorka našla vlevo cysticko-solidní útvar asi 9 cm s prokrvenými septy a trochu volné tekutiny a hned jí nabrala krev, CA-125 vyšel 742 kU/l a HE4 410 pmol/l. CT břicha a pánve 1. 10. nádor levého vaječníku potvrdilo, je tam i ascites a několik drobných uzlíků na omentu, játra jsou v pořádku.",
+          "correct": true,
+          "value": "Jde o paní Dagmar Křížovou s podezřením na zhoubný nádor levého vaječníku. Paní Křížová k nám přišla 22. 9., protože jí asi od poloviny srpna roste břicho, má pocit plnosti a tlaku v podbřišku a rychle se nají. Na UZ malé pánve 22. 9. 2026 paní doktorka našla vlevo cysticko-solidní útvar asi 9 cm s prokrvenými septy a trochu volné tekutiny a hned jí nabrala krev, CA-125 vyšel 742 kU/l a HE4 410 pmol/l. CT břicha a pánve 1. 10. nádor levého vaječníku potvrdilo, je tam i ascites a několik drobných uzlíků na omentu, játra jsou v pořádku.",
           "expected": [
             "k nám přišla"
           ],
@@ -894,26 +892,26 @@
         {
           "key": "mdtQuestion",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Paní doktorka prosí o projednání na MDT, jestli je vhodná rovnou operace, nebo nejdřív diagnostická laparoskopie a chemoterapie",
           "expected": [
             "laparoskopie"
           ],
           "ungrounded": [],
-          "note": "Otázka pro konzilium není v žádance uvedena."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "comorbidities",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Jinak se paní léčí s vysokým tlakem a se štítnou žlázou a v roce 2015 jí operovali žlučník",
           "expected": [
             "vysokým tlakem"
           ],
           "ungrounded": [],
-          "note": "Osobní anamnéza není uvedena."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "medication",
@@ -954,7 +952,7 @@
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "74 kg (8. 10. 2026)",
+          "value": "74 kg · výška 166 cm (8. 10. 2026)",
           "expected": [
             "74 kg"
           ],
@@ -964,38 +962,38 @@
         {
           "key": "symptoms",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "Paní Křížová k nám přišla 22. 9., protože jí asi od poloviny srpna roste břicho, má pocit plnosti a tlaku v podbřišku a rychle se nají.",
           "expected": [
             "roste břicho"
           ],
           "ungrounded": [],
-          "note": "Příznaky nejsou popsány."
+          "note": "Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "exams",
           "present": true,
           "shown": true,
           "correct": true,
-          "value": "22. 9. 2026 · UZ malé pánve – UZ malé pánve 22. 9. 2026 paní doktorka našla vlevo cysticko-solidní útvar asi 9 cm s prokrvenými septy a trochu volné tekutiny a hned jí nabrala krev, CA-125 vyšel 742 kU/l a HE4 410 pmol/l.",
+          "value": "22. 9. 2026 · UZ malé pánve – UZ malé pánve 22. 9. 2026 paní doktorka našla vlevo cysticko-solidní útvar asi 9 cm s prokrvenými septy a trochu volné tekutiny a hned jí nabrala krev, CA-125 vyšel 742 kU/l a HE4 410 pmol/l.\n1. 10. · CT břicha – CT břicha a pánve 1. 10. nádor levého vaječníku potvrdilo, je tam i ascites a několik drobných uzlíků na omentu, játra jsou v pořádku.",
           "expected": [
             "UZ malé pánve 22. 9. 2026"
           ],
           "ungrounded": [],
-          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. Přečteno z textu bez nadpisů – ověřte."
+          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. U data bez roku je pro řazení použit rok žádanky. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "labs",
           "present": true,
-          "shown": false,
-          "correct": false,
-          "value": "",
+          "shown": true,
+          "correct": true,
+          "value": "CA-125 vyšel 742 kU/l; HE4 410",
           "expected": [
             "CA-125"
           ],
           "ungrounded": [],
-          "note": "Laboratorní výsledky nejsou k dispozici."
+          "note": "Hodnoty jen z textu žádanky, bez laboratorní zprávy. Přečteno z textu bez nadpisů – ověřte."
         },
         {
           "key": "histology",

@@ -14,7 +14,8 @@ import { extractHandover } from '../src/ai/extract.ts';
 import { fold } from '../src/ai/text.ts';
 
 const APP = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const DIR = join(APP, 'eval/bez-nadpisu');
+// sets of blind letters; the first run of each set is frozen in eval/vysledok-<set>-slepe.json and never overwritten
+const SETS = ['bez-nadpisu', 'bez-nadpisu-2'].filter((s) => existsSync(join(APP, 'eval', s, 'gold.json')));
 const KEY = { insurance: 'insurer', bodyMeasures: 'weightHeight' };
 const norm = (s) => fold(String(s)).toLocaleLowerCase('cs').replace(/\s+/g, ' ').trim();
 
@@ -35,14 +36,13 @@ function ungrounded(value, text, docDate) {
   return out;
 }
 
-if (!existsSync(join(DIR, 'gold.json'))) {
+if (!SETS.length) {
   console.log('Slepé žádanky zatím nejsou (eval/bez-nadpisu/gold.json) – není co měřit.');
   process.exit(0);
 }
-const gold = JSON.parse(readFileSync(join(DIR, 'gold.json'), 'utf8'));
 
-async function run(letter, plainText) {
-  const text = readFileSync(join(DIR, letter.file), 'utf8');
+async function run(dir, letter, plainText) {
+  const text = readFileSync(join(dir, letter.file), 'utf8');
   const r = await extractHandover({ caseId: letter.file, docs: [{ id: '01', date: letter.date, text }], asOf: '2026-10-31', plainText });
   const rows = [];
   for (const [gk, exp] of Object.entries(letter.expected)) {
@@ -61,11 +61,16 @@ async function run(letter, plainText) {
   return { rows, read: rows.filter((x) => x.shown).length, correct: rows.filter((x) => x.correct).length, wrongFill: rows.filter((x) => !x.present && x.shown).length, invented: rows.reduce((n, x) => n + x.ungrounded.length, 0), notice: r.meta.plainText?.notice };
 }
 
+const sets = [];
+for (const set of SETS) {
+const dir = join(APP, 'eval', set);
+const gold = JSON.parse(readFileSync(join(dir, 'gold.json'), 'utf8'));
 const letters = [];
+console.log(`== ${set} (${gold.author})`);
 for (const l of gold.letters) {
-  if (!existsSync(join(DIR, l.file))) throw new Error(`Chybí ${l.file}`);
-  const before = await run(l, false);
-  const after = await run(l, true);
+  if (!existsSync(join(dir, l.file))) throw new Error(`Chybí ${l.file}`);
+  const before = await run(dir, l, false);
+  const after = await run(dir, l, true);
   letters.push({ file: l.file, total: after.rows.length, before: { read: before.read, correct: before.correct, invented: before.invented }, after: { read: after.read, correct: after.correct, wrongFill: after.wrongFill, invented: after.invented }, notice: after.notice, fields: after.rows });
   console.log(`${l.file}: přečteno ${before.read} → ${after.read} z ${after.rows.length} · správně ${before.correct} → ${after.correct} · vymyšlené ${after.invented}${after.wrongFill ? ` · vyplněno, co v textu není: ${after.wrongFill}` : ''}`);
   for (const x of after.rows.filter((r) => !r.correct)) console.log(`   ✗ ${x.key}: ${x.shown ? `„${x.value.slice(0, 90)}“` : 'nepřečteno'}${x.present ? ` (čekáno: ${x.expected.join(', ')})` : ' (v textu není)'}`);
@@ -74,18 +79,21 @@ for (const l of gold.letters) {
 
 const sum = (k, part) => letters.reduce((n, l) => n + l[part][k], 0);
 const total = letters.reduce((n, l) => n + l.total, 0);
-const headline = `Text bez nadpisů (${letters.length} žádanky od agenta bez přístupu k pravidlům): pravidla přečetla ${sum('read', 'after')} z ${total} údajů, správně ${sum('correct', 'after')} z ${total}, vymyšlené ${sum('invented', 'after')} · před úpravou přečetla ${sum('read', 'before')} z ${total}`;
-console.log(`\n${headline}`);
+const summary = { letters: letters.length, total, readBefore: sum('read', 'before'), read: sum('read', 'after'), correctBefore: sum('correct', 'before'), correct: sum('correct', 'after'), invented: sum('invented', 'after'), wrongFill: sum('wrongFill', 'after') };
+const frozen = join(APP, 'eval', `vysledok-${set}-slepe.json`);
+const firstRun = !existsSync(frozen);
+const result = { set, author: gold.author, generatedAt: new Date().toISOString(), summary, letters };
+writeFileSync(join(APP, 'eval', `vysledok-${set}.json`), JSON.stringify(result, null, 2) + '\n');
+if (firstRun) writeFileSync(frozen, JSON.stringify({ ...result, note: 'První běh na této sadě – před jakoukoli úpravou pravidel podle ní. Tento soubor se už nepřepisuje.' }, null, 2) + '\n');
+const blind = JSON.parse(readFileSync(frozen, 'utf8')).summary;
+const line = firstRun || blind.read === summary.read
+  ? `${set}: naslepo přečteno ${summary.read} z ${total}, správně ${summary.correct} z ${total}, vymyšlené ${summary.invented}`
+  : `${set}: naslepo přečteno ${blind.read} z ${total} (správně ${blind.correct}), po úpravě pravidel ${summary.read} z ${total} (správně ${summary.correct}) – to už slepé není; vymyšlené ${summary.invented}`;
+console.log(line);
+sets.push({ set, author: gold.author, blind, current: summary, line, letters: letters.map((l) => ({ file: l.file, before: l.before, after: l.after, notice: l.notice })) });
+}
 
-const out = {
-  what: 'Text bez nadpisů: žádanky psané běžnými větami (eval/bez-nadpisu/, napsal agent bez přístupu k pravidlům). Motor jen s pravidly, jako v prohlížeči; před = bez vzorů pro text bez nadpisů, po = s nimi.',
-  command: 'npm run eval:plain',
-  author: gold.author,
-  generatedAt: new Date().toISOString(),
-  headline,
-  summary: { letters: letters.length, total, readBefore: sum('read', 'before'), read: sum('read', 'after'), correctBefore: sum('correct', 'before'), correct: sum('correct', 'after'), invented: sum('invented', 'after'), wrongFill: sum('wrongFill', 'after') },
-  letters,
-};
-writeFileSync(join(APP, 'eval/vysledok-bez-nadpisu.json'), JSON.stringify(out, null, 2) + '\n');
-writeFileSync(join(APP, 'public/data/bez-nadpisu.json'), JSON.stringify({ generatedAt: out.generatedAt, headline, summary: out.summary, letters: letters.map((l) => ({ file: l.file, before: l.before, after: l.after, notice: l.notice })) }, null, 2) + '\n');
-console.log('Uloženo: app/eval/vysledok-bez-nadpisu.json, app/public/data/bez-nadpisu.json');
+const headline = `Text bez nadpisů (žádanky od agenta bez přístupu k pravidlům, před úpravou motoru četl ${sets.reduce((n, x) => n + x.current.readBefore, 0)} z ${sets.reduce((n, x) => n + x.current.total, 0)}): ${sets.map((x) => x.line.replace(/^bez-nadpisu(-2)?: /, (m, two) => (two ? 'sada 2 – ' : 'sada 1 – '))).join(' · ')}`;
+console.log(`\n${headline}`);
+writeFileSync(join(APP, 'public/data/bez-nadpisu.json'), JSON.stringify({ generatedAt: new Date().toISOString(), command: 'npm run eval:plain', headline, sets }, null, 2) + '\n');
+console.log('Uloženo: app/eval/vysledok-<sada>.json, app/public/data/bez-nadpisu.json');
