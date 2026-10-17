@@ -181,7 +181,8 @@ export default function MdtDoc() {
             <button type="button" className="doc-btn" onClick={copyAll}>
               {copied === 'all' ? <IconCheck size={15} /> : <IconCopy size={15} />} {copied === 'all' ? 'Skopírované' : 'Kopírovať celé'}
             </button>
-            <button type="button" className="doc-btn" onClick={() => window.print()}><IconPrint size={15} /> Tlačiť / PDF</button>
+            {/* In the shared online demo (VITE_EMBED=1) the host frame blocks the print dialog, so the button is hidden there. */}
+            {import.meta.env.VITE_EMBED !== '1' && <button type="button" className="doc-btn" onClick={() => window.print()}><IconPrint size={15} /> Tlačiť / PDF</button>}
             <button type="button" className="doc-btn" onClick={() => nav.go({ page: 'gp', caseId: c.id })} title="Záver konzília pre praktika s doručenkou (ďalší krok po konzíliu)">
               Záver pre praktika <IconArrowRight size={15} />
             </button>
