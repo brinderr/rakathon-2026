@@ -2,7 +2,7 @@
   "meta": {
     "caseId": "pacient-2",
     "asOf": "2026-10-22",
-    "generatedAt": "2026-10-17T03:17:07.576Z",
+    "generatedAt": "2026-10-17T03:40:32.718Z",
     "promptVersion": "handover-v1",
     "mode": "rules+llm",
     "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
@@ -374,7 +374,7 @@
       "key": "labs",
       "label": "Laboratoř a nádorové markery",
       "group": "Laboratórium",
-      "value": "8. 9. 2026 (Laboratoř Benešov s.r.o.): nádorové markery: CEA 8,2 µg/l ↑, CYFRA 21-1 6,4 µg/l ↑, NSE 14,1 µg/l; mimo normy: Hemoglobin 128 g/l ↓, Glukóza 8,4 mmol/l ↑, CRP 12 mg/l ↑",
+      "value": "8. 9. 2026 (Laboratoř Benešov s.r.o.): nádorové markery: CEA 8,2 µg/l ↑, CYFRA 21-1 6,4 µg/l ↑, NSE 14,1 µg/l; mimo normu: Hemoglobin 128 g/l ↓, Glukóza 8,4 mmol/l ↑, CRP 12 mg/l ↑",
       "status": "conflict",
       "citations": [
         {

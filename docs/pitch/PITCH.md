@@ -39,7 +39,7 @@ telefonem a e-mailem. A v těch zprávách jsou díry a rozpory, které musí n�
 „Měříme to. Na ručně ověřené kontrolní sadě má Alena **20 z 20 položek, 17 ze 17 pastí a 0 vymyšlených hodnot** – stejně s AI
 i bez ní, protože čísla a data berou pravidla; AI jen navrhuje volný text a kód ho ověří.
 Kontrolní sady jsme ale psali sami. Proto jsme nechali agenta, který naše pravidla neviděl, napsat **třetího pacienta naslepo**:
-**[SLEPÝ TEST – doplní se z app/public/data/eval-pacient-3.json]**.
+motor dal **10 z 20 položek a 1 ze 4 pastí**. Co neznal, nechal prázdné – nic klinického si nevymyslel, jen jednou ukázal název souboru místo názvu vyšetření. Pravidla jsme pak zobecnili (20 z 20), ale poctivé číslo je to první.
 A když jsme AI záměrně podstrčili vymyšlené stadium a čísla, **kód zahodil všechny 4 vymyšlené návrhy** a jediný správný přijal.“
 
 ## 2:30–2:45 · Cesta k realitě (Maťo)
@@ -75,6 +75,6 @@ díry nalezené před konziliem, odložená konzilia a minuty koordinátora.
 | Je to zdravotnický prostředek (MDR)? | Podle našeho výkladu pokynu MDCG 2019-11 ne: neděláme diagnózu, skóre naléhavosti ani doporučení léčby – sbíráme, ověřujeme úplnost a hlídáme termíny. Definitivně to posoudí regulátor. |
 | Proč ne portál pro praktika? | Portál = nový účet, heslo a MFA; elektronické doporučenky v Anglii (e-RS) roky stály kolem 52 %, dokud je nezapnula platba. Praktik u nás nic nového nedělá – dostane jen potvrzení přijetí a seznam, co chybí. |
 | Jak se napojíte na nemocnici? | Fáze 0 bez rozhraní (společná schránka, PDF do NIS), pak rozhraní přes integrační engine nemocnice. Výstup umíme namapovat na FHIR (DocumentReference, Provenance s citací), export zatím nemáme. |
-| Funguje to i na jinou diagnózu? | Druhý fiktivní pacient má karcinom plic, jinou pojišťovnu (111), žádanku od specialisty a jiné pasti: 20/20 po úpravě pravidel (před ní 18/20). Třetí pacient naslepo: viz čísla výše. |
+| Funguje to i na jinou diagnózu? | Druhý fiktivní pacient má karcinom plic, jinou pojišťovnu (111), žádanku od specialisty a jiné pasti: 20/20 po úpravě pravidel (před ní 18/20). Třetího pacienta (karcinom rekta, úplně jiný formát zpráv) napsal agent bez přístupu k pravidlům: naslepo 10/20 položek a 1/4 pastí, po zobecnění pravidel 20/20 a 4/4 – to už ale slepé není. |
 | Kolik to stojí a kdo platí? | Náš odhad: náklady na AI jsou malé oproti minutám koordinátora. Pojišťovny už platí nemocnici 250 Kč za intervenci koordinátora (výkon 51887, nejvýše jednou denně na pacienta) – nástroj ty minuty šetří a každý krok dokládá. Přesná čísla změříme v pilotu. |
 | Je to jen připravený film? | Ne: motor běží přímo v prohlížeči za desítky milisekund. Změňte si text zprávy (rodné číslo, datum, smažte histologii) a uvidíte nový rozpor nebo „chybí“ – s citacemi. |

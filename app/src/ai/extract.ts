@@ -272,6 +272,39 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
       drafts.diagnosis.conflict = { a: { value: loc.a.phrase, citation: a }, b: { value: loc.b.phrase, citation: b }, explain: loc.explain };
     }
   }
+  for (const ch of R.medicationChanges(included)) {
+    const d = drafts.medication;
+    const fa = d.citations[0];
+    const faDoc = fa ? docsById.get(fa.docId) : undefined;
+    if (!fa || !faDoc || faDoc.id === ch.doc.id || !fold(fa.quote).toLocaleLowerCase('cs').includes(ch.from.toLocaleLowerCase('cs').slice(0, 6))) continue;
+    const b: Citation = { docId: ch.doc.id, quote: ch.quote };
+    const explain = `Lékový seznam ve zprávě ${faDoc.id} (${czDate(faDoc.date)}) obsahuje lék, který byl podle zprávy ${ch.doc.id} (${czDate(ch.doc.date)}) trvale vysazen${ch.to ? ` a nahrazen (${ch.to})` : ''}. Ověřte aktuální medikaci.`;
+    findings.push({ id: `medication-change-${ch.doc.id}`, severity: 'conflict', fieldKey: 'medication', text: explain, citations: [fa, b] });
+    d.value = `${d.value} · změna ${czDate(ch.doc.date)}: ${ch.quote}`;
+    d.citations = [...d.citations, b];
+    if (!d.conflict) {
+      d.status = 'conflict';
+      d.conflict = { a: { value: fa.quote, citation: fa }, b: { value: ch.quote, citation: b }, explain };
+    }
+  }
+  for (const r of R.recommendedMissing(included)) {
+    findings.push({
+      id: `recommended-${r.doc.id}-${r.exam}`, severity: 'missing', fieldKey: 'exams',
+      text: `Zpráva ${r.doc.id} (${R.docTitle(r.doc)}, ${czDate(r.doc.date)}) doporučuje doplnit ${r.exam} – do konzilia ${czDate(asOf)} v dokumentaci není.`,
+      citations: [{ docId: r.doc.id, quote: r.quote }],
+    });
+  }
+  const staging = R.stagingConflict(included);
+  if (staging) {
+    const a: Citation = { docId: staging.closed.doc.id, quote: staging.closed.quote };
+    const b: Citation = { docId: staging.open.doc.id, quote: staging.open.quote };
+    const explain = `Zpráva ${staging.closed.doc.id} (${czDate(staging.closed.doc.date)}) uvádí „bez vzdálených metastáz / cM0“, ale podle zprávy ${staging.open.doc.id} (${R.docTitle(staging.open.doc)}, ${czDate(staging.open.doc.date)}) metastázu nelze vyloučit – M-stadium není uzavřené.`;
+    findings.push({ id: 'staging-conflict', severity: 'conflict', fieldKey: 'diagnosis', text: explain, citations: [a, b] });
+    if (!drafts.diagnosis.conflict) {
+      drafts.diagnosis.status = 'conflict';
+      drafts.diagnosis.conflict = { a: { value: a.quote, citation: a }, b: { value: b.quote, citation: b }, explain };
+    }
+  }
   const kindField: Partial<Record<R.DocKind, string>> = { lab: 'labs', histology: 'histology', imaging: 'exams', procedure: 'exams', clinic: 'exams' };
   for (const m of R.identityMismatch(included)) {
     const target = kindField[R.docKind(m.doc)];

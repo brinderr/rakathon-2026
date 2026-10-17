@@ -1,0 +1,198 @@
+{
+  "caseId": "pacient-3",
+  "label": "Po úpravě pravidel (už ne slepě)",
+  "generatedAt": "2026-10-17T03:40:33.292Z",
+  "asOf": "2026-09-02",
+  "gold": "data-pacient-3/gold-pacient-3.json",
+  "extraction": {
+    "file": "eval/vysledok-pacient-3-po-uprave.extracted.json",
+    "mode": "rules",
+    "model": null,
+    "generatedAt": "2026-10-17T03:40:33.121Z",
+    "promptVersion": "handover-v1"
+  },
+  "headline": "Po úpravě pravidel (už ne slepě): 20/20 položek správně · 4/4 pastí zachyceno · 0 vymyšlených hodnot · 60/60 citací doslova ve zprávách",
+  "summary": {
+    "fieldsCorrect": 20,
+    "fieldsTotal": 20,
+    "trapsCaught": 4,
+    "trapsTotal": 4,
+    "fieldsWithoutVerifiedCitation": 0,
+    "inventedValues": 0,
+    "citationsVerified": 60,
+    "citationsTotal": 60,
+    "goldIntegrity": true
+  },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Jméno",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "lastName",
+      "label": "Příjmení",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "age",
+      "label": "Věk",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "sex",
+      "label": "Pohlaví",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotní pojišťovna",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacientku",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktní osoba",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "ok": true,
+      "status": "conflict",
+      "problems": []
+    },
+    {
+      "key": "epicrisis",
+      "label": "Průběh onemocnění ve zkratce",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pro konzilium",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "comorbidities",
+      "label": "Přidružená onemocnění",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "medication",
+      "label": "Léky, které užívá",
+      "ok": true,
+      "status": "conflict",
+      "problems": []
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "ok": true,
+      "status": "conflict",
+      "problems": []
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostní stav (ECOG)",
+      "ok": true,
+      "status": "missing",
+      "problems": []
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "symptoms",
+      "label": "Příznaky a jejich začátek",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "exams",
+      "label": "Provedená vyšetření",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "labs",
+      "label": "Laboratoř a nádorové markery",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "histology",
+      "label": "Histologie (výsledek biopsie)",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    },
+    {
+      "key": "other",
+      "label": "Jiná důležitá sdělení a přání pacientky",
+      "ok": true,
+      "status": "proposed",
+      "problems": []
+    }
+  ],
+  "traps": [
+    {
+      "id": "T1-jaterni-lozisko-vs-cM0",
+      "title": "Nejasné ložisko v S7 jater vs. „cM0“ v žádosti o MDT",
+      "why": "CT 30. 7. popisuje v S7 jater hypodenzní ložisko 8 mm nejasného charakteru (metastázu nelze vyloučit) a doporučuje MR jater. Žádost o MDT z toho udělala „bez známek vzdálených metastáz (cM0)“, MR jater do MDT provedena nebyla. Koordinátor musí MDT upozornit, že M-stadium není uzavřené – rozhoduje mezi kurativní léčbou lokálního nádoru a léčbou možného M1. Výsledek MR jater (prostá cysta) je až ve zprávě 10 po MDT a nesmí se objevit v předávce.",
+      "caught": true
+    },
+    {
+      "id": "T2-alergie-kontrastni-latka",
+      "title": "Alergie na jodovou kontrastní látku je jen v popisu CT, jinde „AA: neguje“",
+      "why": "Pacient má kopřivku po jodové kontrastní látce (2021); zjistilo to jen radiodiagnostické oddělení, které podalo premedikaci. PL, gastroenterolog i žádost o MDT (novější než CT!) uvádějí „AA: neguje / neudává“. KOC bude plánovat další CT s kontrastem a perioperační péči – alergie se v předávce nesmí ztratit a musí být doložena citací z CT.",
+      "caught": true
+    },
+    {
+      "id": "T3-warfarin-vs-apixaban",
+      "title": "Neaktuální lékový seznam v žádosti: warfarin místo apixabanu",
+      "why": "Kardiolog 11. 8. trvale vysadil warfarin a převedl pacienta na apixaban (Eliquis 5 mg 1-0-1). Žádost o MDT z 19. 8. – tedy novější dokument – ale kopíruje starý seznam od PL s warfarinem. Pravidlo „nejnovější dokument vyhrává“ zde selže. Pro plánování operace, biopsií a radioterapie je zásadní vědět, jaké antikoagulans pacient skutečně užívá (jiný způsob vysazení, riziko zdvojení antikoagulace). Koordinátor musí uvést apixaban a rozpor nahlásit.",
+      "caught": true
+    },
+    {
+      "id": "T4-dodatek-dMMR-po-zadosti",
+      "title": "Dodatek k histologii (dMMR) přišel až po odeslání žádosti na MDT",
+      "why": "Původní histologie (24. 7.) i žádost o MDT (19. 8.) uvádějí, že výsledek MMR zatím chybí. Dodatek patologie z 26. 8. – poslaný jen gastroenterologii a chirurgii, ne do KOC – prokazuje dMMR (ztráta MLH1 a PMS2, MSI-H). To zásadně mění otázku pro MDT: u dMMR karcinomu rekta přichází v úvahu imunoterapie místo chemoradioterapie. Navíc je potřeba genetická konzultace (Lynchův syndrom). Tady naopak platí novější dokument – předávka musí obsahovat dMMR s citací dodatku.",
+      "caught": true
+    }
+  ],
+  "invented": [],
+  "uncited": [],
+  "badCitations": [],
+  "goldProblems": []
+}

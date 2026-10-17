@@ -2,7 +2,7 @@
   "meta": {
     "caseId": "alena",
     "asOf": "2026-10-21",
-    "generatedAt": "2026-10-17T03:17:07.191Z",
+    "generatedAt": "2026-10-17T03:40:32.289Z",
     "promptVersion": "handover-v1",
     "mode": "rules+llm",
     "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
@@ -37,8 +37,8 @@
       "withValue": 19,
       "missing": 1,
       "conflicts": 2,
-      "citations": 72,
-      "citationsVerified": 72,
+      "citations": 73,
+      "citationsVerified": 73,
       "fieldsWithoutVerifiedCitation": 0,
       "llmFieldsAccepted": 5,
       "llmFieldsRejected": 0
@@ -348,12 +348,16 @@
       "key": "exams",
       "label": "Provedená vyšetření",
       "group": "Vyšetrenia",
-      "value": "20. 7. 2026 · kontrolní vyšetření · Kardiologická ambulance Jesenice – Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027).\n3. 9. 2026 · RTG hrudníku PA · Radiologické centrum Modřany – Bez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích.\n15. 9. 2026 · vstupní vyšetření · Poliklinika Jižní – Gastroenterologická ambulance – Cholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu.\n29. 9. 2026 · UZ břicha · Poliklinika Jižní – Radiodiagnostické pracoviště – Ložisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS.\n8. 10. 2026 · CT břicha a hrudníku s k. l., pankreatický protokol · KOC Nemocnice Severní – Radiologická klinika – Tumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz.\n12. 10. 2026 · EUS-FNB · KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika – Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB) Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm.",
+      "value": "20. 7. 2026 · kontrolní vyšetření · Kardiologická ambulance Jesenice – Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027). Před plánovaným invazivním výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby.\n3. 9. 2026 · RTG hrudníku PA · Radiologické centrum Modřany – Bez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích.\n15. 9. 2026 · vstupní vyšetření · Poliklinika Jižní – Gastroenterologická ambulance – Cholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu.\n29. 9. 2026 · UZ břicha · Poliklinika Jižní – Radiodiagnostické pracoviště – Ložisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS.\n8. 10. 2026 · CT břicha a hrudníku s k. l., pankreatický protokol · KOC Nemocnice Severní – Radiologická klinika – Tumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz.\n12. 10. 2026 · EUS-FNB · KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika – Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB) Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm.",
       "status": "proposed",
       "citations": [
         {
           "docId": "01",
           "quote": "Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027)."
+        },
+        {
+          "docId": "01",
+          "quote": "Před plánovaným invazivním výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby."
         },
         {
           "docId": "03",
@@ -387,7 +391,7 @@
       "key": "labs",
       "label": "Laboratoř a nádorové markery",
       "group": "Laboratórium",
-      "value": "15. 10. 2026 (KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie): nádorové markery: CA 19-9 312 kU/l ↑, CEA 4,1 µg/l, CA 125 48 kU/l ↑; mimo normy: Hemoglobin 118 g/l ↓, Glukóza 6,2 mmol/l ↑, Bilirubin celkový 23 µmol/l ↑, Bilirubin konjugovaný 6 µmol/l ↑, ALT 1,62 µkat/l ↑, AST 1,20 µkat/l ↑, GGT 5,00 µkat/l ↑, ALP 3,40 µkat/l ↑, CRP 18 mg/l ↑\n1. 9. 2026 (Laboratoř LabJih s.r.o.): mimo normy: Leukocyty 12,8 10⁹/l ↑, Neutrofily 82 % ↑, Lymfocyty 12 % ↓, Glukóza 6,4 mmol/l ↑, Bilirubin celkový 38 µmol/l ↑, ALT 1,92 µkat/l ↑, AST 1,45 µkat/l ↑, GGT 4,20 µkat/l ↑, ALP 3,10 µkat/l ↑, CRP 86 mg/l ↑",
+      "value": "15. 10. 2026 (KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie): nádorové markery: CA 19-9 312 kU/l ↑, CEA 4,1 µg/l, CA 125 48 kU/l ↑; mimo normu: Hemoglobin 118 g/l ↓, Glukóza 6,2 mmol/l ↑, Bilirubin celkový 23 µmol/l ↑, Bilirubin konjugovaný 6 µmol/l ↑, ALT 1,62 µkat/l ↑, AST 1,20 µkat/l ↑, GGT 5,00 µkat/l ↑, ALP 3,40 µkat/l ↑, CRP 18 mg/l ↑\n1. 9. 2026 (Laboratoř LabJih s.r.o.): mimo normu: Leukocyty 12,8 10⁹/l ↑, Neutrofily 82 % ↑, Lymfocyty 12 % ↓, Glukóza 6,4 mmol/l ↑, Bilirubin celkový 38 µmol/l ↑, ALT 1,92 µkat/l ↑, AST 1,45 µkat/l ↑, GGT 4,20 µkat/l ↑, ALP 3,10 µkat/l ↑, CRP 86 mg/l ↑",
       "status": "proposed",
       "citations": [
         {
@@ -659,8 +663,8 @@
     },
     "exams": {
       "extractor": "rules",
-      "checkedQuotes": 7,
-      "verifiedQuotes": 7,
+      "checkedQuotes": 8,
+      "verifiedQuotes": 8,
       "rejected": []
     },
     "labs": {
@@ -1403,7 +1407,7 @@
       "date": "2026-07-20",
       "place": "Kardiologická ambulance Jesenice",
       "type": "kontrolní vyšetření",
-      "summary": "Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027).",
+      "summary": "Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027). Před plánovaným invazivním výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby.",
       "docId": "01"
     },
     {

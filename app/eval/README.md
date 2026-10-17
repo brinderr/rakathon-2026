@@ -46,3 +46,10 @@ Porotca mení text správ priamo v appke. `scripts/eval-mutations.mjs` urobí ti
 | zmazať vek aj dátum narodenia / kontaktnú osobu | „chybí“ (vek sa nepočíta z rodného čísla) |
 | Novák: opraviť stranu v bronchoskopii / RČ v laboratóriu | rozpor zmizne |
 | podstrčený chybný výstup (ECOG 1, 63 kg, e-mail, citát mimo správ) | eval nedá 20/20 a nájde vymyslené hodnoty |
+
+## Slepý test – pacient 3 (Vlastimil Brabec, karcinóm rekta, `data-pacient-3/`)
+- **Kto ho napísal:** agent, ktorý nevidel `src/ai/rules.ts`, zlaté sady ani správy Aleny a Nováka – dostal len 20 kľúčov polí a typy kontrol. Napísal 10 správ vo vlastnom formáte (dátumy „06.07.2026“, priezvisko veľkými, laboratórium ako tabuľka po riadkoch, štítky „Anamnéza onemocnění:“, „Otázka pro MDT:“) a zlatú sadu so 4 pascami (nejasné ložisko v pečeni × „cM0“, alergia na kontrast len v CT, warfarín → apixabán u kardiológa, dodatok dMMR po žiadosti).
+- **Pred úpravou – oficiálne slepé číslo:** **10/20 položiek, 1/4 pascí, 1 položka bez overeného citátu, 1 nepodložená hodnota** (typ vyšetrenia = názov súboru), 19/19 citátov doslova → `public/data/eval-pacient-3.json`. Rovnaký výsledok pre pravidlá zmrazené pred kolom 2 (commit 279b0eb) aj po úlohe 3 (f4c45a1). Zapísané do gitu skôr, než som správy pacienta 3 otvoril (commit 88c1255).
+- **Prečo:** motor nepoznal žiadosť o MDT („žádáme o projednání“), štítkové bloky namiesto nadpisov, laboratórium po riadkoch, CT/MR so štítkom „Vyšetření:“, endoskopický protokol, dodatok histológie a zmenu liekov u kardiológa. Kde nevedel, nechal pole prázdne – nič klinické si nevymyslel.
+- **Po úprave (už nie slepé):** 20/20, 4/4, 0 vymyslených, 60/60 citátov → `eval/vysledok-pacient-3-po-uprave.json`. Zmeny sú všeobecné (nové typy správ a formátov + 3 nové detektory: zmena liekov „převádím z X na Y / trvale vysazen“, odporúčané vyšetrenie, ktoré sa pred konzíliom neurobilo, „cM0“ × „metastázu nelze vyloučit“). Alena a Novák ostali 20/20, testy úprav 14/14.
+- **Čo z toho plynie:** na novom formáte motor bez úprav zvládol polovicu a radšej nechal prázdne, než by si vymýšľal. Skutočný test je ďalší slepý pacient od niekoho iného.

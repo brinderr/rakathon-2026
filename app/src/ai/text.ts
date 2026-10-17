@@ -117,6 +117,54 @@ export function section(text: string, heading: RegExp): string | null {
   return out.length ? out.join('\n') : null;
 }
 
+/** "Anamnéza onemocnění:", "OA:", "Přání pacienta:" – a short label (max 4 words) at the start of a line, followed by a colon. */
+const LABEL_START = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][\p{L}.]*(?:\s+[\p{L}.()+/-]+){0,3}\s*:(?:\s|$)/u;
+
+/**
+ * Text after a label such as "Anamnéza onemocnění:" or "Závěr:" – the rest of that line plus the following lines,
+ * until an empty line, another label line or a heading. For reports that use labels instead of capital headings.
+ */
+export function labeledBlock(text: string, label: RegExp): string | null {
+  const ls = text.split(/\r?\n/);
+  const start = ls.findIndex((l) => { const m = l.trim().match(label); return !!m && m.index === 0; });
+  if (start < 0) return null;
+  const first = ls[start].trim();
+  const out: string[] = [];
+  const rest = first.slice((first.match(label) ?? [''])[0].length).trim();
+  if (rest) out.push(rest);
+  for (let i = start + 1; i < ls.length; i++) {
+    const l = ls[i].trim();
+    if (!l) { if (out.length) break; continue; }
+    if (isHeading(l) || LABEL_START.test(l)) break;
+    out.push(l);
+  }
+  return out.length ? out.join('\n') : null;
+}
+
+const ABBREV = new Set(['MUDr', 'Dr', 'Mgr', 'Bc', 'Ing', 'doc', 'prof', 'tbl', 'max', 'st', 'p', 'č', 't', 'r', 'tj', 'např', 'cca', 'resp', 'mj', 'event', 'eventuálně', 'tzv', 'příp', 'vs', 'aj', 'atd', 'srov', 'viz', 'nar', 'odd', 'ul', 'tel']);
+
+/** Split a report block into sentences without breaking dates ("1. 9. 2026") or abbreviations ("t. č.", "MUDr.", "event."). */
+export function sentences(block: string): string[] {
+  const out: string[] = [];
+  for (const line of block.split(/\r?\n/)) {
+    let start = 0;
+    for (const m of line.matchAll(/[.!?]\s+/g)) {
+      const at = m.index ?? 0;
+      const prev = line[at - 1] ?? '';
+      const next = line[at + m[0].length] ?? '';
+      const word = line.slice(0, at).split(/[\s(]+/).pop() ?? '';
+      // a sentence may end with a year ("… 24. 8. 2026. RTG …"), but not with a day or month ("1. 9. 2026")
+      const endsSentence = (/[a-záčďéěíňóřšťúůýž)%°]/.test(prev) || /^\d{4}$/.test(word)) && /[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(next) && !ABBREV.has(word);
+      if (!endsSentence) continue;
+      out.push(line.slice(start, at + 1).trim());
+      start = at + m[0].length;
+    }
+    const rest = line.slice(start).trim();
+    if (rest) out.push(rest);
+  }
+  return out.filter(Boolean);
+}
+
 /** First line that starts with a label such as "FA:" or "Telefon:"; returns the full line and the value part. */
 export function labeledLine(text: string, label: RegExp): { line: string; value: string } | null {
   for (const l of text.split(/\r?\n/)) {

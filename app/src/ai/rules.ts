@@ -2,7 +2,7 @@
 // Reads regular parts of Czech medical reports (header, contacts, weight, lab tables, conclusions) and checks
 // dates for impossible combinations. Every value carries a verbatim quote located in the source text.
 import type { Citation, Exam, ISODate, LabRow, Medication } from '../types.ts';
-import { czDate, findDates, isHeading, labeledLine, lines, locateQuote, section } from './text.ts';
+import { czDate, findDates, isHeading, labeledBlock, labeledLine, lines, locateQuote, section, sentences } from './text.ts';
 
 export interface Doc { id: string; date: ISODate; title?: string; text: string }
 
@@ -40,15 +40,25 @@ function cites(...c: (Citation | null)[]): Citation[] {
 
 export function docKind(doc: Doc): DocKind {
   const t = doc.text;
-  if (/Bioptický nález|Ústav patologie|Histologick[ýé] nález/i.test(t)) return 'histology';
-  if (/Výsledky laboratorního vyšetření/i.test(t)) return 'lab';
-  if (/Protokol o výkonu/i.test(t)) return 'procedure';
-  if (/Výsledek vyšetření\s*[–-]/i.test(t)) return 'imaging';
-  if (/žádost o převzetí|Žádám o převzetí/i.test(t)) return 'referral';
-  if (/Epikríza|Žádost o vyšetření/i.test(t) && /praktick/i.test(t)) return 'referral';
+  const head = lines(t).slice(0, 14).join('\n');
+  if (/Bioptick|Ústav patologie|Histologick[ýé] nález/i.test(t)) return 'histology';
+  if (/Výsledky laboratorní(?:ho|ch) vyšetření|Laboratorní výsledky/i.test(head)) return 'lab';
+  if (/Protokol o výkonu|Protokol endoskopick/i.test(t)) return 'procedure';
+  if (/Výsledek vyšetření\s*[–-]/i.test(t) || /^(?:Vyšetření|Typ vyšetření)\s*:\s*(?:CT|MR|MRI|RTG|UZ|USG|PET|SONO|mamograf|scint)/im.test(t)) return 'imaging';
+  if (/žád(?:ost|ám|áme) o (?:převzetí|projednání)|Otázka (?:pro|na) MDT/i.test(t)) return 'referral';
+  if (/Epikríza|Žádost o vyšetření|Doporučení k vyšetření|Doporučuji na/i.test(t) && /praktick/i.test(t)) return 'referral';
   if (/Ambulantní zpráva|Zpráva klinického|Konziliární zpráva/i.test(t)) return 'clinic';
   return 'other';
 }
+
+/** Histology addendum ("Dodatek k bioptickému nálezu") – complements the original report, does not replace it. */
+export function isAddendum(doc: Doc): boolean {
+  return /^\s*Dodatek k bioptick/im.test(doc.text);
+}
+
+const KIND_LABEL: Record<DocKind, string> = {
+  referral: 'žádanka', lab: 'laboratoř', histology: 'histologie', imaging: 'zobrazovací vyšetření', procedure: 'výkon', clinic: 'ambulantní zpráva', other: 'zpráva',
+};
 
 /** Facility of the report = first header line after the fictional-data banner (+ department when the 2nd line names one). */
 export function facility(doc: Doc): string {
@@ -61,12 +71,22 @@ export function facility(doc: Doc): string {
 
 /** Title of the report, e.g. "UZ břicha", "CT břicha a hrudníku s k. l., pankreatický protokol". */
 export function docTitle(doc: Doc): string {
-  for (const l of lines(doc.text)) {
+  const ls = lines(doc.text);
+  for (const l of ls) {
     const m = l.match(/^(?:Výsledek vyšetření|Protokol o výkonu|Ambulantní zpráva)\s*[–-]\s*(.+)$/);
     if (m) return m[1];
-    if (/^(Bioptický nález|Výsledky laboratorního vyšetření|Zpráva klinického psychologa|Epikríza.*)$/.test(l)) return l;
   }
-  return doc.title ?? 'Zpráva';
+  const kind = docKind(doc);
+  const vys = labeledLine(doc.text, /^(?:Vyšetření|Typ vyšetření)\s*:/);
+  if (vys && kind === 'imaging') return vys.value.split(/\s{2,}/)[0];
+  const vykon = labeledLine(doc.text, /^Výkon\s*:/);
+  if (vykon && kind === 'procedure') return vykon.value.split(/[,;]|\s{2,}/)[0];
+  for (const l of ls) {
+    if (/^(Bioptický nález|Výsledky laboratorního vyšetření|Zpráva klinického psychologa|Epikríza.*)$/.test(l)) return l;
+    const h = l.match(/^(BIOPTICKÝ NÁLEZ|DODATEK K BIOPTICKÉMU NÁLEZU|VÝSLEDKY LABORATORNÍCH VYŠETŘENÍ|AMBULANTNÍ ZPRÁVA|PROTOKOL ENDOSKOPICKÉHO VÝKONU)/);
+    if (h) return h[1].charAt(0) + h[1].slice(1).toLocaleLowerCase('cs');
+  }
+  return KIND_LABEL[kind];
 }
 
 /** The report's own issue/exam date with the line it comes from. */
@@ -77,6 +97,13 @@ export function issueDate(doc: Doc): { iso: ISODate; quote: string } | null {
     if (!hit) continue;
     const d = findDates(hit.line)[0];
     if (d) return { iso: d.iso, quote: hit.line.slice(0, d.index + d.raw.length) };
+  }
+  for (const re of [/(?:^|\s)(Datum vydání|Vydáno|Datum výkonu|Datum vyšetření)\s*:\s*/m]) {
+    const m = doc.text.match(re);
+    if (!m || m.index === undefined) continue;
+    const from = m.index + m[0].indexOf(m[1]);
+    const d = findDates(doc.text.slice(from, from + 40))[0];
+    if (d) return { iso: d.iso, quote: doc.text.slice(from, from + d.index + d.raw.length) };
   }
   return null;
 }
@@ -229,13 +256,18 @@ export function contacts(docs: Doc[]): { patientContact: RuleField; contactPerso
   let patientContact: RuleField = { value: '', citations: [], status: 'missing', note: 'Telefon ani e-mail pacienta nejsou uvedeny.' };
   let contactPerson: RuleField = { value: '', citations: [], status: 'missing', note: 'Kontaktní osoba není uvedena.' };
   for (const doc of byPreference(docs)) {
-    const tel = labeledLine(doc.text, /^Telefon:/);
+    const tel = labeledLine(doc.text, /^(Telefon|Mobil|Kontakt na pacienta|Kontakt na pacientku|Tel\. pacienta)\s*:/);
     if (!tel || patientContact.value) continue;
-    const email = doc.text.match(/^E-?mail:\s*(\S+@\S+)/im);
-    const parts = [`tel. ${tel.value}`, email ? `e-mail ${email[1]}` : 'e-mail neuveden'];
+    const phone = tel.value.match(/\+?\d{3}[\s-]?\d{3}[\s-]?\d{3}(?:[\s-]?\d{3})?/)?.[0];
+    if (!phone) continue;
+    // e-mail on the same line, or an "E-mail:" line in the patient block (below the phone, not the facility header)
+    const inLine = tel.value.match(/[\w.+-]+@[\w-]+\.[\w.-]*\w/)?.[0];
+    const below = doc.text.slice(doc.text.indexOf(tel.line)).match(/^E-?mail:\s*(\S+@\S+)/im);
+    const email = inLine ?? below?.[1];
+    const parts = [`tel. ${phone}`, email ? `e-mail ${email}` : 'e-mail neuveden'];
     patientContact = {
       value: parts.join(' · '),
-      citations: cites(cite(doc, tel.line), email ? cite(doc, email[0]) : null),
+      citations: cites(cite(doc, tel.line), !inLine && below ? cite(doc, below[0]) : null),
       note: email ? undefined : 'E-mail pacienta v dokumentaci chybí (zápis pro konzilium ho vyžaduje).',
     };
     if (!email) findings.push({ id: 'patient-email-missing', severity: 'missing', fieldKey: 'patientContact', text: 'Chybí e-mail pacienta – zápis pro konzilium (MDT_zapis) vyžaduje telefon i e-mail.', citations: [] });
@@ -336,7 +368,8 @@ export function performanceStatus(included: Doc[], patientLabel: string, mdtDate
   };
 }
 
-const NEGATIVE_AA = /^(neguje|nejsou|bez alergi|0\b)/i;
+const NEGATIVE_AA = /^(neguje|neudává|nejsou|není|nezn[aá]m|bez\b|0\b)/i;
+const REACTION_RE = /(kopřivk\p{L}*|exantém\p{L}*|anafyla\p{L}*|alergick\p{L}* reakc\p{L}*)\s+(?:po|na)\s+([^.;,\n()]+)/iu;
 
 /**
  * Allergies from all reports, not only the referral: an allergy found later (e.g. a reaction to contrast during CT)
@@ -346,9 +379,12 @@ export function allergies(included: Doc[]): { field: RuleField; finding?: Findin
   const negatives: { doc: Doc; line: string }[] = [];
   const positives: { doc: Doc; quote: string; allergen: string }[] = [];
   for (const doc of included) {
-    const aa = labeledLine(doc.text, /^(AA|Alergie):/);
+    const aa = labeledLine(doc.text, /^(AA|Alergie|Alergická anamnéza)\s*:/);
     if (aa && NEGATIVE_AA.test(aa.value)) negatives.push({ doc, line: aa.line });
-    else if (aa) positives.push({ doc, quote: aa.line, allergen: aa.value.replace(/\.$/, '') });
+    else if (aa) {
+      const r = aa.value.match(REACTION_RE);
+      positives.push({ doc, quote: aa.line, allergen: r ? r[0].replace(/\s+(?:při|v r|v roce)\b.*$/u, '').trim() : aa.value.replace(/\.$/, '') });
+    }
     for (const m of doc.text.matchAll(/[^.\n]*alergi[ei]\s+na\s+([^.;\n()]+)[^.\n]*/gi)) {
       if (/neguje|bez alergi/i.test(m[0])) continue;
       positives.push({ doc, quote: m[0].trim(), allergen: `alergie na ${m[1].replace(/\s+v anamnéze\s*$/i, '').trim()}` });
@@ -419,10 +455,19 @@ const MARKER_RE = /^(?:CA\s?\d|CEA|AFP|PSA|NSE|CYFRA|SCC|HE4|hCG|S100)/i;
 
 export function isTumorMarker(test: string): boolean { return MARKER_RE.test(test); }
 
-export function parseLabs(doc: Doc): LabRow[] {
-  const ls = lines(doc.text);
+/** Verbatim line behind a lab row parsed from a "one row per line" table (used as its citation). */
+const rowQuote = new WeakMap<LabRow, string>();
+
+function labDate(doc: Doc): ISODate {
   const odber = labeledLine(doc.text, /^Odběr:/);
-  const date = (odber && findDates(odber.line)[0]?.iso) || doc.date;
+  const inline = doc.text.match(/Odběr\s*:\s*(\d{1,2}\.\s?\d{1,2}\.\s?\d{4})/);
+  return (odber && findDates(odber.line)[0]?.iso) || (inline && findDates(inline[1])[0]?.iso) || doc.date;
+}
+
+/** Table with one cell per line (test / value / unit / range) – the layout of most exported lab reports. */
+function parseLabCells(doc: Doc): LabRow[] {
+  const ls = lines(doc.text);
+  const date = labDate(doc);
   const lab = facility(doc);
   const rows: LabRow[] = [];
   let inTable = false;
@@ -449,6 +494,39 @@ export function parseLabs(doc: Doc): LabRow[] {
   return rows;
 }
 
+/** Table with one row per line, columns separated by 2+ spaces ("CEA      7,8      ug/l      < 5,0      H"). */
+function parseLabRows(doc: Doc): LabRow[] {
+  const date = labDate(doc);
+  const lab = facility(doc);
+  const rows: LabRow[] = [];
+  let urine = false;
+  for (const raw of doc.text.split(/\r?\n/)) {
+    const l = raw.trim();
+    if (!l || /^[-=_*]{5,}$/.test(l)) continue;
+    const cells = l.split(/\s{2,}/);
+    if (cells.length < 2) { if (isHeading(l)) urine = /MOČ/.test(l); continue; }
+    const [test, val, ...rest] = cells;
+    if (!/^(?:[<>]\s?)?\d+(?:[.,]\d+)?$|^(?:neg\.|pozit\.|norm\.)$/.test(val) || test.includes(':') || /^\d/.test(test)) continue;
+    let unit = '';
+    let ref: string | undefined;
+    let flag: 'H' | 'L' | undefined;
+    for (const c of rest) {
+      if (/^[HL]$/.test(c)) flag = c as 'H' | 'L';
+      else if (!ref && REF_RE.test(c)) ref = c;
+      else if (!unit) unit = c;
+    }
+    const row: LabRow = { test: urine ? `Moč – ${test}` : test, value: val, unit, ref, flag, date, lab, docId: doc.id };
+    rowQuote.set(row, l);
+    rows.push(row);
+  }
+  return rows;
+}
+
+export function parseLabs(doc: Doc): LabRow[] {
+  const cells = parseLabCells(doc);
+  return cells.length ? cells : parseLabRows(doc);
+}
+
 export function labsField(included: Doc[]): { field: RuleField; labs: LabRow[] } {
   const labDocs = included.filter((d) => docKind(d) === 'lab').sort((a, b) => b.date.localeCompare(a.date));
   const labs = labDocs.flatMap(parseLabs);
@@ -463,11 +541,11 @@ export function labsField(included: Doc[]): { field: RuleField; labs: LabRow[] }
     const head = `${czDate(rows[0]?.date ?? d.date)} (${rows[0]?.lab ?? facility(d)})`;
     const seg: string[] = [];
     if (markers.length) seg.push(`nádorové markery: ${markers.map(fmt).join(', ')}`);
-    if (abnormal.length) seg.push(`mimo normy: ${abnormal.map(fmt).join(', ')}`);
-    if (!seg.length) seg.push('bez odchýlok');
+    if (abnormal.length) seg.push(`mimo normu: ${abnormal.map(fmt).join(', ')}`);
+    if (!seg.length) seg.push('bez odchylek');
     parts.push(`${head}: ${seg.join('; ')}`);
     for (const r of [...markers, ...abnormal]) {
-      const c = cite(d, `${r.test.replace(/^Moč – /, '')}\n${r.value}${r.flag ? ' ' + r.flag : ''}`);
+      const c = cite(d, rowQuote.get(r) ?? `${r.test.replace(/^Moč – /, '')}\n${r.value}${r.flag ? ' ' + r.flag : ''}`);
       if (c) citations.push(c);
     }
   }
@@ -485,11 +563,19 @@ export function labsField(included: Doc[]): { field: RuleField; labs: LabRow[] }
 
 // ---------- exams and histology ----------
 
-function conclusion(doc: Doc): string | null {
-  const z = section(doc.text, /^ZÁVĚR/);
-  if (z) return z.split('\n')[0];
-  const v = labeledLine(doc.text, /^Výkon:/);
-  return v ? v.line : null;
+/** Lines after the conclusion that are no longer the conclusion (date, place, signature, copy, next block). */
+const STOP_LINE = /^(Datum\b|V\s.+\sdne\b|MUDr\.|MDDr\.|Mgr\.|Bc\.|Ing\.|RNDr\.|doc\.|prof\.|Vydal|Výsledky validoval|Kopie|Na vědomí|Dg\.\s*:|S pozdravem|Doporučení|DOPORUČENÍ)/i;
+
+/** Conclusion of a report: "ZÁVĚR" section or "Závěr:" block (first lines), else the "Výkon:" line. */
+function conclusionLines(doc: Doc, max = 3): string[] {
+  const z = section(doc.text, /^ZÁVĚR/) ?? labeledBlock(doc.text, /^Závěr\s*:/);
+  if (z) {
+    const out: string[] = [];
+    for (const l of z.split('\n')) { if (STOP_LINE.test(l)) break; out.push(l); if (out.length >= max) break; }
+    if (out.length) return out;
+  }
+  const v = labeledLine(doc.text, /^Výkon\s*:/);
+  return v ? [v.line] : [];
 }
 
 /** For procedures without a ZÁVĚR: the sentence that states the finding with its size ("… ložisko … 33 × 29 mm."). */
@@ -505,14 +591,14 @@ export function examsField(included: Doc[]): { field: RuleField; exams: Exam[] }
   const citations: Citation[] = [];
   const out: string[] = [];
   for (const d of docs) {
-    const z = conclusion(d);
+    const z = conclusionLines(d);
     const extra = docKind(d) === 'procedure' ? procedureFinding(d) : null;
-    for (const q of [z, extra]) {
+    for (const q of [...z, extra]) {
       const c = q ? cite(d, q) : null;
       if (c) citations.push(c);
     }
     const type = docTitle(d);
-    const summary = [z, extra].filter(Boolean).join(' ');
+    const summary = [...z, extra].filter(Boolean).join(' ');
     exams.push({ date: d.date, place: facility(d), type, summary, docId: d.id });
     out.push(`${czDate(d.date)} · ${type} · ${facility(d)}${summary ? ` – ${summary}` : ''}`);
   }
@@ -520,14 +606,22 @@ export function examsField(included: Doc[]): { field: RuleField; exams: Exam[] }
   return { field: { value: out.join('\n'), citations, sourceDate: docs[docs.length - 1].date, note: 'Plné znění výsledku je v původní zprávě (klik na citaci).' }, exams };
 }
 
+/** Original histology report + any later addendum (e.g. MMR or predictive markers). */
 export function histologyField(included: Doc[]): RuleField {
   const docs = included.filter((d) => docKind(d) === 'histology').sort((a, b) => b.date.localeCompare(a.date));
-  const d = docs[0];
+  const d = docs.find((x) => !isAddendum(x)) ?? docs[0];
   if (!d) return { value: '', citations: [], status: 'missing', note: 'Histologie zatím není k dispozici.' };
-  const z = conclusion(d);
+  const z = conclusionLines(d, 1)[0];
   const issued = issueDate(d);
-  const value = `${z ?? 'bioptický nález'}${issued ? ` · vydáno ${czDate(issued.iso)}` : ''}`;
-  return { value, citations: cites(z ? cite(d, z) : null, issued ? cite(d, issued.quote) : null), sourceDate: d.date };
+  const parts = [`${z ?? 'bioptický nález'}${issued ? ` · vydáno ${czDate(issued.iso)}` : ''}`];
+  const citations = cites(z ? cite(d, z) : null, issued ? cite(d, issued.quote) : null);
+  for (const a of docs.filter((x) => x !== d && isAddendum(x) && x.date >= d.date).reverse()) {
+    const az = conclusionLines(a, 1)[0];
+    if (!az) continue;
+    parts.push(`dodatek ${czDate(a.date)}: ${az}`);
+    citations.push(...cites(cite(a, az)));
+  }
+  return { value: parts.join(' · '), citations, sourceDate: docs[0].date };
 }
 
 // ---------- date sanity (trap detector) ----------
@@ -679,7 +773,7 @@ export function locationConflicts(included: Doc[]): { dim: LocDim; a: LocHit; b:
   return out;
 }
 
-const RC_RE = /(?:Rodné číslo:\s*|\bRČ\s+)(\d{6}\/\d{3,4})/;
+const RC_RE = /(?:Rodné číslo|\bRČ|\br\. ?č\.)\s*:?\s*(\d{6}\/\d{3,4})/;
 
 /** Reports whose birth number differs from the rest – maybe another patient's result. */
 export function identityMismatch(included: Doc[]): { doc: Doc; rc: string; quote: string; ref: { doc: Doc; rc: string; quote: string } }[] {
@@ -714,4 +808,67 @@ export function pendingResults(included: Doc[], asOf: ISODate): { doc: Doc; quot
     }
   }
   return out;
+}
+
+// ---------- medication changed in one report, old list copied into a newer one ----------
+
+export interface MedChange { doc: Doc; from: string; to?: string; quote: string }
+
+/** "převádím z warfarinu na apixaban", "warfarin trvale vysazen" – a drug stopped for good (and what replaced it). */
+export function medicationChanges(included: Doc[]): MedChange[] {
+  const out: MedChange[] = [];
+  for (const doc of included) {
+    for (const s of sentences(doc.text)) {
+      const conv = s.match(/převád[íi]m\s+z\s+(\p{L}+)\s+na\s+(\p{L}+)/iu);
+      const stop = s.match(/(\p{L}+)\s+(?:trvale|definitivně)\s+vysazen/iu);
+      if (!conv && !stop) continue;
+      const at = Math.min(...[conv?.index, stop?.index].filter((x): x is number => x !== undefined));
+      const quote = locateQuote(doc.text, s.slice(at).trim());
+      if (quote) out.push({ doc, from: conv?.[1] ?? stop![1], to: conv?.[2], quote });
+    }
+  }
+  return out;
+}
+
+// ---------- an exam recommended before the MDT that never happened ----------
+
+const RECOMMEND_RE = /[Dd]oporučen[oaé]?\s+(?:doplnit\s+|provést\s+)?(CT|MR|MRI|PET(?:\/CT)?|UZ|USG|EUS|scintigrafi\p{L}*)\s+(\p{L}+)/gu;
+
+export function recommendedMissing(included: Doc[]): { doc: Doc; exam: string; quote: string }[] {
+  const out: { doc: Doc; exam: string; quote: string }[] = [];
+  const done = (after: Doc, modality: string, organ: string) => included.some((d) => {
+    if (d.date <= after.date || !['imaging', 'procedure'].includes(docKind(d))) return false;
+    const t = docTitle(d).toLocaleLowerCase('cs');
+    return t.includes(modality.toLocaleLowerCase('cs')) && t.includes(organ.toLocaleLowerCase('cs').slice(0, 4));
+  });
+  for (const doc of included.filter((d) => ['imaging', 'procedure', 'clinic'].includes(docKind(d)))) {
+    for (const s of sentences(doc.text)) {
+      for (const m of s.matchAll(RECOMMEND_RE)) {
+        if (done(doc, m[1], m[2])) continue;
+        const quote = locateQuote(doc.text, s.trim());
+        if (quote) out.push({ doc, exam: `${m[1]} ${m[2]}`, quote });
+      }
+    }
+  }
+  return out;
+}
+
+// ---------- staging written as complete ("cM0") while imaging left it open ----------
+
+export function stagingConflict(included: Doc[]): { open: { doc: Doc; quote: string }; closed: { doc: Doc; quote: string } } | null {
+  const OPEN = /(?:metastáz\p{L}*\s+nelze\s+vyloučit|nelze\s+vyloučit\s+metastáz\p{L}*)/iu;
+  const CLOSED = /(?:\bcM0\b|bez\s+(?:známek\s+)?vzdálených\s+metastáz)/iu;
+  const sorted = [...included].sort((a, b) => a.date.localeCompare(b.date));
+  for (const o of sorted.filter((d) => docKind(d) === 'imaging')) {
+    const os = sentences(o.text).find((s) => OPEN.test(s));
+    if (!os) continue;
+    for (const c of sorted.filter((d) => d.id !== o.id && d.date >= o.date)) {
+      const cs = sentences(c.text).find((s) => CLOSED.test(s));
+      if (!cs) continue;
+      const oq = locateQuote(o.text, os.trim());
+      const cq = locateQuote(c.text, cs.trim());
+      if (oq && cq) return { open: { doc: o, quote: oq }, closed: { doc: c, quote: cq } };
+    }
+  }
+  return null;
 }

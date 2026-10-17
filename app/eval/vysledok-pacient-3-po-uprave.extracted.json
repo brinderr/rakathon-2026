@@ -1,0 +1,1026 @@
+{
+  "meta": {
+    "caseId": "pacient-3",
+    "asOf": "2026-09-02",
+    "generatedAt": "2026-10-17T03:40:33.121Z",
+    "promptVersion": "handover-v1",
+    "mode": "rules",
+    "docsUsed": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09"
+    ],
+    "docsExcluded": [
+      {
+        "id": "10",
+        "date": "2026-09-09",
+        "reason": "po datu konzilia 2. 9. 2026"
+      }
+    ],
+    "stats": {
+      "fields": 20,
+      "withValue": 19,
+      "missing": 1,
+      "conflicts": 3,
+      "citations": 60,
+      "citationsVerified": 60,
+      "fieldsWithoutVerifiedCitation": 0,
+      "llmFieldsAccepted": 0,
+      "llmFieldsRejected": 0
+    }
+  },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Jméno",
+      "group": "Pacient",
+      "value": "Vlastimil",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Pacient: pan Vlastimil BRABEC"
+        }
+      ]
+    },
+    {
+      "key": "lastName",
+      "label": "Příjmení",
+      "group": "Pacient",
+      "value": "BRABEC",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Pacient: pan Vlastimil BRABEC"
+        }
+      ]
+    },
+    {
+      "key": "age",
+      "label": "Věk",
+      "group": "Pacient",
+      "value": "68 let",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "68letý"
+        }
+      ]
+    },
+    {
+      "key": "sex",
+      "label": "Pohlaví",
+      "group": "Pacient",
+      "value": "muž",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "68letý pacient"
+        }
+      ],
+      "note": "Podle označení „68letý pacient“ ve zprávě."
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotní pojišťovna",
+      "group": "Pacient",
+      "value": "211",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Zdravotní pojišťovna: 211"
+        }
+      ],
+      "note": "211 = Zdravotní pojišťovna ministerstva vnitra ČR – není VZP, souhrn pro revizního lékaře jde této pojišťovně."
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacienta",
+      "group": "Kontakty",
+      "value": "tel. +420 604 000 271 · e-mail vlastimil.brabec@example.cz",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Kontakt na pacienta: +420 604 000 271, vlastimil.brabec@example.cz"
+        }
+      ]
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktní osoba",
+      "group": "Kontakty",
+      "value": "dcera Petra Malá, +420 608 000 945 (pacient souhlasí s podáváním informací dceři)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Kontaktní osoba: dcera Petra Malá, +420 608 000 945 (pacient souhlasí s podáváním informací dceři)"
+        }
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "group": "Diagnóza",
+      "value": "C20 – adenokarcinom středního rekta, cT3c N1b (MR), MRF+, EMVI+, cM0 (v žádance, 19. 8. 2026); histologicky: 1) Rektum, biopsie: ADENOKARCINOM, low-grade (dříve G2), MKN-O 8140/3. (24. 7. 2026)",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Diagnóza: C20 – adenokarcinom středního rekta, cT3c N1b (MR), MRF+, EMVI+, cM0"
+        },
+        {
+          "docId": "03",
+          "quote": "1) Rektum, biopsie: ADENOKARCINOM, low-grade (dříve G2), MKN-O 8140/3."
+        }
+      ],
+      "sourceDate": "2026-07-24",
+      "conflict": {
+        "a": {
+          "value": "Diagnóza: C20 – adenokarcinom středního rekta, cT3c N1b (MR), MRF+, EMVI+, cM0",
+          "citation": {
+            "docId": "08",
+            "quote": "Diagnóza: C20 – adenokarcinom středního rekta, cT3c N1b (MR), MRF+, EMVI+, cM0"
+          }
+        },
+        "b": {
+          "value": "2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit.",
+          "citation": {
+            "docId": "04",
+            "quote": "2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit."
+          }
+        },
+        "explain": "Zpráva 08 (19. 8. 2026) uvádí „bez vzdálených metastáz / cM0“, ale podle zprávy 04 (CT hrudníku, břicha a pánve s i.v. k. l., 30. 7. 2026) metastázu nelze vyloučit – M-stadium není uzavřené."
+      }
+    },
+    {
+      "key": "epicrisis",
+      "label": "Průběh onemocnění ve zkratce",
+      "group": "Diagnóza",
+      "value": "68letý pacient s cca 3měsíční anamnézou hematochezie, změny defekačního stereotypu a sideropenické anémie (Hb 104 g/l), TOKS pozitivní. 20. 7. 2026 koloskopie (ON Rybníky): tumor rekta 7–11 cm od anu, biopsie – adenokarcinom low-grade (B-2026-07118). CT hrudníku, břicha a pánve 30. 7. 2026 bez známek vzdálených metastáz (cM0). MR malé pánve 6. 8. 2026 (Medicon Plus): mrT3c N1b, MRF+ (1 mm vlevo), EMVI+, dolní okraj 7 cm od anu.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "68letý pacient s cca 3měsíční anamnézou hematochezie, změny defekačního stereotypu a sideropenické anémie (Hb 104 g/l), TOKS pozitivní."
+        },
+        {
+          "docId": "08",
+          "quote": "20. 7. 2026 koloskopie (ON Rybníky): tumor rekta 7–11 cm od anu, biopsie – adenokarcinom low-grade (B-2026-07118)."
+        },
+        {
+          "docId": "08",
+          "quote": "CT hrudníku, břicha a pánve 30. 7. 2026 bez známek vzdálených metastáz (cM0)."
+        },
+        {
+          "docId": "08",
+          "quote": "MR malé pánve 6. 8. 2026 (Medicon Plus): mrT3c N1b, MRF+ (1 mm vlevo), EMVI+, dolní okraj 7 cm od anu."
+        }
+      ],
+      "sourceDate": "2026-08-19"
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pro konzilium",
+      "group": "Diagnóza",
+      "value": "Prosíme o stanovení dalšího léčebného postupu – indikace neoadjuvantní léčby (chemoradioterapie, event. TNT) vs. primární operace (TME); event. převzetí k neoadjuvantní léčbě do KOC.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Prosíme o stanovení dalšího léčebného postupu – indikace neoadjuvantní léčby (chemoradioterapie, event. TNT) vs. primární operace (TME); event. převzetí k neoadjuvantní léčbě do KOC."
+        }
+      ],
+      "sourceDate": "2026-08-19"
+    },
+    {
+      "key": "comorbidities",
+      "label": "Přidružená onemocnění",
+      "group": "Anamnéza",
+      "value": "AH, paroxysmální FS (CHA2DS2-VASc 3), DM 2. typu na PAD, dyslipidémie, nefrolitiáza 2021, st. p. appendektomii.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "OA: AH, paroxysmální FS (CHA2DS2-VASc 3), DM 2. typu na PAD, dyslipidémie, nefrolitiáza 2021, st. p. appendektomii."
+        }
+      ],
+      "sourceDate": "2026-08-19"
+    },
+    {
+      "key": "medication",
+      "label": "Léky, které užívá",
+      "group": "Anamnéza",
+      "value": "Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1 · změna 11. 8. 2026: převádím z warfarinu na apixaban: warfarin trvale vysazen, Eliquis (apixaban) 5 mg 1-0-1 zahájit od 12. 8. 2026, jakmile bude INR < 2 (kontrola INR 12. 8. ráno u PL).",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "FA: Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1"
+        },
+        {
+          "docId": "07",
+          "quote": "převádím z warfarinu na apixaban: warfarin trvale vysazen, Eliquis (apixaban) 5 mg 1-0-1 zahájit od 12. 8. 2026, jakmile bude INR < 2 (kontrola INR 12. 8. ráno u PL)."
+        }
+      ],
+      "sourceDate": "2026-08-19",
+      "conflict": {
+        "a": {
+          "value": "FA: Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1",
+          "citation": {
+            "docId": "08",
+            "quote": "FA: Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1"
+          }
+        },
+        "b": {
+          "value": "převádím z warfarinu na apixaban: warfarin trvale vysazen, Eliquis (apixaban) 5 mg 1-0-1 zahájit od 12. 8. 2026, jakmile bude INR < 2 (kontrola INR 12. 8. ráno u PL).",
+          "citation": {
+            "docId": "07",
+            "quote": "převádím z warfarinu na apixaban: warfarin trvale vysazen, Eliquis (apixaban) 5 mg 1-0-1 zahájit od 12. 8. 2026, jakmile bude INR < 2 (kontrola INR 12. 8. ráno u PL)."
+          }
+        },
+        "explain": "Lékový seznam ve zprávě 08 (19. 8. 2026) obsahuje lék, který byl podle zprávy 07 (11. 8. 2026) trvale vysazen a nahrazen (apixaban). Ověřte aktuální medikaci."
+      }
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "group": "Anamnéza",
+      "value": "kopřivku po jodové kontrastní látce (30. 7. 2026)",
+      "status": "conflict",
+      "citations": [
+        {
+          "docId": "04",
+          "quote": "Alergická anamnéza: pacient udává kopřivku po jodové kontrastní látce při CT ledvin v r. 2021. Vyšetření provedeno po premedikaci dle protokolu oddělení (prednison 50 mg p.o. 13, 7 a 1 h před výkonem, bisulepin 1 mg i.v. 1 h před výkonem), bez alergické reakce."
+        }
+      ],
+      "sourceDate": "2026-07-30",
+      "conflict": {
+        "a": {
+          "value": "AA: neguje",
+          "citation": {
+            "docId": "08",
+            "quote": "AA: neguje"
+          }
+        },
+        "b": {
+          "value": "kopřivku po jodové kontrastní látce",
+          "citation": {
+            "docId": "04",
+            "quote": "Alergická anamnéza: pacient udává kopřivku po jodové kontrastní látce při CT ledvin v r. 2021. Vyšetření provedeno po premedikaci dle protokolu oddělení (prednison 50 mg p.o. 13, 7 a 1 h před výkonem, bisulepin 1 mg i.v. 1 h před výkonem), bez alergické reakce."
+          }
+        },
+        "explain": "Zpráva 08 (19. 8. 2026) uvádí „AA: neguje“, ale zpráva 04 z 30. 7. 2026 zaznamenala: kopřivku po jodové kontrastní látce. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala."
+      }
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostní stav (ECOG)",
+      "group": "Stav",
+      "value": "",
+      "status": "missing",
+      "citations": [],
+      "note": "Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva 08 uvádí jen slovní popis „soběstačný“ – to není skóre.",
+      "request": {
+        "to": "onkologická ambulance KOC / odesílající lékař",
+        "channel": "e-mail",
+        "draft": "Dobrý den, před konziliem 2. 9. 2026 prosíme o doplnění výkonnostního stavu (ECOG nebo Karnofsky) – Vlastimil BRABEC. V dosavadní dokumentaci není uveden. Děkujeme, koordinátor KOC."
+      }
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "group": "Stav",
+      "value": "82 kg (19. 8. 2026) · výška 178 cm (19. 8. 2026)",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Hmotnost 82 kg"
+        },
+        {
+          "docId": "08",
+          "quote": "výška 178 cm"
+        },
+        {
+          "docId": "07",
+          "quote": "hmotnost 83 kg"
+        },
+        {
+          "docId": "01",
+          "quote": "hmotnost 86 kg"
+        }
+      ],
+      "sourceDate": "2026-08-19",
+      "note": "Dříve: 83 kg (11. 8. 2026), 86 kg (6. 7. 2026). Novější hodnota 80 kg (zpráva 10, 9. 9. 2026) vznikla až po 2. 9. 2026, proto do podkladu nepatří."
+    },
+    {
+      "key": "symptoms",
+      "label": "Příznaky a jejich začátek",
+      "group": "Stav",
+      "value": "68letý pacient s cca 3měsíční anamnézou hematochezie, změny defekačního stereotypu a sideropenické anémie (Hb 104 g/l), TOKS pozitivní. celkově dobrý stav, soběstačný, chodí bez omezení, je však unavenější. Hmotnost 82 kg, výška 178 cm (za 2 měsíce úbytek 4 kg).",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "68letý pacient s cca 3měsíční anamnézou hematochezie, změny defekačního stereotypu a sideropenické anémie (Hb 104 g/l), TOKS pozitivní."
+        },
+        {
+          "docId": "08",
+          "quote": "celkově dobrý stav, soběstačný, chodí bez omezení, je však unavenější."
+        },
+        {
+          "docId": "08",
+          "quote": "Hmotnost 82 kg, výška 178 cm (za 2 měsíce úbytek 4 kg)."
+        }
+      ],
+      "sourceDate": "2026-08-19"
+    },
+    {
+      "key": "exams",
+      "label": "Provedená vyšetření",
+      "group": "Vyšetrenia",
+      "value": "20. 7. 2026 · totální koloskopie s intubací terminálního ilea · OBLASTNÍ NEMOCNICE RYBNÍKY – Gastroenterologické oddělení – endoskopické pracoviště – 1. Tumor rekta 7–11 cm od anu, makroskopicky karcinom – odebrána biopsie. 2. Polyp sigmatu 6 mm – polypektomie. 3. Divertikulóza sigmatu bez známek zánětu, hemoroidy I. st.\n30. 7. 2026 · CT hrudníku, břicha a pánve s i.v. k. l. · Oblastní nemocnice Rybníky– RADIODIAGNOSTICKÉ ODDĚLENÍ – 1. Ztluštění stěny středního rekta v délce cca 5 cm odpovídající známému tumoru, 3 mezorektální uzliny do 7 mm. K lokálnímu stagingu doporučena MR malé pánve. 2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit. Doporučeno doplnit MR jater s hepatospecifickou kontrastní látkou. 3. Jinak bez známek generalizace.\n6. 8. 2026 · MR malé pánve – rektální protokol (T2 HR sagitálně, axiálně a koronálně vůči ose tumoru, DWI b800), bez i.v. k. l. · MR centrum Medicon Plus| Zámecká 15, 571 01 Rybníky | tel. +420 602 000 371 | mr.medicon@example.cz – Karcinom středního rekta, dolní okraj 7 cm od anu, délka 5,2 cm. mrT3c, mrN1b (3 suspektní mezorektální uzliny), MRF+ (1 mm vlevo), EMVI+, laterální uzliny negativní.\n11. 8. 2026 · Ambulantní zpráva · Kardiologická ambulance MUDr. Ondřej Kraus – 1. Paroxysmální fibrilace síní, t. č. sinusový rytmus, CHA2DS2-VASc 3 2. Labilní INR na warfarinu (TTR cca 45 %) 3. Arteriální hypertenze – kompenzovaná",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "02",
+          "quote": "1. Tumor rekta 7–11 cm od anu, makroskopicky karcinom – odebrána biopsie."
+        },
+        {
+          "docId": "02",
+          "quote": "2. Polyp sigmatu 6 mm – polypektomie."
+        },
+        {
+          "docId": "02",
+          "quote": "3. Divertikulóza sigmatu bez známek zánětu, hemoroidy I. st."
+        },
+        {
+          "docId": "04",
+          "quote": "1. Ztluštění stěny středního rekta v délce cca 5 cm odpovídající známému tumoru, 3 mezorektální uzliny do 7 mm. K lokálnímu stagingu doporučena MR malé pánve."
+        },
+        {
+          "docId": "04",
+          "quote": "2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit. Doporučeno doplnit MR jater s hepatospecifickou kontrastní látkou."
+        },
+        {
+          "docId": "04",
+          "quote": "3. Jinak bez známek generalizace."
+        },
+        {
+          "docId": "06",
+          "quote": "Karcinom středního rekta, dolní okraj 7 cm od anu, délka 5,2 cm."
+        },
+        {
+          "docId": "06",
+          "quote": "mrT3c, mrN1b (3 suspektní mezorektální uzliny), MRF+ (1 mm vlevo), EMVI+, laterální uzliny negativní."
+        },
+        {
+          "docId": "07",
+          "quote": "1. Paroxysmální fibrilace síní, t. č. sinusový rytmus, CHA2DS2-VASc 3"
+        },
+        {
+          "docId": "07",
+          "quote": "2. Labilní INR na warfarinu (TTR cca 45 %)"
+        },
+        {
+          "docId": "07",
+          "quote": "3. Arteriální hypertenze – kompenzovaná"
+        }
+      ],
+      "sourceDate": "2026-08-11",
+      "note": "Plné znění výsledku je v původní zprávě (klik na citaci)."
+    },
+    {
+      "key": "labs",
+      "label": "Laboratoř a nádorové markery",
+      "group": "Laboratórium",
+      "value": "3. 8. 2026 (LabMedica Východ s.r.o.): nádorové markery: CEA 7,8 ug/l ↑, CA 19-9 18 kU/l; mimo normu: Erytrocyty 4,21 10^12/l ↓, Hemoglobin 109 g/l ↓, Hematokrit 0,342 1 ↓, MCV 78,2 fl ↓, Protrombinový test - INR 2,1 ↑, eGFR (CKD-EPI) 1,18 ml/s/1,73m2 ↓, CRP 6 mg/l ↑, Glukóza 8,1 mmol/l ↑, HbA1c (IFCC) 53 mmol/mol ↑, Ferritin 14 ug/l ↓",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "05",
+          "quote": "CEA                        7,8        ug/l             < 5,0              H"
+        },
+        {
+          "docId": "05",
+          "quote": "CA 19-9                    18         kU/l             < 37"
+        },
+        {
+          "docId": "05",
+          "quote": "Erytrocyty                 4,21       10^12/l          4,30 - 5,80        L"
+        },
+        {
+          "docId": "05",
+          "quote": "Hemoglobin                 109        g/l              135 - 175          L"
+        },
+        {
+          "docId": "05",
+          "quote": "Hematokrit                 0,342      1                0,400 - 0,500      L"
+        },
+        {
+          "docId": "05",
+          "quote": "MCV                        78,2       fl               82,0 - 98,0        L"
+        },
+        {
+          "docId": "05",
+          "quote": "Protrombinový test - INR   2,1                         0,8 - 1,2          H"
+        },
+        {
+          "docId": "05",
+          "quote": "eGFR (CKD-EPI)             1,18       ml/s/1,73m2      > 1,50             L"
+        },
+        {
+          "docId": "05",
+          "quote": "CRP                        6          mg/l             < 5                H"
+        },
+        {
+          "docId": "05",
+          "quote": "Glukóza                    8,1        mmol/l           3,9 - 5,6          H"
+        },
+        {
+          "docId": "05",
+          "quote": "HbA1c (IFCC)               53         mmol/mol         20 - 42            H"
+        },
+        {
+          "docId": "05",
+          "quote": "Ferritin                   14         ug/l             30 - 400           L"
+        }
+      ],
+      "sourceDate": "2026-08-03",
+      "note": "Uvedeny všechny nádorové markery (CEA, CA 19-9), nejen zvýšené."
+    },
+    {
+      "key": "histology",
+      "label": "Histologie (výsledek biopsie)",
+      "group": "Histológia",
+      "value": "1) Rektum, biopsie: ADENOKARCINOM, low-grade (dříve G2), MKN-O 8140/3. · vydáno 24. 7. 2026 · dodatek 26. 8. 2026: Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "03",
+          "quote": "1) Rektum, biopsie: ADENOKARCINOM, low-grade (dříve G2), MKN-O 8140/3."
+        },
+        {
+          "docId": "03",
+          "quote": "Vydáno: 24.07.2026"
+        },
+        {
+          "docId": "09",
+          "quote": "Ztráta exprese MLH1 a PMS2 – nález odpovídá deficitu mismatch repair (dMMR), resp. fenotypu MSI-H."
+        }
+      ],
+      "sourceDate": "2026-08-26"
+    },
+    {
+      "key": "other",
+      "label": "Jiná důležitá sdělení a přání pacienta",
+      "group": "Iné",
+      "value": "Pacient je informován o diagnóze a dosavadních výsledcích. Výslovně si přeje, pokud to bude onkologicky bezpečné, zachovat svěrač a vyhnout se trvalé stomii. Protože pečuje o manželku, preferuje co nejkratší hospitalizace a léčbu ambulantně, pokud možno v místě bydliště.",
+      "status": "proposed",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Pacient je informován o diagnóze a dosavadních výsledcích."
+        },
+        {
+          "docId": "08",
+          "quote": "Výslovně si přeje, pokud to bude onkologicky bezpečné, zachovat svěrač a vyhnout se trvalé stomii."
+        },
+        {
+          "docId": "08",
+          "quote": "Protože pečuje o manželku, preferuje co nejkratší hospitalizace a léčbu ambulantně, pokud možno v místě bydliště."
+        }
+      ],
+      "sourceDate": "2026-08-19"
+    }
+  ],
+  "provenance": {
+    "firstName": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "lastName": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "age": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "sex": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "insurer": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "patientContact": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "contactPerson": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "diagnosis": {
+      "extractor": "rules",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": []
+    },
+    "epicrisis": {
+      "extractor": "rules",
+      "checkedQuotes": 4,
+      "verifiedQuotes": 4,
+      "rejected": []
+    },
+    "mdtQuestion": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "comorbidities": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "medication": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "allergies": {
+      "extractor": "rules",
+      "checkedQuotes": 1,
+      "verifiedQuotes": 1,
+      "rejected": []
+    },
+    "performance": {
+      "extractor": "rules",
+      "checkedQuotes": 0,
+      "verifiedQuotes": 0,
+      "rejected": []
+    },
+    "weightHeight": {
+      "extractor": "rules",
+      "checkedQuotes": 4,
+      "verifiedQuotes": 4,
+      "rejected": []
+    },
+    "symptoms": {
+      "extractor": "rules",
+      "checkedQuotes": 3,
+      "verifiedQuotes": 3,
+      "rejected": []
+    },
+    "exams": {
+      "extractor": "rules",
+      "checkedQuotes": 11,
+      "verifiedQuotes": 11,
+      "rejected": []
+    },
+    "labs": {
+      "extractor": "rules",
+      "checkedQuotes": 12,
+      "verifiedQuotes": 12,
+      "rejected": []
+    },
+    "histology": {
+      "extractor": "rules",
+      "checkedQuotes": 3,
+      "verifiedQuotes": 3,
+      "rejected": []
+    },
+    "other": {
+      "extractor": "rules",
+      "checkedQuotes": 3,
+      "verifiedQuotes": 3,
+      "rejected": []
+    }
+  },
+  "findings": [
+    {
+      "id": "ecog-missing",
+      "severity": "missing",
+      "fieldKey": "performance",
+      "text": "Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva 08 uvádí jen slovní popis „soběstačný“ – to není skóre.",
+      "citations": []
+    },
+    {
+      "id": "allergy-conflict",
+      "severity": "conflict",
+      "fieldKey": "allergies",
+      "text": "Zpráva 08 (19. 8. 2026) uvádí „AA: neguje“, ale zpráva 04 z 30. 7. 2026 zaznamenala: kopřivku po jodové kontrastní látce. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala.",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "AA: neguje"
+        },
+        {
+          "docId": "04",
+          "quote": "Alergická anamnéza: pacient udává kopřivku po jodové kontrastní látce při CT ledvin v r. 2021. Vyšetření provedeno po premedikaci dle protokolu oddělení (prednison 50 mg p.o. 13, 7 a 1 h před výkonem, bisulepin 1 mg i.v. 1 h před výkonem), bez alergické reakce."
+        }
+      ]
+    },
+    {
+      "id": "medication-change-07",
+      "severity": "conflict",
+      "fieldKey": "medication",
+      "text": "Lékový seznam ve zprávě 08 (19. 8. 2026) obsahuje lék, který byl podle zprávy 07 (11. 8. 2026) trvale vysazen a nahrazen (apixaban). Ověřte aktuální medikaci.",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "FA: Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0, Tritace 5 mg 1-0-0, Glucophage 1000 mg 1-0-1, Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1"
+        },
+        {
+          "docId": "07",
+          "quote": "převádím z warfarinu na apixaban: warfarin trvale vysazen, Eliquis (apixaban) 5 mg 1-0-1 zahájit od 12. 8. 2026, jakmile bude INR < 2 (kontrola INR 12. 8. ráno u PL)."
+        }
+      ]
+    },
+    {
+      "id": "recommended-04-MR jater",
+      "severity": "missing",
+      "fieldKey": "exams",
+      "text": "Zpráva 04 (CT hrudníku, břicha a pánve s i.v. k. l., 30. 7. 2026) doporučuje doplnit MR jater – do konzilia 2. 9. 2026 v dokumentaci není.",
+      "citations": [
+        {
+          "docId": "04",
+          "quote": "Doporučeno doplnit MR jater s hepatospecifickou kontrastní látkou."
+        }
+      ]
+    },
+    {
+      "id": "staging-conflict",
+      "severity": "conflict",
+      "fieldKey": "diagnosis",
+      "text": "Zpráva 08 (19. 8. 2026) uvádí „bez vzdálených metastáz / cM0“, ale podle zprávy 04 (CT hrudníku, břicha a pánve s i.v. k. l., 30. 7. 2026) metastázu nelze vyloučit – M-stadium není uzavřené.",
+      "citations": [
+        {
+          "docId": "08",
+          "quote": "Diagnóza: C20 – adenokarcinom středního rekta, cT3c N1b (MR), MRF+, EMVI+, cM0"
+        },
+        {
+          "docId": "04",
+          "quote": "2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit."
+        }
+      ]
+    },
+    {
+      "id": "after-mdt",
+      "severity": "info",
+      "text": "Zpráva 10 vznikla po 2. 9. 2026 – do podkladu pro konzilium nepatří (zadání VZP: jen to, co bylo známo k datu konzilia).",
+      "citations": []
+    }
+  ],
+  "precheck": {
+    "findings": [
+      {
+        "text": "Pacient užívá lék na ředění krve – před invazivním výkonem je třeba postup podle lékaře.",
+        "severity": "info"
+      }
+    ]
+  },
+  "labs": [
+    {
+      "test": "Leukocyty",
+      "value": "7,1",
+      "unit": "10^9/l",
+      "ref": "4,0 - 10,0",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Erytrocyty",
+      "value": "4,21",
+      "unit": "10^12/l",
+      "ref": "4,30 - 5,80",
+      "flag": "L",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Hemoglobin",
+      "value": "109",
+      "unit": "g/l",
+      "ref": "135 - 175",
+      "flag": "L",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Hematokrit",
+      "value": "0,342",
+      "unit": "1",
+      "ref": "0,400 - 0,500",
+      "flag": "L",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "MCV",
+      "value": "78,2",
+      "unit": "fl",
+      "ref": "82,0 - 98,0",
+      "flag": "L",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Trombocyty",
+      "value": "352",
+      "unit": "10^9/l",
+      "ref": "150 - 400",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Protrombinový test - INR",
+      "value": "2,1",
+      "unit": "",
+      "ref": "0,8 - 1,2",
+      "flag": "H",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Sodík",
+      "value": "139",
+      "unit": "mmol/l",
+      "ref": "136 - 145",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Draslík",
+      "value": "4,4",
+      "unit": "mmol/l",
+      "ref": "3,5 - 5,1",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Chloridy",
+      "value": "102",
+      "unit": "mmol/l",
+      "ref": "98 - 107",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Urea",
+      "value": "5,9",
+      "unit": "mmol/l",
+      "ref": "2,8 - 8,1",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Kreatinin",
+      "value": "96",
+      "unit": "umol/l",
+      "ref": "64 - 104",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "eGFR (CKD-EPI)",
+      "value": "1,18",
+      "unit": "ml/s/1,73m2",
+      "ref": "> 1,50",
+      "flag": "L",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Bilirubin celkový",
+      "value": "9",
+      "unit": "umol/l",
+      "ref": "< 21",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "ALT",
+      "value": "0,41",
+      "unit": "ukat/l",
+      "ref": "< 0,85",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "AST",
+      "value": "0,38",
+      "unit": "ukat/l",
+      "ref": "< 0,85",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "ALP",
+      "value": "1,12",
+      "unit": "ukat/l",
+      "ref": "0,67 - 2,15",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "GMT",
+      "value": "0,62",
+      "unit": "ukat/l",
+      "ref": "< 1,19",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Albumin",
+      "value": "39",
+      "unit": "g/l",
+      "ref": "35 - 52",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "CRP",
+      "value": "6",
+      "unit": "mg/l",
+      "ref": "< 5",
+      "flag": "H",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Glukóza",
+      "value": "8,1",
+      "unit": "mmol/l",
+      "ref": "3,9 - 5,6",
+      "flag": "H",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "HbA1c (IFCC)",
+      "value": "53",
+      "unit": "mmol/mol",
+      "ref": "20 - 42",
+      "flag": "H",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "Ferritin",
+      "value": "14",
+      "unit": "ug/l",
+      "ref": "30 - 400",
+      "flag": "L",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "CEA",
+      "value": "7,8",
+      "unit": "ug/l",
+      "ref": "< 5,0",
+      "flag": "H",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    },
+    {
+      "test": "CA 19-9",
+      "value": "18",
+      "unit": "kU/l",
+      "ref": "< 37",
+      "date": "2026-08-03",
+      "lab": "LabMedica Východ s.r.o.",
+      "docId": "05"
+    }
+  ],
+  "exams": [
+    {
+      "date": "2026-07-20",
+      "place": "OBLASTNÍ NEMOCNICE RYBNÍKY – Gastroenterologické oddělení – endoskopické pracoviště",
+      "type": "totální koloskopie s intubací terminálního ilea",
+      "summary": "1. Tumor rekta 7–11 cm od anu, makroskopicky karcinom – odebrána biopsie. 2. Polyp sigmatu 6 mm – polypektomie. 3. Divertikulóza sigmatu bez známek zánětu, hemoroidy I. st.",
+      "docId": "02"
+    },
+    {
+      "date": "2026-07-30",
+      "place": "Oblastní nemocnice Rybníky– RADIODIAGNOSTICKÉ ODDĚLENÍ",
+      "type": "CT hrudníku, břicha a pánve s i.v. k. l.",
+      "summary": "1. Ztluštění stěny středního rekta v délce cca 5 cm odpovídající známému tumoru, 3 mezorektální uzliny do 7 mm. K lokálnímu stagingu doporučena MR malé pánve. 2. Hypodenzní ložisko 8 mm v S7 jater nejasného charakteru – metastázu nelze vyloučit. Doporučeno doplnit MR jater s hepatospecifickou kontrastní látkou. 3. Jinak bez známek generalizace.",
+      "docId": "04"
+    },
+    {
+      "date": "2026-08-06",
+      "place": "MR centrum Medicon Plus| Zámecká 15, 571 01 Rybníky | tel. +420 602 000 371 | mr.medicon@example.cz",
+      "type": "MR malé pánve – rektální protokol (T2 HR sagitálně, axiálně a koronálně vůči ose tumoru, DWI b800), bez i.v. k. l.",
+      "summary": "Karcinom středního rekta, dolní okraj 7 cm od anu, délka 5,2 cm. mrT3c, mrN1b (3 suspektní mezorektální uzliny), MRF+ (1 mm vlevo), EMVI+, laterální uzliny negativní.",
+      "docId": "06"
+    },
+    {
+      "date": "2026-08-11",
+      "place": "Kardiologická ambulance MUDr. Ondřej Kraus",
+      "type": "Ambulantní zpráva",
+      "summary": "1. Paroxysmální fibrilace síní, t. č. sinusový rytmus, CHA2DS2-VASc 3 2. Labilní INR na warfarinu (TTR cca 45 %) 3. Arteriální hypertenze – kompenzovaná",
+      "docId": "07"
+    }
+  ],
+  "meds": [
+    {
+      "name": "Warfarin Orion",
+      "dose": "3 mg dle INR, Betaloc ZOK 50 mg 1-0-0",
+      "citation": {
+        "docId": "08",
+        "quote": "Warfarin Orion 3 mg dle INR, Betaloc ZOK 50 mg 1-0-0"
+      }
+    },
+    {
+      "name": "Tritace",
+      "dose": "5 mg 1-0-0",
+      "citation": {
+        "docId": "08",
+        "quote": "Tritace 5 mg 1-0-0"
+      }
+    },
+    {
+      "name": "Glucophage",
+      "dose": "1000 mg 1-0-1",
+      "citation": {
+        "docId": "08",
+        "quote": "Glucophage 1000 mg 1-0-1"
+      }
+    },
+    {
+      "name": "Atoris",
+      "dose": "20 mg 0-0-1, Sorbifer Durules 1-0-1",
+      "citation": {
+        "docId": "08",
+        "quote": "Atoris 20 mg 0-0-1, Sorbifer Durules 1-0-1"
+      }
+    }
+  ],
+  "referringGp": {
+    "name": "MUDr. Pavel Doležal",
+    "email": "chirurgie.onrybniky@example.cz",
+    "citations": [
+      {
+        "docId": "08",
+        "quote": "MUDr. Pavel Doležal"
+      }
+    ]
+  }
+}
