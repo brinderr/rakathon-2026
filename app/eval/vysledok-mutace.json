@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T03:40:11.477Z",
+  "generatedAt": "2026-10-17T04:47:40.177Z",
   "headline": "Zkuste to rozbít: 14/14 úprav otestováno bez chyby, 0 vymyšlených hodnot",
   "results": [
     {
@@ -7,7 +7,7 @@
       "id": "zakladni-stav",
       "label": "Beze změny (výchozí stav)",
       "ok": true,
-      "ms": 85,
+      "ms": 80,
       "checks": [
         {
           "label": "19/20 položek vyplněno",
@@ -34,7 +34,7 @@
       "id": "jine-rc",
       "label": "Jiné rodné číslo v laboratorní zprávě 10",
       "ok": true,
-      "ms": 33,
+      "ms": 31,
       "checks": [
         {
           "label": "nový rozpor: jiné rodné číslo ve zprávě 10",
@@ -57,7 +57,7 @@
       "id": "oprava-apixabanu",
       "label": "Oprava data poslední dávky apixabanu na 10. 10. (zpráva 09)",
       "ok": true,
-      "ms": 36,
+      "ms": 29,
       "checks": [
         {
           "label": "rozpor apixabanu zmizel",
@@ -80,7 +80,7 @@
       "id": "doplneny-ecog",
       "label": "Doplněný „ECOG 1“ v žádance praktika (zpráva 07)",
       "ok": true,
-      "ms": 32,
+      "ms": 27,
       "checks": [
         {
           "label": "výkonnostní stav vyplněn",
@@ -103,7 +103,7 @@
       "id": "smazana-histologie",
       "label": "Smazaná zpráva 11 (histologie)",
       "ok": true,
-      "ms": 24,
+      "ms": 25,
       "checks": [
         {
           "label": "histologie chybí",
@@ -126,7 +126,7 @@
       "id": "lokalizace-kauda",
       "label": "Ve zprávě CT (08) „kaudy“ místo „hlavy“ slinivky",
       "ok": true,
-      "ms": 38,
+      "ms": 49,
       "checks": [
         {
           "label": "nový rozpor lokalizace",
@@ -145,7 +145,7 @@
       "id": "nadpis-jmeno",
       "label": "Nadpis „Jméno a příjmení:“ místo „Pacientka:“ ve všech zprávách",
       "ok": true,
-      "ms": 26,
+      "ms": 29,
       "checks": [
         {
           "label": "jméno a příjmení nalezeno",
@@ -172,7 +172,7 @@
       "id": "nadpis-pacient",
       "label": "Nadpis „Pacient:“ místo „Pacientka:“ ve všech zprávách",
       "ok": true,
-      "ms": 25,
+      "ms": 31,
       "checks": [
         {
           "label": "jméno nalezeno",
@@ -195,7 +195,7 @@
       "id": "prijmeni-velkymi",
       "label": "Příjmení velkými písmeny a první („PROCHÁZKOVÁ Alena“, zpráva 07)",
       "ok": true,
-      "ms": 29,
+      "ms": 27,
       "checks": [
         {
           "label": "jméno a příjmení správně rozděleno",
@@ -210,7 +210,7 @@
       "id": "bez-veku",
       "label": "Smazaný věk i datum narození",
       "ok": true,
-      "ms": 29,
+      "ms": 107,
       "checks": [
         {
           "label": "věk chybí (nepočítá se z rodného čísla)",
@@ -225,7 +225,7 @@
       "id": "bez-kontaktni-osoby",
       "label": "Smazaná kontaktní osoba",
       "ok": true,
-      "ms": 25,
+      "ms": 30,
       "checks": [
         {
           "label": "kontaktní osoba chybí",
@@ -240,7 +240,7 @@
       "id": "novak-strana-opravena",
       "label": "Novák: bronchoskopie opravena na pravou stranu (zpráva 06)",
       "ok": true,
-      "ms": 14,
+      "ms": 16,
       "checks": [
         {
           "label": "rozpor strany zmizel",
@@ -255,7 +255,7 @@
       "id": "novak-rc-opraveno",
       "label": "Novák: opravené rodné číslo v laboratoři (zpráva 04)",
       "ok": true,
-      "ms": 13,
+      "ms": 19,
       "checks": [
         {
           "label": "rozpor rodného čísla zmizel",

@@ -1,7 +1,7 @@
 # Pitch (česky) – výzva VZP „Cesta pacienta bez ztráty informací“
 
 > **Hlavní věta:** „Aby se nic neztratilo a bylo jasné, kdo je na tahu.“
-> Neříkáme „AI vytěží dokumenty“. Říkáme: **pravidla + ověřené citace, AI navrhuje volný text.**
+> Neříkáme „AI vytěží dokumenty“. Říkáme: **pravidla + ověřené citace, AI jen přeformuluje volný text z vět lékařů; diagnózu přebíráme od lékaře doslovně.**
 
 **Kde a jak dlouho (ověřit u organizátorů):** v sobotu 14:00–16:00 chodí zadavatelé VZP k jednotlivým stolům (žádné pódium) →
 video (max 1:30, VIDEO.md: problém Aleny + řešení ve zkratce) a pak **~2 minuty živé demo na notebooku, kde si porotce může sám něco změnit**.
@@ -36,17 +36,17 @@ telefonem a e-mailem. A v těch zprávách jsou díry a rozpory, které musí n�
 
 ## 2:00–2:30 · Čísla (Maťo)
 
-„Měříme to. Na ručně ověřené kontrolní sadě má Alena **20 z 20 položek, 17 ze 17 pastí a 0 vymyšlených hodnot** – stejně s AI
-i bez ní, protože čísla a data berou pravidla; AI jen navrhuje volný text a kód ho ověří.
+„Měříme to. Na ručně ověřené kontrolní sadě má Alena **20 z 20 položek, 17 ze 17 pastí a 0 čísel bez opory ve zprávách** – stejně s AI
+i bez ní, protože čísla a data berou pravidla; AI jen navrhuje volný text a kód ho ověří. Význam vět potvrzuje člověk.
 Kontrolní sady jsme ale psali sami. Proto jsme nechali agenta, který naše pravidla neviděl, napsat **třetího pacienta naslepo**:
-motor dal **10 z 20 položek a 1 ze 4 pastí**. Co neznal, nechal prázdné – nic klinického si nevymyslel, jen jednou ukázal název souboru místo názvu vyšetření. Pravidla jsme pak zobecnili (20 z 20), ale poctivé číslo je to první.
+motor dal **10 z 20 položek a 1 ze 4 pastí**. Co neznal, nechal prázdné; jediná hodnota bez opory byl název souboru místo názvu vyšetření. Pravidla jsme pak zobecnili (20 z 20), ale poctivé číslo je to první. Jsou to fiktivní pacienti, ne klinická validace.
 A když jsme AI záměrně podstrčili vymyšlené stadium a čísla, **kód zahodil všechny 4 vymyšlené návrhy** a jediný správný přijal.“
 
 ## 2:30–2:45 · Cesta k realitě (Maťo)
 
 1. „V pilotu budeme brát to, co koordinátorovi reálně chodí: telefon, e-mail na společnou adresu a eZprávu – metodický pokyn MZ pro centra HPB od 1. 9. 2026 uvádí jako kontakt právě univerzální e-mail a telefon koordinátora.“
 2. „Pilot je jedno KOC: tři měsíce bez rozhraní, podklad jako PDF do NIS a měření; až potom rozhraní. Lékař se nic nového neučí a nedostane žádný nový účet.“
-3. „AI má běžet v EU (Azure OpenAI); v prototypu zatím odpověděl náhradní model na stejný pseudonymizovaný prompt. Rodná čísla ani telefony k AI neodejdou – to náš kód dělá už dnes. Pokud bude vystavení eŽádanky povinné (zatím je to návrh novely), chceme se napojit přes certifikát KOC – zda to jde, ověřujeme s NCEZ.“
+3. „AI je volitelná: v EU, nebo lokálně v nemocnici; v prototypu zatím odpověděl náhradní model na stejný pseudonymizovaný prompt. Rodná čísla, telefony a jména před voláním AI nahradíme tokeny – i tak jde stále o osobní údaje. Pokud bude vystavení eŽádanky povinné (zatím je to návrh novely), chceme se napojit přes certifikát KOC – zda to jde, ověřujeme s NCEZ.“
 
 ## 2:45–3:00 · Prosba (Maťo)
 
@@ -61,6 +61,7 @@ díry nalezené před konziliem, odložená konzilia a minuty koordinátora.
 
 ## Neříkat
 „ostrý režim Azure“, „AI složí podklad“, „napojeno na NIS“, „AI rozhodne“, „GDPR compliant“, „nasazeno“, „VZP hradí“, „léky do kdy“,
+„0 halucinací“, „nic si nevymyslí“, „AI navrhuje diagnózu“, „RČ k AI neodejde“, „není zdravotnický prostředek“ bez „podle našeho výkladu“,
 „uzel VZP“ jako hotová věc, Missouri −30 % jako náš výsledek, dánské a holandské lhůty jako české pravidlo, „aplikace sama eskaluje“,
 „žádosti na 5 pracovišť jedním klikem“. Žádné skóre naléhavosti, žádné doporučení léčby.
 
@@ -71,8 +72,8 @@ díry nalezené před konziliem, odložená konzilia a minuty koordinátora.
 | Co když AI halucinuje? | AI jen navrhuje. Program ověří, že každá citace je ve zprávě doslova a že každé číslo v hodnotě je v citaci; jinak návrh zahodí a použije větu přímo ze zprávy. Test se záměrně chybnou odpovědí (stadium T3N1M0, „úbytek 8 kg“, citace ze zprávy po konziliu, vymyšlené přání): všechny 4 vymyšlené návrhy zamítnuté, jediný správný přijat (`app/eval/vysledok-test-halucinacii.json`). |
 | Jak jste to měřili? | Ručně ověřená správná odpověď pro 20 položek + pasti, každý důkaz ověřený doslova v textu; `npm run eval` to přepočítá při každé změně. Kontrolní sady psal náš tým, proto slepý test na třetím pacientovi od agenta bez přístupu k pravidlům. |
 | Kolik toho dělá AI? | Čísla přesnosti vycházejí stejně bez AI – položky a pasti čtou pravidla. AI navrhuje pět volných textů (diagnóza, epikríza, otázka na MDT, symptomy, jiná sdělení) a kód je ověřuje. |
-| Kam jdou data pacienta? | Cílově Azure OpenAI v EU; v prototypu náhradní model a jen fiktivní data. Před voláním nahradíme rodné číslo, telefony, e-maily, adresu, datum narození a jméno pacienta i kontaktní osoby tokeny ([RČ_1] …). Jména lékařů zatím zůstávají. |
-| Je to zdravotnický prostředek (MDR)? | Podle našeho výkladu pokynu MDCG 2019-11 ne: neděláme diagnózu, skóre naléhavosti ani doporučení léčby – sbíráme, ověřujeme úplnost a hlídáme termíny. Definitivně to posoudí regulátor. |
+| Kam jdou data pacienta? | AI je volitelná: v EU, nebo lokálně v nemocnici; v prototypu náhradní model a jen fiktivní data. Před voláním nahradíme rodné číslo, telefony, e-maily, adresu, datum narození a jméno pacienta i kontaktní osoby tokeny ([RČ_1] …). Jména lékařů zatím zůstávají a i pseudonymizovaná data jsou stále osobní údaje (DPIA dělá nemocnice). |
+| Je to zdravotnický prostředek (MDR)? | Podle našeho výkladu pokynu MDCG 2019-11 ne: neděláme diagnózu, skóre naléhavosti ani doporučení léčby – sbíráme, ověřujeme úplnost a hlídáme termíny. Upozornění na léky netvoříme, jen citujeme lékaře („Upozornění lékaře ve zprávě 07“) – vlastní lékové upozornění je v MDCG příkladem prostředku. Definitivně to posoudí regulátor. |
 | Proč ne portál pro praktika? | Portál = nový účet, heslo a MFA; elektronické doporučenky v Anglii (e-RS) roky stály kolem 52 %, dokud je nezapnula platba. Praktik u nás nic nového nedělá – dostane jen potvrzení přijetí a seznam, co chybí. |
 | Jak se napojíte na nemocnici? | Fáze 0 bez rozhraní (společná schránka, PDF do NIS), pak rozhraní přes integrační engine nemocnice. Výstup umíme namapovat na FHIR (DocumentReference, Provenance s citací), export zatím nemáme. |
 | Funguje to i na jinou diagnózu? | Druhý fiktivní pacient má karcinom plic, jinou pojišťovnu (111), žádanku od specialisty a jiné pasti: 20/20 po úpravě pravidel (před ní 18/20). Třetího pacienta (karcinom rekta, úplně jiný formát zpráv) napsal agent bez přístupu k pravidlům: naslepo 10/20 položek a 1/4 pastí, po zobecnění pravidel 20/20 a 4/4 – to už ale slepé není. |

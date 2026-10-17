@@ -670,6 +670,29 @@ export function impossibleDates(docs: Doc[]): DateConflict[] {
   return out;
 }
 
+// ---------- doctors' warnings (quoted, never our own) ----------
+
+/** A warning written by a doctor ("Upozorňuji na …", "Upozornění: …"). The rule looks for the doctor's words, not for
+ *  drug names: an own drug-interaction alert is an example of a medical device in MDCG 2019-11 rev.1, annex I. */
+const WARNING_START = /^(Upozorňuj(?:i|eme|e)\b|Upozornění\b|UPOZORNĚNÍ\b|Pozor\s*:|POZOR\b)/u;
+const WARNING_LABEL = /^(Upozornění|UPOZORNĚNÍ|Pozor|POZOR)\s*:?/;
+
+export interface DoctorWarning { doc: Doc; quote: string }
+
+export function doctorWarnings(included: Doc[]): DoctorWarning[] {
+  const out: DoctorWarning[] = [];
+  for (const doc of included) {
+    for (const s of sentences(doc.text)) {
+      if (!WARNING_START.test(s)) continue;
+      // "UPOZORNĚNÍ:" alone on its line → the warning is the line below it
+      const text = /^\S+\s*:?$/.test(s) ? (section(doc.text, /^UPOZORNĚNÍ/) ?? labeledBlock(doc.text, WARNING_LABEL))?.split('\n')[0] : s;
+      const quote = text ? locateQuote(doc.text, text) : null;
+      if (quote && !out.some((w) => w.doc.id === doc.id && w.quote === quote)) out.push({ doc, quote });
+    }
+  }
+  return out;
+}
+
 // ---------- referral pre-check ----------
 
 export function referralPrecheck(referral: Doc): Finding[] {
@@ -687,9 +710,9 @@ export function referralPrecheck(referral: Doc): Finding[] {
   }
   if (!/\bECOG\b|Karnofsk|\bPS\s?[0-4]\b/.test(t)) f.push({ id: 'ecog-missing', severity: 'missing', fieldKey: 'performance', text: 'Chybí výkonnostní stav (ECOG/Karnofsky).', citations: [] });
   if (!/\S+@\S+\.\S+/.test(t)) f.push({ id: 'emails-missing', severity: 'info', text: 'Chybí e-mail pacienta i odesílajícího lékaře.', citations: [] });
-  const request = section(t, /^ŽÁDOST/) ?? t;
-  const anti = request.split(/(?<=\.)\s+/).find((s) => /(apixaban|warfarin|rivaroxaban|dabigatran|edoxaban|antikoagula)/i.test(s));
-  if (anti) f.push({ id: 'anticoagulation', severity: 'info', text: 'Pacient užívá lék na ředění krve – před invazivním výkonem je třeba postup podle lékaře.', citations: cites(cite(referral, anti.trim())) });
+  for (const w of doctorWarnings([referral])) {
+    f.push({ id: 'doctor-warning', severity: 'info', text: `Upozornění lékaře (zpráva ${referral.id}): „${w.quote}“`, citations: [{ docId: referral.id, quote: w.quote }] });
+  }
   const consent = t.match(/[^.\n]*[Ss]ouhlasí se sdílením[^.\n]*\./);
   if (consent) f.push({ id: 'consent-sharing', severity: 'info', text: 'Souhlas se sdílením informací s blízkou osobou je v žádance.', citations: cites(cite(referral, consent[0].trim())) });
   return f;

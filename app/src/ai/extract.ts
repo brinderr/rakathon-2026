@@ -332,6 +332,17 @@ export async function extractHandover(opts: ExtractOptions): Promise<ExtractionR
     }
   }
   findings.push(...R.plannedButMissing(included, asOf));
+  // doctors' warnings: quoted verbatim with the report number, never in our own words (MDCG 2019-11)
+  const warnings = new Map<string, number>();
+  for (const w of R.doctorWarnings(included)) {
+    const n = (warnings.get(w.doc.id) ?? 0) + 1;
+    warnings.set(w.doc.id, n);
+    findings.push({
+      id: `doctor-warning-${w.doc.id}${n > 1 ? `-${n}` : ''}`, severity: 'info', fieldKey: 'other',
+      text: `Upozornění lékaře ve zprávě ${w.doc.id} (${czDate(w.doc.date)}) – převzato doslovně.`,
+      citations: [{ docId: w.doc.id, quote: w.quote }],
+    });
+  }
   if (excluded.length) {
     const many = excluded.length > 1;
     findings.push({

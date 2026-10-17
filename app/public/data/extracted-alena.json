@@ -2,7 +2,7 @@
   "meta": {
     "caseId": "alena",
     "asOf": "2026-10-21",
-    "generatedAt": "2026-10-17T03:40:32.289Z",
+    "generatedAt": "2026-10-17T04:47:17.182Z",
     "promptVersion": "handover-v1",
     "mode": "rules+llm",
     "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
@@ -746,6 +746,18 @@
       ]
     },
     {
+      "id": "doctor-warning-07",
+      "severity": "info",
+      "fieldKey": "other",
+      "text": "Upozornění lékaře ve zprávě 07 (2. 10. 2026) – převzato doslovně.",
+      "citations": [
+        {
+          "docId": "07",
+          "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa."
+        }
+      ]
+    },
+    {
       "id": "after-mdt",
       "severity": "info",
       "text": "Zprávy 12, 13 vznikly po 21. 10. 2026 – do podkladu pro konzilium nepatří (zadání VZP: jen to, co bylo známo k datu konzilia).",
@@ -809,7 +821,7 @@
         "severity": "info"
       },
       {
-        "text": "Pacient užívá lék na ředění krve – před invazivním výkonem je třeba postup podle lékaře.",
+        "text": "Upozornění lékaře (zpráva 07): „Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa.“",
         "severity": "info"
       },
       {
