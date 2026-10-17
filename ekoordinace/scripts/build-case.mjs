@@ -126,6 +126,7 @@ const data = {
     diagnosis,
     phone: PATIENT.phone,
     contactPerson: RELATIVE,
+    gp: GP,
   },
   stats: {
     fields: r.meta.stats.fields,

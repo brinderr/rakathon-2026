@@ -5,9 +5,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import data from '../../data/alena.json';
 import { Icon } from '../../ui/Icon';
-import { czDate, daysBetween, inDays, nb, telHref } from '../../ui/format';
+import { czDate, daysBetween, inDays, nb } from '../../ui/format';
 import { Journey } from './Journey';
-import type { Step } from './types';
+import { PhoneContacts } from './PhoneContacts';
+import type { Person, Step } from './types';
 import './pacient.css';
 
 const SOON = 'Připravujeme v dalším kroku';
@@ -16,6 +17,13 @@ const nowStep = steps.find((s) => s.status === 'now') ?? steps[0];
 
 /** Number of open to-dos, for the bell in the top bar. */
 export const openTasks = nowStep.todo?.length ?? 0;
+
+// whom the coordinator calls about this patient: the patient, the contact person, the GP (numbers from the reports)
+const phonePeople: Person[] = [
+  { role: data.patient.sex === 'žena' ? 'Pacientka' : 'Pacient', name: data.patient.name, phone: data.patient.phone },
+  ...(data.patient.contactPerson ? [data.patient.contactPerson] : []),
+  data.patient.gp,
+];
 
 function PatientHead() {
   const p = data.patient;
@@ -28,10 +36,9 @@ function PatientHead() {
         <div><dt>{female ? 'Narozena' : 'Narozen'}</dt><dd>{nb(p.born)}<span className="soft"> · {p.age}</span></dd></div>
         <div><dt>Pojišťovna</dt><dd title={p.insurer.name}>{p.insurer.short} <span className="code">{p.insurer.code}</span></dd></div>
         <div><dt>Diagnóza</dt><dd><span className="code">{p.diagnosis.code}</span> {p.diagnosis.text}<span className="soft"> · {nb(p.diagnosis.source)}</span></dd></div>
-        {p.phone && <div><dt>Telefon</dt><dd><a href={telHref(p.phone)}>{p.phone}</a></dd></div>}
       </dl>
       <div className="head-actions">
-        <button type="button" className="round-btn" disabled title={`Zapsat telefonát – ${SOON.toLowerCase()}`} aria-label="Zapsat telefonát"><Icon name="phone" size={18} /></button>
+        <PhoneContacts people={phonePeople} />
         <button type="button" className="round-btn" disabled title={`Vyžádat zprávu – ${SOON.toLowerCase()}`} aria-label="Vyžádat zprávu"><Icon name="note" size={18} /></button>
         <button type="button" className="round-btn" disabled title={`Napsat praktikovi – ${SOON.toLowerCase()}`} aria-label="Napsat praktikovi"><Icon name="message" size={18} /></button>
       </div>

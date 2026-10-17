@@ -18,6 +18,7 @@ const PATHS: Record<string, string> = {
   right: 'm9.5 6 6 6-6 6',
   up: 'm6.5 14.5 5.5-5.5 5.5 5.5',
   down: 'm6.5 9.5 5.5 5.5 5.5-5.5',
+  copy: 'M9.5 8.5h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1Zm-4 7h-1a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1',
 };
 
 export function Icon({ name, size = 20 }: { name: keyof typeof PATHS | string; size?: number }) {

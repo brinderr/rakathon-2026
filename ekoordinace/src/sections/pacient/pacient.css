@@ -11,6 +11,31 @@
 .head-actions { grid-area: actions; display: flex; gap: .5rem; }
 .round-btn { width: 2.6rem; height: 2.6rem; display: grid; place-items: center; border-radius: var(--r-ctl); border: 0; background: var(--red-50); color: var(--red); cursor: pointer; }
 .round-btn:disabled { cursor: default; opacity: .5; }
+.round-btn[aria-expanded="true"] { background: var(--red); color: #fff; }
+
+/* phone popup under the phone button */
+.phone-contacts { position: relative; }
+.popover {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; width: 20rem; display: grid; gap: .35rem;
+  padding: .85rem 1rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: var(--shadow);
+}
+.contact-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.contact-list li { display: grid; gap: .2rem; padding: .65rem 0; border-top: 1px solid var(--line); }
+.contact-list li:first-child { border-top: 0; padding-top: .3rem; }
+.contact-list li:last-child { padding-bottom: 0; }
+.contact-who { display: grid; line-height: 1.3; }
+.contact-who small { font-size: .75rem; color: var(--muted); }
+.contact-who b { font-weight: 600; }
+.contact-line { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.contact-phone { font-weight: 600; font-size: 1rem; color: var(--ink); text-decoration: none; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.contact-phone:hover { color: var(--red); }
+.copy-btn {
+  display: inline-flex; align-items: center; gap: .3rem; padding: .3rem .6rem; cursor: pointer; white-space: nowrap;
+  border: 1px solid var(--line); border-radius: var(--r-ctl); background: var(--surface); color: var(--ink-2); font-size: .8rem; font-weight: 600;
+}
+.copy-btn:hover { border-color: var(--red-200); color: var(--red); }
+.copy-btn.done { background: var(--ok-bg); border-color: transparent; color: var(--ok); }
+.contact-list em { font-style: normal; font-size: .78rem; color: var(--muted); }
 
 /* key facts: a small label above a calm value, codes in mono */
 .facts { grid-area: facts; display: flex; flex-wrap: wrap; gap: .4rem 2.25rem; margin: 0; }
@@ -110,6 +135,7 @@
   .patient-head { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "avatar name" "facts facts" "actions actions"; }
   .patient-head h1 { font-size: 1.5rem; }
   .facts { gap: .5rem 1.5rem; margin-top: .25rem; }
+  .popover { right: auto; left: 0; width: min(20rem, calc(100vw - 32px)); }
 }
 @media (max-width: 560px) {
   /* the stepper turns into a short vertical list */
