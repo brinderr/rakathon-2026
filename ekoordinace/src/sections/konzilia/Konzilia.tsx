@@ -123,11 +123,10 @@ export function Konzilia() {
 
   return (
     <div className="konzilia">
-      <nav className="crumbs" aria-label="Drobečková navigace"><span className="crumb-now">Konzilia</span></nav>
       <div className="list-head kz-page-head">
         <div>
           <h1>Konzilia</h1>
-          <p className="muted">{upcoming.length ? `Nejbližší ${czDate(upcoming[0])} · ${inDays(daysBetween(SIM_TODAY, upcoming[0]))}` : 'Žádné naplánované konzilium'}</p>
+          {!upcoming.length && <p className="muted">Žádné naplánované konzilium</p>}
         </div>
       </div>
       {loading > 0 && <p className="muted kz-loading">Zpracovávám zprávy pacientů…</p>}
