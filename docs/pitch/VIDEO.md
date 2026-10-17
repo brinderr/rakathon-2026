@@ -17,13 +17,16 @@ klikáme naživo v aplikaci („Zkuste to rozbít“). Totéž video dáme do fo
 | 5 | 0:36–0:44 | Zpráva 09 (protokol biopsie): zvýrazněno „Datum výkonu: 12. 10. 2026“ a „poslední dávka 18. 10. 2026“ | „V protokolu biopsie je poslední dávka léku na ředění krve zapsaná šest dní po výkonu.“ | **apixaban: 18. 10. × výkon 12. 10.** |
 | 6 | 0:44–1:00 | Zpráva 11 (histologie): zvýrazněno „odběr 20. 10. 2026“ a „Datum vydání: 19. 10. 2026“; pod tím osa „biopsie 12. 10. → slíbeno do 3 pracovních dnů → vydáno 19. 10.“ | „Histologie je vydaná den před odběrem. A měla přijít do tří pracovních dnů – přišla za sedm. Na tahu byla patologie, ale hlídat to musel někdo v hlavě.“ | **vydáno 19. 10. × odběr 20. 10.** |
 
-## Část 2 · Řešení ve zkratce (1:00–1:30)
+## Část 2 · eKoordinace ve zkratce (1:00–1:30) – natočit z https://ekoordinace.vercel.app
 
-| # | Čas | Na obrazovce | Hlas (česky) | Text na obrazovce |
+Před natáčením: Pacienti → **Obnovit demo** (Alena ve výchozím stavu).
+
+| # | Čas | Na obrazovce (klikání v aplikaci) | Hlas (česky) | Text na obrazovce |
 |---|---|---|---|---|
-| 7 | 1:00–1:10 | Aplikace: **Zpracování naživo** – zprávy přicházejí jedna po druhé, položky se plní, klik na hodnotu ukáže zvýrazněnou větu v původní zprávě | „Náš nástroj dá všechno na jednu obrazovku. Zprávy zpracuje hned, jak přijdou, a ke každému údaji ukáže přesnou větu ze zdroje.“ | **Každý údaj se zdrojem** |
-| 8 | 1:10–1:20 | Aplikace: červené pasti (ECOG chybí, apixaban, histologie) → **Fronta** se sloupcem „kdo je na tahu“ a termínem | „Co chybí nebo si odporuje, je hned vidět. A vždycky víte, kdo je na tahu a do kdy.“ | **Co chybí, je vidět · kdo je na tahu** |
-| 9 | 1:20–1:30 | Bílá karta s názvem projektu a sloganem, dole pata | „Aby se nic neztratilo a bylo jasné, kdo je na tahu. Prototyp, fiktivní data.“ | **Aby se nic neztratilo a bylo jasné, kdo je na tahu.** · Rakathon 2026 · výzva VZP · prototyp, fiktivní data, není zdravotnický prostředek |
+| 7 | 1:00–1:08 | Pacienti → Alena → **Přehled**: cesta v 5 krocích, „Teď na řadě: Podklad pro konzilium“, 4 úkoly s kontakty a telefony | „V eKoordinaci má koordinátorka celou cestu Aleny na jedné obrazovce – co je hotové, co je na řadě a koho zavolat.“ | **Co chybí, je vidět · koho volat** |
+| 8 | 1:08–1:19 | U ECOG **Doplnit údaj** → zapíše „ECOG 1“ od praktika → úkol zmizí; **Podklad**: „Nejdřív vyřešte 3 body“ → (střih) vše vyřešeno → **Potvrdit** → „Podklad MDT – Alena Procházková – 21. 10. 2026.pdf“ | „Každý údaj má větu ze zprávy. Co chybí, doplní telefonátem, rozpor ověří – a teprve pak lékař potvrdí podklad pro konzilium.“ | **Bez ověření se nepotvrdí** |
+| 9 | 1:19–1:25 | **Závěr** → **Odeslat praktikovi** → Odesláno → Doručeno → Přečteno | „Závěr konzilia dostane praktik zabezpečeně a s doručenkou.“ | **Závěr praktikovi s doručenkou** |
+| 10 | 1:25–1:30 | Bílá karta: logo K + **eKoordinace**, dole pata | „eKoordinace. Aby se nic neztratilo a bylo jasné, kdo je na tahu. Prototyp, fiktivní data.“ | **eKoordinace** · Aby se nic neztratilo a bylo jasné, kdo je na tahu. · Rakathon 2026 · výzva VZP · prototyp, fiktivní data, není zdravotnický prostředek |
 
 ## Celý text pro ElevenLabs (jedním kusem)
 
@@ -33,9 +36,10 @@ klikáme naživo v aplikaci („Zkuste to rozbít“). Totéž video dáme do fo
 > Konziliu chybí výkonnostní stav pacientky. Ve zprávách je jen slovo „soběstačná“ – to není skóre.
 > V protokolu biopsie je poslední dávka léku na ředění krve zapsaná šest dní po výkonu.
 > Histologie je vydaná den před odběrem. A měla přijít do tří pracovních dnů – přišla za sedm. Na tahu byla patologie, ale hlídat to musel někdo v hlavě.
-> Náš nástroj dá všechno na jednu obrazovku. Zprávy zpracuje hned, jak přijdou, a ke každému údaji ukáže přesnou větu ze zdroje.
-> Co chybí nebo si odporuje, je hned vidět. A vždycky víte, kdo je na tahu a do kdy.
-> Aby se nic neztratilo a bylo jasné, kdo je na tahu. Prototyp, fiktivní data.
+> V eKoordinaci má koordinátorka celou cestu Aleny na jedné obrazovce – co je hotové, co je na řadě a koho zavolat.
+> Každý údaj má větu ze zprávy. Co chybí, doplní telefonátem, rozpor ověří – a teprve pak lékař potvrdí podklad pro konzilium.
+> Závěr konzilia dostane praktik zabezpečeně a s doručenkou.
+> eKoordinace. Aby se nic neztratilo a bylo jasné, kdo je na tahu. Prototyp, fiktivní data.
 
 ## Ověřené údaje (z `source.json`)
 - Bolesti od poloviny srpna 2026 (zpráva 07), 63 let (07), první návštěva u praktika 1. 9., konzilium 21. 10. = 50 dní; 13 zpráv 20. 7.–27. 10. ze 7 zařízení, z toho 2 KOC (08, 12 = KOC 1; 09–11, 13 = KOC 2).
@@ -44,6 +48,6 @@ klikáme naživo v aplikaci („Zkuste to rozbít“). Totéž video dáme do fo
 - Kanály koordinátorek (telefon, e-mail, část eZpráva): FN Olomouc, Bulovka, FN HK – `docs/kontext/raw-audit-hry.md`.
 
 ## Technické poznámky
-- Záběry 7–8 nahrát z aplikace (Chrome, okno 1920 × 1080, zoom 110 %, zvýrazněný kurzor) až po zmrazení kódu v 10:30.
+- Záběry 7–9 nahrát z https://ekoordinace.vercel.app (Chrome, okno 1920 × 1080, zoom 110 %, zvýrazněný kurzor); předtím Pacienti → **Obnovit demo**.
 - Záběry 1–6 mohou být jednoduché animace nad skutečnými zprávami (výřez textu se zvýrazněním) – nic nevymýšlet, jen ukazovat.
 - Export MP4 H.264; YouTube neveřejné nebo Google Drive → odkaz do formuláře.

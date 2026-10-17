@@ -70,7 +70,8 @@ Každá časť je vo vlastnom priečinku, kostra s popisom je pushnutá. Pred pu
 
 ## SPOLU
 
-- [ ] **11:45** nahrať video. Poradie dema: žiadanka (B1) → fronta (B2) → prehľad Aleny → údaje a telefonát ECOG (2)
-  → plán cesty (B3) → podklad PDF (4–5) → záver a doručenka (6–7)
+- [ ] **11:45** nahrať video podľa `docs/pitch/VIDEO.md` (časť 2 = klikanie v eKoordinaci; predtým Pacienti → **Obnovit demo**).
+  Poradie: Přehled Aleny (úlohy + kontakty) → Údaje: Doplnit údaj ECOG → Podklad: „Nejdřív vyřešte…“ → Potvrdit → PDF
+  → Závěr: Odeslat praktikovi → doručenka. Bruno doplní žiadanku (B1) a frontu (B2), ak sú hotové.
 - [ ] **12:15** formulár na submit.rakathon.cz: tím, mená, demo https://ekoordinace.vercel.app, video, titulný obrázok
 - [ ] **12:30** odoslané
