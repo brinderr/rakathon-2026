@@ -1,13 +1,94 @@
-/* Tab "Zprávy" (owner: Bruno). Uses the shared DocList rows from Journey (Matej) and the shared tokens. */
-.zp { display: grid; gap: 1.25rem; }
+/* Tab "Zprávy" (owner: Bruno). Uses the shared DocList rows from Journey (Matej) and the shared tokens.
+   Two columns: the list on the left, the structured report on the right; one under the other on narrow screens. */
+.zp { display: grid; grid-template-columns: minmax(320px, 5fr) minmax(0, 7fr); gap: 1.25rem; align-items: start; }
+.zp-side { display: grid; gap: 1.25rem; min-width: 0; }
 .zp-intro { margin: .35rem 1.25rem .8rem; max-width: 72ch; line-height: 1.45; }
 .zp-filter { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0 1.25rem .8rem; }
 .zp-pill { font: 600 .82rem var(--sans); padding: .3rem .7rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink-2); cursor: pointer; }
 .zp-pill:hover { border-color: var(--red-200); color: var(--red); }
 .zp-pill.on { background: var(--ink); border-color: var(--ink); color: #fff; }
 .zp-pill:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
-.zp-later { list-style: none; margin: 0; padding: 0 0 .5rem; }
-.zp-later li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .8rem; align-items: center; padding: .65rem 1.25rem; border-top: 1px solid var(--line); color: var(--ink-2); }
+
+/* the selected report in the list */
+.zp-list .docs { padding: .35rem .5rem .5rem; }
+.zp-list .doc-row[aria-current="true"] { background: var(--red-50); box-shadow: inset 2px 0 0 var(--red); }
+.zp-list .doc-row[aria-current="true"] .doc-main b { color: var(--red); }
+
+/* after the MDT */
+.zp-later { list-style: none; margin: 0; padding: 0 .5rem .5rem; }
+.zp-later li { border-top: 1px solid var(--line); }
+.zp-later-row {
+  width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .8rem; align-items: center;
+  padding: .65rem .75rem; background: none; border: 0; border-radius: var(--r-ctl); text-align: left; color: var(--ink-2); cursor: pointer;
+}
+.zp-later-row:hover { background: var(--soft); }
+.zp-later-row[aria-current="true"] { background: var(--conf-bg); box-shadow: inset 2px 0 0 var(--conf); }
 .zp-code { font: 600 .7rem var(--mono); padding: .2rem .4rem; border: 1px solid var(--line); border-radius: var(--r-chip); color: var(--muted); }
-.zp-what { display: grid; gap: .1rem; }
+.zp-what { display: grid; gap: .1rem; min-width: 0; }
 .zp-what b { font-weight: 600; color: var(--ink-2); }
+
+/* ---------- the structured report ---------- */
+.zp-detail { padding: 1.1rem 1.25rem 1.35rem; display: grid; gap: 1.1rem; min-width: 0; }
+.zp-detail:focus { outline: none; }
+.zp-d-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .9rem; align-items: start; }
+.zp-d-name { display: grid; gap: .15rem; min-width: 0; }
+.zp-d-name .eyebrow { display: flex; align-items: center; gap: .5rem; }
+.zp-d-name .eyebrow .chip { text-transform: none; letter-spacing: 0; }
+.zp-d-name h3 { margin: 0; font-size: 1.2rem; font-weight: 700; line-height: 1.3; }
+.zp-open { white-space: nowrap; }
+
+.zp-meta { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, auto)); justify-content: start; gap: .5rem 2rem; padding: .75rem 0; border-block: 1px solid var(--line); }
+.zp-meta div { display: grid; gap: .1rem; min-width: 0; }
+.zp-meta dt { font: 500 .7rem var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.zp-meta dd { margin: 0; font-size: .9rem; color: var(--ink); }
+
+.zp-part { display: grid; gap: .55rem; }
+.zp-part h4 { margin: 0; display: flex; align-items: center; gap: .5rem; font-size: 1rem; font-weight: 700; }
+.zp-count { font: 600 .72rem/1.6 var(--sans); padding: 0 .45rem; border-radius: var(--r-chip); background: var(--soft); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); }
+.zp-part-hint { margin-top: -.25rem; }
+.zp-empty { padding: .6rem .75rem; background: var(--soft); border-radius: var(--r-ctl); }
+
+.zp-points { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.zp-points li { display: grid; gap: .2rem; }
+.zp-point-label { font: 500 .7rem var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.zp-points .quote { font-size: .92rem; line-height: 1.45; color: var(--ink); }
+
+.zp-taken { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
+.zp-taken li { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr) auto; gap: .2rem .9rem; align-items: baseline; padding: .5rem 0; border-bottom: 1px solid var(--line); }
+.zp-taken-label { font-weight: 600; font-size: .9rem; line-height: 1.35; color: var(--ink); text-decoration: none; }
+.zp-taken-label:hover { color: var(--red); text-decoration: underline; }
+.zp-taken-value { grid-column: 2; grid-row: 1; font-size: .875rem; line-height: 1.45; color: var(--ink-2); white-space: pre-line; }
+.zp-taken .chip { grid-column: 3; grid-row: 1; }
+
+.zp-issues { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.zp-issues li { display: grid; gap: .4rem; padding: .75rem .9rem; border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: var(--r-ctl); }
+.zp-issues li.conf { border-left-color: var(--conf); }
+.zp-issues li.miss { border-left-color: var(--miss); }
+.zp-issues li.ok { border-left-color: var(--ok); }
+.zp-issue-head { display: flex; align-items: baseline; gap: .55rem; flex-wrap: wrap; }
+.zp-issue-head b { font-weight: 600; }
+.zp-issue-why { font-size: .875rem; color: var(--ink-2); line-height: 1.45; }
+.zp-issue-done { display: flex; gap: .35rem; align-items: flex-start; font-size: .85rem; color: var(--ok); }
+.zp-issue-done .icon { margin-top: .2rem; }
+.zp-issue-links { display: flex; flex-wrap: wrap; gap: .25rem 1.1rem; }
+.zp-issue-links a.link { text-decoration: none; }
+
+.zp-note { display: flex; gap: .6rem; align-items: flex-start; padding: .75rem .9rem; border-radius: var(--r-ctl); font-size: .9rem; line-height: 1.45; }
+.zp-note.conf { background: var(--conf-bg); color: var(--conf); }
+.zp-note .icon { margin-top: .15rem; }
+
+/* ---------- narrower screens: the detail goes under the list ---------- */
+@media (max-width: 1100px) {
+  .zp { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 620px) {
+  .zp-detail { padding: 1rem 1rem 1.2rem; }
+  .zp-d-head { grid-template-columns: auto minmax(0, 1fr); }
+  .zp-open { grid-column: 1 / -1; justify-content: center; }
+  .zp-meta { grid-template-columns: minmax(0, 1fr); }
+  .zp-taken li { grid-template-columns: minmax(0, 1fr) auto; }
+  .zp-taken-value { grid-column: 1 / -1; grid-row: 2; }
+  .zp-taken .chip { grid-column: 2; }
+  .zp-later-row { grid-template-columns: auto minmax(0, 1fr); }
+  .zp-later-row .mono { grid-column: 2; }
+}
