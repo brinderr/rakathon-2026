@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { DEFAULT_SECTION, SECTIONS } from './sections';
 import { liveCase } from './sections/pacient/live';
+import { Search } from './sections/pacient/Search';
 import { useCase } from './state/caseStore';
 import { DEMO_ID, demoCase } from './state/patients';
 import { Icon } from './ui/Icon';
@@ -58,10 +59,7 @@ export function App() {
       </aside>
       <div className="content">
         <header className="topbar">
-          <label className="search" title={SOON}>
-            <Icon name="search" size={18} />
-            <input type="search" placeholder="Hledat pacienta nebo zprávu" disabled aria-label="Hledat" />
-          </label>
+          <Search />
           <div className="top-actions">
             <button type="button" className="icon-btn" disabled title={SOON} aria-label="Komunikace"><Icon name="mail" /></button>
             <a className="icon-btn" href="#/pacienti/alena/ukoly" aria-label={`Co je potřeba udělat (${openTasks})`}>

@@ -1,12 +1,17 @@
 // The coordinator's patients (#/pacienti, owner: Matej): the demo case, patients added in the app and "Nový pacient".
 // A row shows what is on now, until when and how much is left; a click opens the patient.
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useCase } from '../../state/caseStore';
 import { DEMO_ID, SIM_TODAY, addPatient, removePatient, useCaseOf, useStoredPatients } from '../../state/patients';
 import { Icon } from '../../ui/Icon';
 import { czDate } from '../../ui/format';
+import { liveCase } from './live';
 
 function Row({ id, removable }: { id: string; removable: boolean }) {
-  const { data } = useCaseOf(id);
+  const { data: built } = useCaseOf(id);
+  // as the case is now: what the coordinator dealt with is not counted any more
+  const st = useCase(id);
+  const data = useMemo(() => (built ? liveCase(built, st) : null), [built, st]);
   if (!data) return <li className="pt-row"><span className="pt-busy muted">Zpracovávám zprávy…</span></li>;
   const now = data.steps.find((s) => s.status === 'now');
   const empty = Object.keys(data.documents).length === 0;
