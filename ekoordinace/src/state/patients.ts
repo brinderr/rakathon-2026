@@ -4,6 +4,7 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { buildCase } from '../case/buildCase';
 import type { Report } from '../case/buildCase';
+import novak from '../../../app/data-pacient-2/source-pacient-2.json';
 import alena from '../data/alena.json';
 import type { CaseData } from '../sections/pacient/types';
 
@@ -15,7 +16,12 @@ export interface StoredPatient { id: string; label: string; created: string; mdt
 export const DEMO_ID = 'alena';
 const demo = alena as unknown as CaseData;
 const KEY = 'ekoordinace:patients';
-const SEED: StoredPatient[] = [{ id: 'novy-pacient', label: 'Nový pacient', created: SIM_TODAY, mdtDate: '', docs: [] }];
+// a second fictional patient (lung cancer, our test set 2) so the overview has more than one case; reports known by today
+const NOVAK: StoredPatient = {
+  id: 'josef-novak', label: 'Josef Novák', created: SIM_TODAY, mdtDate: novak.mdtDate,
+  docs: novak.documents.filter((d) => d.date <= SIM_TODAY).map((d) => ({ id: d.id, date: d.date, title: d.file.replace(/\.txt$/, ''), text: d.text })),
+};
+const SEED: StoredPatient[] = [NOVAK, { id: 'novy-pacient', label: 'Nový pacient', created: SIM_TODAY, mdtDate: '', docs: [] }];
 
 let cache: StoredPatient[] | null = null;
 const listeners = new Set<() => void>();
