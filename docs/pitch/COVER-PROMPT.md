@@ -1,5 +1,7 @@
 # Titulný obrázok – prompt (povinný: 16:9, do 8 MB)
 
+> **Stav:** hotový obrázok zo skutočných obrazoviek appky spravil Bruno – `docs/odovzdanie/cover.png` (zdroj `cover.html`). Texty na ňom majú byť **česky** a so sloganom „Aby se nic neztratilo a bylo jasné, kdo je na tahu.“ Tento prompt ostáva ako záloha.
+
 **Kde sa použije:** formulár submit.rakathon.cz („Titulní obrázek povinný, do 8 MB, 16:9“) a verejná galéria projektov.
 Na malom náhľade musí fungovať aj bez textu. Text (názov) sa dá dopísať až v editore, AI generátory text kazia.
 
@@ -22,13 +24,13 @@ for a title. No people's faces, no hospital logos, no readable text, no brand na
 **Negative prompt (ak ho nástroj podporuje):** `text, letters, logo, watermark, brand, robot, glowing brain, circuit, faces, blood, syringe, dark, horror, cluttered right side`
 
 ## Varianty (ak prvý nevyjde)
-1. **Mapa:** zhora pohľad na mapu Prahy so 7 bodmi (pracoviská), spojenými jednou tyrkysovou niťou do jedného bodu „KOC“; bez názvov ulíc.
+1. **Mapa:** zhora pohľad na abstraktnú mapu „Praha a okolie“ bez skutočných ulíc, so 7 bodmi (zariadenia), spojenými jednou tyrkysovou niťou do bodu „KOC 2“ (druhý bod „KOC 1“ pre CT).
 2. **Štafeta:** dve ruky si odovzdávajú zložku, z ktorej nevypadne žiadny papier (niť ich drží pokope); svetlé pozadie.
 3. **Screenshot:** skutočná obrazovka appky (fronta prípadov) v rámčeku notebooku, vľavo rozhádzané papiere, cez ne niť – zostaví sa v Canve/Figme z reálneho screenshotu (najbezpečnejšie, žiadna AI chyba).
 
 ## Text do editora (po vygenerovaní)
 - Hore vpravo, veľké: **NIT** (alebo finálny názov zo SUBMISSION.md)
-- Pod tým menšie: **Nič sa nestratí a vždy vieš, kto je na ťahu.**
+- Pod tým menšie: **Aby se nic neztratilo a bylo jasné, kdo je na tahu.** (všetky texty na obrázku česky)
 - Dole malé: Rakathon 2026 · výzva VZP „Cesta pacienta bez ztráty informací“ · prototyp, fiktívne dáta
 - Písmo: Inter alebo Source Sans, tmavá tyrkysová (#0F5B5C) na svetlom pozadí.
 

@@ -1,78 +1,80 @@
-# Pitch – 3 minúty (VZP: Cesta pacienta bez ztráty informací)
+# Pitch (česky) – výzva VZP „Cesta pacienta bez ztráty informací“
 
-> **Hlavná veta:** „Nič sa nestratí a vždy vieš, kto je na ťahu.“
-> Nehovoríme „AI vyťaží dokumenty“. AI je nástroj, sľub je úplnosť a jasný ďalší krok.
+> **Hlavní věta:** „Aby se nic neztratilo a bylo jasné, kdo je na tahu.“
+> Neříkáme „AI vytěží dokumenty“. Říkáme: **pravidla + ověřené citace, AI navrhuje volný text.**
 
-Rozdelenie (návrh): **Bruno** hák + demo (postavil UI), **Maťo** čísla, cesta k realite a prosba.
-Demo beží z appky (`npm run dev`), záloha = nahrávka obrazovky (VIDEO.md). Časy sú orientačné, nahlas to treba raz odstopovať.
+**Kde a jak dlouho (ověřit u organizátorů):** v sobotu 14:00–16:00 chodí zadavatelé VZP k jednotlivým stolům (žádné pódium) →
+krátký úvod, video (~2:20, VIDEO.md) a **živé demo na notebooku, kde si porotce může sám něco změnit**.
+Délka nedělního finálového pitche není zveřejněná (odhad 5–6 min včetně otázek) – níže je 3minutová verze, kterou lze natáhnout.
+Rozdělení (návrh): Bruno úvod + demo, Maťo čísla, cesta k realitě a prosba. Záloha: video.
 
 ---
 
-## 0:00 – 0:15 · Hák (Bruno)
+## 0:00–0:20 · Úvod (Bruno)
 
-„Toto je Alena, 63 rokov. Od prvej návštevy u praktika po konzílium uplynulo **50 dní** a jej príbeh je
-v **13 správach zo 7 miest** – praktik, kardiológ, laboratórium, röntgen, poliklinika a **dve rôzne onkologické centrá**.
-Koordinátorka v KOC to dnes skladá ručne z e-mailov a telefonátov. A v tých správach sú diery a rozpory,
-ktoré by konzílium zdržali.“
+„Tohle je Alena – fiktivní pacientka, 63 let, podezření na nádor slinivky. Má **13 zpráv ze 7 zařízení**, včetně **dvou různých
+onkologických center**; od praktika ke konziliu uběhlo **50 dní**. Skutečné koordinátorky popisují, že zprávy shánějí hlavně
+telefonem a e-mailem. A v těch zprávách jsou díry a rozpory, které musí někdo najít ještě před konziliem.“
 
-*(Na plátne: fronta prípadov, Alena navrchu.)*
+*(Na obrazovce: fronta případů, Alena nahoře.)*
 
-## 0:15 – 1:45 · Živé demo v 8 krokoch (Bruno klikne, povie jednu vetu)
+## 0:20–2:00 · Živé demo (Bruno kliká, ke každému kroku jedna věta)
 
-| # | Klik v appke | Jedna veta |
+| # | Klik v aplikaci | Jedna věta |
 |---|---|---|
-| 1 | **Fronta** („Čaká na mňa / Čaká na iných / Konzílium tento týždeň“) | „Ráno koordinátorka vidí všetky prípady a pri každom, **kto je na ťahu a do kedy** – žiadne skóre, len termíny.“ |
-| 2 | **Prijaté → žiadanka praktika (správa 07)** | „Žiadanka od praktika príde e-mailom, prípad sa založí sám a praktikovi hneď odíde **potvrdenie prijatia so zoznamom, čo chýba**.“ |
-| 3 | **Prípad → Čo treba vyriešiť** (vyžiadať správy 01–06) | „Žiadanka výsledky neobsahuje, len píše, kde sú – appka pripraví **žiadosti na 5 pracovísk** so správnym adresátom.“ |
-| 4 | **Semafor podkladu** (žlté a červené polia) | „Pravidlá a AI z 13 správ vyplnia 20 polí šablóny VZP a ukážu **diery: chýba ECOG, nemožný dátum apixabanu, histológia vydaná deň pred odberom, chýba e-mail** – nič nedomýšľa.“ |
-| 5 | **Klik na hodnotu → zvýraznená veta v pôvodnej správe** | „Každý údaj má **doslovný citát**; program overí, že tá veta v správe naozaj je – inak sa údaj nezobrazí ako fakt.“ |
-| 6 | **Cesta pacientky** (vyžiadané ≠ objednané ≠ vykonané) | „Histológia mala prísť do 3 pracovných dní, prišla neskôr – appka to **sama eskaluje**, nikto to nemusí strážiť v hlave.“ |
-| 7 | **Prepínač „stav k 21. 10.“** | „Podklad obsahuje len to, čo bolo známe v deň konzília: **váha 65 kg z 15. 9.**, nie 63 kg zo správy, ktorá vznikla až po ňom.“ |
-| 8 | **Podklad pre konzílium → Záver praktikovi → doručené** | „Lekár KOC podklad potvrdí, praktik dostane záver tam, kde ho číta, a v zázname o koordinovaní je každý krok – **slučka je uzavretá**.“ |
+| 1 | **Fronta** | „Ráno koordinátorka vidí všechny případy a u každého, **kdo je na tahu a do kdy** – žádné skóre naléhavosti, jen termíny.“ |
+| 2 | **Pohled praktika → nová žádanka → Odeslat** | „Praktik pošle žádanku a hned dostane **potvrzení se seznamem toho, co chybí** – v prototypu je odeslání simulované.“ |
+| 3 | **Zpracování naživo** – zprávy přicházejí jedna po druhé | „Motor běží přímo v prohlížeči: ze samotné žádanky vyplní **15 z 20 položek**, s každou další zprávou přibývají – **u každého údaje je doslovná citace**.“ |
+| 4 | **Pasti a rozpory** (červené) → klik na hodnotu → zvýrazněná věta ve zprávě | „Z 11 zpráv, které existovaly před konziliem, ukáže **díry a rozpory: chybí ECOG, apixaban ‚vysazen 18. 10.‘ u výkonu 12. 10., histologie ‚vydaná‘ den před odběrem** – nic nedomýšlí.“ |
+| 5 | **Zkuste to rozbít** – porotce změní rodné číslo v laboratorní zprávě 10 | „Zkuste to sami: změňte rodné číslo – za vteřinu je tu **nový rozpor s oběma citacemi**. Opravte datum apixabanu na 10. 10. – rozpor zmizí.“ |
+| 6 | **Chybí ECOG → Zapsat telefonát** | „ECOG ve zprávách není. Koordinátorka zavolá do ambulance, **zapíše telefonát** a údaj se doplní se zdrojem ‚telefonát‘ – ne z vymyšlené zprávy.“ |
+| 7 | **Stav k 21. 10.** (posuvník) | „Podklad obsahuje jen to, co bylo známo v den konzilia: **váha 65 kg z 15. 9.**, ne 63 kg ze zprávy, která vznikla až po něm.“ |
+| 8 | **Podklad pro konzilium** (MDT_zapis) → PDF | „Podklad má přesně strukturu zápisu z jednání MDT ze zadání a dá se vytisknout do PDF.“ |
+| 9 | **Závěr pro praktika → Odeslat → doručenka** | „Praktik dostane závěr s odpovědí na svou otázku a my vidíme doručenku – v prototypu simulovanou. Každý krok je v záznamu o koordinování.“ |
 
-*(Ak demo zlyhá: pustiť VIDEO.md od záberu 3 a pokračovať slovami.)*
+*(Když demo selže: pustit video od 1:00 a pokračovat slovy.)*
 
-## 1:45 – 2:30 · Čísla a cesta k realite (Maťo)
+## 2:00–2:30 · Čísla (Maťo)
 
-**Čísla (z `npm run eval`, súbor `app/public/data/eval-alena.json`):**
+„Měříme to. Na ručně ověřené kontrolní sadě má Alena **20 z 20 položek, 17 ze 17 pastí a 0 vymyšlených hodnot** – stejně s AI
+i bez ní, protože čísla a data berou pravidla; AI jen navrhuje volný text a kód ho ověří.
+Kontrolní sady jsme ale psali sami. Proto jsme nechali agenta, který naše pravidla neviděl, napsat **třetího pacienta naslepo**:
+**[SLEPÝ TEST – doplní se z app/public/data/eval-pacient-3.json]**.
+A když jsme AI záměrně podstrčili vymyšlené stadium a čísla, **kód zahodil všechny 4 vymyšlené návrhy** a jediný správný přijal.“
 
-„Postavili sme **kontrolnú sadu** – ručne overenú správnu odpoveď pre 20 polí a 17 pascí v Aleniných správach.
-Výsledok: **20 z 20 polí, 17 zo 17 pascí, 0 vymyslených hodnôt.**
-Na **druhom pacientovi** s rakovinou pľúc a štyrmi novými pascami – nádor raz vpravo, raz vľavo, stratená alergia, cudzie rodné číslo – tiež **20 z 20**.
-A keď sme AI úmyselne podstrčili vymyslené štádium a čísla, **kód zahodil 4 z 5 návrhov** a podklad ostal čistý.“
+## 2:30–2:45 · Cesta k realitě (Maťo)
 
-*(≈ 25 s. Detaily na otázky: všetky citáty doslova v správach; test poistky v `app/eval/vysledok-test-halucinacii.json`.)*
+1. „V pilotu budeme brát to, co koordinátorovi reálně chodí: telefon, e-mail na společnou adresu a eZprávu – metodický pokyn MZ pro centra HPB od 1. 9. 2026 uvádí jako kontakt právě univerzální e-mail a telefon koordinátora.“
+2. „Pilot je jedno KOC: tři měsíce bez rozhraní, podklad jako PDF do NIS a měření; až potom rozhraní. Lékař se nic nového neučí a nedostane žádný nový účet.“
+3. „AI má běžet v EU (Azure OpenAI); v prototypu zatím odpověděl náhradní model na stejný pseudonymizovaný prompt. Rodná čísla ani telefony k AI neodejdou – to náš kód dělá už dnes. Pokud bude vystavení eŽádanky povinné (zatím je to návrh novely), chceme se napojit přes certifikát KOC – zda to jde, ověřujeme s NCEZ.“
 
-*(Poctivo, ak sa spýtajú: pravidlá sme po prvom behu na druhom pacientovi zovšeobecnili – predtým zachytili 6 z 13 pascí. Preto ďalší pacient pôjde naslepo.)*
+## 2:45–3:00 · Prosba (Maťo)
 
-**Cesta k realite (3 vety, IDEALNE-RIESENIE §7.3):**
-1. „Dnes beriem to, čo koordinátorovi reálne chodí: telefón, e-mail na spoločnú adresu a eZprávu – ministerstvo od septembra predpisuje centrám HPB presne e-mail a telefón koordinátora.“
-2. „Pilot je jedno KOC: najprv tri mesiace bez rozhrania, podklad ako PDF do NIS a meranie; až potom rozhranie. Lekár sa nič nové neučí a nedostane žiadny nový účet.“
-3. „Keď bude eŽádanka K povinná a spustí sa štátna výmena dokumentov, napojíme sa cez certifikát KOC. V ostrom režime beží AI v EÚ (Azure OpenAI) a rodné čísla ani telefóny k nej neodídu – to náš kód robí už dnes.“
+„Každé z 15 KOC musí mít od roku 2026 koordinátora a pojišťovny nemocnici platí za každou jeho intervenci 250 Kč –
+**společný nástroj ale zatím není**, ministerstvo koordinační aplikace teprve pilotně testuje.
+Prosíme VZP o **pilot v jednom KOC: 3 měsíce, 50 až 100 případů**. Měříme čtyři čísla: čas do kompletního podkladu,
+díry nalezené před konziliem, odložená konzilia a minuty koordinátora.
 
-## 2:30 – 3:00 · Prosba (Maťo)
-
-„Koordinátori sú v každom z 15 KOC od januára a VZP za ich výkon platí – ale **štandardný nástroj nemajú**.
-Prosíme VZP o jedno: **pilot v jednom KOC na 3 mesiace, 50 až 100 prípadov**. Meriame štyri čísla:
-čas do kompletného podkladu, diery nájdené pred konzíliom, odložené konzíliá a minúty koordinátora.
-
-**Nič sa nestratí a vždy vieš, kto je na ťahu.**“
+**Aby se nic neztratilo a bylo jasné, kdo je na tahu.**“
 
 ---
 
-## Čo nehovoriť (IDEALNE-RIESENIE §7.3)
-„napojené na NIS“, „AI rozhodne“, „GDPR compliant“, „nasadené“, „lieky dokedy“, „VZP uzol“ ako hotová vec, Missouri −30 % ako náš výsledok.
-Žiadne skóre naliehavosti, žiadne odporúčanie liečby – nie sme zdravotnícka pomôcka.
+## Neříkat
+„ostrý režim Azure“, „AI složí podklad“, „napojeno na NIS“, „AI rozhodne“, „GDPR compliant“, „nasazeno“, „VZP hradí“, „léky do kdy“,
+„uzel VZP“ jako hotová věc, Missouri −30 % jako náš výsledek, dánské a holandské lhůty jako české pravidlo, „aplikace sama eskaluje“,
+„žádosti na 5 pracovišť jedním klikem“. Žádné skóre naléhavosti, žádné doporučení léčby.
 
-## Otázky poroty – pripravené odpovede
+## Otázky poroty – připravené odpovědi
 
-| Otázka | Odpoveď (1–2 vety) |
+| Otázka | Odpověď (1–2 věty) |
 |---|---|
-| Čo ak AI halucinuje? | AI len navrhuje. Program overí, že každý citát je doslova v správe a že každé číslo v hodnote je v citáte; inak návrh zahodí a použije vetu priamo zo správy. Test s úmyselne chybnou odpoveďou (štádium T3N1M0, „úbytok 8 kg“, citát zo správy po konzíliu, vymyslené želanie): 4 z 5 návrhov zamietnuté, 0 vymyslených hodnôt (`app/eval/vysledok-test-halucinacii.json`). |
-| Ako ste to merali? | Ručne overená správna odpoveď pre 20 polí + pasce, každý dôkaz overený doslova v texte; skript `npm run eval` to prepočíta pri každej zmene. Podstrčený zlý výstup (ECOG 1, 63 kg, vymyslený e-mail) eval chytil celý. |
-| Kam idú dáta pacienta? | V ostrom režime Azure OpenAI v EÚ; pred volaním nahradíme rodné číslo, telefóny, e-maily, adresu, dátum narodenia a mená tokenmi ([RČ_1] …). Na hackathone len fiktívne dáta. |
-| Je to zdravotnícka pomôcka (MDR)? | Nie: nerobíme diagnózu, skóre naliehavosti ani odporúčanie liečby – zbierame, overujeme úplnosť a strážime termíny. Fronta je zoradená len podľa termínov. |
-| Prečo nie portál pre praktika? | Portál = nový účet, heslo a MFA; dobrovoľné kanály v Anglicku roky stáli okolo 52 %. Praktik u nás nič nové nerobí – dostane len potvrdenie prijatia a zoznam, čo chýba. |
-| Ako sa napojíte na nemocnicu? | Fáza 0 bez rozhrania (rola-schránka, PDF do NIS), potom rozhranie cez engine nemocnice; výstup modelujeme podľa FHIR (DocumentReference, Provenance s citátom). |
-| Funguje to aj na inú diagnózu? | Áno – druhý fiktívny pacient má rakovinu pľúc, inú poisťovňu, žiadanku od špecialistu a iné pasce; 20/20 polí. |
-| Čo to stojí a kto platí? | Náš odhad: náklady na AI sú malé oproti minútam koordinátora; VZP už platí výkon koordinátora (250 Kč) – nástroj mu tie minúty šetrí a každý krok dokladá. Presné čísla zmeriame v pilote. |
+| Co když AI halucinuje? | AI jen navrhuje. Program ověří, že každá citace je ve zprávě doslova a že každé číslo v hodnotě je v citaci; jinak návrh zahodí a použije větu přímo ze zprávy. Test se záměrně chybnou odpovědí (stadium T3N1M0, „úbytek 8 kg“, citace ze zprávy po konziliu, vymyšlené přání): všechny 4 vymyšlené návrhy zamítnuté, jediný správný přijat (`app/eval/vysledok-test-halucinacii.json`). |
+| Jak jste to měřili? | Ručně ověřená správná odpověď pro 20 položek + pasti, každý důkaz ověřený doslova v textu; `npm run eval` to přepočítá při každé změně. Kontrolní sady psal náš tým, proto slepý test na třetím pacientovi od agenta bez přístupu k pravidlům. |
+| Kolik toho dělá AI? | Čísla přesnosti vycházejí stejně bez AI – položky a pasti čtou pravidla. AI navrhuje pět volných textů (diagnóza, epikríza, otázka na MDT, symptomy, jiná sdělení) a kód je ověřuje. |
+| Kam jdou data pacienta? | Cílově Azure OpenAI v EU; v prototypu náhradní model a jen fiktivní data. Před voláním nahradíme rodné číslo, telefony, e-maily, adresu, datum narození a jméno pacienta i kontaktní osoby tokeny ([RČ_1] …). Jména lékařů zatím zůstávají. |
+| Je to zdravotnický prostředek (MDR)? | Podle našeho výkladu pokynu MDCG 2019-11 ne: neděláme diagnózu, skóre naléhavosti ani doporučení léčby – sbíráme, ověřujeme úplnost a hlídáme termíny. Definitivně to posoudí regulátor. |
+| Proč ne portál pro praktika? | Portál = nový účet, heslo a MFA; elektronické doporučenky v Anglii (e-RS) roky stály kolem 52 %, dokud je nezapnula platba. Praktik u nás nic nového nedělá – dostane jen potvrzení přijetí a seznam, co chybí. |
+| Jak se napojíte na nemocnici? | Fáze 0 bez rozhraní (společná schránka, PDF do NIS), pak rozhraní přes integrační engine nemocnice. Výstup umíme namapovat na FHIR (DocumentReference, Provenance s citací), export zatím nemáme. |
+| Funguje to i na jinou diagnózu? | Druhý fiktivní pacient má karcinom plic, jinou pojišťovnu (111), žádanku od specialisty a jiné pasti: 20/20 po úpravě pravidel (před ní 18/20). Třetí pacient naslepo: viz čísla výše. |
+| Kolik to stojí a kdo platí? | Náš odhad: náklady na AI jsou malé oproti minutám koordinátora. Pojišťovny už platí nemocnici 250 Kč za intervenci koordinátora (výkon 51887, nejvýše jednou denně na pacienta) – nástroj ty minuty šetří a každý krok dokládá. Přesná čísla změříme v pilotu. |
+| Je to jen připravený film? | Ne: motor běží přímo v prohlížeči za desítky milisekund. Změňte si text zprávy (rodné číslo, datum, smažte histologii) a uvidíte nový rozpor nebo „chybí“ – s citacemi. |

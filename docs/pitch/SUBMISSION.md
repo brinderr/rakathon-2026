@@ -1,38 +1,36 @@
 # Text do formulára submit.rakathon.cz
 
 **Uzávierka: sobota 17. 10. 2026, 13:00 – po 13:00 formulár nič neprijme.** Po odoslaní príde odkaz na úpravy (dá sa meniť do uzávierky),
-takže **odoslať radšej skôr (napr. 11:30) a potom doladiť**. Galéria projektov je verejná (submit.rakathon.cz/projects).
-Zdroj štruktúry formulára: úvodná prezentácia Rakathon Praha (`docs/materials/drive/INTRO_Praha_text.md`), polia 1–4.
-
-Formulár je český, preto texty nižšie sú **česky + anglicky**. `[…]` = doplniť pred odoslaním.
+takže **odoslať do 12:30 a potom už len dolaďovať cez odkaz**. Galéria projektov je verejná (submit.rakathon.cz/projects).
+Štruktúra formulára: úvodná prezentácia Rakathon Praha (`docs/materials/drive/INTRO_Praha_text.md`), polia 1–4.
+Texty nižšie: **česky + anglicky** (formulár chce CZ aj EN). `[…]` = doplniť pred odoslaním. Opravené podľa `docs/kontext/raw-pitch-factcheck.md`.
 
 ---
 
 ## 1 · Projekt
 
-**Název (návrh, potvrdiť s Brunom):** NIT – koordinátor cesty onkologického pacienta
+**Název (potvrdiť s Brunom):** NIT – koordinátor cesty pacienta
 *(EN: NIT – cancer patient pathway coordinator)*
-Alternatíva podľa appky: „Koordinátor KOC“.
 
-**Krátký popis (CZ, 118/140 znakov):**
-> Nástroj pro koordinátora KOC: AI složí podklad pro MDT s ověřenými citacemi, ukáže, co chybí, a hlídá, kdo je na tahu.
+**Krátký popis (CZ, 129/140 znaků):**
+> Nástroj pro koordinátora KOC: pravidla a AI složí podklad pro MDT s ověřenými citacemi, ukáže, co chybí, a hlídá, kdo je na tahu.
 
-**Short description (EN, 113/140 characters):**
-> Cancer-centre coordinator tool: AI drafts the MDT brief with verified quotes, flags gaps and shows who acts next.
+**Short description (EN, 121/140 characters):**
+> Cancer-centre coordinator tool: rules plus AI draft the MDT brief with verified quotes, flag gaps and show who acts next.
 
 **Delší popis (CZ):**
-> Koordinátoři v komplexních onkologických centrech (KOC) skládají podklady pro multidisciplinární tým ručně z e-mailů, telefonátů a eZpráv. Fiktivní pacientka Alena má za 50 dní 13 zpráv ze 7 pracovišť včetně dvou různých KOC – a v nich díry a rozpory, které by konzilium zdržely.
+> Koordinátoři v komplexních onkologických centrech (KOC) dnes shánějí zprávy hlavně telefonem a e-mailem, část center přijímá eZprávu. Fiktivní pacientka Alena má 13 zpráv ze 7 zařízení včetně dvou různých KOC; od praktika ke konziliu uběhlo 50 dní. A v nich díry a rozpory: chybí ECOG, datum vysazení apixabanu nesedí a histologie je „vydaná“ den před odběrem.
 >
-> NIT je pracovní nástroj koordinátora, ne další portál pro lékaře. Ráno ukáže frontu případů a u každého, kdo je na tahu a do kdy (bez skóre naléhavosti, jen termíny). Žádanku od praktika založí jako případ a praktikovi pošle potvrzení přijetí se seznamem toho, co chybí. Pravidla a AI vyplní 20 polí šablony VZP „Handover“ a ke každému údaji připojí doslovnou citaci; program ověří, že citace ve zprávě opravdu je, jinak údaj nezobrazí jako fakt. Chybějící údaje jsou označené, rozpory stojí vedle sebe a rozhodne člověk. Podklad obsahuje jen to, co bylo známo k datu konzilia. Po MDT jde závěr praktikovi a každý krok se zapíše do záznamu o koordinování.
+> NIT je pracovní nástroj koordinátora, ne další portál pro lékaře. Ráno ukáže frontu případů a u každého, kdo je na tahu a do kdy (bez skóre naléhavosti, jen termíny). Když přijde žádanka od praktika, praktik dostane potvrzení přijetí se seznamem toho, co chybí (v prototypu simulováno). Zprávy zpracuje motor přímo v prohlížeči: pravidla vyplní 20 položek ze zadání výzvy (Handover_obsah), AI navrhne pět volných textů a ke každému údaji je doslovná citace – program ověří, že ve zprávě opravdu je, jinak údaj nezobrazí jako fakt. Chybějící údaje jsou označené, rozpory stojí vedle sebe a rozhodne člověk; kdo změní text zprávy, hned uvidí nový rozpor nebo „chybí“. Chybějící ECOG koordinátorka doplní zápisem telefonátu. Podklad obsahuje jen to, co bylo známo k datu konzilia, a má strukturu zápisu z jednání MDT. Po MDT jde závěr praktikovi (v prototypu simulováno) a každý krok se zapíše do záznamu o koordinování.
 >
-> Přesnost měříme: ručně ověřená kontrolní sada pro Alenu (20 polí, 17 pastí) a druhý fiktivní pacient s karcinomem plic (20 polí, 13 pastí). Výsledek: 20/20 polí, všechny pasti zachyceny, 0 vymyšlených hodnot. Prototyp, fiktivní data, není zdravotnický prostředek.
+> Přesnost měříme na ručně ověřených kontrolních sadách: Alena 20/20 položek a 17/17 pastí, druhý fiktivní pacient s karcinomem plic 20/20 a 13/13, 0 vymyšlených hodnot – stejně s AI i bez ní. Kontrolní sady psal náš tým a pravidla jsme po prvním běhu na druhém pacientovi upravili (předtím 18/20 položek a 6/13 pastí). Slepý test na třetím pacientovi, kterého napsal agent bez přístupu k pravidlům: [SLEPÝ TEST]. Prototyp, fiktivní data, není zdravotnický prostředek.
 
 **Longer description (EN):**
-> Coordinators in Czech comprehensive cancer centres (KOC) assemble the brief for the multidisciplinary team (MDT) by hand from e-mails, phone calls and secure messages. Our fictional patient Alena has 13 reports from 7 sites in 50 days, including two different cancer centres – with gaps and contradictions that would delay the tumour board.
+> Coordinators in Czech comprehensive cancer centres (KOC) chase reports mostly by phone and e-mail; some centres also receive secure eZpráva messages. Our fictional patient Alena has 13 reports from 7 facilities, including two different cancer centres; 50 days passed from the first GP visit to the tumour board. The reports hide gaps and contradictions: no ECOG, an impossible anticoagulant date and a histology report issued the day before the biopsy.
 >
-> NIT is a working tool for the coordinator, not another portal for doctors. The morning view is a queue of cases showing who acts next and by when (no urgency score, only deadlines). A GP referral becomes a case and the GP gets an acknowledgement listing what is missing. Rules and AI fill the 20 fields of the VZP handover template and attach a verbatim quote to every value; code verifies the quote really is in the report, otherwise the value is not shown as fact. Missing data is flagged, conflicts are shown side by side and a human decides. The brief contains only what was known on the MDT date. After the MDT the GP receives the conclusion and every step is logged.
+> NIT is a working tool for the coordinator, not another portal for doctors. The morning view is a queue of cases showing who acts next and by when (no urgency score, only deadlines). When a GP referral arrives, the GP gets an acknowledgement listing what is missing (simulated in the prototype). An engine running in the browser processes the reports: rules fill the 20 items of the challenge's handover list (Handover_obsah), AI drafts five free-text parts, and every value carries a verbatim quote that code verifies in the report – otherwise the value is not shown as fact. Missing data is flagged, conflicts are shown side by side and a human decides; edit a report and a new conflict or a "missing" flag appears at once. The coordinator fills the missing ECOG from a logged phone call. The brief contains only what was known on the MDT date and follows the MDT record template. After the MDT the GP receives the conclusion (simulated in the prototype) and every step is logged.
 >
-> We measure accuracy: a hand-verified gold set for Alena (20 fields, 17 traps) and a second fictional lung-cancer patient (20 fields, 13 traps). Result: 20/20 fields, all traps caught, 0 invented values. Prototype, fictional data, not a medical device.
+> We measure accuracy on hand-verified gold sets: Alena 20/20 items and 17/17 traps, a second fictional lung-cancer patient 20/20 and 13/13, 0 invented values – with or without AI. Both gold sets were written by our team and we tuned the rules after the first run on the second patient (before: 18/20 items, 6/13 traps). Blind test on a third patient written by an agent with no access to our rules: [BLIND TEST]. Prototype, fictional data, not a medical device.
 
 ---
 
@@ -51,22 +49,20 @@ Alternatíva podľa appky: „Koordinátor KOC“.
 ## 3 · Dopad a AI
 
 **Jak využíváte AI? (CZ)**
-> AI (velký jazykový model, v ostrém režimu Azure OpenAI v EU) čte lékařské zprávy a navrhuje volné texty podkladu pro MDT: diagnózu, epikrízu, otázku na MDT, symptomy a přání pacienta. Strukturované části (identita, kontakty, váha, laboratoř, závěry vyšetření) čtou deterministická pravidla. Každý údaj má doslovnou citaci a program ji ověří znak po znaku; čísla v hodnotě musí být v citaci, jinak se návrh zahodí a použije se věta přímo ze zprávy. Před voláním AI nahradíme rodné číslo, telefony, e-maily, adresu, datum narození a jména tokeny. Detektory pastí hlídají nemožná data, rozpor strany nádoru, cizí rodné číslo, alergii ztracenou v novější zprávě, výsledky, které měly přijít, a zprávy vzniklé až po konzíliu. AI nikdy nedoporučuje léčbu ani nestanovuje naléhavost. Přesnost měří skript proti ručně ověřené kontrolní sadě: 20/20 polí, 17/17 a 13/13 pastí, 0 vymyšlených hodnot. Test pojistky: záměrně chybná odpověď AI (vymyšlené stadium, čísla, citace ze zprávy po konziliu, přání pacientky) – kód zamítl 4 z 5 návrhů a podklad zůstal 20/20.
+> Jádrem je motor, který čte lékařské zprávy a běží přímo v prohlížeči. Deterministická pravidla vyplní identitu, kontakty, váhu, léky, laboratoř, vyšetření a histologii a hledají pasti. Velký jazykový model (cílově Azure OpenAI v EU; v prototypu bez klíče odpověděl na stejný pseudonymizovaný prompt náhradní model) navrhuje pět volných textů: diagnózu, epikrízu, otázku na MDT, symptomy a jiná sdělení. Každý údaj má citaci a program ověří, že je ve zprávě doslova (tolerujeme jen mezery a typografii – pomlčky, uvozovky, ×); čísla v hodnotě musí být v citaci, jinak se návrh zahodí a použije se věta přímo ze zprávy. Před voláním AI nahradíme rodné číslo, telefony, e-maily, adresu, datum narození a jméno pacienta i kontaktní osoby tokeny. Detektory pastí hlídají nemožná data, rozpor strany nádoru, jiné rodné číslo na laboratorní zprávě, alergii ztracenou v novější zprávě, výsledky, které měly přijít, a zprávy vzniklé až po konziliu. AI má zakázáno doporučovat léčbu a stanovovat naléhavost; fronta se řadí jen podle termínů. Čísla přesnosti (20/20 položek, 17/17 a 13/13 pastí, 0 vymyšlených) vycházejí stejně s AI i bez ní. Test pojistky: záměrně chybná odpověď AI (vymyšlené stadium, čísla, citace ze zprávy po konziliu, přání pacientky) – kód zamítl všechny 4 vymyšlené návrhy, jediný správný přijal a podklad zůstal 20/20.
 
 **How do you use AI? (EN)**
-> An LLM (Azure OpenAI in the EU in production) reads the medical reports and drafts the free-text parts of the MDT brief: diagnosis, history, the question for the MDT, symptoms and patient wishes. Structured parts (identity, contacts, weight, labs, exam conclusions) are read by deterministic rules. Every value carries a verbatim quote that code verifies character by character; numbers in a value must appear in the quote, otherwise the proposal is dropped and the sentence from the report is used instead. Birth numbers, phones, e-mails, address, date of birth and names are replaced by tokens before any AI call. Trap detectors catch impossible dates, left/right conflicts, a foreign birth number, an allergy lost in a newer report, results that never arrived and reports written after the MDT. AI never recommends treatment or scores urgency. A script measures accuracy against a hand-verified gold set: 20/20 fields, 17/17 and 13/13 traps, 0 invented values. Guard test: a deliberately wrong AI answer (invented stage, numbers, a quote from a post-MDT report, a fake patient wish) – code rejected 4 of 5 proposals and the brief stayed 20/20.
+> The core is an engine that reads medical reports and runs in the browser. Deterministic rules fill identity, contacts, weight, medication, labs, exams and histology and look for traps. An LLM (target: Azure OpenAI in the EU; in the prototype, without an Azure key, a substitute model answered the same pseudonymised prompt) drafts five free-text parts: diagnosis, history, the question for the MDT, symptoms and other notes. Every value carries a quote and code verifies it appears verbatim in the report (ignoring only whitespace and typography such as dashes, quotes and ×); numbers in a value must appear in the quote, otherwise the proposal is dropped and the sentence from the report is used instead. Birth numbers, phones, e-mails, address, date of birth and the names of the patient and contact person are replaced by tokens before any AI call. Trap detectors catch impossible dates, left/right conflicts, a different birth number on the lab report, an allergy lost in a newer report, results that never arrived and reports written after the MDT. The AI is instructed never to recommend treatment or score urgency; the queue is sorted by deadlines only. The accuracy figures (20/20 items, 17/17 and 13/13 traps, 0 invented) are the same with or without AI. Guard test: a deliberately wrong AI answer (invented stage, numbers, a quote from a post-MDT report, a fake patient wish) – code rejected all 4 invented proposals, accepted the single correct one and the brief stayed 20/20.
 
 **Jaký dopad a pro koho? (CZ)**
-> Pro koordinátory v 15 KOC (od ledna 2026, VZP hradí jejich výkon, standardní software ale nemají), pro lékaře MDT (úplný podklad bez děr) a pro praktiky (potvrzení přijetí a závěr MDT bez nového portálu a účtu). Pacient tak nečeká kvůli chybějícímu údaji – u karcinomu plic přes 60 % pacientů nezačne léčbu do 8 týdnů od CT (MZ ČR, 2. 9. 2026). Pilot: 1 KOC, 3 měsíce, 50–100 případů; měříme čas do kompletního podkladu, díry nalezené před konziliem, odložená konzilia a minuty koordinátora.
+> Pro koordinátory v 15 KOC (povinní od ledna 2026; každou jejich intervenci hradí zdravotní pojišťovny centru částkou 250 Kč, výkon 51887; koordinační aplikace se v některých KOC teprve pilotně testují – MZ ČR, 2. 9. 2026), pro lékaře MDT (úplný podklad bez děr) a pro praktiky (potvrzení přijetí a závěr MDT bez nového portálu a účtu). Cílem je, aby pacient nečekal kvůli chybějícímu údaji – u karcinomu plic více než 60 % pacientů nezahájí léčbu do osmi týdnů od CT (MZ ČR, 2. 9. 2026). Pilot: 1 KOC, 3 měsíce, 50–100 případů; měříme čas do kompletního podkladu, díry nalezené před konziliem, odložená konzilia a minuty koordinátora.
 
 **Impact and for whom? (EN)**
-> For coordinators in the 15 Czech comprehensive cancer centres (in place since January 2026 and reimbursed by VZP, yet without standard software), for MDT doctors (a complete brief without gaps) and for GPs (acknowledgement and MDT conclusion without a new portal or account). Patients stop waiting for a missing detail – over 60 % of Czech lung-cancer patients do not start treatment within 8 weeks of the CT (Czech Ministry of Health, 2 Sep 2026). Pilot: 1 centre, 3 months, 50–100 cases, measuring time to a complete brief, gaps found before the MDT, postponed MDTs and coordinator minutes.
+> For coordinators in the 15 Czech comprehensive cancer centres (mandatory in every centre since January 2026; each intervention is reimbursed to the centre by all health insurers – code 51887, CZK 250; coordination apps are only being piloted in some centres – Czech Ministry of Health, 2 Sep 2026), for MDT doctors (a complete brief without gaps) and for GPs (acknowledgement and MDT conclusion without a new portal or account). The aim is that patients no longer wait for a missing detail – over 60 % of Czech lung-cancer patients do not start treatment within 8 weeks of the CT (Czech Ministry of Health, 2 Sep 2026). Pilot: 1 centre, 3 months, 50–100 cases, measuring time to a complete brief, gaps found before the MDT, postponed MDTs and coordinator minutes.
 
 **FHIR od InterSystems?**
-> CZ: V prototypu zatím ne. Datový model kopíruje FHIR (DocumentReference pro zprávy, Provenance s citací ke každému údaji, Task pro „kdo je na tahu“, Composition pro podklad MDT), takže přechod na InterSystems IRIS for Health je přímý krok pilotu.
-> EN: Not in the prototype yet. The data model mirrors FHIR (DocumentReference, Provenance with the quote for each value, Task for “who acts next”, Composition for the MDT brief), so moving to InterSystems IRIS for Health is a direct pilot step.
-
-*(Ak Bruno do 13:00 pridá IRIS, prepísať na „Áno: …“.)*
+> CZ: V prototypu zatím ne. Datový model lze přímo namapovat na FHIR (DocumentReference pro zprávy, Provenance s citací ke každému údaji, Task pro „kdo je na tahu“, Composition pro podklad MDT); export do FHIR zatím není.
+> EN: Not in the prototype yet. The data model maps directly onto FHIR (DocumentReference, Provenance with the quote for each value, Task for “who acts next”, Composition for the MDT brief); there is no FHIR export yet.
 
 ---
 
@@ -74,13 +70,14 @@ Alternatíva podľa appky: „Koordinátor KOC“.
 
 | Pole | Hodnota | Poznámka |
 |---|---|---|
-| Titulní obrázek (povinný, 16:9, do 8 MB) | `docs/pitch/cover.png` | prompt v COVER-PROMPT.md |
-| GitHub | https://github.com/brinderr/rakathon-2026 | **Repo je súkromné?** Porota ho potom neotvorí – buď zverejniť (pred tým skontrolovať, že v histórii nie je `.env` ani kľúč), alebo odkaz vynechať. |
-| Demo | […] | napr. statický build appky (`npm run build` → `dist/`) na Vercel/GitHub Pages; dáta sú fiktívne a v `public/data/` |
-| Video | […] | podľa VIDEO.md (75 s) – YouTube neverejné alebo Google Drive |
+| Titulní obrázek (povinný, 16:9, do 8 MB) | `docs/odovzdanie/cover.png` (Bruno, 1920 × 1080, 0,5 MB) | Texty na obrázku majú byť česky a so sloganom „Aby se nic neztratilo a bylo jasné, kdo je na tahu.“ (Bruno) |
+| GitHub | […] | Repo `brinderr/rakathon-2026` je zvonku **404 (súkromné)**. Buď ho zverejniť (pred tým skontrolovať, že v histórii nie je `.env` ani kľúč), alebo pole nechať prázdne. |
+| Demo | https://claude.ai/artifact/5JEhKBgT3g6mhAQ44PrHH4 | Brunova appka; po prerobení na „Zpracování naživo“ znovu nahrať a **overiť v anonymnom okne**. |
+| Video | […] | podľa VIDEO.md (~2:20, česky, hlas ElevenLabs) – YouTube neverejné alebo Google Drive |
 
 ## Kontrola pred odoslaním
-- [ ] Čísla v textoch sedia s aktuálnym `app/public/data/eval-alena.json` a `eval-pacient-2.json` (pole `headline`).
-- [ ] Všade „fiktivní data“ a „není zdravotnický prostředek“.
+- [ ] `[SLEPÝ TEST]` / `[BLIND TEST]` nahradené číslom z `app/public/data/eval-pacient-3.json` (pole `headline`).
+- [ ] Čísla sedia s `app/public/data/eval-alena.json` a `eval-pacient-2.json`.
+- [ ] Všade „fiktivní data“ a „není zdravotnický prostředek“; žiadne „ostrý Azure“, „VZP hradí“, „AI složí“.
 - [ ] Žiadne logo VZP ani nemocníc na obrázku; nevystupujeme v mene ÚRO ani VZP.
 - [ ] Odoslať do 12:30, potom už len úpravy cez odkaz.
