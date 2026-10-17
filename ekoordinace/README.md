@@ -24,7 +24,7 @@ npm run preview:pack -- /cesta/preview.html   # jeden súbor na dočasný náhľ
 | Rám appky: bočné menu, horná lišta, výber sekcie podľa adresy | `src/App.tsx` | zdieľané – meniť len po dohode |
 | Zoznam sekcií (1 riadok = 1 položka v menu) | `src/sections.tsx` | zdieľané – zapnúť svoju sekciu je OK |
 | Farby, karty, dlaždice `.stats`, záložky `.tabs`, štítky `.chip`, `.eyebrow` | `src/styles.css` | zdieľané – meniť len po dohode |
-| Ikony, logo, formát dátumu (`czDate`, `nb`, `inDays`) | `src/ui/` | zdieľané – pridať je OK, existujúce nemeniť |
+| Ikony, logo, formát dátumu (`czDate`, `nb`, `inDays`), ikona správy `DocIcon`, čítačka správ `DocViewer`, písmo EK Mono | `src/ui/`, `src/assets/` | zdieľané – pridať je OK, existujúce nemeniť |
 | Sekcia **Pacienti** (hlavička, cesta pacientky, úlohy, kontakty) | `src/sections/pacient/` | matej |
 | Sekcia **Konzilia** | `src/sections/konzilia/` | bruno (zatiaľ kostra, nezapnutá) |
 | Dáta | `src/data/<súbor>.json` | kto ich generuje (`alena.json` = matej, `npm run data`) |
@@ -46,7 +46,7 @@ repa – Matejov Vercel konektor nemá právo zakladať projekty.
 |---|---|---|
 | 0 | Základ: appka, značka, rozloženie | hotovo |
 | 1 | Prehľad: hlavička s diagnózou z histológie, cesta pacientky v 5 krokoch (hotové kroky malé), čo je na rade + komu volať | hotovo |
-| 2 | Záložka Zprávy: zoznam, originál zprávy, zprávy po konzíliu zvlášť | ďalej |
+| 2 | Záložka Zprávy: zoznam, zprávy po konzíliu zvlášť (čítačka správ ako vo Worde už je – `src/ui/DocViewer.tsx`) | ďalej |
 | 3 | Údaje pro konzilium: 20 údajov so stavom a vetou zo zprávy | |
 | 4 | Doplniť: zapísať telefonát, vyžiadať správu, potvrdenie lekárom | |
 | 5 | Podklad pre konzílium podľa `MDT_zapis`, tlač do PDF | |

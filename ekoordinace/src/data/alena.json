@@ -45,28 +45,124 @@
       "dept": "Ústav patologie"
     }
   ],
+  "documents": {
+    "10": {
+      "id": "10",
+      "date": "2026-10-15",
+      "title": "Výsledky laboratorního vyšetření",
+      "place": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+      "code": "LAB",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nKOC Nemocnice Lipová (fiktivní)\nOddělení klinické biochemie a hematologie\nNemocniční 15, 140 00 Praha 4\nVýsledky laboratorního vyšetření\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nIndikující lékař: MUDr. Lenka Marková, onkologická ambulance KOC\nOdběr: 15. 10. 2026 7:45\nKREVNÍ OBRAZ\nVyšetření\nVýsledek\nJednotky\nRef. meze\nLeukocyty\n8,9\n10⁹/l\n4,0–10,0\nErytrocyty\n3,98\n10¹²/l\n3,80–5,20\nHemoglobin\n118 L\ng/l\n120–160\nHematokrit\n0,35\n1\n0,35–0,47\nMCV\n88\nfl\n82–98\nTrombocyty\n312\n10⁹/l\n150–400\nNeutrofily\n68\n%\n45–70\nLymfocyty\n22\n%\n20–45\nBIOCHEMIE\nVyšetření\nVýsledek\nJednotky\nRef. meze\nSodík\n137\nmmol/l\n136–145\nDraslík\n4,1\nmmol/l\n3,5–5,1\nVápník\n2,31\nmmol/l\n2,15–2,55\nUrea\n4,6\nmmol/l\n2,8–8,1\nKreatinin\n74\nµmol/l\n45–84\neGFR (CKD-EPI)\n1,25\nml/s/1,73 m²\n> 1,0\nGlukóza\n6,2 H\nmmol/l\n3,9–5,6\nBilirubin celkový\n23 H\nµmol/l\n2–17\nBilirubin konjugovaný\n6 H\nµmol/l\n0–5\nALT\n1,62 H\nµkat/l\n0,10–0,60\nAST\n1,20 H\nµkat/l\n0,10–0,60\nGGT\n5,00 H\nµkat/l\n0,10–0,70\nALP\n3,40 H\nµkat/l\n0,58–1,75\nCelková bílkovina\n66\ng/l\n64–83\nAlbumin\n36\ng/l\n35–52\nCRP\n18 H\nmg/l\n0–5\nNÁDOROVÉ MARKERY\nVyšetření\nVýsledek\nJednotky\nRef. meze\nCA 19-9\n312 H\nkU/l\n< 37\nCEA\n4,1\nµg/l\n< 5,0\nCA 125\n48 H\nkU/l\n< 35\nVydáno: 15. 10. 2026\nIng. Martina Šebestová\nodborný pracovník laboratoře"
+    },
+    "11": {
+      "id": "11",
+      "date": "2026-10-19",
+      "title": "Bioptický nález",
+      "place": "KOC Nemocnice Lipová – Ústav patologie",
+      "code": "HIS",
+      "isNew": true,
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nKOC Nemocnice Lipová (fiktivní)\nÚstav patologie\nNemocniční 15, 140 00 Praha 4\nBioptický nález\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nČíslo vyšetření: B-2026/15921\nMateriál: ložisko hlavy pankreatu, EUS-FNB 22G (odběr 20. 10. 2026)\nOdesílající: MUDr. Martin Svoboda, endoskopické pracoviště KOC\nDatum vydání: 19. 10. 2026\nMAKROSKOPICKY\n4 válečky šedobílé tkáně délky 3–12 mm, zpracovány celé.\nMIKROSKOPICKY\nVe vzorcích infiltrace adenokarcinomem tvořeným nepravidelnými, místy splývajícími žláznatými strukturami s jadernou atypií středního až vysokého stupně a výraznou desmoplastickou stromální reakcí. Zastižena perineurální invaze.\nImunohistochemicky: CK7 pozitivní, CK19 pozitivní, CK20 negativní, CDX2 negativní, SMAD4 exprese zachována.\nZÁVĚR\nDuktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3.\nDatum: 19. 10. 2026\nMUDr. Radek Pokorný, Ph.D.\npatolog"
+    },
+    "01": {
+      "id": "01",
+      "date": "2026-07-20",
+      "title": "kontrolní vyšetření",
+      "place": "Kardiologická ambulance Jesenice",
+      "code": "AMB",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nKardiologická ambulance Jesenice (fiktivní)\nMUDr. Petr Malý, kardiolog\nBudějovická 410, 252 42 Jesenice\nAmbulantní zpráva – kontrolní vyšetření\nDatum: 20. 7. 2026\nPacientka: Alena Procházková\nRodné číslo: 635722/1013\nBydliště: Za Školou 17, 252 41 Dolní Břežany\nZdravotní pojišťovna: 211\nDIAGNÓZY\nI48.0 Paroxysmální fibrilace síní, CHA₂DS₂-VASc 2 b., HAS-BLED 1 b., na antikoagulační léčbě\nI10 Arteriální hypertenze\nE78.0 Hypercholesterolémie\nSUBJEKTIVNĚ\nOd poslední kontroly v lednu 2026 bez palpitací, bez dušnosti, bolesti na hrudi neguje. Zátěž toleruje dobře (2 patra bez zastavení). Otoky dolních končetin neguje. Zažívací obtíže neguje.\nOBJEKTIVNĚ\nTK 132/80 mmHg, TF 68/min, pravidelná. Výška 165 cm, hmotnost 69 kg. Akce srdeční pravidelná, ozvy ohraničené, bez šelestu. Dýchání čisté, sklípkové. Bez otoků DK.\nEKG\nSinusový rytmus, 68/min, PQ 0,16 s, QRS 0,09 s, osa intermediární, bez ischemických změn ST-T.\nEchokardiografie (orientační)\nLK nedilatovaná, normální kinetika, EF LK 60 %. LS 42 mm. Chlopně bez hemodynamicky významné vady. Perikard bez výpotku.\nMEDIKACE\napixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1\nZÁVĚR A DOPORUČENÍ\nStabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027).\nPřed plánovaným invazivním výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby.\nV Jesenici dne 20. 7. 2026\nMUDr. Petr Malý\nkardiolog\nKopie: MUDr. Tomáš Řezníček, praktický lékař"
+    },
+    "02": {
+      "id": "02",
+      "date": "2026-09-01",
+      "title": "Výsledky laboratorního vyšetření",
+      "place": "Laboratoř LabJih s.r.o.",
+      "code": "LAB",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nLaboratoř LabJih s.r.o. (fiktivní)\nKlinická biochemie, hematologie, mikrobiologie\nLibušská 300, 142 00 Praha 4\nVýsledky laboratorního vyšetření\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nIndikující lékař: MUDr. Tomáš Řezníček, praktický lékař, Dolní Břežany\nOdběr: 1. 9. 2026 8:10\nVydáno: 4. 9. 2026 (kultivace), 1. 9. 2026 (ostatní)\nHEMATOLOGIE – KREVNÍ OBRAZ\nVyšetření\nVýsledek\nJednotky\nRef. meze\nLeukocyty\n12,8 H\n10⁹/l\n4,0–10,0\nErytrocyty\n4,21\n10¹²/l\n3,80–5,20\nHemoglobin\n124\ng/l\n120–160\nHematokrit\n0,37\n1\n0,35–0,47\nTrombocyty\n298\n10⁹/l\n150–400\nNeutrofily\n82 H\n%\n45–70\nLymfocyty\n12 L\n%\n20–45\nKLINICKÁ BIOCHEMIE – SÉRUM\nVyšetření\nVýsledek\nJednotky\nRef. meze\nSodík\n136\nmmol/l\n136–145\nDraslík\n4,0\nmmol/l\n3,5–5,1\nChloridy\n99\nmmol/l\n98–107\nUrea\n5,1\nmmol/l\n2,8–8,1\nKreatinin\n78\nµmol/l\n45–84\nGlukóza\n6,4 H\nmmol/l\n3,9–5,6\nBilirubin celkový\n38 H\nµmol/l\n2–17\nALT\n1,92 H\nµkat/l\n0,10–0,60\nAST\n1,45 H\nµkat/l\n0,10–0,60\nGGT\n4,20 H\nµkat/l\n0,10–0,70\nALP\n3,10 H\nµkat/l\n0,58–1,75\nAmyláza\n1,10\nµkat/l\n0,47–1,67\nLipáza\n0,85\nµkat/l\n0,22–1,00\nCRP\n86 H\nmg/l\n0–5\nMOČ – CHEMICKY\nVyšetření\nVýsledek\nRef.\npH\n6,0\n5–7\nBílkovina\n+ H\nneg.\nGlukóza\nneg.\nneg.\nKetolátky\nneg.\nneg.\nBilirubin\n++ H\nneg.\nUrobilinogen\nnorm.\nnorm.\nKrev\n+ H\nneg.\nLeukocyty\n++ H\nneg.\nNitrity\nneg.\nneg.\nMOČ – SEDIMENT\nVyšetření\nVýsledek\nJednotky\nRef. meze\nErytrocyty\n8\n/µl\n0–5\nLeukocyty\n65 H\n/µl\n0–10\nBakterie\n+\nneg.\nEpitelie ploché\nojediněle\nHlen\n+\nMIKROBIOLOGIE – KULTIVACE MOČI (VÝSLEDEK 4. 9. 2026)\nEscherichia coli 10⁴ CFU/ml\nAntibiotikum\nCitlivost\nAmpicilin\nR\nAmoxicilin/klavulanát\nC\nCefuroxim\nC\nCiprofloxacin\nC\nKotrimoxazol\nC\nNitrofurantoin\nC\nC = citlivý, R = rezistentní. Signifikance nálezu hraniční, interpretovat s ohledem na klinický stav.\nVydal:\nRNDr. Hana Kolářová\nodborný pracovník laboratoře"
+    },
+    "03": {
+      "id": "03",
+      "date": "2026-09-03",
+      "title": "RTG hrudníku PA",
+      "place": "Radiologické centrum Modřany",
+      "code": "RTG",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nRadiologické centrum Modřany (fiktivní)\nKomořanská 120, 143 00 Praha 4\nVýsledek vyšetření – RTG hrudníku PA\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nIndikující lékař: MUDr. Tomáš Řezníček, praktický lékař\nDatum vyšetření: 3. 9. 2026\nKlinická otázka: febrilie, vyloučit pneumonii\nPOPIS\nPlicní parenchym bez ložiskových a infiltrativních změn. Hily nerozšířené, strukturně přiměřené. Cévní kresba nezmnožená. Bránice hladká, kostofrenické úhly volné. Srdeční stín nezvětšen. Mediastinum nerozšířeno. Skelet hrudníku bez zjevných patologických změn.\nZÁVĚR\nBez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích.\nDatum: 3. 9. 2026\nMUDr. Lucie Hájková\nradiolog"
+    },
+    "04": {
+      "id": "04",
+      "date": "2026-09-04",
+      "title": "Epikríza a žádost o vyšetření gastroenterologem",
+      "place": "Ordinace praktického lékaře pro dospělé",
+      "code": "ŽÁD",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nOrdinace praktického lékaře pro dospělé\nMUDr. Tomáš Řezníček\nNa Návsi 3, 252 41 Dolní Břežany\nEpikríza a žádost o vyšetření gastroenterologem\nPacientka: Alena Procházková\nRodné číslo: 635722/1013\nBydliště: Za Školou 17, 252 41 Dolní Břežany\nZdravotní pojišťovna: 211\nDatum narození: 22. 7. 1963 (63 let)\nTelefon: +420 777 000 541\nKontaktní osoba: Petra Horká (dcera), tel. +420 777 000 542\nEPIKRÍZA\n63letá pacientka přišla 1. 9. 2026 pro asi 2 týdny trvající bolesti břicha v epigastriu a pravém podžebří, intermitentní teploty do 38,6 °C se zimnicí, únavu, nechutenství a tmavší moč posledních 5 dní. Dysurii a polakisurii neguje, průjem ani zvracení neguje.\nObjektivně TT 38,1 °C, TK 128/78 mmHg, TF 92/min pravidelná. Subikterus sklér. Břicho měkké, palpačně citlivé v epigastriu a pravém podžebří, Murphyho znamení negativní, bez hmatné rezistence. Tapottement bilaterálně negativní.\nLaboratorně leukocytóza 12,8, CRP 86 mg/l, cholestáza (bilirubin 38 µmol/l, GGT 4,20, ALP 3,10 µkat/l), v moči bilirubin ++ a leukocyturie, kultivačně E. coli 10⁴ CFU/ml (hraniční). RTG hrudníku 3. 9. bez zánětlivých změn.\nZávěr: febrilní stav, suspektní infekce močových cest vs. biliární infekce, cholestatický syndrom nejasné etiologie.\nTerapie: od 2. 9. 2026 ciprofloxacin 500 mg 1-0-1 po dobu 7 dní, paracetamol 500 mg při bolesti nebo teplotě max. 4× denně, dostatek tekutin. Při telefonické kontrole 4. 9. afebrilní, bolesti mírnější, moč nadále tmavší.\nANAMNÉZA\nRA: matka diabetes mellitus 2. typu, otec infarkt myokardu v 70 letech\nOA: paroxysmální fibrilace síní od r. 2021 na antikoagulaci (sledována kardiologem, poslední kontrola 20. 7. 2026), arteriální hypertenze, hypercholesterolémie, st. p. hysterektomii pro myomy (2010), v r. 2019 po úmrtí manžela přechodně depresivní ladění, neléčena\nFA: apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1\nAA: neguje\nAbusus: nekuřačka, alkohol abstinentka\nSA: vdova, žije sama v bytě, dcera bydlí v téže obci\nPA: účetní, dosud pracuje\nDOPORUČENÍ\n1. Vyšetření gastroenterologem pro cholestatický syndrom – objednána na 15. 9. 2026, MUDr. Ivana Křížová, Poliklinika Jižní.\n2. Kontrola u PL po dobrání ATB 9. 9. 2026 s kontrolním odběrem.\n3. Při návratu teplot, zežloutnutí nebo zhoršení bolestí neprodleně kontaktovat lékaře.\nV Dolních Břežanech dne 4. 9. 2026\nMUDr. Tomáš Řezníček\npraktický lékař, Na Návsi 3, 252 41 Dolní Břežany"
+    },
+    "05": {
+      "id": "05",
+      "date": "2026-09-15",
+      "title": "vstupní vyšetření",
+      "place": "Poliklinika Jižní – Gastroenterologická ambulance",
+      "code": "AMB",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nPoliklinika Jižní (fiktivní)\nGastroenterologická ambulance – MUDr. Ivana Křížová\nZa Poliklinikou 5, 143 00 Praha 4\nAmbulantní zpráva – vstupní vyšetření\nDatum: 15. 9. 2026\nPacientka: Alena Procházková\nRodné číslo: 635722/1013\nBydliště: Za Školou 17, 252 41 Dolní Břežany\nZdravotní pojišťovna: 211\nOdesílající lékař: MUDr. Tomáš Řezníček, praktický lékař\nSUBJEKTIVNĚ\nOdeslána PL pro cholestázu po febrilní epizodě. Po ciprofloxacinu afebrilní od 4. 9. Přetrvávají tupé bolesti v epigastriu s propagací do zad, horší po jídle a v noci. Nechutenství, úbytek hmotnosti 4 kg za poslední měsíc (z 69 na 65 kg). Moč stále tmavší, stolice občas světlejší. Pruritus neguje. Nauzea občasná, zvracení neguje.\nOBJEKTIVNĚ\nHmotnost 65 kg. Subikterus sklér. Břicho měkké, palpačně citlivé v epigastriu, bez hmatné rezistence, játra nezvětšena, bez ascitu. Per rektum neprovedeno.\nZÁVĚR\nCholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu.\nDOPORUČENÍ\n1. UZ břicha – objednána na nejbližší volný termín 29. 9. 2026, RDG pracoviště Polikliniky Jižní.\n2. Dle výsledku UZ CT břicha dle pankreatického protokolu, případně EUS.\n3. Kontrola v gastroenterologické ambulanci s výsledkem UZ.\n4. Pacientka užívá apixaban – před případným invazivním výkonem nutno vysadit 48 h předem.\n5. Při teplotách nebo progresi ikteru neprodleně kontaktovat lékaře / LSPP.\nV Praze dne 15. 9. 2026\nMUDr. Ivana Křížová\ngastroenterolog\nKopie: MUDr. Tomáš Řezníček, praktický lékař"
+    },
+    "06": {
+      "id": "06",
+      "date": "2026-09-29",
+      "title": "UZ břicha",
+      "place": "Poliklinika Jižní – Radiodiagnostické pracoviště",
+      "code": "UZ",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nPoliklinika Jižní (fiktivní)\nRadiodiagnostické pracoviště\nZa Poliklinikou 5, 143 00 Praha 4\nVýsledek vyšetření – UZ břicha\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nIndikující lékař: MUDr. Ivana Křížová, gastroenterolog\nDatum vyšetření: 29. 9. 2026\nPOPIS\nJátra normální velikosti, homogenní echostruktury, bez ložiskových změn. Intrahepatální žlučovody lehce dilatovány, ductus hepatocholedochus 10 mm. Žlučník mírně distendovaný, stěna 3 mm, bez konkrementů. V hlavě pankreatu hypoechogenní, nehomogenní, neostře ohraničené ložisko 34 × 30 mm. Ductus Wirsungi 4 mm. Vztah ložiska k portomezenterickému soutoku nelze ultrazvukem spolehlivě posoudit. Tělo a kauda pankreatu přehledné jen částečně. Slezina 10 cm, homogenní. Ledviny normální velikosti, bez městnání a konkrementů. Bez volné tekutiny.\nZÁVĚR\nLožisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS.\nDatum: 29. 9. 2026\nMUDr. Jan Kopecký\nradiolog"
+    },
+    "07": {
+      "id": "07",
+      "date": "2026-10-02",
+      "title": "Epikríza a žádost o převzetí do péče KOC",
+      "place": "Ordinace praktického lékaře pro dospělé",
+      "code": "ŽÁD",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nOrdinace praktického lékaře pro dospělé\nMUDr. Tomáš Řezníček\nNa Návsi 3, 252 41 Dolní Břežany\nIČP: 72045318 Tel.: +420 311 000 287\nEpikríza a žádost o převzetí do péče KOC\nAdresát: Komplexní onkologické centrum Nemocnice Lipová – koordinátor KOC\nPacientka: Alena Procházková\nRodné číslo: 635722/1013\nBydliště: Za Školou 17, 252 41 Dolní Břežany\nZdravotní pojišťovna: 211\nDatum narození: 22. 7. 1963 (63 let)\nTelefon: +420 777 000 541\nKontaktní osoba: Petra Horká (dcera), tel. +420 777 000 542\nEPIKRÍZA\n63letá pacientka sledovaná v naší ordinaci. Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Při vyšetření 1. 9. 2026 febrilní (38,1 °C), se subikterem sklér. Provedeny laboratorní odběry včetně vyšetření moči a kultivace a RTG plic. Pro suspektní infekci močových cest vs. biliární infekci léčena ciprofloxacinem 7 dní, poté afebrilní.\nPro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha. UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity. Gastroenterolog doporučil doplnit CT břicha dle pankreatického protokolu, případně EUS.\nTermín CT se nám v dostupných pracovištích nepodařilo zajistit.\nPři kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva. Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší. Teploty od září neměla. Soběstačná, v práci t. č. v pracovní neschopnosti. Psychicky pacientka velmi úzkostná, špatně spí.\nANAMNÉZA\nRA: matka diabetes mellitus 2. typu, otec infarkt myokardu v 70 letech\nOA: paroxysmální fibrilace síní od r. 2021 na antikoagulaci (kardiolog MUDr. Petr Malý, Jesenice), arteriální hypertenze, hypercholesterolémie, st. p. hysterektomii pro myomy (2010), v r. 2019 po úmrtí manžela přechodně depresivní ladění, neléčena\nFA: apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně\nAA: neguje\nAbusus: nekuřačka, alkohol abstinentka\nSA: vdova, žije sama, dcera bydlí v téže obci\nPA: účetní, t. č. v pracovní neschopnosti\nPROVEDENÁ VYŠETŘENÍ (VÝSLEDKY K DISPOZICI NA JEDNOTLIVÝCH PRACOVIŠTÍCH)\n1. Laboratorní vyšetření 1. 9. 2026 – krevní obraz, biochemie, moč chemicky a sediment, kultivace moči (LabJih)\n2. RTG plic 3. 9. 2026 (Radiologické centrum Modřany)\n3. Gastroenterologické vyšetření 15. 9. 2026 (MUDr. Ivana Křížová, Poliklinika Jižní)\n4. UZ břicha 29. 9. 2026 (RDG pracoviště, Poliklinika Jižní)\n5. Kardiologická kontrola 20. 7. 2026 (MUDr. Petr Malý)\nŽÁDOST\nSuspektní diagnóza: C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom\nŽádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT. Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení.\nUpozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa. Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory.\nPacientka je o podezření na nádorové onemocnění informována. Souhlasí se sdílením informací s dcerou.\nDěkuji za spolupráci.\nV Dolních Břežanech dne 2. 10. 2026\nMUDr. Tomáš Řezníček\npraktický lékař, Na Návsi 3, 252 41 Dolní Břežany"
+    },
+    "08": {
+      "id": "08",
+      "date": "2026-10-08",
+      "title": "CT břicha a hrudníku s k. l., pankreatický protokol",
+      "place": "KOC Nemocnice Severní – Radiologická klinika",
+      "code": "CT",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nKOC Nemocnice Severní (fiktivní)\nRadiologická klinika\nSeverní 1200, 180 00 Praha 8\nVýsledek vyšetření – CT břicha a hrudníku s k. l., pankreatický protokol\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nIndikující lékař: MUDr. Ivana Křížová, gastroenterolog, Poliklinika Jižní\nDatum vyšetření: 8. 10. 2026\nPOPIS\nV hlavě pankreatu hypodenzní, neostře ohraničené ložisko 35 × 31 mm. Ložisko obkružuje v. mesenterica superior v rozsahu cca 200° obvodu s nepravidelností kontury a zúžením lumen v délce 18 mm; proximální i distální segment VMS je vhodný k případné rekonstrukci. V. portae nad konfluencí průchodná. Kontakt tumoru s a. mesenterica superior do 150° obvodu, bez zúžení lumen. Truncus coeliacus a a. hepatica communis bez kontaktu s tumorem. A. gastroduodenalis v kontaktu s tumorem.\nDuctus hepatocholedochus 11 mm, intrahepatální žlučovody lehce dilatovány. Ductus Wirsungi 4 mm, parenchym těla a kaudy atrofický. Peripankreaticky uzlina 12 × 9 mm, suspektní. Paraaortální uzliny nezvětšené. Játra bez ložiskových změn. Bez ascitu, peritoneum bez nodulací.\nHrudník: plíce bez ložiskových změn, bez fluidothoraxu. Mediastinální a hilové uzliny nezvětšeny. Skelet bez osteolytických či osteoplastických ložisek.\nZÁVĚR\nTumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz.\nDatum: 8. 10. 2026\nMUDr. Daniel Fiala, Ph.D.\nradiolog"
+    },
+    "09": {
+      "id": "09",
+      "date": "2026-10-12",
+      "title": "EUS-FNB",
+      "place": "KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika",
+      "code": "EUS",
+      "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nKOC Nemocnice Lipová (fiktivní)\nEndoskopické pracoviště, Interní gastroenterologická klinika\nNemocniční 15, 140 00 Praha 4\nProtokol o výkonu – EUS-FNB\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nDatum výkonu: 12. 10. 2026\nVýkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB)\nIndikace: histologická verifikace ložiska hlavy pankreatu\nPŘÍPRAVA\nNalačno od půlnoci. Apixaban vysazen 48 h před výkonem (poslední dávka 18. 10. 2026 večer). Informovaný souhlas podepsán.\nANESTEZIE A MONITORACE\nAnalgosedace propofol 180 mg i.v. frakcionovaně za asistence anesteziologa. Monitorace SpO₂, TK a EKG, oxygenoterapie nosními brýlemi 2 l/min.\nPOPIS VÝKONU\nLineární echoendoskop zaveden bez obtíží přes jícen a žaludek do bulbu a sestupného raménka duodena. Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm. Barevným dopplerem ověřena dráha vpichu bez interponovaných cév. Provedeny 3 průchody jehlou FNB 22G technikou slow-pull, 12–15 pohybů na průchod. Makroskopicky získány dostatečné válečky tkáně, fixovány ve formolu a odeslány k histologickému vyšetření. Po výkonu v místě vpichu minimální krvácení, spontánně zastavené. Endoskop vytažen, bez komplikací.\nDOPORUČENÍ\n2 hodiny klid na lůžku, poté tekutiny per os. Při nekomplikovaném průběhu apixaban znovu od 21. 10. 2026 ráno. Výsledek histologie do 3 pracovních dnů.\nV Praze dne 12. 10. 2026\nMUDr. Martin Svoboda\ngastroenterolog, endoskopista"
+    }
+  },
   "steps": [
     {
       "id": "prevzit",
       "label": "Žádost od praktika",
-      "title": "Převzít žádost od praktika",
+      "title": "Praktický lékař požádal o převzetí do péče KOC",
       "status": "done",
       "date": "2026-10-02",
       "short": "2. 10.",
       "summary": "Žádanka přišla 2. 10. 2026 · MUDr. Tomáš Řezníček, praktický lékař.",
+      "request": {
+        "docId": "07",
+        "quote": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT. Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení."
+      },
       "docs": [
         {
           "id": "07",
           "date": "2026-10-02",
           "title": "Epikríza a žádost o převzetí do péče KOC",
-          "place": "Ordinace praktického lékaře pro dospělé"
+          "place": "Ordinace praktického lékaře pro dospělé",
+          "code": "ŽÁD"
         }
       ]
     },
     {
       "id": "shromazdit",
       "label": "Předchozí zprávy",
-      "title": "Vyžádat a shromáždit předchozí zprávy",
+      "title": "Předchozí zprávy shromážděny",
       "status": "done",
       "short": "6 zpráv",
       "summary": "6 zpráv z 5 pracovišť je na jednom místě.",
@@ -75,44 +171,50 @@
           "id": "01",
           "date": "2026-07-20",
           "title": "kontrolní vyšetření",
-          "place": "Kardiologická ambulance Jesenice"
+          "place": "Kardiologická ambulance Jesenice",
+          "code": "AMB"
         },
         {
           "id": "02",
           "date": "2026-09-01",
           "title": "Výsledky laboratorního vyšetření",
-          "place": "Laboratoř LabJih s.r.o."
+          "place": "Laboratoř LabJih s.r.o.",
+          "code": "LAB"
         },
         {
           "id": "03",
           "date": "2026-09-03",
           "title": "RTG hrudníku PA",
-          "place": "Radiologické centrum Modřany"
+          "place": "Radiologické centrum Modřany",
+          "code": "RTG"
         },
         {
           "id": "04",
           "date": "2026-09-04",
           "title": "Epikríza a žádost o vyšetření gastroenterologem",
-          "place": "Ordinace praktického lékaře pro dospělé"
+          "place": "Ordinace praktického lékaře pro dospělé",
+          "code": "ŽÁD"
         },
         {
           "id": "05",
           "date": "2026-09-15",
           "title": "vstupní vyšetření",
-          "place": "Poliklinika Jižní – Gastroenterologická ambulance"
+          "place": "Poliklinika Jižní – Gastroenterologická ambulance",
+          "code": "AMB"
         },
         {
           "id": "06",
           "date": "2026-09-29",
           "title": "UZ břicha",
-          "place": "Poliklinika Jižní – Radiodiagnostické pracoviště"
+          "place": "Poliklinika Jižní – Radiodiagnostické pracoviště",
+          "code": "UZ"
         }
       ]
     },
     {
       "id": "koordinovat",
       "label": "Vyšetření",
-      "title": "Koordinovat vyšetření",
+      "title": "Vyšetření proběhla",
       "status": "done",
       "date": "2026-10-19",
       "short": "8.–19. 10.",
@@ -122,6 +224,7 @@
           "date": "2026-10-08",
           "title": "CT břicha a hrudníku s k. l., pankreatický protokol",
           "place": "KOC Nemocnice Severní – Radiologická klinika",
+          "code": "CT",
           "what": "CT"
         },
         {
@@ -129,6 +232,7 @@
           "date": "2026-10-12",
           "title": "EUS-FNB",
           "place": "KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika",
+          "code": "EUS",
           "what": "Biopsie"
         },
         {
@@ -136,6 +240,7 @@
           "date": "2026-10-15",
           "title": "Výsledky laboratorního vyšetření",
           "place": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+          "code": "LAB",
           "what": "Kontrolní odběry"
         },
         {
@@ -143,6 +248,7 @@
           "date": "2026-10-19",
           "title": "Bioptický nález",
           "place": "KOC Nemocnice Lipová – Ústav patologie",
+          "code": "HIS",
           "isNew": true,
           "what": "Histologie"
         }

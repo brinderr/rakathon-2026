@@ -42,7 +42,14 @@ const what = (d) => {
   if (kind === 'histology') return 'Histologie';
   return title;
 };
-const doc = (d) => ({ id: d.id, date: d.date, title: R.docTitle(d), place: R.facility(d), ...(d.date === TODAY ? { isNew: true } : {}) });
+// short type label on the document icon, like a file type ("ŽÁD", "CT", "LAB", "HIS")
+const CODE = { referral: 'ŽÁD', lab: 'LAB', histology: 'HIS', clinic: 'AMB' };
+const codeOf = (d) => {
+  const kind = R.docKind(d);
+  if (kind === 'imaging' || kind === 'procedure') return R.docTitle(d).split(/[\s-]/)[0].toUpperCase().slice(0, 3);
+  return CODE[kind] ?? 'DOC';
+};
+const doc = (d) => ({ id: d.id, date: d.date, title: R.docTitle(d), place: R.facility(d), code: codeOf(d), ...(d.date === TODAY ? { isNew: true } : {}) });
 /** Who signed the report: the last line that starts with a medical title ("MUDr. Martin Svoboda"). */
 const signer = (d) => d.text.split('\n').map((l) => l.trim()).findLast((l) => /^(?:MUDr|MDDr|doc|prof)\.\s/.test(l)) ?? '';
 
@@ -50,6 +57,8 @@ const referral = known.filter((d) => R.docKind(d) === 'referral').sort((a, b) =>
 const earlier = known.filter((d) => d.date <= referral.date && d.id !== referral.id);
 const later = known.filter((d) => d.date > referral.date);
 const fresh = known.filter((d) => d.date === TODAY);
+// what the GP asks for, verbatim from the referral
+const request = field('mdtQuestion').citations.filter((c) => c.docId === referral.id).map((c) => c.quote).join(' ');
 
 // ---------- patient ----------
 const female = field('sex').value === 'žena';
@@ -135,21 +144,24 @@ const data = {
     conflicts: todo.filter((t) => t.kind === 'rozpor').length,
   },
   news: fresh.map((d) => ({ id: d.id, what: what(d), dept: unit(d).dept })),
+  // full text of every report known on the day, for the reader (fictional data)
+  documents: Object.fromEntries(known.map((d) => [d.id, { ...doc(d), text: d.text }])),
   steps: [
     {
-      id: 'prevzit', label: 'Žádost od praktika', title: 'Převzít žádost od praktika', status: 'done',
+      id: 'prevzit', label: 'Žádost od praktika', title: 'Praktický lékař požádal o převzetí do péče KOC', status: 'done',
       date: referral.date, short: dayMonth(referral.date),
       summary: `Žádanka přišla ${czDate(referral.date)} · ${gp.name}, praktický lékař.`,
+      ...(request ? { request: { docId: referral.id, quote: request } } : {}),
       docs: [doc(referral)],
     },
     {
-      id: 'shromazdit', label: 'Předchozí zprávy', title: 'Vyžádat a shromáždit předchozí zprávy', status: 'done',
+      id: 'shromazdit', label: 'Předchozí zprávy', title: 'Předchozí zprávy shromážděny', status: 'done',
       short: reports(earlier.length),
       summary: `${reports(earlier.length)} ${from(new Set(earlier.map((d) => unit(d).place)).size)} ${new Set(earlier.map((d) => unit(d).place)).size} pracovišť je na jednom místě.`,
       docs: earlier.map(doc),
     },
     {
-      id: 'koordinovat', label: 'Vyšetření', title: 'Koordinovat vyšetření', status: 'done',
+      id: 'koordinovat', label: 'Vyšetření', title: 'Vyšetření proběhla', status: 'done',
       date: later[later.length - 1].date, short: span(later[0].date, later[later.length - 1].date),
       docs: later.map((d) => ({ ...doc(d), what: what(d) })),
     },

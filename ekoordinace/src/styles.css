@@ -1,12 +1,14 @@
 /* eKoordinace – shared look for all sections: VZP colours, sharper corners (10 / 8 / 6 / 4 px), the frame with the
    side menu and top bar, cards, tiles, tabs and chips. Section styles live next to the section (src/sections/<name>/). */
+/* EK Mono = Source Code Pro Medium with a zero without the dot inside (src/assets/fonts, SIL Open Font License) */
+@font-face { font-family: "EK Mono"; src: url("./assets/fonts/ek-mono-500.woff2") format("woff2"); font-weight: 400 700; font-style: normal; font-display: swap; }
 :root {
   --page: #eef0f3; --surface: #ffffff; --soft: #f6f7f9; --line: #e3e6ea;
   --ink: #16181b; --ink-2: #4a4f56; --muted: #6f747b;
   --red: #d22d0f; --red-600: #b5260d; --red-50: #fdf3f1; --red-100: #fbe2dc; --red-200: #f5c3b8;
   --miss: #b42318; --miss-bg: #fdecea; --conf: #a15c07; --conf-bg: #fef3c7; --ok: #166534; --ok-bg: #e7f4ec;
   --sans: "Source Sans 3", "Source Sans Pro", "Segoe UI", Arial, sans-serif;
-  --mono: "Source Code Pro", ui-monospace, Menlo, monospace;
+  --mono: "EK Mono", ui-monospace, Menlo, monospace;
   --r-frame: 10px; --r-card: 8px; --r-ctl: 6px; --r-chip: 4px;
   --shadow: 0 1px 2px rgb(22 24 27 / .05), 0 6px 20px rgb(22 24 27 / .06);
 }

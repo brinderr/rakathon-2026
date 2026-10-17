@@ -1,11 +1,15 @@
 // The patient journey as a compact stepper: one small node per step (done = check), the step that is on now in red.
 // Below it a panel for the selected step – by default the current one with its to-dos and whom to call; a done step
-// shows the reports behind it.
+// shows the reports behind it as a list like in a file manager, and a click opens the report for reading.
 import { useState } from 'react';
 import type { KeyboardEvent, RefObject } from 'react';
+import { DocIcon } from '../../ui/DocIcon';
 import { Icon } from '../../ui/Icon';
 import { czDate, daysBetween, inDays, nb, telHref } from '../../ui/format';
 import type { DocRef, Step, Todo } from './types';
+
+/** Opens a report in the reader; `marks` are sentences to highlight in it. */
+export type OpenDoc = (id: string, marks?: string[]) => void;
 
 const STATUS_SR = { done: 'hotovo', now: 'teď na řadě', waiting: 'čeká' } as const;
 
@@ -15,7 +19,7 @@ function eyebrow(step: Step): string {
   return step.date ? `Hotovo · ${czDate(step.date)}` : 'Hotovo';
 }
 
-function TodoItem({ t }: { t: Todo }) {
+function TodoItem({ t, onOpen }: { t: Todo; onOpen: OpenDoc }) {
   const [open, setOpen] = useState(false);
   const miss = t.kind === 'chybí';
   const docIds = [...new Set(t.quotes.map((q) => q.docId))];
@@ -37,6 +41,11 @@ function TodoItem({ t }: { t: Todo }) {
             {t.quotes.map((q) => (
               <blockquote className="quote" key={q.quote}>„{nb(q.quote)}“<cite>zpráva {q.docId}</cite></blockquote>
             ))}
+            {docIds.map((id) => (
+              <button type="button" className="link" key={id} onClick={() => onOpen(id, t.quotes.filter((q) => q.docId === id).map((q) => q.quote))}>
+                <Icon name="file" size={14} />Otevřít zprávu {id}
+              </button>
+            ))}
           </div>
         )}
       </div>
@@ -54,21 +63,31 @@ function TodoItem({ t }: { t: Todo }) {
   );
 }
 
-function DocList({ docs }: { docs: DocRef[] }) {
+/** Reports as a list like in a file manager: icon, name, where it came from, date. */
+export function DocList({ docs, onOpen }: { docs: DocRef[]; onOpen: (id: string) => void }) {
   return (
     <ul className="docs">
       {docs.map((d) => (
         <li key={d.id}>
-          <span className="mono">{czDate(d.date)}</span>
-          <span className="doc-text">{d.what && <b>{d.what} · </b>}{d.title}<em>{d.place}</em></span>
-          <span className="doc-id">{d.isNew && <span className="chip new">dnes</span>}<span className="mono">zpráva {d.id}</span></span>
+          <button type="button" className="doc-row" onClick={() => onOpen(d.id)} aria-label={`Otevřít zprávu ${d.id}: ${d.title}`}>
+            <DocIcon code={d.code} />
+            <span className="doc-main">
+              <b>{d.what && `${d.what} · `}{d.title}</b>
+              <span className="doc-path">{d.place.split(' – ').join(' » ')}</span>
+            </span>
+            <span className="doc-when">
+              <span className="doc-date">{d.isNew && <span className="chip new">dnes</span>}{czDate(d.date)}</span>
+              <span className="mono">zpráva {d.id}</span>
+            </span>
+          </button>
         </li>
       ))}
     </ul>
   );
 }
 
-function StepPanel({ step, today }: { step: Step; today: string }) {
+function StepPanel({ step, today, onOpen }: { step: Step; today: string; onOpen: OpenDoc }) {
+  const request = step.request;
   return (
     <div className={`panel ${step.status}`} role="tabpanel" id="step-panel" aria-labelledby={`tab-${step.id}`}>
       <div className="panel-head">
@@ -81,8 +100,16 @@ function StepPanel({ step, today }: { step: Step; today: string }) {
         )}
       </div>
       {step.summary && <p className="panel-summary">{nb(step.summary)}</p>}
-      {step.todo && step.todo.length > 0 && <ol className="todo">{step.todo.map((t) => <TodoItem t={t} key={t.title} />)}</ol>}
-      {step.docs && step.docs.length > 0 && <DocList docs={step.docs} />}
+      {request && (
+        <div className="request">
+          <p className="request-label">Co praktik žádá</p>
+          <blockquote className="quote">„{nb(request.quote)}“<cite>zpráva {request.docId}</cite></blockquote>
+        </div>
+      )}
+      {step.todo && step.todo.length > 0 && <ol className="todo">{step.todo.map((t) => <TodoItem t={t} onOpen={onOpen} key={t.title} />)}</ol>}
+      {step.docs && step.docs.length > 0 && (
+        <DocList docs={step.docs} onOpen={(id) => onOpen(id, request && request.docId === id ? [request.quote] : [])} />
+      )}
     </div>
   );
 }
@@ -91,12 +118,13 @@ interface JourneyProps {
   steps: Step[];
   selected: string;
   onSelect: (id: string) => void;
+  onOpenDoc: OpenDoc;
   today: string;
   female: boolean;
   cardRef: RefObject<HTMLElement | null>;
 }
 
-export function Journey({ steps, selected, onSelect, today, female, cardRef }: JourneyProps) {
+export function Journey({ steps, selected, onSelect, onOpenDoc, today, female, cardRef }: JourneyProps) {
   const current = steps.find((s) => s.id === selected) ?? steps[0];
 
   // arrow keys move between the steps (tabs pattern)
@@ -130,7 +158,7 @@ export function Journey({ steps, selected, onSelect, today, female, cardRef }: J
           );
         })}
       </ol>
-      <StepPanel step={current} today={today} />
+      <StepPanel step={current} today={today} onOpen={onOpenDoc} />
     </section>
   );
 }

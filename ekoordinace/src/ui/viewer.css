@@ -1,0 +1,47 @@
+/* Shared: the report reader (a page like in a word processor) and the document icon used in lists. */
+.doc-icon { position: relative; flex: none; width: 28px; height: 34px; color: var(--muted); }
+.doc-icon svg { display: block; }
+.doc-code {
+  position: absolute; left: -5px; bottom: 3px; padding: 0 3px; border-radius: 3px;
+  background: var(--red); color: #fff; font: 700 .56rem/1.45 var(--sans); letter-spacing: .02em;
+}
+
+.viewer {
+  width: min(880px, calc(100vw - 32px)); height: calc(100vh - 48px); max-width: none; max-height: none;
+  padding: 0; border: 0; border-radius: var(--r-frame); background: var(--page); color: var(--ink);
+  box-shadow: 0 20px 60px rgb(22 24 27 / .35); overflow: hidden;
+}
+.viewer[open] { display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.viewer::backdrop { background: rgb(22 24 27 / .45); }
+.viewer-bar { display: flex; align-items: center; gap: .9rem; padding: .8rem 1rem .8rem 1.4rem; background: var(--surface); border-bottom: 1px solid var(--line); }
+.viewer-name { min-width: 0; }
+.viewer-name h2 { margin: 0; font-size: 1rem; font-weight: 700; line-height: 1.3; }
+.viewer-meta { color: var(--muted); font-size: .8rem; }
+.viewer-close {
+  margin-left: auto; flex: none; width: 2.4rem; height: 2.4rem; display: grid; place-items: center; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--r-ctl); background: var(--surface); color: var(--ink-2);
+}
+.viewer-close:hover { border-color: var(--red-200); color: var(--red); }
+.viewer-scroll { overflow: auto; padding: 1.25rem 1.5rem 2rem; }
+.viewer-hint { max-width: 720px; margin: 0 auto .75rem; color: var(--ink-2); font-size: .8rem; }
+
+.page-sheet {
+  max-width: 720px; margin: 0 auto; padding: 2.5rem 3rem 3rem; background: #fff; border-radius: 2px;
+  box-shadow: 0 1px 3px rgb(22 24 27 / .12), 0 8px 24px rgb(22 24 27 / .08); font-size: .95rem; line-height: 1.6;
+}
+.page-sheet:focus { outline: none; }
+.page-sheet p { margin: 0 0 .3rem; }
+.sheet-note { display: inline-block; margin-bottom: 1.25rem !important; padding: .05rem .5rem; border-radius: var(--r-chip); background: var(--conf-bg); color: var(--conf); font-size: .75rem; font-weight: 600; }
+.sheet-head { padding-bottom: 1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--line); color: var(--ink-2); font-size: .85rem; line-height: 1.45; }
+.sheet-head p:first-child { color: var(--ink); font-size: .95rem; font-weight: 700; }
+.sheet-title { margin: 0 0 1rem; font-size: 1.3rem; font-weight: 700; line-height: 1.3; }
+.page-sheet h4 { margin: 1.1rem 0 .3rem; font: 600 .75rem var(--mono); letter-spacing: .07em; color: var(--ink-2); }
+.sheet-gap { height: .6rem; }
+.viewer mark { background: var(--red-100); color: inherit; padding: .05em .1em; border-radius: 2px; box-shadow: 0 0 0 1px var(--red-200); }
+
+@media (max-width: 620px) {
+  .viewer { width: 100vw; height: 100dvh; margin: 0; border-radius: 0; }
+  .viewer-scroll { padding: .75rem 0 0; }
+  .viewer-hint { padding: 0 1rem; }
+  .page-sheet { padding: 1.25rem 1rem 2rem; box-shadow: none; }
+}

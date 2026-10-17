@@ -1,18 +1,22 @@
 // Section "Pacienti" (owner: Matej) – one patient's case: header with the key facts, tiles, and the journey as a
 // compact stepper. Done steps stay small; the step that is on now opens below the stepper with what is still needed
-// and whom to call. Only the "Přehled" tab works so far; greyed items are filled in the next steps.
+// and whom to call. Every report opens for reading. Only the "Přehled" tab works so far; greyed items come next.
 // Data: src/data/alena.json, computed from the fictional reports by the shared engine (npm run data).
 import { useCallback, useEffect, useRef, useState } from 'react';
 import data from '../../data/alena.json';
+import { DocViewer } from '../../ui/DocViewer';
+import type { DocText } from '../../ui/DocViewer';
 import { Icon } from '../../ui/Icon';
 import { czDate, daysBetween, inDays, nb } from '../../ui/format';
 import { Journey } from './Journey';
+import type { OpenDoc } from './Journey';
 import { PhoneContacts } from './PhoneContacts';
 import type { Person, Step } from './types';
 import './pacient.css';
 
 const SOON = 'Připravujeme v dalším kroku';
 const steps = data.steps as Step[];
+const documents = data.documents as Record<string, DocText>;
 const nowStep = steps.find((s) => s.status === 'now') ?? steps[0];
 
 /** Number of open to-dos, for the bell in the top bar. */
@@ -35,7 +39,7 @@ function PatientHead() {
       <dl className="facts">
         <div><dt>{female ? 'Narozena' : 'Narozen'}</dt><dd>{nb(p.born)}<span className="soft"> · {p.age}</span></dd></div>
         <div><dt>Pojišťovna</dt><dd title={p.insurer.name}>{p.insurer.short} <span className="code">{p.insurer.code}</span></dd></div>
-        <div><dt>Diagnóza</dt><dd><span className="code">{p.diagnosis.code}</span> {p.diagnosis.text}<span className="soft"> · {nb(p.diagnosis.source)}</span></dd></div>
+        <div><dt>Diagnóza</dt><dd title={`Podle: ${p.diagnosis.source} (zpráva ${p.diagnosis.docId})`}><span className="code">{p.diagnosis.code}</span> {p.diagnosis.text}</dd></div>
       </dl>
       <div className="head-actions">
         <PhoneContacts people={phonePeople} />
@@ -48,10 +52,11 @@ function PatientHead() {
 
 export function PatientPage({ path }: { path: string[] }) {
   const [selected, setSelected] = useState(nowStep.id);
+  const [reading, setReading] = useState<{ id: string; marks: string[] } | null>(null);
   const journeyRef = useRef<HTMLElement | null>(null);
   const s = data.stats;
   const news = data.news[0];
-  const newsStep = news && steps.find((x) => x.docs?.some((d) => d.id === news.id));
+  const openDoc: OpenDoc = useCallback((id, marks = []) => setReading({ id, marks }), []);
   const days = daysBetween(data.today, data.mdtDate);
 
   const show = useCallback((id: string) => {
@@ -91,8 +96,8 @@ export function PatientPage({ path }: { path: string[] }) {
           <span className="stat-icon red"><Icon name="alert" /></span>
           <span><small>K vyřešení</small><b>{openTasks}</b><em>{s.missing} chybí · {s.conflicts} {s.conflicts === 1 ? 'rozpor' : s.conflicts < 5 ? 'rozpory' : 'rozporů'}</em></span>
         </button>
-        {news && newsStep ? (
-          <button type="button" className="stat stat-link" onClick={() => show(newsStep.id)}>
+        {news ? (
+          <button type="button" className="stat stat-link" onClick={() => openDoc(news.id)}>
             <span className="stat-icon"><Icon name="file" /></span>
             <span><small>Dnes nové</small><b>{news.what}</b><em>zpráva {news.id} · {news.dept}</em></span>
           </button>
@@ -105,10 +110,13 @@ export function PatientPage({ path }: { path: string[] }) {
         steps={steps}
         selected={selected}
         onSelect={setSelected}
+        onOpenDoc={openDoc}
         today={data.today}
         female={data.patient.sex === 'žena'}
         cardRef={journeyRef}
       />
+
+      <DocViewer doc={reading ? documents[reading.id] ?? null : null} marks={reading?.marks ?? []} onClose={() => setReading(null)} />
     </>
   );
 }
