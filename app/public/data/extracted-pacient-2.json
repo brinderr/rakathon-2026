@@ -2,9 +2,11 @@
   "meta": {
     "caseId": "pacient-2",
     "asOf": "2026-10-22",
-    "generatedAt": "2026-10-16T23:55:15.938Z",
+    "generatedAt": "2026-10-17T00:03:41.238Z",
     "promptVersion": "handover-v1",
-    "mode": "rules",
+    "mode": "rules+llm",
+    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
+    "requestHash": "f4dc2cba7d5cf0d0",
     "docsUsed": [
       "01",
       "02",
@@ -28,10 +30,10 @@
       "withValue": 20,
       "missing": 0,
       "conflicts": 3,
-      "citations": 44,
-      "citationsVerified": 44,
+      "citations": 49,
+      "citationsVerified": 49,
       "fieldsWithoutVerifiedCitation": 0,
-      "llmFieldsAccepted": 0,
+      "llmFieldsAccepted": 5,
       "llmFieldsRejected": 0
     }
   },
@@ -137,7 +139,7 @@
       "key": "diagnosis",
       "label": "Diagnóza",
       "group": "Diagnóza",
-      "value": "C34.1 – adenokarcinom pravého horního laloku plíce, uzliny 10R a 4R pozitivní (v žiadanke, 7. 10. 2026); histologicky: Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. (23. 9. 2026)",
+      "value": "C34.1 – adenokarcinom horního laloku plíce (TTF-1 pozitivní), uzliny 10R a 4R pozitivní",
       "status": "conflict",
       "citations": [
         {
@@ -149,30 +151,30 @@
           "quote": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R."
         }
       ],
-      "sourceDate": "2026-09-23",
+      "note": "Strana tumoru se ve zprávách liší, rozhodne člověk. Výsledek prediktivního vyšetření (dodatek k bioptickému nálezu) mezi zprávami chybí.",
       "conflict": {
         "a": {
-          "value": "pravého horního laloku",
+          "value": "adenokarcinom pravého horního laloku plíce",
           "citation": {
             "docId": "09",
             "quote": "Diagnóza: C34.1 – adenokarcinom pravého horního laloku plíce, uzliny 10R a 4R pozitivní"
           }
         },
         "b": {
-          "value": "levém horním laloku",
+          "value": "tumor v levém horním laloku",
           "citation": {
             "docId": "06",
-            "quote": "Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření."
+            "quote": "Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R."
           }
         },
-        "explain": "Strana nálezu nesedí: správy 02, 03, 05, 08, 09 uvádzajú pravú stranu, správa 06 ľavú. Overiť s pracoviskom – strana rozhoduje o operácii aj ožarovaní."
+        "explain": "Protokol bronchoskopie uvádí tumor v levém horním laloku, kdežto epikríza i popisy RTG, CT a PET/CT uvádějí pravý horní lalok."
       }
     },
     {
       "key": "epicrisis",
       "label": "Priebeh ochorenia v skratke",
       "group": "Diagnóza",
-      "value": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026. CT hrudníku 10. 9. 2026 popisuje tumor pravého horního laloku 42 × 35 mm a suspektní uzliny 10R a 4R. Bronchoskopie s EBUS-TBNA 17. 9. 2026 na KOC Nemocnice Lipová, histologicky adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez známek vzdálených metastáz.",
+      "value": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg. CT 10. 9. 2026: tumor pravého horního laloku 42 × 35 mm, suspektní uzliny 10R a 4R. EBUS-TBNA 17. 9. 2026: adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez vzdálených metastáz.",
       "status": "proposed",
       "citations": [
         {
@@ -181,24 +183,31 @@
         },
         {
           "docId": "09",
-          "quote": "CT hrudníku 10. 9. 2026 popisuje tumor pravého horního laloku 42 × 35 mm a suspektní uzliny 10R a 4R. Bronchoskopie s EBUS-TBNA 17. 9. 2026 na KOC Nemocnice Lipová, histologicky adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez známek vzdálených metastáz."
+          "quote": "CT hrudníku 10. 9. 2026 popisuje tumor pravého horního laloku 42 × 35 mm a suspektní uzliny 10R a 4R."
+        },
+        {
+          "docId": "09",
+          "quote": "Bronchoskopie s EBUS-TBNA 17. 9. 2026 na KOC Nemocnice Lipová, histologicky adenokarcinom plic s metastázami v uzlinách 4R a 10R."
+        },
+        {
+          "docId": "09",
+          "quote": "PET/CT 1. 10. 2026 bez známek vzdálených metastáz."
         }
       ],
-      "sourceDate": "2026-10-07"
+      "note": "Souhrn podle epikrízy odesílajícího lékaře; protokol bronchoskopie uvádí levý horní lalok – viz konflikt u diagnózy."
     },
     {
       "key": "mdtQuestion",
       "label": "Otázka pre konzílium",
       "group": "Diagnóza",
-      "value": "Žádám o převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R.",
+      "value": "Převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R.",
       "status": "proposed",
       "citations": [
         {
           "docId": "09",
           "quote": "Žádám o převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R."
         }
-      ],
-      "sourceDate": "2026-10-07"
+      ]
     },
     {
       "key": "comorbidities",
@@ -304,19 +313,27 @@
       "key": "symptoms",
       "label": "Príznaky a ich začiatok",
       "group": "Stav",
-      "value": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026. Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater.",
+      "value": "Suchý dráždivý kašel asi 6 týdnů (vyšetřen praktickou lékařkou 24. 8. 2026), poslední týden 2× drobná příměs krve ve sputu, mírná námahová dušnost, bez teplot; za 2 měsíce zhubl asi 3 kg. Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater, váha 76 kg, nadále ubývá.",
       "status": "proposed",
       "citations": [
+        {
+          "docId": "01",
+          "quote": "Asi 6 týdnů suchý dráždivý kašel, poslední týden 2× drobná příměs krve ve sputu."
+        },
+        {
+          "docId": "01",
+          "quote": "Mírná námahová dušnost (2 patra), bez teplot. Za 2 měsíce zhubl asi 3 kg bez diety."
+        },
         {
           "docId": "09",
           "quote": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg vyšetřen praktickou lékařkou 24. 8. 2026."
         },
         {
           "docId": "09",
-          "quote": "Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater."
+          "quote": "Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater. Váha 76 kg, nadále ubývá."
         }
       ],
-      "sourceDate": "2026-10-07"
+      "note": "Přesné datum počátku příznaků ve zprávách chybí, uvedena je jen doba trvání kašle."
     },
     {
       "key": "exams",
@@ -433,15 +450,19 @@
       "key": "other",
       "label": "Iné dôležité a želania pacienta",
       "group": "Iné",
-      "value": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka.",
+      "value": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka. Kontaktní osoba: Marie Nováková (manželka), tel. +420 603 000 119.",
       "status": "proposed",
       "citations": [
         {
           "docId": "09",
           "quote": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka."
+        },
+        {
+          "docId": "09",
+          "quote": "Kontaktní osoba: Marie Nováková (manželka), tel. +420 603 000 119"
         }
       ],
-      "sourceDate": "2026-10-07"
+      "note": "Upozornění: zprávy z CT a PET/CT uvádějí alergii na jodovou kontrastní látku (kopřivka po iomeprolu), epikríza odesílajícího lékaře uvádí „AA: neguje“ – rozpor k ověření. Laboratorní zpráva je vedena na jiné rodné číslo než ostatní zprávy – ověřit, zda patří pacientovi."
     }
   ],
   "provenance": {
@@ -488,22 +509,25 @@
       "rejected": []
     },
     "diagnosis": {
-      "extractor": "rules",
+      "extractor": "llm",
       "checkedQuotes": 2,
       "verifiedQuotes": 2,
-      "rejected": []
+      "rejected": [],
+      "support": 1
     },
     "epicrisis": {
-      "extractor": "rules",
-      "checkedQuotes": 2,
-      "verifiedQuotes": 2,
-      "rejected": []
+      "extractor": "llm",
+      "checkedQuotes": 4,
+      "verifiedQuotes": 4,
+      "rejected": [],
+      "support": 1
     },
     "mdtQuestion": {
-      "extractor": "rules",
+      "extractor": "llm",
       "checkedQuotes": 1,
       "verifiedQuotes": 1,
-      "rejected": []
+      "rejected": [],
+      "support": 1
     },
     "comorbidities": {
       "extractor": "rules",
@@ -536,10 +560,11 @@
       "rejected": []
     },
     "symptoms": {
-      "extractor": "rules",
-      "checkedQuotes": 2,
-      "verifiedQuotes": 2,
-      "rejected": []
+      "extractor": "llm",
+      "checkedQuotes": 4,
+      "verifiedQuotes": 4,
+      "rejected": [],
+      "support": 1
     },
     "exams": {
       "extractor": "rules",
@@ -560,10 +585,11 @@
       "rejected": []
     },
     "other": {
-      "extractor": "rules",
-      "checkedQuotes": 1,
-      "verifiedQuotes": 1,
-      "rejected": []
+      "extractor": "llm",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": [],
+      "support": 1
     }
   },
   "findings": [
