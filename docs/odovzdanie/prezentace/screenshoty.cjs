@@ -2,7 +2,8 @@
 // Each shot is 1920 × 1080: the app laid out 1520 px wide, the right 400 px hold the title, the requirement from the VZP
 // slides and the numbered captions; red badges with arrows point at the real elements (positions from Playwright).
 // The demo starts from a clean browser. Two states are written to localStorage the way the app writes them when the
-// coordinator clicks: the SMS to the patient at 8:55 (shots 1–12) and her finished work confirmed by the doctor (13–17).
+// coordinator clicks: the SMS to the patient at 8:55 (shots 1–12) and her finished work confirmed by the doctor (13–17);
+// for 18–19 the same work, but ECOG left without checking before the MDT, so the revízní lékař asks for it.
 //   node docs/odovzdanie/prezentace/screenshoty.cjs [output folder] [repo root] [shots, e.g. 4,9]
 let chromium;
 try { ({ chromium } = require('playwright')); } catch { ({ chromium } = require('/opt/node22/lib/node_modules/playwright')); }
@@ -101,7 +102,7 @@ function draw(spec) {
   }, LAYOUT_CSS);
   const p = await ctx.newPage();
   p.on('pageerror', (e) => console.log('PAGEERROR', e.message));
-  const TOTAL = 17;
+  const TOTAL = 19;
   const run = (n) => !only || only.includes(String(n));
   const shot = async (file, n, title, req, items) => {
     if (!run(n)) return;
@@ -343,31 +344,36 @@ function draw(spec) {
     ]);
   }
 
-  // ---- after the coordinator's work: everything resolved, confirmed by the doctor (as via Údaje and Podklad)
-  await p.evaluate((me) => {
-    localStorage.setItem('ekoordinace:case:alena', JSON.stringify({
-      added: {
-        performance: { value: 'ECOG 1 – soběstačná, zvládá lehkou práci', source: 'telefonát – MUDr. Tomáš Řezníček (praktický lékař)', at: '2026-10-19T10:12', who: me },
-        patientContact: { value: 'alena.prochazkova@example.cz', source: 'telefonát – Alena Procházková (pacientka)', at: '2026-10-19T09:20', who: me },
-      },
-      resolved: {
-        medication: { note: 'apixaban vysazen 10. 10. večer, v protokolu je překlep', at: '2026-10-19T10:31', who: me, with: 'MUDr. Martin Svoboda (endoskopické pracoviště)' },
-        histology: { note: 'odběr byl 12. 10., v nálezu je chybné datum', at: '2026-10-19T10:44', who: me, with: 'MUDr. Radek Pokorný, Ph.D. (ústav patologie)' },
-      },
-      waived: {},
-      events: [
-        { at: '2026-10-19T08:55', who: me, kind: 'vyzadano', text: 'Alena Procházková: Dobrý den,', to: 'Alena Procházková', channel: 'SMS', subject: '', body: 'Dobrý den,\npřed konziliem 21. 10. 2026 prosíme o Váš e-mail – stačí odpovědět na tuto zprávu.', field: 'patientContact' },
-        { at: '2026-10-19T09:20', who: me, kind: 'telefonat', text: 'Alena Procházková (pacientka): alena.prochazkova@example.cz', field: 'patientContact' },
-        { at: '2026-10-19T10:12', who: me, kind: 'telefonat', text: 'MUDr. Tomáš Řezníček (praktický lékař): ECOG 1 – soběstačná, zvládá lehkou práci', field: 'performance' },
-        { at: '2026-10-19T10:31', who: me, kind: 'overeno', text: 'MUDr. Martin Svoboda (endoskopické pracoviště): apixaban vysazen 10. 10. večer, v protokolu je překlep', field: 'medication' },
-        { at: '2026-10-19T10:44', who: me, kind: 'overeno', text: 'MUDr. Radek Pokorný, Ph.D. (ústav patologie): odběr byl 12. 10., v nálezu je chybné datum', field: 'histology' },
-        { at: '2026-10-19T11:05', who: 'MUDr. Lenka Marková', kind: 'potvrzeno', text: 'podklad pro konzilium potvrzen' },
-      ],
-      confirmed: { by: 'MUDr. Lenka Marková', at: '2026-10-19T11:05' },
-    }));
-  }, ME);
-  await p.reload();
-  await p.waitForTimeout(3000);
+  // ---- after the coordinator's work: everything resolved, confirmed by the doctor (as via Údaje and Podklad);
+  // `ecogLeft`: ECOG left without checking before the MDT instead of the call with the GP (as via "Ponechat")
+  const done = (me, ecogLeft) => ({
+    added: {
+      ...(ecogLeft ? {} : { performance: { value: 'ECOG 1 – soběstačná, zvládá lehkou práci', source: 'telefonát – MUDr. Tomáš Řezníček (praktický lékař)', at: '2026-10-19T10:12', who: me } }),
+      patientContact: { value: 'alena.prochazkova@example.cz', source: 'telefonát – Alena Procházková (pacientka)', at: '2026-10-19T09:20', who: me },
+    },
+    resolved: {
+      medication: { note: 'apixaban vysazen 10. 10. večer, v protokolu je překlep', at: '2026-10-19T10:31', who: me, with: 'MUDr. Martin Svoboda (endoskopické pracoviště)' },
+      histology: { note: 'odběr byl 12. 10., v nálezu je chybné datum', at: '2026-10-19T10:44', who: me, with: 'MUDr. Radek Pokorný, Ph.D. (ústav patologie)' },
+    },
+    waived: ecogLeft ? { performance: { reason: 'Nestihne se do konzilia', at: '2026-10-19T10:12', who: me } } : {},
+    events: [
+      { at: '2026-10-19T08:55', who: me, kind: 'vyzadano', text: 'Alena Procházková: Dobrý den,', to: 'Alena Procházková', channel: 'SMS', subject: '', body: 'Dobrý den,\npřed konziliem 21. 10. 2026 prosíme o Váš e-mail – stačí odpovědět na tuto zprávu.', field: 'patientContact' },
+      { at: '2026-10-19T09:20', who: me, kind: 'telefonat', text: 'Alena Procházková (pacientka): alena.prochazkova@example.cz', field: 'patientContact' },
+      ecogLeft
+        ? { at: '2026-10-19T10:12', who: me, kind: 'poznamka', text: 'ponecháno bez ověření: Nestihne se do konzilia', field: 'performance' }
+        : { at: '2026-10-19T10:12', who: me, kind: 'telefonat', text: 'MUDr. Tomáš Řezníček (praktický lékař): ECOG 1 – soběstačná, zvládá lehkou práci', field: 'performance' },
+      { at: '2026-10-19T10:31', who: me, kind: 'overeno', text: 'MUDr. Martin Svoboda (endoskopické pracoviště): apixaban vysazen 10. 10. večer, v protokolu je překlep', field: 'medication' },
+      { at: '2026-10-19T10:44', who: me, kind: 'overeno', text: 'MUDr. Radek Pokorný, Ph.D. (ústav patologie): odběr byl 12. 10., v nálezu je chybné datum', field: 'histology' },
+      { at: '2026-10-19T11:05', who: 'MUDr. Lenka Marková', kind: 'potvrzeno', text: 'podklad pro konzilium potvrzen' },
+    ],
+    confirmed: { by: 'MUDr. Lenka Marková', at: '2026-10-19T11:05' },
+  });
+  const seed = async (state) => {
+    await p.evaluate((st) => localStorage.setItem('ekoordinace:case:alena', JSON.stringify(st)), state);
+    await p.reload();
+    await p.waitForTimeout(3000);
+  };
+  await seed(done(ME, false));
 
   // 13 Podklad vygenerovaný
   if (run(13) || run(14)) {
@@ -397,14 +403,15 @@ function draw(spec) {
     await go('#/pacienti/alena/zaver', 1800);
     await p.locator('.zaver-bar .btn-primary').first().click().catch(() => console.log('  no send'));
     await p.waitForFunction(() => /Přečteno\s*\d/.test(document.querySelector('.zaver-bar')?.textContent ?? ''), null, { timeout: 25000 }).catch(() => console.log('  receipt not read yet'));
+    await p.waitForFunction(() => /Vzato na vědomí\s*\d/.test(document.querySelector('.zaver-bar')?.textContent ?? ''), null, { timeout: 30000 }).catch(() => console.log('  revízní lékař has not taken note yet'));
     await p.waitForTimeout(600);
     await top();
     await shot('15-zaver.png', 15, 'Závěr praktikovi s doručenkou', '<b>Slide 11 · 04 Zpětná vazba:</b> strukturovaný výsledek s původním kontextem, předání potvrzené. <b>Slide 12 e), f)</b> · <b>Odevzdávka č. 3.</b>', [
-      { sel: '.zaver-bar .receipt', label: 'Doručenka', text: 'Odesláno → Doručeno → Přečteno s časem. Dokud praktik nečte, jde Urgovat.', side: 'bottom' },
+      { sel: '.zaver-bar .receipt', label: 'Doručenka', text: 'Odesláno → Doručeno → Přečteno s časem. Dokud praktik nečte, jde Urgovat.', side: 'top' },
+      { sel: '.zaver-receipts .zaver-state', nth: 1, label: 'Revizní lékař ZP 211', text: 'Souhrn pro pojišťovnu pacientky odešel automaticky se závěrem – doručeno, vzato na vědomí.', side: 'left', dx: 10 },
       { sel: '.zaver-bar .form-actions', label: 'Kopírovat · Tisk / PDF', text: '„Odeslat praktikovi“ bylo zamčené, dokud lékař nepotvrdil podklad.', side: 'bottom' },
       { sel: '.zaver-meta', label: 'Původní kontext', text: 'Adresát, pacientka, diagnóza se zdrojem, datum konzilia.', side: 'left' },
       { sel: '.zaver-paper textarea', nth: 0, label: 'Závěr a doporučení MDT', text: 'Slovy lékařů z konzilia; u Aleny podle vzoru MDT_zaver ze zadání.', side: 'left' },
-      { sel: '.zaver-sample', label: 'Ukázka', text: 'Konzilium je až 21. 10. – v demu je vidět, co pak praktik dostane.', side: 'left' },
     ]);
   }
 
@@ -444,6 +451,30 @@ function draw(spec) {
       { sel: '.ai-msg.user', label: 'Otázka běžnou řečí', text: '„Co mám dnes udělat jako první?“, „Kdy přišla histologie?“', side: 'left' },
       { sel: '.ai-answer', clip: '.ai-msgs', label: 'Odpověď se zdrojem', text: 'Shrnutí a odrážky: jméno tučně, zdroj šedě. Co v datech není, AI nedomýšlí.', side: 'left' },
       { sel: '.ai-head small, .ai-head p', label: 'Jen z dat v aplikaci', text: 'Rodná čísla, telefony, e-maily, adresy a jména se před odesláním nahradí značkami; zpět se doplní až v prohlížeči.', side: 'left' },
+    ]);
+  }
+
+  // 18–19 Revizní lékař: ECOG was left without checking, so after the summary arrives he asks for it
+  if (run(18) || run(19)) {
+    await seed(done(ME, true));
+    await go('#/pacienti/alena/zaver', 1800);
+    await p.locator('.zaver-bar .btn-primary').first().click().catch(() => console.log('  no send'));
+    await p.waitForFunction(() => /Žádá doplnění\s*\d/.test(document.querySelector('.zaver-bar')?.textContent ?? ''), null, { timeout: 30000 }).catch(() => console.log('  no request from the revízní lékař'));
+    await p.waitForTimeout(600);
+    await top();
+    await shot('18-revizni-dotaz.png', 18, 'Revizní lékař si vyžádá doplnění', '<b>Slide 11 · 04 Zpětná vazba, body 24–25:</b> revizní lékař dostane informaci automaticky a může si od koordinátora vyžádat doplnění.', [
+      { sel: '.zaver-receipts .zaver-state', nth: 1, label: 'Revizní lékař ZP 211', text: 'Souhrn odešel sám se závěrem praktikovi – odesláno, doručeno, pak „Žádá doplnění“.', side: 'left', dx: 10 },
+      { sel: '.rl-ask-head', label: 'Žádá doplnění', text: 'ECOG zůstal před konziliem „ponechán bez ověření“ – pojišťovna ho pro posouzení úhrady léčby potřebuje.', side: 'left', dx: 10 },
+      { sel: '.rl-ask textarea', label: 'Odpověď', text: 'Koordinátorka napíše, co zjistila; odpověď jde zpět stejným vláknem, pak „vzato na vědomí“.', side: 'left', dx: 10 },
+      { sel: '.top-actions a.icon-btn[href="#/prehled"]', label: 'Úkol ve zvonku', text: 'V Přehledu „Na tahu jste vy“: Odpovědět reviznímu lékaři. Krok cesty se do odpovědi neuzavře.', side: 'bottom' },
+    ]);
+    await scrollTo('.rl-paper', 90);
+    await p.waitForTimeout(300);
+    await shot('19-revizni-souhrn.png', 19, 'Souhrn pro revizního lékaře', '<b>Slide 11 · bod 24:</b> informace pro revizního lékaře roztříděná do struktury – diagnóza, histologie, ECOG, rozhodnutí konzilia a plánovaná léčba.', [
+      { sel: '.rl-head', label: 'Odejde automaticky', text: 'Se závěrem praktikovi, bez dalšího klikání; jde i zkopírovat.', side: 'left' },
+      { sel: '.rl-meta > div', nth: 0, label: 'Pojišťovna pacientky', text: 'ZPMV ČR (211) – podle zpráv, ne automaticky VZP.', side: 'left' },
+      { sel: '.rl-meta > div', nth: 4, label: 'Bez ověření', text: 'ECOG zůstal před konziliem neověřený – proto se revizní lékař ptá.', side: 'left' },
+      { sel: '.rl-meta > div', nth: 7, label: 'Plánovaná léčba', text: 'Doporučení MDT slovy lékařů – podle něj pojišťovna posuzuje úhradu.', side: 'left' },
     ]);
   }
 
