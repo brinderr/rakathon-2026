@@ -45,7 +45,6 @@ export default async function handler(req: Req, res: Res) {
       model: anthropic(MODEL),
       system: `${SYSTEM}\n\n<data>\n${context}\n</data>`,
       messages: [...history, { role: 'user', content: question }],
-      temperature: 0,
       maxTokens: 900,
     });
     return send(res, 200, { model: MODEL, answer: text, usage });
