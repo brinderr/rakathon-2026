@@ -38,6 +38,507 @@
     "missing": 2,
     "conflicts": 2
   },
+  "fields": [
+    {
+      "key": "firstName",
+      "label": "Jméno",
+      "group": "Nacionále pacientky",
+      "value": "Alena",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Pacientka: Alena Procházková"
+        }
+      ]
+    },
+    {
+      "key": "lastName",
+      "label": "Příjmení",
+      "group": "Nacionále pacientky",
+      "value": "Procházková",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Pacientka: Alena Procházková"
+        }
+      ]
+    },
+    {
+      "key": "age",
+      "label": "Věk",
+      "group": "Nacionále pacientky",
+      "value": "63 let (nar. 22. 7. 1963)",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Datum narození: 22. 7. 1963 (63 let)"
+        }
+      ]
+    },
+    {
+      "key": "sex",
+      "label": "Pohlaví",
+      "group": "Nacionále pacientky",
+      "value": "žena",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Pacientka"
+        }
+      ]
+    },
+    {
+      "key": "insurer",
+      "label": "Zdravotní pojišťovna",
+      "group": "Nacionále pacientky",
+      "value": "211",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Zdravotní pojišťovna: 211"
+        }
+      ]
+    },
+    {
+      "key": "patientContact",
+      "label": "Kontakt na pacientku",
+      "group": "Kontakty",
+      "value": "tel. +420 777 000 541 · e-mail neuveden",
+      "status": "neúplné",
+      "issue": "Chybí e-mail pacientky – zápis pro konzilium vyžaduje telefon i e-mail.",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Telefon: +420 777 000 541"
+        }
+      ]
+    },
+    {
+      "key": "contactPerson",
+      "label": "Kontaktní osoba",
+      "group": "Kontakty",
+      "value": "Petra Horká (dcera), tel. +420 777 000 542",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Kontaktní osoba: Petra Horká (dcera), tel. +420 777 000 542"
+        }
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "label": "Diagnóza",
+      "group": "Diagnóza a otázka pro konzilium",
+      "value": "C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom (podezření v žádance, 2. 10. 2026); histologicky: Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. (19. 10. 2026)",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Suspektní diagnóza: C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom"
+        },
+        {
+          "docId": "11",
+          "ref": "histologie 19. 10.",
+          "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3."
+        }
+      ]
+    },
+    {
+      "key": "epicrisis",
+      "label": "Průběh onemocnění ve zkratce",
+      "group": "Diagnóza a otázka pro konzilium",
+      "value": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Pro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha. UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity. Gastroenterolog doporučil doplnit CT břicha dle pankreatického protokolu, případně EUS.",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Pro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Gastroenterolog doporučil doplnit CT břicha dle pankreatického protokolu, případně EUS."
+        }
+      ]
+    },
+    {
+      "key": "mdtQuestion",
+      "label": "Otázka pro konzilium",
+      "group": "Diagnóza a otázka pro konzilium",
+      "value": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT. Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení.",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT. Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení."
+        }
+      ]
+    },
+    {
+      "key": "comorbidities",
+      "label": "Přidružená onemocnění",
+      "group": "Anamnéza",
+      "value": "paroxysmální fibrilace síní od r. 2021 na antikoagulaci (kardiolog MUDr. Petr Malý, Jesenice), arteriální hypertenze, hypercholesterolémie, st. p. hysterektomii pro myomy (2010), v r. 2019 po úmrtí manžela přechodně depresivní ladění, neléčena",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "OA: paroxysmální fibrilace síní od r. 2021 na antikoagulaci (kardiolog MUDr. Petr Malý, Jesenice), arteriální hypertenze, hypercholesterolémie, st. p. hysterektomii pro myomy (2010), v r. 2019 po úmrtí manžela přechodně depresivní ladění, neléčena"
+        }
+      ]
+    },
+    {
+      "key": "medication",
+      "label": "Léky, které užívá",
+      "group": "Anamnéza",
+      "value": "apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně",
+      "status": "rozpor",
+      "issue": "Poslední dávka je zapsána na 18. 10. 2026, tedy po datu výkonu 12. 10. 2026.",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "FA: apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně"
+        }
+      ]
+    },
+    {
+      "key": "allergies",
+      "label": "Alergie",
+      "group": "Anamnéza",
+      "value": "neguje",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "AA: neguje"
+        }
+      ]
+    },
+    {
+      "key": "performance",
+      "label": "Výkonnostní stav (ECOG)",
+      "group": "Stav pacientky",
+      "value": "",
+      "status": "chybí",
+      "issue": "Skóre ECOG ani Karnofsky není v žádné zprávě. Žádanka praktika 2. 10. uvádí jen slovní popis „Soběstačná“ – to není skóre.",
+      "quotes": []
+    },
+    {
+      "key": "weightHeight",
+      "label": "Váha a výška",
+      "group": "Stav pacientky",
+      "value": "65 kg (15. 9. 2026) · výška 165 cm (20. 7. 2026)",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "05",
+          "ref": "gastroenterologie 15. 9.",
+          "quote": "Hmotnost 65 kg"
+        },
+        {
+          "docId": "01",
+          "ref": "kardiologie 20. 7.",
+          "quote": "Výška 165 cm"
+        },
+        {
+          "docId": "01",
+          "ref": "kardiologie 20. 7.",
+          "quote": "hmotnost 69 kg"
+        }
+      ]
+    },
+    {
+      "key": "symptoms",
+      "label": "Příznaky a jejich začátek",
+      "group": "Stav pacientky",
+      "value": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Při vyšetření 1. 9. 2026 febrilní (38,1 °C), se subikterem sklér. Při kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva. Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší.",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Při vyšetření 1. 9. 2026 febrilní (38,1 °C), se subikterem sklér."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Při kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší."
+        }
+      ]
+    },
+    {
+      "key": "exams",
+      "label": "Provedená vyšetření",
+      "group": "Vyšetření a výsledky",
+      "value": "20. 7. 2026 · kontrolní vyšetření · Kardiologická ambulance Jesenice – Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027). Před plánovaným invazivním výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby.\n3. 9. 2026 · RTG hrudníku PA · Radiologické centrum Modřany – Bez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích.\n15. 9. 2026 · vstupní vyšetření · Poliklinika Jižní – Gastroenterologická ambulance – Cholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu.\n29. 9. 2026 · UZ břicha · Poliklinika Jižní – Radiodiagnostické pracoviště – Ložisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS.\n8. 10. 2026 · CT břicha a hrudníku s k. l., pankreatický protokol · KOC Nemocnice Severní – Radiologická klinika – Tumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz.\n12. 10. 2026 · EUS-FNB · KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika – Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB) Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm.",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "01",
+          "ref": "kardiologie 20. 7.",
+          "quote": "Stabilní stav, sinusový rytmus, bez recidivy fibrilace síní. Hypertenze kompenzovaná. Medikace beze změn. Kontrola za 6 měsíců (leden 2027)."
+        },
+        {
+          "docId": "01",
+          "ref": "kardiologie 20. 7.",
+          "quote": "Před plánovaným invazivním výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby."
+        },
+        {
+          "docId": "03",
+          "ref": "RTG hrudníku 3. 9.",
+          "quote": "Bez známek zánětlivých změn plic. Přiměřený nález na srdci a plicích."
+        },
+        {
+          "docId": "05",
+          "ref": "gastroenterologie 15. 9.",
+          "quote": "Cholestatický syndrom s bolestmi v epigastriu propagujícími do zad a úbytkem hmotnosti, st. p. febrilní epizodě léčené ATB. Diferenciálně diagnosticky choledocholitiáza, stenóza žlučových cest, tumor pankreatu."
+        },
+        {
+          "docId": "06",
+          "ref": "UZ břicha 29. 9.",
+          "quote": "Ložisková léze hlavy pankreatu suspektní z malignity s mírnou dilatací žlučových cest. Doporučeno CT břicha dle pankreatického protokolu, případně EUS."
+        },
+        {
+          "docId": "08",
+          "ref": "CT břicha 8. 10.",
+          "quote": "Tumor hlavy pankreatu 35 mm s venózním postižením VMS se zúžením lumen a s kontaktem s AMS. Suspektní peripankreatická uzlina. Bez známek vzdálených metastáz."
+        },
+        {
+          "docId": "09",
+          "ref": "protokol biopsie 12. 10.",
+          "quote": "Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB)"
+        },
+        {
+          "docId": "09",
+          "ref": "protokol biopsie 12. 10.",
+          "quote": "Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm."
+        }
+      ]
+    },
+    {
+      "key": "labs",
+      "label": "Laboratoř a nádorové markery",
+      "group": "Vyšetření a výsledky",
+      "value": "15. 10. 2026 (KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie): nádorové markery: CA 19-9 312 kU/l ↑, CEA 4,1 µg/l, CA 125 48 kU/l ↑; mimo normu: Hemoglobin 118 g/l ↓, Glukóza 6,2 mmol/l ↑, Bilirubin celkový 23 µmol/l ↑, Bilirubin konjugovaný 6 µmol/l ↑, ALT 1,62 µkat/l ↑, AST 1,20 µkat/l ↑, GGT 5,00 µkat/l ↑, ALP 3,40 µkat/l ↑, CRP 18 mg/l ↑\n1. 9. 2026 (Laboratoř LabJih s.r.o.): mimo normu: Leukocyty 12,8 10⁹/l ↑, Neutrofily 82 % ↑, Lymfocyty 12 % ↓, Glukóza 6,4 mmol/l ↑, Bilirubin celkový 38 µmol/l ↑, ALT 1,92 µkat/l ↑, AST 1,45 µkat/l ↑, GGT 4,20 µkat/l ↑, ALP 3,10 µkat/l ↑, CRP 86 mg/l ↑",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "CA 19-9\n312 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "CEA\n4,1"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "CA 125\n48 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "Hemoglobin\n118 L"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "Glukóza\n6,2 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "Bilirubin celkový\n23 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "Bilirubin konjugovaný\n6 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "ALT\n1,62 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "AST\n1,20 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "GGT\n5,00 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "ALP\n3,40 H"
+        },
+        {
+          "docId": "10",
+          "ref": "kontrolní odběry 15. 10.",
+          "quote": "CRP\n18 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "Leukocyty\n12,8 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "Neutrofily\n82 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "Lymfocyty\n12 L"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "Glukóza\n6,4 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "Bilirubin celkový\n38 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "ALT\n1,92 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "AST\n1,45 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "GGT\n4,20 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "ALP\n3,10 H"
+        },
+        {
+          "docId": "02",
+          "ref": "laboratoř 1. 9.",
+          "quote": "CRP\n86 H"
+        }
+      ]
+    },
+    {
+      "key": "histology",
+      "label": "Histologie (výsledek biopsie)",
+      "group": "Vyšetření a výsledky",
+      "value": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. · vydáno 19. 10. 2026",
+      "status": "rozpor",
+      "issue": "Materiál má datum odběru 20. 10. 2026, ale zpráva byla vydána 19. 10. 2026 a biopsie proběhla 12. 10. 2026 (protokol biopsie 12. 10.).",
+      "quotes": [
+        {
+          "docId": "11",
+          "ref": "histologie 19. 10.",
+          "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3."
+        },
+        {
+          "docId": "11",
+          "ref": "histologie 19. 10.",
+          "quote": "Datum vydání: 19. 10. 2026"
+        }
+      ]
+    },
+    {
+      "key": "other",
+      "label": "Jiná důležitá sdělení a přání pacientky",
+      "group": "Jiná sdělení",
+      "value": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa. Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory. Pacientka je o podezření na nádorové onemocnění informována. Souhlasí se sdílením informací s dcerou.",
+      "status": "nalezeno",
+      "issue": "",
+      "quotes": [
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Pacientka je o podezření na nádorové onemocnění informována."
+        },
+        {
+          "docId": "07",
+          "ref": "žádanka praktika 2. 10.",
+          "quote": "Souhlasí se sdílením informací s dcerou."
+        }
+      ]
+    }
+  ],
   "news": [
     {
       "id": "11",

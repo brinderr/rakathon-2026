@@ -1,28 +1,10 @@
 // The phone button in the patient header: a small popup with the numbers of the patient, the contact person and the
 // GP. Each number can be copied (or dialled from a phone). Closes on Escape or a click outside.
 import { useEffect, useId, useRef, useState } from 'react';
+import { copyText } from '../../ui/clipboard';
 import { Icon } from '../../ui/Icon';
 import { telHref } from '../../ui/format';
 import type { Person } from './types';
-
-async function copyText(text: string): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    // the clipboard API can be blocked (e.g. inside a sandboxed preview) – fall back to a hidden text field
-    const area = document.createElement('textarea');
-    area.value = text;
-    area.setAttribute('readonly', '');
-    area.style.position = 'fixed';
-    area.style.opacity = '0';
-    document.body.appendChild(area);
-    area.select();
-    const ok = document.execCommand('copy');
-    area.remove();
-    return ok;
-  }
-}
 
 export function PhoneContacts({ people }: { people: Person[] }) {
   const [open, setOpen] = useState(false);

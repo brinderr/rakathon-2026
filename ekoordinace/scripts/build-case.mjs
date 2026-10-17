@@ -141,6 +141,23 @@ const todo = r.findings
   .sort((a, b) => priority(a) - priority(b));
 const open = new Set(todo.map((t) => t.field));
 
+// the 20 items of Handover_obsah, grouped like the template, each with its sentences from the reports
+const GROUP = {
+  Pacient: female ? 'Nacionále pacientky' : 'Nacionále pacienta', Kontakty: 'Kontakty',
+  Diagnóza: 'Diagnóza a otázka pro konzilium', Anamnéza: 'Anamnéza', Stav: female ? 'Stav pacientky' : 'Stav pacienta',
+  Vyšetrenia: 'Vyšetření a výsledky', Laboratórium: 'Vyšetření a výsledky', Histológia: 'Vyšetření a výsledky', Iné: 'Jiná sdělení',
+};
+const fields = r.fields.map((f) => {
+  const spec = FIELD_SPECS.find((x) => x.key === f.key);
+  const issue = todo.find((t) => t.field === f.key);
+  const status = issue ? (issue.kind === 'rozpor' ? 'rozpor' : f.value ? 'neúplné' : 'chybí') : f.value ? 'nalezeno' : 'chybí';
+  return {
+    key: f.key, label: label(f.key), group: GROUP[spec?.group] ?? 'Jiná sdělení', value: f.value, status,
+    issue: issue?.why ?? (f.value ? '' : humanRefs(f.note ?? '')),
+    quotes: [...new Map((f.citations ?? []).map((c) => [c.quote, { docId: c.docId, ref: refById(c.docId), quote: c.quote }])).values()],
+  };
+});
+
 const data = {
   generatedFrom: 'app/src/ai (pravidla) · app/public/data/source.json · npm run data',
   today: TODAY,
@@ -163,6 +180,7 @@ const data = {
     missing: todo.filter((t) => t.kind === 'chybí').length,
     conflicts: todo.filter((t) => t.kind === 'rozpor').length,
   },
+  fields,
   news: fresh.map((d) => ({ id: d.id, what: what(d), dept: unit(d).dept })),
   // full text of every report known on the day, for the reader (fictional data)
   documents: Object.fromEntries(known.map((d) => [d.id, { ...doc(d), text: d.text }])),
