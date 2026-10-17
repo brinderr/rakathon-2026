@@ -36,9 +36,12 @@ ktoré by konzílium zdržali.“
 
 **Čísla (z `npm run eval`, súbor `app/public/data/eval-alena.json`):**
 
-„Postavili sme si **kontrolnú sadu**: ručne overenú správnu odpoveď pre všetkých 20 polí a **17 pascí**, ktoré sú v Aleniných správach.
-Výsledok: **20 z 20 polí správne, 17 zo 17 pascí zachytených, 0 vymyslených hodnôt** a 72 citátov – všetky doslova v správach.
-Aby to nebolo ušité na jednu pacientku, máme **druhého fiktívneho pacienta** s rakovinou pľúc a štyrmi novými pascami: nádor raz vpravo a raz vľavo, alergia na kontrast stratená v žiadanke, cudzie rodné číslo v laboratóriu a výsledok, ktorý mal prísť a neprišiel. Aj tam **20 z 20 a 0 vymyslených**.“
+„Postavili sme **kontrolnú sadu** – ručne overenú správnu odpoveď pre 20 polí a 17 pascí v Aleniných správach.
+Výsledok: **20 z 20 polí, 17 zo 17 pascí, 0 vymyslených hodnôt.**
+Na **druhom pacientovi** s rakovinou pľúc a štyrmi novými pascami – nádor raz vpravo, raz vľavo, stratená alergia, cudzie rodné číslo – tiež **20 z 20**.
+A keď sme AI úmyselne podstrčili vymyslené štádium a čísla, **kód zahodil 4 z 5 návrhov** a podklad ostal čistý.“
+
+*(≈ 25 s. Detaily na otázky: všetky citáty doslova v správach; test poistky v `app/eval/vysledok-test-halucinacii.json`.)*
 
 *(Poctivo, ak sa spýtajú: pravidlá sme po prvom behu na druhom pacientovi zovšeobecnili – predtým zachytili 6 z 13 pascí. Preto ďalší pacient pôjde naslepo.)*
 
@@ -65,7 +68,7 @@ Prosíme VZP o jedno: **pilot v jednom KOC na 3 mesiace, 50 až 100 prípadov**.
 
 | Otázka | Odpoveď (1–2 vety) |
 |---|---|
-| Čo ak AI halucinuje? | AI len navrhuje. Program overí, že každý citát je doslova v správe a že každé číslo v hodnote je v citáte; inak návrh zahodí a použije vetu priamo zo správy. Na kontrolnej sade 0 vymyslených hodnôt. |
+| Čo ak AI halucinuje? | AI len navrhuje. Program overí, že každý citát je doslova v správe a že každé číslo v hodnote je v citáte; inak návrh zahodí a použije vetu priamo zo správy. Test s úmyselne chybnou odpoveďou (štádium T3N1M0, „úbytok 8 kg“, citát zo správy po konzíliu, vymyslené želanie): 4 z 5 návrhov zamietnuté, 0 vymyslených hodnôt (`app/eval/vysledok-test-halucinacii.json`). |
 | Ako ste to merali? | Ručne overená správna odpoveď pre 20 polí + pasce, každý dôkaz overený doslova v texte; skript `npm run eval` to prepočíta pri každej zmene. Podstrčený zlý výstup (ECOG 1, 63 kg, vymyslený e-mail) eval chytil celý. |
 | Kam idú dáta pacienta? | V ostrom režime Azure OpenAI v EÚ; pred volaním nahradíme rodné číslo, telefóny, e-maily, adresu, dátum narodenia a mená tokenmi ([RČ_1] …). Na hackathone len fiktívne dáta. |
 | Je to zdravotnícka pomôcka (MDR)? | Nie: nerobíme diagnózu, skóre naliehavosti ani odporúčanie liečby – zbierame, overujeme úplnosť a strážime termíny. Fronta je zoradená len podľa termínov. |

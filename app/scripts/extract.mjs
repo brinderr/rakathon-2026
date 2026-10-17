@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// npm run extract -- [--case alena|pacient-2] [--provider azure|openai|cache|none] [--asof 2026-10-21]
+// npm run extract -- [--case alena|pacient-2] [--provider azure|openai|cache|none|fixture] [--asof 2026-10-21] [--out <file>]
 //
 // Runs the handover extractor (src/ai/extract.ts) on the fictional reports and writes
 // public/data/extracted-<case>.json. LLM credentials are read ONLY from app/.env (git-ignored):
@@ -7,6 +7,7 @@
 //   or OPENAI_BASE_URL, OPENAI_API_KEY, OPENAI_MODEL
 // Provider "cache" replays answers stored in eval/llm-cache/<hash>.json (offline demo, no internet).
 // On a cache miss the exact request is written to eval/llm-cache/<hash>.request.json.
+// Provider "fixture" (--fixture <file>) plays back a fixed answer, e.g. a deliberately hallucinating one, to test the guards.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -49,6 +50,14 @@ function cacheComplete() {
   };
 }
 
+/** A fixed answer regardless of the request (test of the verification guards). */
+function fixtureComplete(file) {
+  return async () => {
+    const c = JSON.parse(readFileSync(resolve(APP, file), 'utf8'));
+    return { text: typeof c.text === 'string' ? c.text : JSON.stringify(c.answer ?? c), model: c.model ?? `fixture:${file}` };
+  };
+}
+
 /** Wraps a live provider so each answer is also stored for offline replay. */
 function recording(complete) {
   return async (req) => {
@@ -65,6 +74,11 @@ function pickProvider(name, log) {
   const want = name ?? (e.AZURE_OPENAI_API_KEY ? 'azure' : e.OPENAI_API_KEY ? 'openai' : 'cache');
   if (want === 'none') return { name: 'none', complete: undefined };
   if (want === 'cache') return { name: 'cache', complete: cacheComplete() };
+  if (want === 'fixture') {
+    const file = arg('fixture');
+    if (!file) throw new Error('Chýba --fixture <súbor s odpoveďou>');
+    return { name: 'fixture', complete: fixtureComplete(file) };
+  }
   if (want === 'azure') {
     if (!e.AZURE_OPENAI_ENDPOINT || !e.AZURE_OPENAI_API_KEY || !e.AZURE_OPENAI_DEPLOYMENT) throw new Error('Chýba AZURE_OPENAI_ENDPOINT / AZURE_OPENAI_API_KEY / AZURE_OPENAI_DEPLOYMENT v app/.env');
     return { name: 'azure', complete: recording(azureComplete({ endpoint: e.AZURE_OPENAI_ENDPOINT, apiKey: e.AZURE_OPENAI_API_KEY, deployment: e.AZURE_OPENAI_DEPLOYMENT, apiVersion: e.AZURE_OPENAI_API_VERSION || undefined }, { log })) };

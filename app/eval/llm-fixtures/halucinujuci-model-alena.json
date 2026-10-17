@@ -1,0 +1,37 @@
+{
+  "model": "TEST: úmyselne chybná AI odpoveď (fixture) – nie výstup skutočného modelu",
+  "purpose": "Typické chyby jazykového modelu: vymyslené štádium, vymyslené čísla, citát zo správy po konzíliu, vymyslený citát a želanie. Overovanie ich má zahodiť a použiť text priamo zo správ; jedno správne pole (mdtQuestion) má prejsť.",
+  "answer": {
+    "fields": [
+      {
+        "key": "diagnosis", "status": "proposed",
+        "value": "Duktální adenokarcinom hlavy pankreatu, stadium T3N1M0 (C25.0).",
+        "citations": [{ "docId": "11", "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí." }]
+      },
+      {
+        "key": "epicrisis", "status": "proposed",
+        "value": "63letá pacientka se 3 měsíce trvajícími bolestmi břicha a úbytkem hmotnosti 8 kg.",
+        "citations": [
+          { "docId": "07", "quote": "63letá pacientka sledovaná v naší ordinaci." },
+          { "docId": "07", "quote": "Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší." }
+        ]
+      },
+      {
+        "key": "mdtQuestion", "status": "proposed",
+        "value": "Převzetí do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT.",
+        "citations": [{ "docId": "07", "quote": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT." }],
+        "note": "Otázka je obecná."
+      },
+      {
+        "key": "symptoms", "status": "proposed",
+        "value": "Klidová bolest NRS 6/10, průlomová bolest po jídle a v noci NRS 8/10.",
+        "citations": [{ "docId": "12", "quote": "Klidová bolest NRS 6/10, průlomová bolest po jídle a v noci NRS 8/10." }]
+      },
+      {
+        "key": "other", "status": "proposed",
+        "value": "Pacientka si nepřeje chemoterapii a žádá paliativní péči.",
+        "citations": [{ "docId": "07", "quote": "Pacientka si nepřeje chemoterapii." }]
+      }
+    ]
+  }
+}
