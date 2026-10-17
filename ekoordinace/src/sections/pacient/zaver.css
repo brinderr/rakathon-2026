@@ -39,7 +39,7 @@
 @media print {
   body:has(.zaver-paper) .side, body:has(.zaver-paper) .topbar, body:has(.zaver-paper) .crumbs,
   body:has(.zaver-paper) .patient-head, body:has(.zaver-paper) .tabs-row, body:has(.zaver-paper) .zaver-bar,
-  body:has(.zaver-paper) .foot, .zaver-paper textarea { display: none !important; }
+  body:has(.zaver-paper) .foot, .zaver-paper textarea, .rl-paper, .rl-ask { display: none !important; }
   body:has(.zaver-paper) .frame { display: block; }
   body:has(.zaver-paper) .page { padding: 0; max-width: none; }
   .zaver-paper { max-width: none; padding: 0; border: 0; box-shadow: none; }
@@ -52,3 +52,24 @@
 .zaver-gate a { color: var(--red); }
 .zaver-sample { margin: 0 0 1rem; padding: .5rem .75rem; border-radius: var(--r-ctl); background: var(--soft); color: var(--ink-2); font-size: .875rem; }
 .zaver-sample b { font: 600 .72rem var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--conf); }
+
+/* the revízní lékař of the patient's insurer: second receipt, his request with the answer, the summary he gets */
+.zaver-receipts { display: grid; gap: .45rem; }
+.receipt li.warn { background: var(--conf-bg); color: var(--conf); }
+.rl-ask { display: grid; gap: .55rem; padding: 1rem 1.25rem; border-color: var(--conf); background: #fffdf5; }
+.rl-ask-head { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: 0; color: var(--conf); }
+.rl-ask-head b { color: var(--ink); }
+.rl-ask-text { margin: 0; }
+.rl-ask textarea { width: 100%; padding: .6rem .75rem; font: inherit; line-height: 1.5; border: 1px solid var(--line); border-radius: var(--r-ctl); resize: vertical; field-sizing: content; }
+.rl-ask textarea:focus { outline: 2px solid var(--red-200); border-color: var(--red-200); }
+.rl-paper { width: 100%; max-width: 54rem; padding: 1.25rem 2rem 1.4rem; display: grid; gap: .9rem; }
+.rl-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.rl-head p { margin: 0; font-size: .8rem; }
+.rl-head h2 { margin: .15rem 0 0; font-size: 1.15rem; font-weight: 700; }
+.rl-meta > div { grid-template-columns: 10rem minmax(0, 1fr); }
+.rl-meta dd { font-weight: 500; white-space: pre-line; }
+.rl-reply { margin: 0; font-size: .9rem; color: var(--ink-2); }
+@media (max-width: 640px) {
+  .rl-paper { padding: 1.1rem 1rem; }
+  .rl-meta > div { grid-template-columns: minmax(0, 1fr); }
+}

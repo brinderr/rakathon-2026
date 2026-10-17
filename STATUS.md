@@ -22,7 +22,7 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | **eKoordinace – nová appka** (`ekoordinace/`) | matej | 🔵 | krok 1 hotový: hlavička s diagnózou z histológie, cesta v 5 krokoch (hotové kroky malé), úlohy s kontaktmi, „Dnes nové“; appka rozdelená na sekcie (pravidlá v ekoordinace/README.md); ďalej záložka Zprávy |
 | eKoordinace M1 Údaje pro konzilium + doplnenie + potvrdenie lekárom | matej | ✅ | `tabs/Udaje.tsx`: zobrazenie ✅, Doplnit údaj / Zapsat ověření ✅ (živé počty, zvonček), termín konzilia v hlavičke ✅; ďalej potvrdenie lekárom |
 | eKoordinace M2 Podklad podľa MDT_zapis + PDF | matej | ✅ | `tabs/Podklad.tsx`: 7 častí MDT_zapis zo živého prípadu, zdroje, potvrdenie lekárom, Tisk/PDF, Kopírovat |
-| eKoordinace M3 Závěr praktikovi + doručenka | matej | ✅ | `tabs/Zaver.tsx` |
+| eKoordinace M3 Závěr praktikovi + doručenka + revízny lekár | matej | ✅ | `tabs/Zaver.tsx`: závěr praktikovi s doručenkou; súhrn revíznemu lekárovi poisťovne pacientky ide automaticky, jeho žiadosť o doplnenie = úloha v Přehledu (simulované) |
 | eKoordinace B1 Žádanka od praktika bez formulára | bruno | ⚪ | `src/sections/zadanka/` (`#/zadanka`) |
 | eKoordinace B2 Přehled (dashboard koordinátorky) | matej | ✅ | `src/sections/prehled/` – prevzal Matej na vlastnú žiadosť (Bruno sa toho nedotkol) |
 | eKoordinace Konzilia (program konzílií) | matej | ✅ | `src/sections/konzilia/`: sedenia podľa dátumu, stav podkladov, Program konzilia PDF, po konziliu stav záveru |
@@ -31,7 +31,7 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | Odovzdanie: video, titulný obrázok s logom, formulár | bruno + matej | ⚪ | do 12:30, demo = https://ekoordinace.vercel.app |
 | Nasadenie eKoordinace na Vercel | matej + bruno | ✅ | **https://ekoordinace.vercel.app** – každý push do `ekoordinace/` sa nasadí sám (GitHub Actions, `.github/workflows/ekoordinace-vercel.yml`) |
 | Ostrý AI beh cez Azure OpenAI EU | kapitán | ⚪ | kľúč z portálu do app/.env (AZURE_OPENAI_ENDPOINT/API_KEY/DEPLOYMENT) → `npm run extract` |
-| Titulný obrázok 16:9 | ⚪ | ⚪ | prompt v docs/pitch/COVER-PROMPT.md |
+| Titulný obrázok 16:9 | matej | ✅ | `docs/odovzdanie/banner-ekoordinace.jpg` (Apple štýl, tmavý; svetlý `-svetla.jpg`), zdroj `docs/odovzdanie/banner/banner.html` |
 
 ## Blokery
 - (žiadne)

@@ -51,6 +51,13 @@ export function itemsOf(id: string, data: CaseData, st: CaseState): { mine: Item
   if (c?.sent && !c.read) {
     theirs.push({ ...base, what: `${p.gp.name} – přečíst závěr konzilia`, detail: `${c.delivered ? 'doručeno' : 'odesláno'} ${c.sent.at.slice(11)} · zatím nepřečteno`, href: `#/pacienti/${id}/zaver` });
   }
+  // the revízní lékař of the insurer got the summary with it: his request is hers, his answer is awaited
+  const rl = c?.sent ? c.rl : undefined;
+  if (rl?.ask && !rl.reply) mine.push({ ...base, what: 'Odpovědět reviznímu lékaři', detail: `${rl.to} · ${rl.ask.text}`, href: `#/pacienti/${id}/zaver` });
+  else if (rl && !rl.ack) {
+    const last = rl.reply ? `odpověď odeslána ${rl.reply.at.slice(11)}` : `${rl.delivered ? 'doručeno' : 'odesláno'} ${(rl.delivered ?? rl.sent).slice(11)}`;
+    theirs.push({ ...base, what: `${rl.to} – vyjádření k souhrnu`, detail: `${last} · čeká na vyjádření`, href: `#/pacienti/${id}/zaver` });
+  }
   return { mine, theirs };
 }
 

@@ -29,13 +29,17 @@ export function liveCase(data: CaseData, st: CaseState): CaseData {
   const confirmed = st.confirmed;
   const sent = st.conclusion?.sent;
   const steps = data.steps.map((s) => {
-    // the GP has the conclusion of the MDT (delivery receipt): the journey is closed
+    // the GP has the conclusion of the MDT (delivery receipt): the journey is closed – unless the revízní lékař of the
+    // insurer asked for something that is not answered yet
     const c = st.conclusion;
     if (s.id === 'uzavrit' && sent && c?.delivered) {
+      const rl = c.rl;
+      if (rl?.ask && !rl.reply) return { ...s, status: 'now' as const, title: `${rl.to} žádá doplnění`, summary: rl.ask.text };
+      const rlLine = rl ? ` ${rl.to}: ${rl.ack ? `vzato na vědomí ${time(rl.ack)}` : rl.delivered ? `doručeno ${time(rl.delivered)}` : `odesláno ${time(rl.sent)}`}.` : '';
       return {
         ...s, status: 'done' as const, date: c.delivered.slice(0, 10), short: dm(c.delivered.slice(0, 10)),
         title: `Závěr konzilia doručen – ${sent.to}`,
-        summary: `Odesláno ${time(sent.at)} · doručeno ${time(c.delivered)}${c.read ? ` · přečteno ${time(c.read)}` : ' · zatím nepřečteno'}.`,
+        summary: `Odesláno ${time(sent.at)} · doručeno ${time(c.delivered)}${c.read ? ` · přečteno ${time(c.read)}` : ' · zatím nepřečteno'}.${rlLine}`,
       };
     }
     // the doctor confirmed the podklad: that step is done, the conclusion for the GP is next

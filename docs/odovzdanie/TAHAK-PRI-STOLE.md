@@ -19,7 +19,7 @@ Pořadí kroků kopíruje slide 12 výzvy „Demo musí ukázat“. Vpravo je, k
 | 4 | Záložka **Údaje pro konzilium** → kliknout na citaci u **Histologie** (otevře zprávu se zvýrazněnou větou) → u **Výkonnostní stav (ECOG)** ukázat „V dokumentaci není“ | „Motor vyplní 20 položek šablony Handover_obsah, každou s doslovnou citací – a co chybí nebo si odporuje, nedomýšlí, ale označí: tady chybí ECOG a histologie je vydaná den před odběrem.“ | AI vytěžení s kontrolou úplnosti |
 | 5 | Záložka **Plán cesty** | „Plán hlídá pořadí kroků, termíny a kdo je na tahu; co je po termínu, jde urgovat, pacientce poslat SMS nebo pracovišti e-mail – simulovaně, zapíše se do záznamu koordinace.“ | Přehled se stavem a termínem · vlastník kroku |
 | 6 | Záložka **Podklad** → ukázat zamčené **Potvrdit a vygenerovat PDF** → u otevřených bodů **Ponechat** s důvodem (nebo **Vyřešit**) → **Potvrdit a vygenerovat PDF** | „Podklad má strukturu zápisu MDT ze zadání a lékař KOC ho potvrdí až ve chvíli, kdy je každý bod vyřešený, nebo vědomě ponechaný jako neověřený.“ | Strukturovaný závěr KOC / MDT |
-| 7 | Záložka **Závěr** → **Odeslat praktikovi** → počkat na **doručeno → přečteno** | „Po konziliu jde praktikovi strukturovaný závěr a doporučení MDT s diagnózou i zdrojem a vidíme, že ho doručil a přečetl – dokud nepřečte, jde urgovat.“ | Zpětná vazba a potvrzené předání |
+| 7 | Záložka **Závěr** → **Odeslat praktikovi** → počkat na **doručeno → přečteno** a u revizního lékaře na **vzato na vědomí** (nebo **Žádá doplnění** → napsat odpověď) | „Po konziliu jde praktikovi strukturovaný závěr a doporučení MDT s diagnózou i zdrojem a vidíme, že ho doručil a přečetl – dokud nepřečte, jde urgovat. Zároveň jde automaticky souhrn revizní lékařce pojišťovny pacientky – Alena má ZP 211, ne VZP. Když si revizní lékař vyžádá doplnění, objeví se koordinátorce jako úkol.“ | Zpětná vazba, revizní lékař, potvrzené předání |
 | 8 | Zpět na **Přehled** (nebo **Konzilia**) | „Smyčka je zavřená: v přehledu je vidět, na koho se čeká, a v Konziliích stav podkladu každého pacienta na konzilium.“ | celý průchod |
 
 Když dojde čas: krok 6 přeskočit a krok 7 ukázat v záložním prohlížeči.
@@ -42,6 +42,6 @@ Dnes vše běží v prohlížeči a nic se neodesílá – odesílání je simul
 Každá hodnota má doslovnou citaci, kterou kód ve zprávě ověří; co oporu nemá, se neukáže jako fakt, ale jako „chybí“ nebo rozpor. Nenavrhujeme diagnózu, léčbu ani naléhavost – diagnózu přebíráme od lékaře doslovně a podklad potvrzuje lékař KOC. Podle našeho výkladu MDCG 2019-11 to není zdravotnický prostředek, definitivně posoudí regulátor.
 
 ## Co nemáme (říct na rovinu, když se zeptají)
-- Revizní lékař ze slidu 11 zatím informaci automaticky nedostává.
+- Revizní lékař ze slidu 11: souhrn odchází automaticky, ale kanál k pojišťovně je simulovaný (doručení i jeho dotaz). Žádost o doplnění přijde jen tehdy, když u diagnózy, histologie nebo ECOG zůstalo „Ponechat bez ověření“.
 - Skutečné odesílání (e-mail, SMS, zabezpečená zpráva) – vše je simulované.
 - FHIR export.
