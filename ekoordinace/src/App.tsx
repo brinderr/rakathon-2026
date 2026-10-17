@@ -34,7 +34,7 @@ export function App() {
       <aside className="side">
         <div className="side-brand"><span className="side-mark"><Mark size={34} /></span><span className="wordmark"><b>e</b>Koordinace</span></div>
         <nav className="side-nav" aria-label="Hlavní navigace">
-          {SECTIONS.map((s) => (s.render ? (
+          {SECTIONS.filter((s) => !s.hidden).map((s) => (s.render ? (
             <a key={s.id} className={`nav-item${s.id === section.id ? ' on' : ''}`} href={`#/${s.id}`} aria-current={s.id === section.id ? 'page' : undefined}>
               <Icon name={s.icon} />{s.label}
             </a>

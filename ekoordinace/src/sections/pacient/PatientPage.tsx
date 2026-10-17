@@ -1,22 +1,35 @@
-// Section "Pacienti" (owner: Matej) – one patient's case: header with the key facts, tiles, and the journey as a
-// compact stepper. Done steps stay small; the step that is on now opens below the stepper with what is still needed
-// and whom to call. Every report opens for reading. Only the "Přehled" tab works so far; greyed items come next.
-// Data: src/data/alena.json, computed from the fictional reports by the shared engine (npm run data).
+// Section "Pacienti" (owner: Matej) – one patient's case: header with the key facts and tabs. "Přehled" shows the tiles
+// and the journey as a compact stepper (done steps small, the current step with what is still needed and whom to
+// call); the other tabs live in ./tabs/, one file per tab with its owner (see README). Every report opens for reading.
+// Data: ./caseData (src/data/alena.json, computed from the fictional reports by the shared engine, npm run data).
 import { useCallback, useEffect, useRef, useState } from 'react';
-import data from '../../data/alena.json';
 import { DocViewer } from '../../ui/DocViewer';
-import type { DocText } from '../../ui/DocViewer';
 import { Icon } from '../../ui/Icon';
 import { czDate, daysBetween, inDays, nb } from '../../ui/format';
 import { Journey } from './Journey';
 import type { OpenDoc } from './Journey';
 import { PhoneContacts } from './PhoneContacts';
-import type { Person, Step } from './types';
+import { caseData as data, documents, steps } from './caseData';
+import { Plan } from './tabs/Plan';
+import { Podklad } from './tabs/Podklad';
+import { Udaje } from './tabs/Udaje';
+import { Zaver } from './tabs/Zaver';
+import { Zpravy } from './tabs/Zpravy';
+import type { Person } from './types';
 import './pacient.css';
 
 const SOON = 'Připravujeme v dalším kroku';
-const steps = data.steps as Step[];
-const documents = data.documents as Record<string, DocText>;
+
+// tabs of the case – #/pacienti/<id>; one file per tab in ./tabs/ (owners in README)
+const TABS = [
+  { id: 'prehled', label: 'Přehled' },
+  { id: 'zpravy', label: 'Zprávy', Tab: Zpravy },
+  { id: 'udaje', label: 'Údaje pro konzilium', Tab: Udaje },
+  { id: 'plan', label: 'Plán cesty', Tab: Plan },
+  { id: 'podklad', label: 'Podklad', Tab: Podklad },
+  { id: 'zaver', label: 'Závěr', Tab: Zaver },
+];
+
 const nowStep = steps.find((s) => s.status === 'now') ?? steps[0];
 
 /** Number of open to-dos, for the bell in the top bar. */
@@ -72,6 +85,9 @@ export function PatientPage({ path }: { path: string[] }) {
     window.history.replaceState(null, '', '#/pacienti');
   }, [path, show]);
 
+  const tab = TABS.find((t) => t.id === path[0]) ?? TABS[0];
+  const Tab = tab.Tab;
+
   return (
     <>
       <nav className="crumbs" aria-label="Drobečková navigace">
@@ -82,13 +98,13 @@ export function PatientPage({ path }: { path: string[] }) {
 
       <div className="tabs-row">
         <div className="tabs" role="tablist" aria-label="Části případu">
-          <button type="button" role="tab" aria-selected="true" className="tab on">Přehled</button>
-          {['Zprávy', 'Údaje pro konzilium', 'Podklad', 'Závěr'].map((t) => (
-            <button type="button" role="tab" aria-selected="false" className="tab" disabled title={SOON} key={t}>{t}</button>
+          {TABS.map((t) => (
+            <a key={t.id} role="tab" aria-selected={t.id === tab.id} className={`tab${t.id === tab.id ? ' on' : ''}`} href={`#/pacienti/${t.id}`}>{t.label}</a>
           ))}
         </div>
       </div>
 
+      {Tab ? <Tab openDoc={openDoc} /> : (<>
       <section className="card stats" aria-label="Hlavní údaje">
         <div className="stat"><span className="stat-icon"><Icon name="calendar" /></span><span><small>Konzilium</small><b>{czDate(data.mdtDate)}</b><em>{inDays(days)}</em></span></div>
         <div className="stat"><span className="stat-icon"><Icon name="fields" /></span><span><small>Údaje pro konzilium</small><b>{s.ready} z {s.fields}</b><em>připraveno k potvrzení</em></span></div>
@@ -115,6 +131,7 @@ export function PatientPage({ path }: { path: string[] }) {
         female={data.patient.sex === 'žena'}
         cardRef={journeyRef}
       />
+      </>)}
 
       <DocViewer doc={reading ? documents[reading.id] ?? null : null} marks={reading?.marks ?? []} onClose={() => setReading(null)} />
     </>

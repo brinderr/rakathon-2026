@@ -26,8 +26,12 @@ npm run preview:pack -- /cesta/preview.html   # jeden súbor na dočasný náhľ
 | Zoznam sekcií (1 riadok = 1 položka v menu) | `src/sections.tsx` | zdieľané – zapnúť svoju sekciu je OK |
 | Farby, karty, dlaždice `.stats`, záložky `.tabs`, štítky `.chip`, `.eyebrow` | `src/styles.css` | zdieľané – meniť len po dohode |
 | Ikony, logo, formát dátumu (`czDate`, `nb`, `inDays`), ikona správy `DocIcon`, čítačka správ `DocViewer`, písmo EK Mono | `src/ui/`, `src/assets/` | zdieľané – pridať je OK, existujúce nemeniť |
-| Sekcia **Pacienti** (hlavička, cesta pacientky, úlohy, kontakty) | `src/sections/pacient/` | matej |
-| Sekcia **Konzilia** | `src/sections/konzilia/` | bruno (zatiaľ kostra, nezapnutá) |
+| Sekcia **Pacienti**: hlavička, Přehled, záložky Údaje / Podklad / Závěr | `src/sections/pacient/` (okrem nižšie) | matej |
+| Záložky **Zprávy** a **Plán cesty** | `src/sections/pacient/tabs/Zpravy.tsx`, `Plan.tsx` | bruno |
+| Sekcia **Přehled** = fronta prípadov | `src/sections/prehled/` | bruno (kostra, zapnúť v `sections.tsx`) |
+| Sekcia **Žádanka od praktika** (`#/zadanka`, nie je v menu) | `src/sections/zadanka/` | bruno (kostra) |
+| Sekcia **Konzilia** (voliteľná) | `src/sections/konzilia/` | bruno |
+| Spoločný stav prípadu: čo koordinátorka urobila (`useCase`, `addEvent`) | `src/state/caseStore.ts` | matej – používať áno, meniť po dohode |
 | Dáta | `src/data/<súbor>.json` | kto ich generuje (`alena.json` = matej, `npm run data`) |
 
 1. Každý píše do svojej sekcie (komponenty aj CSS vedľa seba). Zdieľané súbory mení len po dohode cez INBOX.

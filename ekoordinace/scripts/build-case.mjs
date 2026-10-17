@@ -58,6 +58,7 @@ const labelOf = (d) => {
   if (kind === 'procedure') return /FNB|FNA|biops/i.test(title) ? 'protokol biopsie' : 'protokol výkonu';
   if (kind === 'lab') return d.date > referralDate ? 'kontrolní odběry' : 'laboratoř';
   if (kind === 'imaging') return title.split(/\s+/).slice(0, 2).join(' ').replace(/,$/, '');
+  if (/léčby bolesti|algeziolog/i.test(R.facility(d) + title)) return 'algeziologie';
   const spec = R.facility(d).match(/(\p{L}+?)ická ambulance/iu);
   return spec ? `${spec[1].toLowerCase()}ie` : 'ambulantní zpráva';
 };
@@ -165,6 +166,8 @@ const data = {
   news: fresh.map((d) => ({ id: d.id, what: what(d), dept: unit(d).dept })),
   // full text of every report known on the day, for the reader (fictional data)
   documents: Object.fromEntries(known.map((d) => [d.id, { ...doc(d), text: d.text }])),
+  // reports written after the MDT (algeziolog, psycholog): only what/where/when, never part of the podklad
+  afterMdt: docs.filter((d) => d.date > MDT).map((d) => ({ ...doc(d), what: what(d) })),
   steps: [
     {
       id: 'prevzit', label: 'Žádost od praktika', title: 'Praktický lékař požádal o převzetí do péče KOC', status: 'done',

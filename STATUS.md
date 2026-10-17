@@ -20,7 +20,14 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | Poistka proti opačnému významu (NegEx) | matej | ✅ | `npm run eval:guard`: 5/5 viet kritika 06 (bez nej 0/5), ďalšie 3/5, falošné poplachy 0/18 → public/data/pojistka.json |
 | Text bez nadpisov (vzory vnútri viet + poctivý pruh) | matej | ✅ | src/ai/plain.ts, `meta.plainText.notice`; `npm run eval:plain`: sada 1 naslepo 41/80 → po úprave 66/80; **sada 2 naslepo 53/80**; 0 vymyslených |
 | **eKoordinace – nová appka** (`ekoordinace/`) | matej | 🔵 | krok 1 hotový: hlavička s diagnózou z histológie, cesta v 5 krokoch (hotové kroky malé), úlohy s kontaktmi, „Dnes nové“; appka rozdelená na sekcie (pravidlá v ekoordinace/README.md); ďalej záložka Zprávy |
-| Sekcia Konzilia (`ekoordinace/src/sections/konzilia/`) | bruno | ⚪ | kostra pripravená, zapína sa v `src/sections.tsx` |
+| eKoordinace M1 Údaje pro konzilium + doplnenie + potvrdenie lekárom | matej | 🔵 | `tabs/Udaje.tsx` |
+| eKoordinace M2 Podklad podľa MDT_zapis + PDF | matej | ⚪ | `tabs/Podklad.tsx` |
+| eKoordinace M3 Závěr praktikovi + doručenka | matej | ⚪ | `tabs/Zaver.tsx` |
+| eKoordinace B1 Žádanka od praktika bez formulára | bruno | ⚪ | `src/sections/zadanka/` (`#/zadanka`) |
+| eKoordinace B2 Fronta prípadov (Přehled) | bruno | ⚪ | `src/sections/prehled/` |
+| eKoordinace B3 Plán cesty (termín, miesto, stav, kto na ťahu) | bruno | ⚪ | `tabs/Plan.tsx` |
+| eKoordinace B4 Zprávy (+ po konziliu zvlášť) | bruno | ⚪ | `tabs/Zpravy.tsx` |
+| Odovzdanie: video, titulný obrázok s logom, formulár | bruno + matej | ⚪ | do 12:30, demo = https://ekoordinace.vercel.app |
 | Nasadenie eKoordinace na Vercel | matej + bruno | ✅ | **https://ekoordinace.vercel.app** – každý push do `ekoordinace/` sa nasadí sám (GitHub Actions, `.github/workflows/ekoordinace-vercel.yml`) |
 | Ostrý AI beh cez Azure OpenAI EU | kapitán | ⚪ | kľúč z portálu do app/.env (AZURE_OPENAI_ENDPOINT/API_KEY/DEPLOYMENT) → `npm run extract` |
 | Titulný obrázok 16:9 | ⚪ | ⚪ | prompt v docs/pitch/COVER-PROMPT.md |

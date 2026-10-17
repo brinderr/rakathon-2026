@@ -147,6 +147,26 @@
       "text": "FIKTIVNÍ PACIENTKA – testovací data pro Rakathon 2026\nKOC Nemocnice Lipová (fiktivní)\nEndoskopické pracoviště, Interní gastroenterologická klinika\nNemocniční 15, 140 00 Praha 4\nProtokol o výkonu – EUS-FNB\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nDatum výkonu: 12. 10. 2026\nVýkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB)\nIndikace: histologická verifikace ložiska hlavy pankreatu\nPŘÍPRAVA\nNalačno od půlnoci. Apixaban vysazen 48 h před výkonem (poslední dávka 18. 10. 2026 večer). Informovaný souhlas podepsán.\nANESTEZIE A MONITORACE\nAnalgosedace propofol 180 mg i.v. frakcionovaně za asistence anesteziologa. Monitorace SpO₂, TK a EKG, oxygenoterapie nosními brýlemi 2 l/min.\nPOPIS VÝKONU\nLineární echoendoskop zaveden bez obtíží přes jícen a žaludek do bulbu a sestupného raménka duodena. Z transduodenální polohy zobrazeno hypoechogenní nehomogenní ložisko v hlavě pankreatu 33 × 29 mm. Barevným dopplerem ověřena dráha vpichu bez interponovaných cév. Provedeny 3 průchody jehlou FNB 22G technikou slow-pull, 12–15 pohybů na průchod. Makroskopicky získány dostatečné válečky tkáně, fixovány ve formolu a odeslány k histologickému vyšetření. Po výkonu v místě vpichu minimální krvácení, spontánně zastavené. Endoskop vytažen, bez komplikací.\nDOPORUČENÍ\n2 hodiny klid na lůžku, poté tekutiny per os. Při nekomplikovaném průběhu apixaban znovu od 21. 10. 2026 ráno. Výsledek histologie do 3 pracovních dnů.\nV Praze dne 12. 10. 2026\nMUDr. Martin Svoboda\ngastroenterolog, endoskopista"
     }
   },
+  "afterMdt": [
+    {
+      "id": "12",
+      "date": "2026-10-26",
+      "title": "algeziologické vyšetření",
+      "place": "KOC Nemocnice Severní – Centrum léčby bolesti",
+      "code": "AMB",
+      "ref": "algeziologie 26. 10.",
+      "what": "algeziologické vyšetření"
+    },
+    {
+      "id": "13",
+      "date": "2026-10-27",
+      "title": "Zpráva klinického psychologa",
+      "place": "KOC Nemocnice Lipová – Psychoonkologická ambulance",
+      "code": "AMB",
+      "ref": "psychoonkologie 27. 10.",
+      "what": "Zpráva klinického psychologa"
+    }
+  ],
   "steps": [
     {
       "id": "prevzit",

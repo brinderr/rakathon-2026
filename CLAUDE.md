@@ -31,7 +31,7 @@ Ak áno, pred zásahom do súborov, ktorých sa to týka, sprav `git pull --reba
 | `docs/research/` | Spracovaný research (súhrny, porovnania) | obaja |
 | `docs/materials/` | Podklady od organizátorov (prezentácie, PDF, zadania) | obaja |
 | `app/` | Samotný produkt / kód | obaja, podľa vlastníctva v STATUS.md |
-| `ekoordinace/` | Nová appka eKoordinace (Vercel) | sekcie: `src/sections/pacient/` matej, `src/sections/konzilia/` bruno; zdieľané súbory (`App.tsx`, `sections.tsx`, `styles.css`, `ui/`) len po dohode; pred pushom `npm run check` – pravidlá v `ekoordinace/README.md` |
+| `ekoordinace/` | Nová appka eKoordinace (https://ekoordinace.vercel.app, push = nasadenie) | matej: `src/sections/pacient/` (okrem `tabs/Zpravy.tsx`, `tabs/Plan.tsx`), `src/state/`; bruno: `src/sections/prehled/`, `src/sections/zadanka/`, `src/sections/konzilia/`, `tabs/Zpravy.tsx`, `tabs/Plan.tsx`; zdieľané (`App.tsx`, `sections.tsx`, `styles.css`, `ui/`) len po dohode; pred pushom `npm run check` – deľba v `docs/PLAN-EKOORDINACE.md` |
 | `team/bruno/`, `team/matej/` | Osobný LOG, INBOX a pracovný priestor | **iba vlastník** (výnimka: INBOX kolegu) |
 
 ## Komunikácia medzi Claudmi

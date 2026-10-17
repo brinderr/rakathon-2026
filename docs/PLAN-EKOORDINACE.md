@@ -115,9 +115,36 @@ Hodnotia autori zadania, takže rozhoduje **doslovné splnenie** „Hotovo, kdy�
 - **Záznam o koordinovaní:** história krokov (kto, čo, kedy) = podklad pre výkon koordinátora 51887.
 - **Kontrola úplnosti už u praktika:** diera sa zaplátá pri odoslaní, nie o týždeň neskôr.
 
-## 5. Poradie a deľba (do 12:30)
-- **Matej (Claude):** 2 → 5 → 6 → 4. Najprv výslovné odovzdávky (handover, zápis, záver s doručenkou).
-- **Bruno:** 1 (žádanka od praktika) a 3 (fronta v sekcii Přehled), namiesto Konzilií – tie zadanie nežiada. Jeho
-  priečinok: `ekoordinace/src/sections/`.
-- **Matej:** logo, kontrola, formulár odovzdania (názov tímu, mená, video, odkaz https://ekoordinace.vercel.app).
-- **Ak nestíhame:** 2, 5 a 6 sú povinné (odovzdávky). Z 1, 3 a 4 aspoň zjednodušene.
+## 5. Deľba práce (do 12:30) – každý vo svojich súboroch
+
+**Matej + jeho Claude = najväčšie úzke miesta.** Sú to povinné odovzdávky zo zadania a srdce výzvy.
+
+| # | Čo | Súbor |
+|---|---|---|
+| M1 | **Údaje pro konzilium:** 20 údajov, stav, citácia, Kopírovat. Doplnenie (telefonát ECOG), overenie rozporu, „Potvrdit lékařem“. Počty v Prehľade sa prepočítajú | `ekoordinace/src/sections/pacient/tabs/Udaje.tsx` |
+| M2 | **Podklad pro konzilium** podľa `MDT_zapis`, len známe k 21. 10., Stáhnout PDF (odovzdávka č. 2) | `…/tabs/Podklad.tsx` |
+| M3 | **Závěr praktikovi:** záver podľa `MDT zaver` s kontextom, odoslanie, doručenka, revízny lekár, uzavretie prípadu (odovzdávka č. 3) | `…/tabs/Zaver.tsx` |
+| – | spoločný stav (čo koordinátorka urobila) a dáta z motora | `src/state/caseStore.ts`, `scripts/build-case.mjs`, `src/data/alena.json` |
+
+**Bruno + jeho Claude = všetko ostatné, čo treba, aby celý prechod bežal.**
+
+| # | Čo | Súbor |
+|---|---|---|
+| B1 | **Žádanka od praktika bez formulára:** praktik pretiahne žiadanku, polia sa vyplnia samy, kontrola úplnosti pred odoslaním, „Odeslat do KOC 2“ → potvrdenie (slide 7) | `ekoordinace/src/sections/zadanka/` (`#/zadanka`) |
+| B2 | **Fronta prípadov (Přehled):** riadok na pacienta – stav, krok, kto je na ťahu, do kedy, počet úloh; filtre. Alena + Novák + Brabec (vlastný skript nad motorom → `src/data/fronta.json`) (slide 9) | `ekoordinace/src/sections/prehled/` |
+| B3 | **Plán cesty:** CT, biopsia, odbery, histológia (meškanie), algeziológ 26. 10., psychológ 27. 10. – termín, miesto, stav, kto je na ťahu. SMS/e-mail simulované, zápis cez `addEvent` (slide 10) | `…/pacient/tabs/Plan.tsx` |
+| B4 | **Zprávy:** všetky správy v zozname, klik otvorí čítačku. Zvlášť „po konziliu – nepatří do podkladu“ (`afterMdt`) | `…/pacient/tabs/Zpravy.tsx` |
+| B5 | **Odovzdanie:** video 1:30 na novej appke, titulný obrázok s logom eKoordinace, formulár (spolu s Matejom) | `docs/pitch/`, `docs/odovzdanie/` |
+| (B6) | navyše: Komunikácia (obálka) – zoznam odoslaných a prijatých správ z `useCase().events` | po dohode (horná lišta je zdieľaná) |
+
+**Ako si nezavadziame**
+- V kostrách súborov je napísané, čo do nich patrí, z akých dát a ako sa sekcia zapne (`src/sections.tsx`).
+- Spoločné súbory meníme len po dohode: rám `App.tsx`, `sections.tsx`, `styles.css`, `ui/`, `caseStore.ts`. Zapnúť
+  svoju sekciu je OK.
+- Čo urobí koordinátorka (telefonát, SMS, odoslanie), zapíšte cez `addEvent(CASE_ID, caseData.today, {...})`. Uvidí to
+  každá časť.
+- Pred pushom `npm run check`. Push nasadí appku sám na https://ekoordinace.vercel.app.
+
+**Časový plán:** do 11:45 stavať, 11:45–12:15 nahrať video a vyplniť formulár, 12:30 odoslať.
+**Poradie v deme (video):** B1 žiadanka → B2 fronta → prehľad Aleny → M1 údaje a telefonát ECOG → B3 plán cesty →
+M2 podklad PDF → M3 záver a doručenka.
