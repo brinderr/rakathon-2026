@@ -424,9 +424,10 @@ function MoveState({ step }: { step: PlanStep }) {
   return (
     <span className="plan-book">
       <input type="date" value={date} min={data.today} aria-label="Objednáno na den" onChange={(e) => setDate(e.target.value)} />
-      <button type="button" className="link" disabled={!date} onClick={() => mark(id, data.today, `${step.title}: objednáno na ${czDate(date)}`, { step: step.id, phase: 2, date })}>
+      <button type="button" className="link" disabled={!date} title={date ? undefined : 'Nejdřív vyberte den'} onClick={() => mark(id, data.today, `${step.title}: objednáno na ${czDate(date)}`, { step: step.id, phase: 2, date })}>
         <Icon name="calendar" size={14} />Objednáno na tento den
       </button>
+      {!date && <small className="plan-hint">nejdřív vyberte den</small>}
     </span>
   );
 }
@@ -463,7 +464,7 @@ function StepRow({ s, byId, today, isCurrent, openDoc }: { s: PlanStep; byId: Ma
           {overdue && <span className="chip miss">po termínu</span>}
           {s.late && <span className="chip conf">zpoždění {workdays(s.late.days)}</span>}
           {s.state && <span className={`chip ${s.state.cls}`}>{s.state.label}</span>}
-          {isCurrent && !overdue && <span className="chip new">teď</span>}
+          {isCurrent && !overdue && <span className="chip new">teď – aktuální krok</span>}
           {s.fromSet && <span className="chip">ze sady</span>}
         </p>
         {(s.detail || s.org) && (
@@ -685,7 +686,10 @@ export function Plan({ openDoc }: { openDoc: OpenDoc }) {
 
       <section className="card plan-card" aria-labelledby="plan-title">
         <div className="card-head">
-          <h2 id="plan-title">Plán cesty {female ? 'pacientky' : 'pacienta'}</h2>
+          <div>
+            <h2 id="plan-title">Plán cesty {female ? 'pacientky' : 'pacienta'}</h2>
+            <p className="muted plan-lead">Kroky v pořadí, jak na sebe navazují: u každého stav, termín a vpravo vždy, kdo je na tahu.</p>
+          </div>
           <div className="form-actions">
             <button type="button" className="btn-ghost" aria-expanded={panel === 'set'} onClick={() => setPanel(panel === 'set' ? null : 'set')}><Icon name="fields" size={16} />Spustit sadu kroků: {SET.name}</button>
             <button type="button" className="btn-ghost" aria-expanded={panel === 'task'} onClick={() => setPanel(panel === 'task' ? null : 'task')}><Icon name="plus" size={16} />Přidat úkol</button>
@@ -702,6 +706,19 @@ export function Plan({ openDoc }: { openDoc: OpenDoc }) {
             </li>
           ))}
         </ol>
+
+        <div className="plan-legend" aria-label="Legenda">
+          <p className="plan-legend-track">
+            <small>Stav vyšetření</small>
+            {PHASES.map((label, i) => <span key={label}>{i > 0 && <span className="plan-legend-arrow" aria-hidden="true">→</span>}{label}</span>)}
+          </p>
+          <p className="plan-legend-nodes">
+            <span><i className="plan-dot done"><Icon name="check" size={11} /></i>hotovo</span>
+            <span><i className="plan-dot now"><Icon name="user" size={11} /></i>teď – aktuální krok</span>
+            <span><i className="plan-dot wait"><Icon name="clock" size={11} /></i>čeká</span>
+            <span><i className="plan-dot late"><Icon name="alert" size={11} /></i>po termínu – urgovat</span>
+          </p>
+        </div>
 
         {others.length > 0 && (
           <p className="plan-others">
@@ -724,7 +741,10 @@ export function Plan({ openDoc }: { openDoc: OpenDoc }) {
           </div>
         ))}
         {!plan.some((s) => s.group === 'diag') && (
-          <p className="plan-empty muted">Zatím žádná vyšetření. Spusťte sadu kroků, nebo přidejte zprávy v Přehledu.</p>
+          <div className="plan-empty">
+            <p className="muted">Zatím žádná vyšetření. Sada kroků založí celou cestu v pořadí, jak na sebe navazuje.</p>
+            {panel !== 'set' && <button type="button" className="btn-primary" onClick={() => setPanel('set')}><Icon name="fields" size={16} />Spustit sadu kroků</button>}
+          </div>
         )}
       </section>
 
