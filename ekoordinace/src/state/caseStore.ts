@@ -84,6 +84,7 @@ export function addValue(caseId: string, day: string, field: string, value: stri
   updateCase(caseId, (s) => ({
     ...s,
     added: { ...s.added, [field]: { value, source: `telefonát – ${from}`, at, who: ME } },
+    confirmed: undefined, // a change after the doctor's confirmation needs a new one
     events: [...s.events, { at, who: ME, kind: 'telefonat', text: `${from}: ${value}`, field }],
   }));
 }
@@ -94,6 +95,7 @@ export function resolveField(caseId: string, day: string, field: string, note: s
   updateCase(caseId, (s) => ({
     ...s,
     resolved: { ...s.resolved, [field]: { note, at, who: ME, with: withWhom } },
+    confirmed: undefined,
     events: [...s.events, { at, who: ME, kind: 'overeno', text: `${withWhom}: ${note}`, field }],
   }));
 }
@@ -105,11 +107,21 @@ export function undoField(caseId: string, day: string, field: string) {
     const resolved = { ...s.resolved };
     delete added[field];
     delete resolved[field];
-    return { ...s, added, resolved, events: [...s.events, { at: stamp(day), who: ME, kind: 'poznamka', text: 'zápis vrácen', field }] };
+    return { ...s, added, resolved, confirmed: undefined, events: [...s.events, { at: stamp(day), who: ME, kind: 'poznamka', text: 'zápis vrácen', field }] };
   });
 }
 
 /** Has the coordinator already dealt with this field? */
 export function isSettled(s: CaseState, field: string): boolean {
   return Boolean(s.added[field] || s.resolved[field]);
+}
+
+/** The doctor confirms the podklad for the MDT (any later change of the data cancels it). */
+export function confirmCase(caseId: string, day: string, by: string) {
+  const at = stamp(day);
+  updateCase(caseId, (s) => ({ ...s, confirmed: { by, at }, events: [...s.events, { at, who: by, kind: 'potvrzeno', text: 'podklad pro konzilium potvrzen' }] }));
+}
+
+export function unconfirmCase(caseId: string, day: string) {
+  updateCase(caseId, (s) => ({ ...s, confirmed: undefined, events: [...s.events, { at: stamp(day), who: ME, kind: 'poznamka', text: 'potvrzení podkladu zrušeno' }] }));
 }

@@ -22,7 +22,14 @@ function liveField(f: Field, st: CaseState): Field {
 
 export function liveCase(data: CaseData, st: CaseState): CaseData {
   const open = (key: string) => !isSettled(st, key);
+  const confirmed = st.confirmed;
   const steps = data.steps.map((s) => {
+    // the doctor confirmed the podklad: that step is done, the conclusion for the GP is next
+    if (confirmed && s.id === 'podklad') {
+      const day = confirmed.at.slice(0, 10);
+      return { ...s, status: 'done' as const, date: day, title: `Podklad pro konzilium potvrdil(a) ${confirmed.by}`, short: `${Number(day.slice(8))}. ${Number(day.slice(5, 7))}.`, todo: [] };
+    }
+    if (confirmed && s.id === 'uzavrit' && s.status === 'waiting') return { ...s, status: 'now' as const };
     if (!s.todo?.length) return s;
     const todo = s.todo.filter((t) => open(t.field));
     return todo.length ? { ...s, todo } : { ...s, todo, summary: 'Vše doplněno a ověřeno.' };
