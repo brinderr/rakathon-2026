@@ -2,6 +2,7 @@
 // doctor's confirmation and every message sent or received. Shared by all sections: the overview, the queue and the
 // documents read the same state. Kept in this browser (localStorage) so the demo survives a reload. Owner: matej.
 import { useSyncExternalStore } from 'react';
+import type { Conclusion } from './zaver';
 
 export type EventKind =
   | 'telefonat' | 'overeno' | 'potvrzeno' | 'vyzadano' | 'sms' | 'email' | 'odeslano' | 'doruceno' | 'precteno' | 'poznamka';
@@ -18,6 +19,8 @@ export interface CaseState {
   resolved: Record<string, Resolution>;
   /** the handover confirmed by a doctor */
   confirmed?: { by: string; at: string };
+  /** the conclusion of the MDT for the GP and its delivery receipt (state/zaver.ts) */
+  conclusion?: Conclusion;
   /** the coordination record, oldest first */
   events: CaseEvent[];
 }

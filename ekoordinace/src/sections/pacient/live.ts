@@ -5,6 +5,7 @@ import type { CaseState } from '../../state/caseStore';
 import type { CaseData, Field } from './types';
 
 const time = (at: string) => at.slice(11);
+const dm = (day: string) => `${Number(day.slice(8))}. ${Number(day.slice(5, 7))}.`;
 
 function liveField(f: Field, st: CaseState): Field {
   const added = st.added[f.key];
@@ -23,7 +24,17 @@ function liveField(f: Field, st: CaseState): Field {
 export function liveCase(data: CaseData, st: CaseState): CaseData {
   const open = (key: string) => !isSettled(st, key);
   const confirmed = st.confirmed;
+  const sent = st.conclusion?.sent;
   const steps = data.steps.map((s) => {
+    // the GP has the conclusion of the MDT (delivery receipt): the journey is closed
+    const c = st.conclusion;
+    if (s.id === 'uzavrit' && sent && c?.delivered) {
+      return {
+        ...s, status: 'done' as const, date: c.delivered.slice(0, 10), short: dm(c.delivered.slice(0, 10)),
+        title: `Závěr konzilia doručen – ${sent.to}`,
+        summary: `Odesláno ${time(sent.at)} · doručeno ${time(c.delivered)}${c.read ? ` · přečteno ${time(c.read)}` : ' · zatím nepřečteno'}.`,
+      };
+    }
     // the doctor confirmed the podklad: that step is done, the conclusion for the GP is next
     if (confirmed && s.id === 'podklad') {
       const day = confirmed.at.slice(0, 10);

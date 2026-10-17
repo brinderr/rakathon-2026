@@ -1,0 +1,48 @@
+/* Tab "Závěr" (owner: Matej): sending bar with the delivery receipt, the letter for the GP as an editable sheet. */
+.zaver { display: grid; gap: 1rem; }
+
+.zaver-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1.25rem; padding: .9rem 1.25rem; }
+.zaver-state { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem; font-size: .9rem; }
+.zaver-state.muted { margin: 0; }
+.zaver-to { display: inline-flex; align-items: center; gap: .35rem; font-weight: 600; }
+.receipt { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem; }
+.receipt li { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .55rem; border-radius: var(--r-chip); background: var(--soft); color: var(--muted); font-size: .82rem; font-weight: 600; }
+.receipt li.on { background: var(--ok-bg); color: var(--ok); }
+.receipt .mono { font: 500 .8rem var(--mono); }
+.zaver-changed { flex-basis: 100%; margin: 0; font-size: .85rem; color: var(--conf); }
+
+.zaver-paper { width: 100%; max-width: 54rem; padding: 1.75rem 2rem 1.5rem; display: grid; gap: 1.1rem; }
+.zaver-head p { margin: 0; font-size: .8rem; }
+.zaver-head h2 { margin: .15rem 0 0; font-size: 1.3rem; font-weight: 700; }
+.zaver-meta { margin: 0; display: grid; gap: .35rem; padding: .8rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.zaver-meta > div { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1rem; }
+.zaver-meta dt { color: var(--muted); font-size: .85rem; padding-top: .1rem; }
+.zaver-meta dd { margin: 0; font-weight: 600; min-width: 0; }
+.zaver-meta .soft { font-weight: 400; color: var(--muted); }
+.zaver-meta .code { font: 500 .8rem var(--mono); color: var(--muted); }
+.zaver-meta a { color: inherit; font-weight: 500; }
+.zaver-part { display: grid; gap: .35rem; }
+.zaver-part h3 { margin: 0; font: 600 .75rem var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.zaver-part textarea { width: 100%; min-height: 3.2rem; padding: .6rem .75rem; font: inherit; line-height: 1.55; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-ctl); resize: vertical; field-sizing: content; }
+.zaver-part textarea:hover { border-color: var(--red-200); }
+.zaver-part textarea:focus { outline: 2px solid var(--red-200); border-color: var(--red-200); }
+.zaver-sign { margin: .25rem 0 0; font-size: .9rem; color: var(--ink-2); }
+.print-only { display: none; }
+
+@media (max-width: 640px) {
+  .zaver-paper { padding: 1.1rem 1rem; }
+  .zaver-meta > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .zaver-bar { padding: .8rem 1rem; }
+}
+
+/* Tisk / PDF: only the letter */
+@media print {
+  body:has(.zaver-paper) .side, body:has(.zaver-paper) .topbar, body:has(.zaver-paper) .crumbs,
+  body:has(.zaver-paper) .patient-head, body:has(.zaver-paper) .tabs-row, body:has(.zaver-paper) .zaver-bar,
+  body:has(.zaver-paper) .foot, .zaver-paper textarea { display: none !important; }
+  body:has(.zaver-paper) .frame { display: block; }
+  body:has(.zaver-paper) .page { padding: 0; max-width: none; }
+  .zaver-paper { max-width: none; padding: 0; border: 0; box-shadow: none; }
+  .zaver-paper .print-only { display: block; white-space: pre-line; margin: 0; line-height: 1.5; }
+  .zaver-paper .src-link { color: inherit; font-weight: 400; }
+}
