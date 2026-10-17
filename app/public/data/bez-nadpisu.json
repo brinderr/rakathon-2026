@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-10-17T05:19:04.357Z",
+  "headline": "Text bez nadpisů (4 žádanky od agenta bez přístupu k pravidlům): pravidla přečetla 41 z 80 údajů, správně 48 z 80, vymyšlené 0 · před úpravou přečetla 6 z 80",
+  "summary": {
+    "letters": 4,
+    "total": 80,
+    "readBefore": 6,
+    "read": 41,
+    "correctBefore": 18,
+    "correct": 48,
+    "invented": 0,
+    "wrongFill": 0
+  },
+  "letters": [
+    {
+      "file": "zadanka-1.txt",
+      "before": {
+        "read": 1,
+        "correct": 5,
+        "invented": 0
+      },
+      "after": {
+        "read": 11,
+        "correct": 14,
+        "wrongFill": 0,
+        "invented": 0
+      },
+      "notice": "Text bez nadpisů: pravidla přečetla 11 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
+    },
+    {
+      "file": "zadanka-2.txt",
+      "before": {
+        "read": 2,
+        "correct": 4,
+        "invented": 0
+      },
+      "after": {
+        "read": 12,
+        "correct": 11,
+        "wrongFill": 0,
+        "invented": 0
+      },
+      "notice": "Text bez nadpisů: pravidla přečetla 12 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
+    },
+    {
+      "file": "zadanka-3.txt",
+      "before": {
+        "read": 2,
+        "correct": 5,
+        "invented": 0
+      },
+      "after": {
+        "read": 10,
+        "correct": 13,
+        "wrongFill": 0,
+        "invented": 0
+      },
+      "notice": "Text bez nadpisů: pravidla přečetla 10 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
+    },
+    {
+      "file": "zadanka-4.txt",
+      "before": {
+        "read": 1,
+        "correct": 4,
+        "invented": 0
+      },
+      "after": {
+        "read": 8,
+        "correct": 10,
+        "wrongFill": 0,
+        "invented": 0
+      },
+      "notice": "Text bez nadpisů: pravidla přečetla 8 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
+    }
+  ]
+}
