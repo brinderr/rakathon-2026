@@ -124,7 +124,7 @@ export function OriginalPanel({ panel, field, docsById, onClose, onDecide, onReq
       heading = fieldHead;
       body = (
         <div className="cs-missing">
-          <p>Údaj sa v dostupných správach nenachádza. Chýbajúce sa označí, nikdy sa nedomýšľa.</p>
+          <p>V dostupných správach údaj nie je. Nič nedomýšľame – vyžiadame ho.</p>
           {f.field.request ? (
             <div className="cs-request-preview">
               <div className="cs-kv"><span>Adresát</span><strong>{f.field.request.to}</strong></div>
@@ -152,7 +152,7 @@ export function OriginalPanel({ panel, field, docsById, onClose, onDecide, onReq
           {f.field.resolvedBy ? (
             <div className="cs-panel-actions">
               <Btn variant="primary" icon={<IcPlay size={14} />} onClick={() => onSimulate(f.field.key)}>Simulovať odpoveď</Btn>
-              <span className="cs-hint">demo: príde správa {f.field.resolvedBy.docId} a pole sa doplní s citátom</span>
+              <span className="cs-hint">demo: príde správa {f.field.resolvedBy.docId} a pole sa doplní</span>
             </div>
           ) : <p className="cs-hint">Odpoveď príde tým istým kanálom a priradí sa k prípadu.</p>}
         </div>
@@ -178,10 +178,13 @@ export function OriginalPanel({ panel, field, docsById, onClose, onDecide, onReq
   }
 
   return (
-    <aside className={`cs-panel ${wide ? 'is-wide' : ''}`} role="dialog" aria-label="Originál správy">
-      <button type="button" className="cs-panel-close" onClick={onClose} aria-label="Zavrieť"><IcClose size={18} /></button>
-      <div className="cs-panel-head">{heading}</div>
-      <div className="cs-panel-body">{body}</div>
-    </aside>
+    <>
+      {wide && <div className="cs-panel-scrim" onClick={onClose} aria-hidden="true" />}
+      <aside className={`cs-panel ${wide ? 'is-wide' : ''}`} role="dialog" aria-label="Originál správy">
+        <button type="button" className="cs-panel-close" onClick={onClose} aria-label="Zavrieť"><IcClose size={18} /></button>
+        <div className="cs-panel-head">{heading}</div>
+        <div className="cs-panel-body">{body}</div>
+      </aside>
+    </>
   );
 }

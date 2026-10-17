@@ -221,7 +221,7 @@ export default function CaseView() {
               <Btn variant="ghost" size="sm" icon={<IcArrow size={14} />} onClick={() => goTab('kroky')}>Celá cesta</Btn>
             </Card>
           </div>
-          <Card title="Úplnosť podkladu" aside={<span className="cs-hint">20 polí šablóny VZP „Handover“ · klik otvorí originál</span>}>
+          <Card title="Úplnosť podkladu" aside={<span className="cs-hint">20 polí šablóny VZP · klik otvorí originál</span>}>
             <Semaphore fields={fields} counts={counts} activeKey={activeKey} flashKey={flashKey} onPick={pickTile} />
           </Card>
           {todoCount > 0 ? (
@@ -229,7 +229,7 @@ export default function CaseView() {
               <FieldList fields={fields} activeKey={activeKey} flashKey={flashKey} onOpen={openField} onRequest={requestField} onOpenDoc={openDoc} only={todo} />
             </Card>
           ) : (
-            <Card className="cv-done"><div className="cv-done-in"><IcCheck size={20} /> Podklad je kompletný: všetky polia sú potvrdené so zdrojom.</div></Card>
+            <Card className="cv-done"><div className="cv-done-in"><IcCheck size={20} /> Podklad je kompletný. Všetky polia majú zdroj.</div></Card>
           )}
         </div>
       )}

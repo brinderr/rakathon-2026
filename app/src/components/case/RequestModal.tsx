@@ -32,7 +32,7 @@ export function RequestModal({ title, req, onSend, onClose }:
         <label className="cs-modal-label" htmlFor="cs-draft">Koncept (môžete upraviť)</label>
         <textarea id="cs-draft" className="cs-textarea" value={draft} onChange={(e) => setDraft(e.target.value)} rows={9} />
         <div className="cs-modal-actions">
-          <span className="cs-hint">Prototyp: odoslanie je simulované. Odpoveď sa priradí k prípadu a zapracuje do podkladu.</span>
+          <span className="cs-hint">Odoslanie je simulované. Odpoveď sa priradí k prípadu.</span>
           <div className="cs-modal-btns">
             <Btn variant="ghost" onClick={onClose}>Zrušiť</Btn>
             <Btn variant="primary" icon={<IcSend size={14} />} onClick={send} disabled={sending}>{sending ? 'Odosielam…' : 'Odoslať'}</Btn>

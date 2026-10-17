@@ -1,6 +1,6 @@
 // Laboratórium, Lieky, Vyšetrenia, Dokumenty, Záznam o koordinovaní – all filtered by the as-of date.
 import type { Exam, LabRow, LogEntry, Medication, SourceDoc } from '../../types';
-import { SK_KIND, daysWord, docDate, fmtDate, fmtShort, visibleLog } from './caseUtils';
+import { SK_KIND, docDate, fmtDate, fmtShort, visibleLog } from './caseUtils';
 import { Card, Empty, Pill, SourceChip } from './ui';
 import { IcChevron, IcCheck, IcClock, IcDoc } from './icons';
 
@@ -40,7 +40,7 @@ export function LabsCard({ labs, asOf, onOpenDoc }: { labs: LabRow[]; asOf: stri
               </div>
             );
           })}
-          <p className="cs-hint">H = nad referenčnou medzou, L = pod ňou. Tabuľka, nie graf: hodnoty presne tak, ako ich vydalo laboratórium.</p>
+          <p className="cs-hint">H = nad medzou, L = pod medzou. Hodnoty presne tak, ako ich vydalo laboratórium.</p>
         </div>
       )}
     </Card>
@@ -75,7 +75,7 @@ export function MedsCard({ meds, asOf, docsById, onOpenDoc }:
           })}
         </ul>
       )}
-      <p className="cs-hint">Bez „dokedy“: správy to nemajú a dopočítanie by bolo domýšľanie.</p>
+      <p className="cs-hint">Bez „dokedy“ – správy to neuvádzajú a nič nedomýšľame.</p>
     </Card>
   );
 }
@@ -176,7 +176,7 @@ export function LogCard({ log, asOf }: { log: LogEntry[]; asOf: string }) {
               </div>
             );
           })}
-          <p className="cs-hint">Každý úkon sa zapíše sám. Dni so zásahom sú podkladom pre výkon 51887 (250 Kč, najviac raz denne), vykazuje ich nemocnica. Čas od prijatia: {Math.max(0, Math.round((new Date(asOf).getTime() - new Date(days[0] ?? asOf).getTime()) / 86400000))} {daysWord(Math.max(0, Math.round((new Date(asOf).getTime() - new Date(days[0] ?? asOf).getTime()) / 86400000)))}.</p>
+          <p className="cs-hint">Každý úkon sa zapíše sám. Deň so zásahom = podklad pre výkon 51887 (250 Kč, najviac raz denne), vykazuje nemocnica.</p>
         </div>
       )}
     </Card>

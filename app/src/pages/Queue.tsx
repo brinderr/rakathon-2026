@@ -126,7 +126,7 @@ export default function Queue() {
         <div className="brief" aria-label="Ranný prehľad">
           <span className="brief__icon"><Icon name="sun" size={18} /></span>
           <div>
-            <div className="brief__kicker">Ranný prehľad</div>
+            <div className="kicker">Ranný prehľad</div>
             <p className="brief__text">
               Dnes:{' '}
               {brief.map((p, i) => (
@@ -146,7 +146,12 @@ export default function Queue() {
         </div>
 
         {visible.length === 0 ? (
-          <Card className="empty">V tomto pohľade nie je žiadny prípad.</Card>
+          <Card className="empty">
+            <span className="empty__ico"><Icon name="check" size={22} /></span>
+            <div className="empty__t">Tu je prázdno</div>
+            <div className="empty__s">{filter === 'late' ? 'Nič nemešká.' : 'V tomto pohľade nie je žiadny prípad.'}</div>
+            <Button variant="ghost" size="sm" onClick={() => setFilter('all')}>Zobraziť všetky</Button>
+          </Card>
         ) : (
           <div className="cards">
             {visible.map((c) => <CaseCard key={c.id} c={c} onOpen={() => go({ page: 'case', caseId: c.id })} />)}
@@ -185,7 +190,7 @@ function CaseCard({ c, onOpen }: { c: Case; onOpen: () => void }) {
 
       <div className="pcard__next">
         <Icon name="arrow-right" size={14} />
-        <span title={c.nextStep.text}>{c.nextStep.text}</span>
+        <span>{c.nextStep.text}</span>
       </div>
 
       <div className="clock">
@@ -224,7 +229,7 @@ function Gamification() {
   const left = Math.max(0, g.goalToday - g.doneToday);
   return (
     <aside className="side" aria-label="Moja bilancia">
-      <div className="side__title">Moja bilancia</div>
+      <div className="kicker side__title">Moja bilancia</div>
 
       <Card className="goal">
         <Ring value={g.doneToday} max={g.goalToday} size={88} stroke={9}>
@@ -238,7 +243,7 @@ function Gamification() {
 
       <Card className="wk">
         <div className="wk__head"><h3>Tento týždeň</h3><Pill size="sm">ukážka</Pill></div>
-        <Stat pastel={2} value={g.loopsClosedThisWeek} label="slučiek uzavretých (žiadanka → podklad → záver doručený)" />
+        <Stat pastel={2} value={g.loopsClosedThisWeek} label="slučiek uzavretých: žiadanka → podklad → záver doručený" />
         <div className="wk__row">
           <span>Podklady kompletné načas v rade</span>
           <strong>{g.completeOnTimeStreak}</strong>
@@ -249,9 +254,7 @@ function Gamification() {
         </div>
       </Card>
 
-      <p className="side__note">
-        Počíta sa len z administratívnych krokov (uzavreté slučky, včasné podklady), nikdy zo zdravotných údajov.
-      </p>
+      <p className="side__note">Len administratívne kroky, nikdy zdravotné údaje.</p>
     </aside>
   );
 }

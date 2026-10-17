@@ -40,7 +40,7 @@ export function AsOfSlider({ asOf, min, max, docs, mdtDate, onChange }:
           onChange={(e) => onChange(addDays(min, Number(e.target.value)))} />
       </div>
       <div className="cs-asof-ends"><span>{fmtShort(min)} prijatie žiadosti</span><span>{fmtShort(max)}</span></div>
-      <p className="cs-asof-note">Polia, správy a kroky s neskorším dátumom sú sivé. Konzílium vidí len to, čo bolo v daný deň známe.</p>
+      <p className="cs-asof-note">Konzílium vidí len to, čo bolo v daný deň známe. Neskoršie správy sú sivé.</p>
     </section>
   );
 }

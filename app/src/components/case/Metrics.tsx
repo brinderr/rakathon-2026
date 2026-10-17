@@ -43,7 +43,7 @@ export function Metrics({ c, counts, asOf, stepsDone, stepsTotal, flash }:
         </div>
         <div className="cs-metric-foot">
           {over ? `${day - target} ${daysWord(day - target)} po lehote · ` : ''}
-          vzor: dánska cesta pre pankreas ({DK_FIRST_VISIT_DAYS} + {DK_DECISION_DAYS} dní)
+          dánsky vzor pre pankreas: {DK_FIRST_VISIT_DAYS} + {DK_DECISION_DAYS} dní
         </div>
       </div>
 
@@ -59,7 +59,7 @@ export function Metrics({ c, counts, asOf, stepsDone, stepsTotal, flash }:
       <div className={`cs-metric cs-metric-4 ${counts.noSource ? 'is-bad' : ''}`}>
         <div className="cs-metric-big">{counts.noSource}</div>
         <div className="cs-metric-label">{counts.noSource === 1 ? 'údaj bez zdroja' : counts.noSource >= 2 && counts.noSource <= 4 ? 'údaje bez zdroja' : 'údajov bez zdroja'}</div>
-        <div className="cs-metric-foot">každá hodnota má doslovný citát overený v texte správy</div>
+        <div className="cs-metric-foot">každý údaj má doslovný citát zo správy</div>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
-// App frame: narrow icon rail on the left, top bar (brand, search, coordinator), page content, disclaimer footer.
-import type { ReactNode } from 'react';
+// App frame: narrow icon rail on the left, top bar (brand, quick search, coordinator), page content, disclaimer footer.
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { useNav, type Route } from '../nav';
 import { CASES } from '../data/cases';
-import { DEMO_TODAY } from '../types';
-import { Avatar, Icon, type IconName } from './ui';
+import { DEMO_TODAY, type Case } from '../types';
+import { Avatar, CASE_STATUS_LABEL, CASE_STATUS_TONE, Icon, Pill, type IconName } from './ui';
 import './Shell.css';
 
 type Section = 'queue' | 'intake' | 'mdt';
@@ -29,6 +29,61 @@ function nextMdtCaseId(): string {
 }
 
 export const COORDINATOR = { name: 'Klára', role: 'koordinátorka' };
+
+/* Accent-insensitive, case-insensitive match: "proch" finds "Procházková". */
+const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+function QuickSearch({ onOpen }: { onOpen: (c: Case) => void }) {
+  const [q, setQ] = useState('');
+  const [open, setOpen] = useState(false);
+  const [cursor, setCursor] = useState(0);
+  const wrapRef = useRef<HTMLLabelElement>(null);
+  const hits = useMemo(() => {
+    const needle = fold(q.trim());
+    if (!needle) return [];
+    return CASES.filter((c) => fold(`${c.patient.firstName} ${c.patient.lastName} ${c.diagnosisShort} ${c.koc}`).includes(needle)).slice(0, 5);
+  }, [q]);
+
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => { if (!wrapRef.current?.contains(e.target as Node)) setOpen(false); };
+    window.addEventListener('mousedown', onDown);
+    return () => window.removeEventListener('mousedown', onDown);
+  }, []);
+
+  const pick = (c: Case) => { onOpen(c); setQ(''); setOpen(false); };
+  const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') { setOpen(false); (e.target as HTMLInputElement).blur(); return; }
+    if (!hits.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); setCursor((i) => (i + 1) % hits.length); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setCursor((i) => (i - 1 + hits.length) % hits.length); }
+    else if (e.key === 'Enter') { e.preventDefault(); pick(hits[Math.min(cursor, hits.length - 1)]); }
+  };
+
+  return (
+    <label className="search" aria-label="Vyhľadávanie" ref={wrapRef}>
+      <Icon name="search" size={18} />
+      <input type="search" placeholder="Hľadať pacienta" autoComplete="off" value={q}
+        onChange={(e) => { setQ(e.target.value); setOpen(true); setCursor(0); }} onFocus={() => setOpen(true)} onKeyDown={onKey} />
+      {open && q.trim() && (
+        <div className="search__menu" role="listbox">
+          {hits.length === 0 ? (
+            <div className="search__empty">Nikto taký vo fronte nie je.</div>
+          ) : hits.map((c, i) => (
+            <button type="button" key={c.id} role="option" aria-selected={i === cursor}
+              className={`search__hit ${i === cursor ? 'search__hit--on' : ''}`} onMouseEnter={() => setCursor(i)} onClick={() => pick(c)}>
+              <Avatar name={`${c.patient.firstName} ${c.patient.lastName}`} size={30} />
+              <span className="search__hit-text">
+                <span className="search__hit-name">{c.patient.firstName} {c.patient.lastName}</span>
+                <span className="search__hit-sub">{c.patient.age} r. · {c.diagnosisShort}</span>
+              </span>
+              <Pill tone={CASE_STATUS_TONE[c.status]} size="sm">{CASE_STATUS_LABEL[c.status]}</Pill>
+            </button>
+          ))}
+        </div>
+      )}
+    </label>
+  );
+}
 
 export default function Shell({ children }: { children: ReactNode }) {
   const { route, go } = useNav();
@@ -59,10 +114,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             <span className="brand__name">Koordinátor</span>
           </button>
 
-          <label className="search" aria-label="Vyhľadávanie">
-            <Icon name="search" size={18} />
-            <input type="search" placeholder="Hľadať pacienta alebo prípad" autoComplete="off" />
-          </label>
+          <QuickSearch onOpen={(c) => go({ page: 'case', caseId: c.id })} />
 
           <div className="topbar__right">
             <div className="me">

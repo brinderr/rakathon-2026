@@ -116,7 +116,7 @@ export default function Intake() {
         <div className="doc-hero">
           <div className="doc-hero__ico"><IconCheck size={34} /></div>
           <h2>Prijaté</h2>
-          <p>Prípad <strong>{caseNo}</strong> · {koc} · potvrdenie prijatia odišlo praktikovi automaticky, bez čakania na telefonát</p>
+          <p>Prípad <strong>{caseNo}</strong> · {koc} · potvrdenie prijatia odišlo praktikovi automaticky</p>
         </div>
 
         <div className="doc-grid intake-sent">
@@ -248,7 +248,7 @@ export default function Intake() {
             </div>
 
             {phase === 'edit' && !hasSample && (
-              <p className="doc-muted" style={{ margin: 0 }}>Hneď po vložení žiadosti ukážeme, čo v nej chýba. Doplníte to teraz, nie o týždeň po telefonáte koordinátorky.</p>
+              <p className="doc-muted" style={{ margin: 0 }}>Po vložení žiadosti hneď uvidíte, čo v nej chýba. Doplníte to teraz, nie o týždeň po telefonáte.</p>
             )}
             {phase === 'checking' && (
               <p className="doc-muted intake-checking" style={{ margin: 0 }}><span className="doc-spin" /> Čítam žiadosť a porovnávam so zoznamom podkladov pre konzílium…</p>
@@ -272,7 +272,7 @@ export default function Intake() {
                   ))}
                 </ul>
                 <p className="doc-small doc-muted" style={{ margin: '14px 0 0' }}>
-                  Môžete odoslať aj tak. Chýbajúce si koordinátorka vyžiada z pracovísk; čo máte poruke, pridajte teraz.
+                  Odoslať môžete aj tak. Čo máte poruke, pridajte teraz; zvyšok si vyžiada koordinátorka.
                 </p>
               </div>
             )}

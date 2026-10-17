@@ -54,6 +54,11 @@ function Page({ route }: { route: Route }) {
   }
 }
 
+/** Key of the screen (not the tab): a new screen fades in, switching tabs inside a case does not. */
+function screenKey(r: Route): string {
+  return r.page === 'queue' || r.page === 'intake' ? r.page : `${r.page}/${r.caseId}`;
+}
+
 export default function App() {
   const [route, setRoute] = useState<Route>(() => hashToRoute(window.location.hash));
   const [asOf, setAsOf] = useState<string>(DEMO_TODAY);
@@ -84,7 +89,9 @@ export default function App() {
   return (
     <NavContext.Provider value={nav}>
       <Shell>
-        <Page route={route} />
+        <div className="page-enter" key={screenKey(route)}>
+          <Page route={route} />
+        </div>
       </Shell>
     </NavContext.Provider>
   );
