@@ -133,41 +133,59 @@ export function Podklad({ openDoc }: { openDoc: OpenDoc }) {
   const gpMail = refText.split(/^Pacient(?:ka)?:/m)[0].match(/[\w.+-]+@[\w-]+\.[\w.-]*\w/)?.[0];
   const refQuote = (q?: string): Quote[] => (referral && q ? [{ docId: referral.id, ref: referral.ref, quote: q }] : []);
   const rows = examRows(data);
+  const fileName = `Podklad MDT – ${p.name}${data.mdtDate ? ` – ${czDate(data.mdtDate).replace(/\s/g, ' ')}` : ''}`;
+  // the browser saves the PDF under the page title
+  const printPdf = () => {
+    const title = document.title;
+    document.title = fileName;
+    window.addEventListener('afterprint', () => { document.title = title; }, { once: true });
+    window.print();
+  };
   const sameName = (k: string) => f(k)?.quotes ?? [];
 
   return (
     <div className="podklad">
-      <section className="card pk-actions" aria-label="Potvrzení a tisk">
-        <div className="pk-state">
-          {confirmed
-            ? <p className="pk-ok"><Icon name="check" size={16} />Potvrdil(a) {confirmed.by} · {time(confirmed.at)}</p>
-            : <p>Čeká na potvrzení lékařem</p>}
-          {open.length > 0 && <p className="pk-open"><Icon name="alert" size={15} />Nevyřešeno: {open.length} · <a href={`#/pacienti/${id}/udaje`}>vyřešit v Údajích</a></p>}
-        </div>
-        <div className="form-actions">
-          {confirmed
-            ? <button type="button" className="btn-ghost" onClick={() => unconfirmCase(id, data.today)}>Zrušit potvrzení</button>
-            : <button type="button" className="btn-primary" onClick={() => confirmCase(id, data.today, DOCTOR)}><Icon name="check" size={16} />Potvrdit jako {DOCTOR}</button>}
-          <button type="button" className="btn-ghost" onClick={() => window.print()}><Icon name="download" size={16} />Tisk / PDF</button>
-          <button type="button" className={`copy-btn${copied ? ' done' : ''}`}
-            onClick={async () => { if (await copyText(plain(data, address, rows))) { setCopied(true); window.setTimeout(() => setCopied(false), 1500); } }}>
-            <Icon name={copied ? 'check' : 'copy'} size={15} />{copied ? 'Zkopírováno' : 'Kopírovat text'}
-          </button>
-        </div>
-      </section>
+      {/* 1 everything resolved → 2 confirmed → 3 the podklad is generated (PDF for the MDT, text for the hospital system) */}
+      {open.length > 0 ? (
+        <section className="card pk-gate" aria-label="Před potvrzením">
+          <h3><Icon name="alert" size={18} />Nejdřív vyřešte {open.length} {open.length === 1 ? 'bod' : open.length < 5 ? 'body' : 'bodů'}</h3>
+          <ul>
+            {open.map((t) => (
+              <li key={t.key}><span>{nb(t.title)}</span><a href={`#/pacienti/${id}/udaje/${t.key}`}>Vyřešit<Icon name="right" size={14} /></a></li>
+            ))}
+          </ul>
+        </section>
+      ) : !confirmed ? (
+        <section className="card pk-gate ready" aria-label="Potvrzení">
+          <h3><Icon name="check" size={18} />Vše vyřešeno – zkontrolujte podklad a potvrďte</h3>
+          <div className="form-actions">
+            <button type="button" className="btn-primary" onClick={() => confirmCase(id, data.today, DOCTOR)}><Icon name="check" size={16} />Potvrdit ({DOCTOR})</button>
+          </div>
+        </section>
+      ) : (
+        <section className="card pk-out" aria-label="Vygenerovaný podklad">
+          <span className="pk-file"><Icon name="file" size={22} /></span>
+          <div className="pk-out-main">
+            <b>{fileName}.pdf</b>
+            <small>Potvrdil(a) {confirmed.by} · {time(confirmed.at)}</small>
+          </div>
+          <div className="form-actions">
+            <button type="button" className="btn-primary" onClick={printPdf}><Icon name="download" size={16} />Stáhnout PDF</button>
+            <button type="button" className={`copy-btn${copied ? ' done' : ''}`}
+              onClick={async () => { if (await copyText(plain(data, address, rows))) { setCopied(true); window.setTimeout(() => setCopied(false), 1500); } }}>
+              <Icon name={copied ? 'check' : 'copy'} size={15} />{copied ? 'Zkopírováno' : 'Kopírovat do NIS'}
+            </button>
+            <button type="button" className="btn-ghost" onClick={() => unconfirmCase(id, data.today)}>Zrušit potvrzení</button>
+          </div>
+        </section>
+      )}
 
       <article className="card pk-paper">
         <header className="pk-head">
-          <h2>Zápis k jednání multidisciplinárního týmu (MDT)</h2>
+          <h2>Zápis k jednání multidisciplinárního týmu (MDT){!confirmed && <span className="pk-draft">návrh</span>}</h2>
           <p>Podklad připravila {ME}, koordinátorka KOC Nemocnice Lipová, {czDate(data.today)}{confirmed ? ` · potvrdil(a) ${confirmed.by}, ${time(confirmed.at)}` : ''}</p>
         </header>
 
-        {open.length > 0 && (
-          <section className="pk-issues" aria-label="Nevyřešeno před konziliem">
-            <h3>Nevyřešeno před konziliem</h3>
-            <ul>{open.map((t) => <li key={t.key}>{nb(t.title)}</li>)}</ul>
-          </section>
-        )}
 
         <section className="pk-sec">
           <h3><span>1</span>Základní údaje</h3>

@@ -55,7 +55,7 @@
   @page { size: A4; margin: 14mm 14mm 16mm; }
   body:has(.pk-paper) { background: #fff; }
   body:has(.pk-paper) .side, body:has(.pk-paper) .topbar, body:has(.pk-paper) .crumbs, body:has(.pk-paper) .patient-head,
-  body:has(.pk-paper) .tabs-row, body:has(.pk-paper) .pk-actions, body:has(.pk-paper) .foot { display: none !important; }
+  body:has(.pk-paper) .tabs-row, body:has(.pk-paper) .foot { display: none !important; }
   body:has(.pk-paper) .frame, body:has(.pk-paper) .content { display: block; }
   body:has(.pk-paper) .page { padding: 0; max-width: none; }
   .pk-paper { max-width: none; padding: 0; border: 0; box-shadow: none; gap: 1rem; }
@@ -67,3 +67,19 @@
   .pk-sec h3, .pk-sec h4 { break-after: avoid; }
   .pk-row, .pk-table tr, .pk-issues { break-inside: avoid; }
 }
+
+/* before confirmation: what is still open; then the confirmation; then the generated podklad */
+.pk-gate { padding: 1rem 1.25rem; display: grid; gap: .6rem; border: 1px solid color-mix(in srgb, var(--conf) 25%, transparent); background: var(--conf-bg); }
+.pk-gate h3 { display: flex; align-items: center; gap: .5rem; margin: 0; font-size: 1rem; color: var(--conf); }
+.pk-gate.ready { border-color: color-mix(in srgb, var(--ok) 25%, transparent); background: var(--ok-bg); }
+.pk-gate.ready h3 { color: var(--ok); }
+.pk-gate ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.pk-gate li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .45rem 0; border-top: 1px solid color-mix(in srgb, var(--conf) 18%, transparent); font-size: .9rem; }
+.pk-gate li a { display: inline-flex; align-items: center; gap: .2rem; flex: none; color: var(--red); font-weight: 600; text-decoration: none; }
+.pk-gate li a:hover { text-decoration: underline; }
+.pk-out { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; padding: 1rem 1.25rem; }
+.pk-file { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border-radius: var(--r-ctl); background: var(--red-50); color: var(--red); flex: none; }
+.pk-out-main { display: grid; gap: .1rem; flex: 1; min-width: 12rem; }
+.pk-out-main small { color: var(--ok); font-weight: 600; }
+.pk-draft { margin-left: .6rem; padding: .1rem .5rem; border-radius: var(--r-chip); background: var(--soft); color: var(--muted); font: 600 .7rem var(--mono); letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; }
+@media print { body:has(.pk-paper) .pk-gate, body:has(.pk-paper) .pk-out, .pk-draft { display: none !important; } }
