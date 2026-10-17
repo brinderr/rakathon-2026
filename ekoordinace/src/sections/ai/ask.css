@@ -18,3 +18,13 @@
 .ai-form textarea { font: inherit; font-size: .9rem; resize: none; padding: .5rem .65rem; border: 1px solid var(--line); border-radius: var(--r-ctl); background: var(--surface); color: var(--ink); }
 .ai-form textarea:focus { outline: 2px solid var(--red-200); border-color: var(--red-200); }
 @media (max-width: 640px) { .ai-btn span { display: none; } .ai-btn { padding: 0; width: 2.6rem; } }
+/* the answer: summary, then points with the name in bold and the source in grey */
+.ai-msg.assistant:has(.ai-answer) { white-space: normal; max-width: 100%; }
+.ai-answer { display: grid; gap: .45rem; }
+.ai-answer p { margin: 0; }
+.ai-answer .ai-h { font-weight: 700; }
+.ai-answer ul, .ai-answer ol { margin: 0; padding-left: 1.1rem; display: grid; gap: .45rem; }
+.ai-answer li { padding-left: .15rem; }
+.ai-answer li::marker { color: var(--red); }
+.ai-answer b { font-weight: 700; color: var(--ink); }
+.ai-src { display: inline; margin-left: .2rem; color: var(--muted); font-size: .8rem; }

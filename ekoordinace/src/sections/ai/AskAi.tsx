@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { SIM_TODAY, useStoredPatients } from '../../state/patients';
 import { Icon } from '../../ui/Icon';
 import { useLiveCases } from '../pacient/live';
+import { Answer } from './Answer';
 import { snapshot } from './context';
 import './ask.css';
 
@@ -74,7 +75,9 @@ export function AskAi() {
                 {SUGGEST.map((s) => <button key={s} type="button" className="chip-btn" onClick={() => void ask(s)}>{s}</button>)}
               </div>
             )}
-            {msgs.map((m, i) => <p key={i} className={`ai-msg ${m.role}${m.error ? ' error' : ''}`}>{m.content}</p>)}
+            {msgs.map((m, i) => (m.role === 'assistant' && !m.error
+              ? <div key={i} className="ai-msg assistant"><Answer text={m.content} /></div>
+              : <p key={i} className={`ai-msg ${m.role}${m.error ? ' error' : ''}`}>{m.content}</p>))}
             {busy && <p className="ai-msg assistant busy">Hledám v datech…</p>}
           </div>
           <form className="ai-form" onSubmit={(e) => { e.preventDefault(); void ask(q); }}>
