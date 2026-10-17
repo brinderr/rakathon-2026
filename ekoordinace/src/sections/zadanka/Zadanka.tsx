@@ -231,6 +231,13 @@ function checksOf(r: ExtractionResult, rows: Row[], value: (row: Row) => string,
   return out.sort((a, b) => rank[a.kind] - rank[b.kind]);
 }
 
+/** Where the GP is: 1 Dopis → 2 Kontrola → 3 Odeslat. */
+const STAGES = [
+  { n: 1, label: 'Dopis', sub: 'nahrajte dopis a zprávy' },
+  { n: 2, label: 'Kontrola', sub: 'zkontrolujte a doplňte údaje' },
+  { n: 3, label: 'Odeslat', sub: 'předání do KOC jedním klikem' },
+];
+
 interface Sent { caseId: string; at: string; gp: string; koc: Koc; reports: number; requests: number; stillMissing: string[] }
 
 export function Zadanka() {
@@ -359,21 +366,36 @@ export function Zadanka() {
     setSent({ caseId, at: stamp(letter.date), gp, koc: target, reports: others.length, requests, stillMissing });
   };
 
+  const stage = sent ? 4 : letter && result ? 2 : 1;
+
   return (
     <div className="zd">
+      <p className="zd-role" role="note"><Icon name="user" size={16} /><b>Pohled praktického lékaře</b><span>Takto žádanku posílá praktik – koordinátorka KOC ji pak uvidí ve svém seznamu pacientů.</span></p>
       <div className="list-head">
         <div>
           <h1>Žádanka do KOC</h1>
-          <p className="muted">Pohled praktického lékaře · předání pacienta k dokončení diagnostiky, bez dalšího formuláře</p>
+          <p className="muted">Pošlete pacienta k dokončení diagnostiky: nahrajte dopis, zkontrolujte údaje a odešlete – bez dalšího formuláře.</p>
         </div>
-        {letter && <div className="form-actions"><button type="button" className="btn-ghost" onClick={reset}>Nová žádanka</button></div>}
+        {letter && <div className="form-actions"><button type="button" className="btn-ghost" onClick={reset}><Icon name="plus" size={16} />Nová žádanka</button></div>}
       </div>
 
+      <ol className="zd-steps" aria-label="Postup žádanky">
+        {STAGES.map((s) => {
+          const st = s.n < stage ? 'done' : s.n === stage ? 'now' : 'next';
+          return (
+            <li key={s.n} className={`zd-step ${st}`} aria-current={st === 'now' ? 'step' : undefined}>
+              <span className="zd-step-n">{st === 'done' ? <Icon name="check" size={14} /> : s.n}</span>
+              <span className="zd-step-text"><b>{s.label}</b><small>{st === 'done' ? 'hotovo' : s.sub}</small></span>
+            </li>
+          );
+        })}
+      </ol>
+
       <section className="card zd-koc" aria-label="Komplexní onkologické centrum">
-        <h2><span className="zd-num">1</span>Komu posíláte</h2>
+        <h2>Komu posíláte</h2>
         <div className="zd-koc-list" role="radiogroup" aria-label="Komplexní onkologické centrum">
           {KOCS.map((k) => (
-            <label key={k.id} className={`zd-koc-opt${k.id === koc ? ' on' : ''}`}>
+            <label key={k.id} className={`zd-koc-opt${k.id === koc ? ' on' : ''}`} title={sent ? 'Žádanka je odeslaná – centrum už nejde změnit' : undefined}>
               <input type="radio" name="koc" value={k.id} checked={k.id === koc} disabled={!!sent} onChange={() => setKoc(k.id)} />
               <span><b>{k.label}</b>{k.address && <small>{k.address}</small>}</span>
             </label>
@@ -385,7 +407,7 @@ export function Zadanka() {
         <section className="card zd-start" aria-label="Dopis a zprávy z ambulance">
           <div className="add-head">
             <div>
-              <h2><span className="zd-num">2</span>Dopis a zprávy z vaší ambulance</h2>
+              <h2>Dopis a zprávy z vaší ambulance</h2>
               <p className="muted">Pošlete epikrízu se žádostí, kterou už máte napsanou, a k ní zprávy z vlastního ambulantního softwaru. Nic nepřepisujete – údaje o vás i o pacientovi aplikace vyplní z dopisu sama. Text zůstává v tomto prohlížeči.</p>
             </div>
           </div>
@@ -419,16 +441,28 @@ export function Zadanka() {
       )}
       <input ref={input} type="file" accept={ACCEPT} multiple hidden onChange={(e) => { void onFiles(Array.from(e.target.files ?? [])); e.target.value = ''; }} />
 
-      {letter && !result && <section className="card notice"><p className="muted">Čtu dopis…</p></section>}
+      {letter && !result && (
+        <section className="card notice zd-loading" aria-live="polite">
+          {errors.length > 0 && !busy ? (
+            <>
+              <h2>Dopis se nepodařilo přečíst</h2>
+              <ul className="add-errors">{errors.map((e) => <li key={e}>{e}</li>)}</ul>
+              <div className="form-actions"><button type="button" className="btn-primary" onClick={reset}>Začít znovu</button></div>
+            </>
+          ) : (
+            <p><span className="zd-spin" aria-hidden="true" /><b>Čtu dopis a zprávy…</b> <span className="muted">Údaje se vyplní samy, obvykle během pár sekund.</span></p>
+          )}
+        </section>
+      )}
 
       {letter && result && (
         <div className="zd-grid">
           <section className="card zd-data" aria-label="Údaje z dopisu">
             <div className="card-head">
-              <h2><span className="zd-num">2</span>Údaje z dopisu</h2>
+              <h2>Údaje z dopisu</h2>
               <span className="mono">{result.meta.stats.citationsVerified} vět ověřeno doslova · {ms.toFixed(0)} ms · v prohlížeči</span>
             </div>
-            <p className="muted zd-lead">Vyplněno z vašeho dopisu{docs.length > 1 ? ' a zpráv' : ''}. Co nesedí, opravte přímo v poli, co chybí, doplňte – stačí jen to, co víte.</p>
+            <p className="muted zd-lead">Vyplněno z vašeho dopisu{docs.length > 1 ? ' a zpráv' : ''}. {sent ? 'Žádanka je odeslaná – údaje už jen prohlížíte.' : 'Každé pole můžete přepsat: co nesedí, opravte, co chybí, doplňte – stačí jen to, co víte.'}</p>
             {GROUPS.map((g) => (
               <div className="zd-group" key={g.id}>
                 <h3>{g.label(female)}</h3>
@@ -450,7 +484,7 @@ export function Zadanka() {
           <aside className="zd-side">
             <section className="card zd-docs" aria-label="Dokumenty k odeslání">
               <div className="card-head">
-                <h2><span className="zd-num">3</span>Zprávy z ambulance</h2>
+                <h2>Zprávy z ambulance</h2>
                 <span className="muted">{reports(docs.length)}</span>
               </div>
               <ul className="docs zd-doclist">
@@ -489,9 +523,9 @@ export function Zadanka() {
             {!sent ? (
               <>
                 <section className="card zd-send" aria-label="Odeslání">
-                  <p className="zd-send-to"><small>Odeslat do</small><b>{target.label}</b><span className="muted">{reports(docs.length)} · {open.length ? `${open.length} k doplnění – viz níže` : 'koordinátor KOC dostane vše v jednom kroku'}</span></p>
-                  <button type="button" className="btn-primary zd-go" disabled={busy} onClick={send}><Icon name="right" size={18} />Odeslat do {target.label}</button>
-                  <p className="zd-sim">Odesílání je v prototypu simulované.</p>
+                  <p className="zd-send-to"><small>Krok 3 · Odeslat do</small><b>{target.label}</b><span className="muted">{reports(docs.length)} · {open.length ? `${open.length} k doplnění – viz níže, odeslat můžete i tak` : 'koordinátor KOC dostane vše v jednom kroku'}</span></p>
+                  <button type="button" className="btn-primary zd-go" disabled={busy} title={busy ? 'Nejdřív počkejte, až se zprávy dočtou' : undefined} onClick={send}><Icon name="right" size={18} />Odeslat do {target.label}</button>
+                  <p className="zd-sim">{busy ? 'Nejdřív počkejte, až se zprávy dočtou – pak půjde odeslat.' : 'Odesílání je v prototypu simulované.'}</p>
                 </section>
 
                 <section className="card zd-check" aria-label="Před odesláním">
@@ -524,7 +558,7 @@ export function Zadanka() {
               </>
             ) : (
               <section className="card zd-done" aria-live="polite" ref={done}>
-                <div className="card-head"><h2><Icon name="check" size={18} />Odesláno do {sent.koc.label}</h2></div>
+                <div className="card-head"><h2><Icon name="check" size={18} />Odesláno do {sent.koc.label}</h2><span className="chip ok">hotovo</span></div>
                 <p className="zd-done-when">Přijato v KOC · {czDate(sent.at.slice(0, 10))} {sent.at.slice(11)}</p>
                 <div className="zd-confirm">
                   <span className="eyebrow">Potvrzení pro praktika · {sent.gp}</span>
@@ -540,6 +574,7 @@ export function Zadanka() {
                   Odesílání je v prototypu simulované.
                   {sent.koc.id !== KOCS[0].id && ' Prototyp má jen pracoviště koordinátorky KOC 2 – případ uvidíte v jejím seznamu pacientů.'}
                 </p>
+                <p className="zd-next"><b>Další krok:</b> podívejte se, jak případ převzala koordinátorka, nebo pošlete další žádanku.</p>
                 <div className="form-actions zd-done-actions">
                   <a className="btn-primary" href={`#/pacienti/${sent.caseId}`}>Jak to vidí koordinátorka<Icon name="right" size={16} /></a>
                   <button type="button" className="btn-ghost" onClick={reset}>Nová žádanka</button>

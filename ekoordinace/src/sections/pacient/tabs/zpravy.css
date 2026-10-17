@@ -1,0 +1,13 @@
+/* Tab "Zprávy" (owner: Bruno). Uses the shared DocList rows from Journey (Matej) and the shared tokens. */
+.zp { display: grid; gap: 1.25rem; }
+.zp-intro { margin: .35rem 1.25rem .8rem; max-width: 72ch; line-height: 1.45; }
+.zp-filter { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0 1.25rem .8rem; }
+.zp-pill { font: 600 .82rem var(--sans); padding: .3rem .7rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink-2); cursor: pointer; }
+.zp-pill:hover { border-color: var(--red-200); color: var(--red); }
+.zp-pill.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.zp-pill:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.zp-later { list-style: none; margin: 0; padding: 0 0 .5rem; }
+.zp-later li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .8rem; align-items: center; padding: .65rem 1.25rem; border-top: 1px solid var(--line); color: var(--ink-2); }
+.zp-code { font: 600 .7rem var(--mono); padding: .2rem .4rem; border: 1px solid var(--line); border-radius: var(--r-chip); color: var(--muted); }
+.zp-what { display: grid; gap: .1rem; }
+.zp-what b { font-weight: 600; color: var(--ink-2); }
