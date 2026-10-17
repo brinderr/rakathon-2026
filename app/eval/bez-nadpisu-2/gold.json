@@ -1,0 +1,110 @@
+{
+  "author": "slepý agent bez přístupu k pravidlům (sada 2)",
+  "written": "2026-10-17T05:36:06+00:00",
+  "letters": [
+    {
+      "file": "zadanka-5.txt",
+      "date": "2026-10-02",
+      "expected": {
+        "firstName": {"present": true, "mustContain": ["Ivan"]},
+        "lastName": {"present": true, "mustContain": ["Šťastn"]},
+        "age": {"present": true, "mustContain": ["1961"]},
+        "sex": {"present": true, "mustContain": ["žena"]},
+        "insurance": {"present": true, "mustContain": ["207"]},
+        "patientContact": {"present": true, "mustContain": ["604 218 337"]},
+        "contactPerson": {"present": false, "mustContain": []},
+        "diagnosis": {"present": true, "mustContain": ["karcinom levého prsu"]},
+        "epicrisis": {"present": true, "mustContain": ["gynekoložka ji odeslala"]},
+        "mdtQuestion": {"present": true, "mustContain": ["neoadjuvantní chemoterapie"]},
+        "comorbidities": {"present": true, "mustContain": ["hypertenz", "diabet"]},
+        "medication": {"present": true, "mustContain": ["metformin 1000 mg", "atorvastatin 20 mg"]},
+        "allergies": {"present": true, "mustContain": ["kontrastní látku"]},
+        "performance": {"present": true, "mustContain": ["ECOG 1"]},
+        "bodyMeasures": {"present": false, "mustContain": []},
+        "symptoms": {"present": true, "mustContain": ["bulku v levém prsu", "července"]},
+        "exams": {"present": true, "mustContain": ["mamografii", "scintigrafii skeletu"]},
+        "labs": {"present": true, "mustContain": ["CA 15-3", "38 kU/l"]},
+        "histology": {"present": true, "mustContain": ["karcinom NST", "Ki-67 30 %"]},
+        "other": {"present": false, "mustContain": []}
+      }
+    },
+    {
+      "file": "zadanka-6.txt",
+      "date": "2026-10-05",
+      "expected": {
+        "firstName": {"present": true, "mustContain": ["Miroslav"]},
+        "lastName": {"present": true, "mustContain": ["Havlíček"]},
+        "age": {"present": true, "mustContain": ["71"]},
+        "sex": {"present": true, "mustContain": ["muž"]},
+        "insurance": {"present": true, "mustContain": ["201"]},
+        "patientContact": {"present": false, "mustContain": []},
+        "contactPerson": {"present": true, "mustContain": ["manžel", "736 402 118"]},
+        "diagnosis": {"present": true, "mustContain": ["karcinom prostaty"]},
+        "epicrisis": {"present": true, "mustContain": ["od roku 2021"]},
+        "mdtQuestion": {"present": true, "mustContain": ["prostatektomie", "PSMA"]},
+        "comorbidities": {"present": true, "mustContain": ["ischemick", "fibrilac"]},
+        "medication": {"present": true, "mustContain": ["apixaban 5 mg", "tamsulosin 0,4 mg"]},
+        "allergies": {"present": false, "mustContain": []},
+        "performance": {"present": false, "mustContain": []},
+        "bodyMeasures": {"present": true, "mustContain": ["94 kg", "176 cm"]},
+        "symptoms": {"present": true, "mustContain": ["slabší proud", "března"]},
+        "exams": {"present": true, "mustContain": ["MR prostaty", "24. září"]},
+        "labs": {"present": true, "mustContain": ["PSA", "11,2 ng/ml"]},
+        "histology": {"present": true, "mustContain": ["Gleason 4+3", "ISUP 3"]},
+        "other": {"present": true, "mustContain": ["lázních"]}
+      }
+    },
+    {
+      "file": "zadanka-7.txt",
+      "date": "2026-10-07",
+      "expected": {
+        "firstName": {"present": true, "mustContain": ["Antonín"]},
+        "lastName": {"present": true, "mustContain": ["Sýkor"]},
+        "age": {"present": true, "mustContain": ["1957"]},
+        "sex": {"present": true, "mustContain": ["muž"]},
+        "insurance": {"present": false, "mustContain": []},
+        "patientContact": {"present": true, "mustContain": ["721 334 590"]},
+        "contactPerson": {"present": true, "mustContain": ["Luci", "608 772 413"]},
+        "diagnosis": {"present": true, "mustContain": ["ledvin"]},
+        "epicrisis": {"present": true, "mustContain": ["poslal na sono"]},
+        "mdtQuestion": {"present": true, "mustContain": ["operovat"]},
+        "comorbidities": {"present": true, "mustContain": ["cukrovk", "infarkt"]},
+        "medication": {"present": true, "mustContain": ["Lantus 18 jednotek", "Godasal 100 mg"]},
+        "allergies": {"present": true, "mustContain": ["penicilin"]},
+        "performance": {"present": true, "mustContain": ["soběstačný"]},
+        "bodyMeasures": {"present": true, "mustContain": ["78 kilo", "182"]},
+        "symptoms": {"present": true, "mustContain": ["zčervenala moč", "boku"]},
+        "exams": {"present": true, "mustContain": ["18. 8.", "CT břicha"]},
+        "labs": {"present": true, "mustContain": ["kreatinin 124", "CEA 2,1"]},
+        "histology": {"present": false, "mustContain": []},
+        "other": {"present": true, "mustContain": ["sanitku"]}
+      }
+    },
+    {
+      "file": "zadanka-8.txt",
+      "date": "2026-10-09",
+      "expected": {
+        "firstName": {"present": false, "mustContain": []},
+        "lastName": {"present": true, "mustContain": ["Horákov"]},
+        "age": {"present": true, "mustContain": ["68"]},
+        "sex": {"present": true, "mustContain": ["žena"]},
+        "insurance": {"present": true, "mustContain": ["ČPZP"]},
+        "patientContact": {"present": true, "mustContain": ["739 280 615"]},
+        "contactPerson": {"present": true, "mustContain": ["Martin", "605 447 291"]},
+        "diagnosis": {"present": true, "mustContain": ["karcinom", "žaludku"]},
+        "epicrisis": {"present": true, "mustContain": ["hospitalizovanou"]},
+        "mdtQuestion": {"present": true, "mustContain": ["FLOT", "resekci"]},
+        "comorbidities": {"present": false, "mustContain": []},
+        "medication": {"present": true, "mustContain": ["pantoprazol 40 mg", "Maltofer 100 mg"]},
+        "allergies": {"present": true, "mustContain": ["neguje"]},
+        "performance": {"present": false, "mustContain": []},
+        "bodyMeasures": {"present": true, "mustContain": ["54 kg", "158 cm"]},
+        "symptoms": {"present": true, "mustContain": ["nechutenství", "červnu"]},
+        "exams": {"present": true, "mustContain": ["25. 8.", "endosonografii"]},
+        "labs": {"present": true, "mustContain": ["CEA 7,4", "CA 19-9"]},
+        "histology": {"present": true, "mustContain": ["intestinálního typu", "HER2"]},
+        "other": {"present": true, "mustContain": ["transfuze"]}
+      }
+    }
+  ]
+}
