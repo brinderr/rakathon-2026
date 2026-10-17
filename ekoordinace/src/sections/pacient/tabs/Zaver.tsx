@@ -118,7 +118,9 @@ export function Zaver({ openDoc }: { openDoc: OpenDoc }) {
       <section className="card zaver-bar" aria-label="Odeslání praktikovi">
         <Receipt c={c} />
         <div className="form-actions">
-          {(!sent || changed) && (
+          {!st.confirmed && !sent ? (
+            <p className="zaver-gate"><Icon name="alert" size={15} />Odeslat půjde po potvrzení podkladu.<a href={`#/pacienti/${id}/podklad`}>Otevřít podklad</a></p>
+          ) : (!sent || changed) && (
             <button type="button" className="btn-primary" disabled={!ready} title={ready ? undefined : 'Doplňte závěr nebo doporučení MDT'}
               onClick={() => sendConclusion(id, data.today, base, text, p.gp.name)}>
               <Icon name="mail" size={16} />{sent ? 'Odeslat znovu' : 'Odeslat praktikovi'}

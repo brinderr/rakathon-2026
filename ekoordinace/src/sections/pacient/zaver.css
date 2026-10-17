@@ -46,3 +46,7 @@
   .zaver-paper .print-only { display: block; white-space: pre-line; margin: 0; line-height: 1.5; }
   .zaver-paper .src-link { color: inherit; font-weight: 400; }
 }
+
+/* the conclusion goes to the GP only after the podklad was confirmed */
+.zaver-gate { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0; font-size: .875rem; font-weight: 600; color: var(--conf); }
+.zaver-gate a { color: var(--red); }

@@ -52,6 +52,8 @@ function ToDo({ f, openDoc, start }: { f: Field; openDoc: OpenDoc; start: boolea
   const conflict = f.status === 'rozpor';
   const people = todo.contacts.map((c) => `${c.name}${c.role ? ` (${c.role.toLowerCase()})` : ''}`);
   const [open, setOpen] = useState(start);
+  // opened from a link to this item while the tab is already shown
+  useEffect(() => { if (start) setOpen(true); }, [start]);
   const [who, setWho] = useState(people[0] ?? 'jiné pracoviště');
   const [text, setText] = useState('');
   const save = () => {

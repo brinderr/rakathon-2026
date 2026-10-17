@@ -22,7 +22,7 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | **eKoordinace – nová appka** (`ekoordinace/`) | matej | 🔵 | krok 1 hotový: hlavička s diagnózou z histológie, cesta v 5 krokoch (hotové kroky malé), úlohy s kontaktmi, „Dnes nové“; appka rozdelená na sekcie (pravidlá v ekoordinace/README.md); ďalej záložka Zprávy |
 | eKoordinace M1 Údaje pro konzilium + doplnenie + potvrdenie lekárom | matej | ✅ | `tabs/Udaje.tsx`: zobrazenie ✅, Doplnit údaj / Zapsat ověření ✅ (živé počty, zvonček), termín konzilia v hlavičke ✅; ďalej potvrdenie lekárom |
 | eKoordinace M2 Podklad podľa MDT_zapis + PDF | matej | ✅ | `tabs/Podklad.tsx`: 7 častí MDT_zapis zo živého prípadu, zdroje, potvrdenie lekárom, Tisk/PDF, Kopírovat |
-| eKoordinace M3 Závěr praktikovi + doručenka | matej | 🔵 | `tabs/Zaver.tsx` |
+| eKoordinace M3 Závěr praktikovi + doručenka | matej | ✅ | `tabs/Zaver.tsx` |
 | eKoordinace B1 Žádanka od praktika bez formulára | bruno | ⚪ | `src/sections/zadanka/` (`#/zadanka`) |
 | eKoordinace B2 Fronta prípadov (Přehled) | bruno | ⚪ | `src/sections/prehled/` |
 | eKoordinace B3 Plán cesty (termín, miesto, stav, kto na ťahu) | bruno | ⚪ | `tabs/Plan.tsx` |

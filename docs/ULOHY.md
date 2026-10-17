@@ -25,9 +25,9 @@ Claude stavia, Matej po každej sekcii otvorí appku, preklikne ju a povie „ď
   - Skontroluj vedľa Word šablóny `MDT_zapis`: 7 častí, len to, čo bolo známe k 21. 10., chýbajúce vyznačené.
 - [x] **5. Podklad ako PDF**
   - Skontroluj: „Stáhnout PDF“, súbor otvor a pozri.
-- [ ] **6. Závěr – obsah** (`#/pacienti/zaver`)
+- [x] **6. Závěr – obsah** (`#/pacienti/zaver`)
   - Skontroluj vedľa vzoru `MDT zaver`: čo sa praktik pýtal, čo rozhodlo konzílium, čo má sledovať on.
-- [ ] **7. Odoslanie praktikovi a doručenka**
+- [x] **7. Odoslanie praktikovi a doručenka**
   - Skontroluj: „Odeslat praktikovi“ → Odesláno → Doručeno → Přečteno, súhrn pre revízneho lekára, posledný krok
     cesty hotový.
 
