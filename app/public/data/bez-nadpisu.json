@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-17T05:26:02.062Z",
+  "generatedAt": "2026-10-17T05:37:34.261Z",
   "command": "npm run eval:plain",
-  "headline": "Text bez nadpisů (žádanky od agenta bez přístupu k pravidlům, před úpravou motoru četl 6 z 80): sada 1 – naslepo přečteno 41 z 80 (správně 48), po úpravě pravidel 66 z 80 (správně 78) – to už slepé není; vymyšlené 0",
+  "headline": "Text bez nadpisů (žádanky od agenta bez přístupu k pravidlům, před úpravou motoru četl 10 z 160): sada 1 – naslepo přečteno 41 z 80 (správně 48), po úpravě pravidel 66 z 80 (správně 78) – to už slepé není; vymyšlené 0 · sada 2 – naslepo přečteno 53 z 80, správně 53 z 80, vymyšlené 0",
   "sets": [
     {
       "set": "bez-nadpisu",
@@ -87,6 +87,93 @@
             "invented": 0
           },
           "notice": "Text bez nadpisů: pravidla přečetla 16 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
+        }
+      ]
+    },
+    {
+      "set": "bez-nadpisu-2",
+      "author": "slepý agent bez přístupu k pravidlům (sada 2)",
+      "blind": {
+        "letters": 4,
+        "total": 80,
+        "readBefore": 4,
+        "read": 53,
+        "correctBefore": 15,
+        "correct": 53,
+        "invented": 0,
+        "wrongFill": 0
+      },
+      "current": {
+        "letters": 4,
+        "total": 80,
+        "readBefore": 4,
+        "read": 53,
+        "correctBefore": 15,
+        "correct": 53,
+        "invented": 0,
+        "wrongFill": 0
+      },
+      "line": "bez-nadpisu-2: naslepo přečteno 53 z 80, správně 53 z 80, vymyšlené 0",
+      "letters": [
+        {
+          "file": "zadanka-5.txt",
+          "before": {
+            "read": 2,
+            "correct": 5,
+            "invented": 0
+          },
+          "after": {
+            "read": 16,
+            "correct": 14,
+            "wrongFill": 0,
+            "invented": 0
+          },
+          "notice": "Text bez nadpisů: pravidla přečetla 16 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
+        },
+        {
+          "file": "zadanka-6.txt",
+          "before": {
+            "read": 1,
+            "correct": 4,
+            "invented": 0
+          },
+          "after": {
+            "read": 13,
+            "correct": 13,
+            "wrongFill": 0,
+            "invented": 0
+          },
+          "notice": "Text bez nadpisů: pravidla přečetla 13 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
+        },
+        {
+          "file": "zadanka-7.txt",
+          "before": {
+            "read": 0,
+            "correct": 2,
+            "invented": 0
+          },
+          "after": {
+            "read": 11,
+            "correct": 12,
+            "wrongFill": 0,
+            "invented": 0
+          },
+          "notice": "Text bez nadpisů: pravidla přečetla 11 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
+        },
+        {
+          "file": "zadanka-8.txt",
+          "before": {
+            "read": 1,
+            "correct": 4,
+            "invented": 0
+          },
+          "after": {
+            "read": 13,
+            "correct": 14,
+            "wrongFill": 0,
+            "invented": 0
+          },
+          "notice": "Text bez nadpisů: pravidla přečetla 13 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci."
         }
       ]
     }

@@ -18,7 +18,7 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | Motor pre „Zkuste to rozbít“ (česky, odolný) | matej | ✅ | npm run eval:mutations 14/14; public/data/mutace.json = 6 pripravených úprav pre UI |
 | Vlna 1 kritikov: upozornenia na lieky len ako citát lekára + poctivé vety v SUBMISSION/PITCH | matej | ✅ | nález `doctor-warning-<zpráva>`; „0 čísel bez opory, význam potvrzuje člověk“ |
 | Poistka proti opačnému významu (NegEx) | matej | ✅ | `npm run eval:guard`: 5/5 viet kritika 06 (bez nej 0/5), ďalšie 3/5, falošné poplachy 0/18 → public/data/pojistka.json |
-| Text bez nadpisov (vzory vnútri viet + poctivý pruh) | matej | 🔵 | src/ai/plain.ts, `meta.plainText.notice`; slepé žiadanky píše agent bez pravidiel → `npm run eval:plain` |
+| Text bez nadpisov (vzory vnútri viet + poctivý pruh) | matej | ✅ | src/ai/plain.ts, `meta.plainText.notice`; `npm run eval:plain`: sada 1 naslepo 41/80 → po úprave 66/80; **sada 2 naslepo 53/80**; 0 vymyslených |
 | Ostrý AI beh cez Azure OpenAI EU | kapitán | ⚪ | kľúč z portálu do app/.env (AZURE_OPENAI_ENDPOINT/API_KEY/DEPLOYMENT) → `npm run extract` |
 | Titulný obrázok 16:9 | ⚪ | ⚪ | prompt v docs/pitch/COVER-PROMPT.md |
 

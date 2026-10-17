@@ -1,0 +1,1057 @@
+{
+  "set": "bez-nadpisu-2",
+  "author": "slepý agent bez přístupu k pravidlům (sada 2)",
+  "generatedAt": "2026-10-17T05:37:34.260Z",
+  "summary": {
+    "letters": 4,
+    "total": 80,
+    "readBefore": 4,
+    "read": 53,
+    "correctBefore": 15,
+    "correct": 53,
+    "invented": 0,
+    "wrongFill": 0
+  },
+  "letters": [
+    {
+      "file": "zadanka-5.txt",
+      "total": 20,
+      "before": {
+        "read": 2,
+        "correct": 5,
+        "invented": 0
+      },
+      "after": {
+        "read": 16,
+        "correct": 14,
+        "wrongFill": 0,
+        "invented": 0
+      },
+      "notice": "Text bez nadpisů: pravidla přečetla 16 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
+      "fields": [
+        {
+          "key": "firstName",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "Ivan"
+          ],
+          "ungrounded": [],
+          "note": "Jméno je v textu jen v jiném pádě („paní Ivany Šťastné“) – nepravidelný tvar nepřevádíme, doplní člověk."
+        },
+        {
+          "key": "lastName",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Šťastná",
+          "expected": [
+            "Šťastn"
+          ],
+          "ungrounded": [],
+          "note": "Převedeno do 1. pádu z „paní Ivany Šťastné“ – ověřte. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "age",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "nar. 14. 3. 1961",
+          "expected": [
+            "1961"
+          ],
+          "ungrounded": [],
+          "note": "Věk není uveden, jen datum narození – nepočítáme ho. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "sex",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "žena",
+          "expected": [
+            "žena"
+          ],
+          "ungrounded": [],
+          "note": "Podle označení „Pacientka“ ve zprávě."
+        },
+        {
+          "key": "insurer",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "207",
+          "expected": [
+            "207"
+          ],
+          "ungrounded": [],
+          "note": "207 = Oborová zdravotní pojišťovna zaměstnanců bank, pojišťoven a stavebnictví – není VZP. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "patientContact",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "tel. 604 218 337 · e-mail neuveden",
+          "expected": [
+            "604 218 337"
+          ],
+          "ungrounded": [],
+          "note": "E-mail pacienta v textu není. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "contactPerson",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Kontaktní osoba není uvedena."
+        },
+        {
+          "key": "diagnosis",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "Core-cut biopsii ložiska i uzliny jsme udělali 11. 8., histologicky jde o invazivní karcinom NST, grade 2, ER 90 %, PR 40 %, HER2 negativní (IHC 1+), Ki-67 30 %, v uzlině metastáza karcinomu",
+          "expected": [
+            "karcinom levého prsu"
+          ],
+          "ungrounded": [],
+          "note": "Diagnóza převzata doslovně z věty v žádance. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "epicrisis",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Klinicky jde o cT2 cN1 M0. Její gynekoložka ji odeslala k nám na mamografii s ultrazvukem, které proběhly 4. 8. 2026 a ukázaly ložisko 28 mm v horním zevním kvadrantu vlevo, BI-RADS 5, a jednu zvětšenou uzlinu v levé axile. Core-cut biopsii ložiska i uzliny jsme udělali 11. 8., histologicky jde o invazivní karcinom NST, grade 2, ER 90 %, PR 40 %, HER2 negativní (IHC 1+), Ki-67 30 %, v uzlině metastáza karcinomu. Paní je alergická na jodovou kontrastní látku, po CT v roce 2020 měla kopřivku a otok rtů, a proto jsme místo CT udělali 24. 8. ultrazvuk břicha a RTG hrudníku, obojí bez ložisek, a 1. září scintigrafii skeletu, také negativní.",
+          "expected": [
+            "gynekoložka ji odeslala"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "mdtQuestion",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "v srpnu jsme u nás potvrdili karcinom levého prsu u paní Ivany Šťastné a prosím o její zařazení na nejbližší mamární MDT",
+          "expected": [
+            "neoadjuvantní chemoterapie"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "comorbidities",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Léčí se s hypertenzí a s diabetem 2. typu na tabletách, v roce 2009 podstoupila hysterektomii pro myomy",
+          "expected": [
+            "hypertenz",
+            "diabet"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "medication",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "metformin 1000 mg ráno a večer, ramipril 5 mg ráno a atorvastatin 20 mg na noc",
+          "expected": [
+            "metformin 1000 mg",
+            "atorvastatin 20 mg"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "allergies",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "jodovou kontrastní látku, po CT v roce 2020 měla kopřivku a otok rtů, a proto jsme místo CT udělali 24",
+          "expected": [
+            "kontrastní látku"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "performance",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Výkonnostní stav hodnotím jako ECOG 1.",
+          "expected": [
+            "ECOG 1"
+          ],
+          "ungrounded": []
+        },
+        {
+          "key": "weightHeight",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Váha ani výška nejsou ve zprávách uvedeny."
+        },
+        {
+          "key": "symptoms",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "Paní je alergická na jodovou kontrastní látku, po CT v roce 2020 měla kopřivku a otok rtů, a proto jsme místo CT udělali 24. 8. ultrazvuk břicha a RTG hrudníku, obojí bez ložisek, a 1. září scintigrafii skeletu, také negativní.",
+          "expected": [
+            "bulku v levém prsu",
+            "července"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "exams",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "4. 8. 2026 · mamografii – mamografii s ultrazvukem, které proběhly 4. 8. 2026 a ukázaly ložisko 28 mm v horním zevním kvadrantu vlevo, BI-RADS 5, a jednu zvětšenou uzlinu v levé axile.\n24. 8. · CT – CT udělali 24. 8. ultrazvuk břicha a\n1. září · RTG hrudníku – RTG hrudníku, obojí bez ložisek, a 1. září",
+          "expected": [
+            "mamografii",
+            "scintigrafii skeletu"
+          ],
+          "ungrounded": [],
+          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. U data bez roku je pro řazení použit rok žádanky. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "labs",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "Hb 131 g/l; CEA 2,6 µg/l",
+          "expected": [
+            "CA 15-3",
+            "38 kU/l"
+          ],
+          "ungrounded": [],
+          "note": "Hodnoty jen z textu žádanky, bez laboratorní zprávy. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "histology",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Core-cut biopsii ložiska i uzliny jsme udělali 11. 8., histologicky jde o invazivní karcinom NST, grade 2, ER 90 %, PR 40 %, HER2 negativní (IHC 1+), Ki-67 30 %, v uzlině metastáza karcinomu",
+          "expected": [
+            "karcinom NST",
+            "Ki-67 30 %"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "other",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Žádné další informace."
+        }
+      ]
+    },
+    {
+      "file": "zadanka-6.txt",
+      "total": 20,
+      "before": {
+        "read": 1,
+        "correct": 4,
+        "invented": 0
+      },
+      "after": {
+        "read": 13,
+        "correct": 13,
+        "wrongFill": 0,
+        "invented": 0
+      },
+      "notice": "Text bez nadpisů: pravidla přečetla 13 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
+      "fields": [
+        {
+          "key": "firstName",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Miroslav",
+          "expected": [
+            "Miroslav"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "lastName",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Havlíček",
+          "expected": [
+            "Havlíček"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "age",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "71"
+          ],
+          "ungrounded": [],
+          "note": "Věk není ve zprávách výslovně uveden."
+        },
+        {
+          "key": "sex",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "muž",
+          "expected": [
+            "muž"
+          ],
+          "ungrounded": [],
+          "note": "Podle oslovení „pan“ v textu. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "insurer",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "201",
+          "expected": [
+            "201"
+          ],
+          "ungrounded": [],
+          "note": "201 = Vojenská zdravotní pojišťovna ČR – není VZP, souhrn pro revizního lékaře jde této pojišťovně."
+        },
+        {
+          "key": "patientContact",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Telefon ani e-mail pacienta nejsou uvedeny."
+        },
+        {
+          "key": "contactPerson",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "manželku Janu, mobil 736 402 118",
+          "expected": [
+            "manžel",
+            "736 402 118"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "diagnosis",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Fúzní biopsie, kterou jsem provedl 2. 9., potvrdila acinární adenokarcinom prostaty, Gleason 4+3=7 (ISUP 3), pozitivních 5 z 12 vzorků, všechny vlevo",
+          "expected": [
+            "karcinom prostaty"
+          ],
+          "ungrounded": [],
+          "note": "Diagnóza převzata doslovně z věty v žádance. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "epicrisis",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "Je mu 71 let a letos v červnu mu PSA vystoupalo na 9,8 ng/ml, a tak jsme 12. 8. 2026 udělali multiparametrickou MR prostaty, kde je v periferní zóně levého laloku léze 16 mm hodnocená jako PI-RADS 5, bez jasného prorůstání přes pouzdro a bez zvětšených uzlin. Fúzní biopsie, kterou jsem provedl 2. 9., potvrdila acinární adenokarcinom prostaty, Gleason 4+3=7 (ISUP 3), pozitivních 5 z 12 vzorků, všechny vlevo. Scintigrafie skeletu i CT břicha a pánve z 24. září jsou bez známek metastáz. Jinak se léčí s ischemickou chorobou srdeční, v roce 2019 dostal stent, dále s fibrilací síní a s hypertenzí.",
+          "expected": [
+            "od roku 2021"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "mdtQuestion",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Prosím o projednání na uroonkologickém MDT, jestli je pro něj vhodnější radikální prostatektomie, nebo radioterapie s hormonální léčbou, a zda před rozhodnutím doplnit PSMA PET/CT",
+          "expected": [
+            "prostatektomie",
+            "PSMA"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "comorbidities",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Jinak se léčí s ischemickou chorobou srdeční, v roce 2019 dostal stent, dále s fibrilací síní a s hypertenzí",
+          "expected": [
+            "ischemick",
+            "fibrilac"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "medication",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "má apixaban 5 mg ráno a večer, bisoprolol 5 mg ráno, rosuvastatin 20 mg a tamsulosin 0,4 mg večer, apixaban bude před případnou operací nutné vysadit",
+          "expected": [
+            "apixaban 5 mg",
+            "tamsulosin 0,4 mg"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "allergies",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Alergická anamnéza není uvedena."
+        },
+        {
+          "key": "performance",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Skóre ECOG ani Karnofsky není v žádné zprávě."
+        },
+        {
+          "key": "weightHeight",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "94 kg · výška 176 cm (5. 10. 2026)",
+          "expected": [
+            "94 kg",
+            "176 cm"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "symptoms",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "slabší proud",
+            "března"
+          ],
+          "ungrounded": [],
+          "note": "Příznaky nejsou popsány."
+        },
+        {
+          "key": "exams",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "24. září · CT břicha – CT břicha a pánve z 24. září jsou bez známek metastáz.",
+          "expected": [
+            "MR prostaty",
+            "24. září"
+          ],
+          "ungrounded": [],
+          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. U data bez roku je pro řazení použit rok žádanky. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "labs",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "kreatinin 96 µmol/l",
+          "expected": [
+            "PSA",
+            "11,2 ng/ml"
+          ],
+          "ungrounded": [],
+          "note": "Hodnoty jen z textu žádanky, bez laboratorní zprávy. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "histology",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "Gleason 4+3",
+            "ISUP 3"
+          ],
+          "ungrounded": [],
+          "note": "Histologie zatím není k dispozici."
+        },
+        {
+          "key": "other",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "lázních"
+          ],
+          "ungrounded": [],
+          "note": "Žádné další informace."
+        }
+      ]
+    },
+    {
+      "file": "zadanka-7.txt",
+      "total": 20,
+      "before": {
+        "read": 0,
+        "correct": 2,
+        "invented": 0
+      },
+      "after": {
+        "read": 11,
+        "correct": 12,
+        "wrongFill": 0,
+        "invented": 0
+      },
+      "notice": "Text bez nadpisů: pravidla přečetla 11 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
+      "fields": [
+        {
+          "key": "firstName",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Antonín",
+          "expected": [
+            "Antonín"
+          ],
+          "ungrounded": [],
+          "note": "Převedeno do 1. pádu z „pana Antonína Sýkoru“ – ověřte. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "lastName",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Sýkora",
+          "expected": [
+            "Sýkor"
+          ],
+          "ungrounded": [],
+          "note": "Převedeno do 1. pádu z „pana Antonína Sýkoru“ – ověřte. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "age",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "ročník 1957",
+          "expected": [
+            "1957"
+          ],
+          "ungrounded": [],
+          "note": "Věk není uveden, jen ročník – nepočítáme ho. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "sex",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "muž",
+          "expected": [
+            "muž"
+          ],
+          "ungrounded": [],
+          "note": "Podle oslovení „pana“ v textu. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "insurer",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Kód pojišťovny není uveden."
+        },
+        {
+          "key": "patientContact",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "tel. 721 334 590 · e-mail neuveden",
+          "expected": [
+            "721 334 590"
+          ],
+          "ungrounded": [],
+          "note": "E-mail pacienta v textu není. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "contactPerson",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "Luci",
+            "608 772 413"
+          ],
+          "ungrounded": [],
+          "note": "Kontaktní osoba není uvedena."
+        },
+        {
+          "key": "diagnosis",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "mám tu chlapa s nádorem na pravé ledvině a potřeboval bych ho k vám co nejdřív dostat",
+          "expected": [
+            "ledvin"
+          ],
+          "ungrounded": [],
+          "note": "Diagnóza převzata doslovně z věty v žádance. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "epicrisis",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "mám tu chlapa s nádorem na pravé ledvině a potřeboval bych ho k vám co nejdřív dostat. Začátkem srpna za mnou přišel, že mu dvakrát zčervenala moč, tak jsem ho hned poslal na sono a tam 18. 8. našli v pravé ledvině ložisko kolem 5 cm. S termínem CT to pak trochu trvalo, ale 1. října konečně bylo CT břicha a hrudníku s kontrastem, kde je solidní nádor dolního pólu pravé ledviny 62 mm, a radiolog píše, že to vypadá na karcinom ledviny, žíla je volná, uzliny ani plíce nic. Má cukrovku, píchá si inzulin, k tomu vysoký tlak a v roce 2018 prodělal infarkt, od té doby má stent.",
+          "expected": [
+            "poslal na sono"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "mdtQuestion",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "operovat"
+          ],
+          "ungrounded": [],
+          "note": "Otázka pro konzilium není v žádance uvedena."
+        },
+        {
+          "key": "comorbidities",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Má cukrovku, píchá si inzulin, k tomu vysoký tlak a v roce 2018 prodělal infarkt, od té doby má stent",
+          "expected": [
+            "cukrovk",
+            "infarkt"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "medication",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Lantus 18 jednotek večer, metformin 850 mg dvakrát denně, Godasal 100 mg jednou denně a perindopril 5 mg ráno",
+          "expected": [
+            "Lantus 18 jednotek",
+            "Godasal 100 mg"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "allergies",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "penicilin"
+          ],
+          "ungrounded": [],
+          "note": "Alergická anamnéza není uvedena."
+        },
+        {
+          "key": "performance",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "soběstačný"
+          ],
+          "ungrounded": [],
+          "note": "Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva 01 uvádí jen slovní popis „soběstačný“ – to není skóre."
+        },
+        {
+          "key": "weightHeight",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "78 kilo",
+            "182"
+          ],
+          "ungrounded": [],
+          "note": "Váha ani výška nejsou ve zprávách uvedeny."
+        },
+        {
+          "key": "symptoms",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "Od září ho navíc tupě bolí v pravém boku a za poslední dva měsíce zhubl asi pět kilo, teď váží 78 kilo a měří 182.",
+          "expected": [
+            "zčervenala moč",
+            "boku"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "exams",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "18. 8.",
+            "CT břicha"
+          ],
+          "ungrounded": [],
+          "note": "Žádná vyšetření v dokumentaci."
+        },
+        {
+          "key": "labs",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "hemoglobin 118; kreatinin 124; CRP 12; hemoglobin 61; CEA 2,1; PSA 1,8",
+          "expected": [
+            "kreatinin 124",
+            "CEA 2,1"
+          ],
+          "ungrounded": [],
+          "note": "Hodnoty jen z textu žádanky, bez laboratorní zprávy. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "histology",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Histologie zatím není k dispozici."
+        },
+        {
+          "key": "other",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "sanitku"
+          ],
+          "ungrounded": [],
+          "note": "Žádné další informace."
+        }
+      ]
+    },
+    {
+      "file": "zadanka-8.txt",
+      "total": 20,
+      "before": {
+        "read": 1,
+        "correct": 4,
+        "invented": 0
+      },
+      "after": {
+        "read": 13,
+        "correct": 14,
+        "wrongFill": 0,
+        "invented": 0
+      },
+      "notice": "Text bez nadpisů: pravidla přečetla 13 z 20. Co chybí, doplní člověk; jazykový model by pomohl, ale každé jeho tvrzení musí mít doslovnou citaci.",
+      "fields": [
+        {
+          "key": "firstName",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Jméno není uvedeno."
+        },
+        {
+          "key": "lastName",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "Horákov"
+          ],
+          "ungrounded": [],
+          "note": "Příjmení není uvedeno."
+        },
+        {
+          "key": "age",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "68"
+          ],
+          "ungrounded": [],
+          "note": "Věk není ve zprávách výslovně uveden."
+        },
+        {
+          "key": "sex",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "žena",
+          "expected": [
+            "žena"
+          ],
+          "ungrounded": [],
+          "note": "Podle označení „pacientky“ ve zprávě."
+        },
+        {
+          "key": "insurer",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "ČPZP",
+          "expected": [
+            "ČPZP"
+          ],
+          "ungrounded": [],
+          "note": "Kód pojišťovny není uveden – ověřit. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "patientContact",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "tel. 739 280 615 · e-mail neuveden",
+          "expected": [
+            "739 280 615"
+          ],
+          "ungrounded": [],
+          "note": "E-mail pacienta v textu není. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "contactPerson",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "synovi Martinovi na tel. 605 447 291",
+          "expected": [
+            "Martin",
+            "605 447 291"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "diagnosis",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "30. 9. jsme dokončili staging u 68leté pacientky s adenokarcinomem žaludku v oblasti antra a rád bych ji přihlásil na nejbližší MDT",
+          "expected": [
+            "karcinom",
+            "žaludku"
+          ],
+          "ungrounded": [],
+          "note": "Diagnóza převzata doslovně z věty v žádance. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "epicrisis",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "30. 9. jsme dokončili staging u 68leté pacientky s adenokarcinomem žaludku v oblasti antra a rád bych ji přihlásil na nejbližší MDT. Gastroskopie 25. 8. ukázala exulcerovaný tumor antra velikosti asi 4 cm, z biopsie je adenokarcinom intestinálního typu podle Laurén, G2, HER2 negativní (IHC 1+), MMR proficientní. Na CT hrudníku a břicha 15. září je zesílená stěna antra a dvě zvětšené perigastrické uzliny do 14 mm, játra i plíce jsou bez ložisek.",
+          "expected": [
+            "hospitalizovanou"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "mdtQuestion",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "FLOT",
+            "resekci"
+          ],
+          "ungrounded": [],
+          "note": "Otázka pro konzilium není v žádance uvedena."
+        },
+        {
+          "key": "comorbidities",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Osobní anamnéza není uvedena."
+        },
+        {
+          "key": "medication",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "jen pantoprazol 40 mg ráno a večer a Maltofer 100 mg jednou denně",
+          "expected": [
+            "pantoprazol 40 mg",
+            "Maltofer 100 mg"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "allergies",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "alergie neguje",
+          "expected": [
+            "neguje"
+          ],
+          "ungrounded": [],
+          "note": "Alergie pacient neguje. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "performance",
+          "present": false,
+          "shown": false,
+          "correct": true,
+          "value": "",
+          "expected": [],
+          "ungrounded": [],
+          "note": "Skóre ECOG ani Karnofsky není v žádné zprávě."
+        },
+        {
+          "key": "weightHeight",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "54 kg · výška 158 cm (9. 10. 2026)",
+          "expected": [
+            "54 kg",
+            "158 cm"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "symptoms",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Potíže začaly někdy v červnu, nechutenství, tlak v nadbřišku a rychlá sytost, od té doby zhubla 7 kg.",
+          "expected": [
+            "nechutenství",
+            "červnu"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "exams",
+          "present": true,
+          "shown": true,
+          "correct": false,
+          "value": "15. září · CT hrudníku – CT hrudníku a břicha 15. září je zesílená stěna antra a dvě zvětšené perigastrické uzliny do 14 mm, játra i plíce jsou bez ložisek.",
+          "expected": [
+            "25. 8.",
+            "endosonografii"
+          ],
+          "ungrounded": [],
+          "note": "Vyšetření jsou zmíněna jen v textu žádanky – původní zprávy je třeba vyžádat. U data bez roku je pro řazení použit rok žádanky. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "labs",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "hemoglobin 104 g/l; CEA 7,4; CA 19-9 41 kU/l",
+          "expected": [
+            "CEA 7,4",
+            "CA 19-9"
+          ],
+          "ungrounded": [],
+          "note": "Hodnoty jen z textu žádanky, bez laboratorní zprávy. Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "histology",
+          "present": true,
+          "shown": true,
+          "correct": true,
+          "value": "Gastroskopie 25. 8. ukázala exulcerovaný tumor antra velikosti asi 4 cm, z biopsie je adenokarcinom intestinálního typu podle Laurén, G2, HER2 negativní (IHC 1+), MMR proficientní",
+          "expected": [
+            "intestinálního typu",
+            "HER2"
+          ],
+          "ungrounded": [],
+          "note": "Přečteno z textu bez nadpisů – ověřte."
+        },
+        {
+          "key": "other",
+          "present": true,
+          "shown": false,
+          "correct": false,
+          "value": "",
+          "expected": [
+            "transfuze"
+          ],
+          "ungrounded": [],
+          "note": "Žádné další informace."
+        }
+      ]
+    }
+  ]
+}
