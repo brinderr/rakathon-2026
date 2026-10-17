@@ -49,11 +49,26 @@ const codeOf = (d) => {
   if (kind === 'imaging' || kind === 'procedure') return R.docTitle(d).split(/[\s-]/)[0].toUpperCase().slice(0, 3);
   return CODE[kind] ?? 'DOC';
 };
-const doc = (d) => ({ id: d.id, date: d.date, title: R.docTitle(d), place: R.facility(d), code: codeOf(d), ...(d.date === TODAY ? { isNew: true } : {}) });
+// how a coordinator calls a report ("žádanka praktika", "protokol biopsie") – the dataset numbers 01–13 mean nothing to her
+const labelOf = (d) => {
+  const kind = R.docKind(d);
+  const title = R.docTitle(d);
+  if (kind === 'referral') return /převzetí|KOC/i.test(title) ? 'žádanka praktika' : 'epikríza praktika';
+  if (kind === 'histology') return 'histologie';
+  if (kind === 'procedure') return /FNB|FNA|biops/i.test(title) ? 'protokol biopsie' : 'protokol výkonu';
+  if (kind === 'lab') return d.date > referralDate ? 'kontrolní odběry' : 'laboratoř';
+  if (kind === 'imaging') return title.split(/\s+/).slice(0, 2).join(' ').replace(/,$/, '');
+  const spec = R.facility(d).match(/(\p{L}+?)ická ambulance/iu);
+  return spec ? `${spec[1].toLowerCase()}ie` : 'ambulantní zpráva';
+};
+const refOf = (d) => `${labelOf(d)} ${dayMonth(d.date)}`;
+const refById = (id) => { const d = docs.find((x) => x.id === id); return d ? refOf(d) : id; };
+const doc = (d) => ({ id: d.id, date: d.date, title: R.docTitle(d), place: R.facility(d), code: codeOf(d), ref: refOf(d), ...(d.date === TODAY ? { isNew: true } : {}) });
 /** Who signed the report: the last line that starts with a medical title ("MUDr. Martin Svoboda"). */
 const signer = (d) => d.text.split('\n').map((l) => l.trim()).findLast((l) => /^(?:MUDr|MDDr|doc|prof)\.\s/.test(l)) ?? '';
 
 const referral = known.filter((d) => R.docKind(d) === 'referral').sort((a, b) => b.date.localeCompare(a.date))[0];
+const referralDate = referral.date;
 const earlier = known.filter((d) => d.date <= referral.date && d.id !== referral.id);
 const later = known.filter((d) => d.date > referral.date);
 const fresh = known.filter((d) => d.date === TODAY);
@@ -81,7 +96,7 @@ const RELATIVE = cp && {
   role: cp[2].charAt(0).toUpperCase() + cp[2].slice(1),
   name: cp[1],
   phone: phoneOf(field('contactPerson').value),
-  ...(new RegExp(`Souhlasí se sdílením informací s ${cp[2].slice(0, 3)}`, 'i').test(referral.text) ? { note: `souhlas se sdílením informací (zpráva ${referral.id})` } : {}),
+  ...(new RegExp(`Souhlasí se sdílením informací s ${cp[2].slice(0, 3)}`, 'i').test(referral.text) ? { note: `souhlas se sdílením informací (${refOf(referral)})` } : {}),
 };
 const contactsFor = (f) => {
   if (f.fieldKey === 'patientContact') return [PATIENT, RELATIVE].filter(Boolean);
@@ -104,7 +119,11 @@ const titleFor = (f) => {
   return `${f.severity === 'missing' ? 'Doplnit' : 'Ověřit'} ${l.charAt(0).toLowerCase()}${l.slice(1)}`;
 };
 // the engine's reason without its instruction ("ověřte s …") – the title and the contact already say that
-const whyFor = (f) => sentences(f.text.replace(/\s*\(MDT_zapis\)/g, '').replace(/\bpacienta\b/g, female ? 'pacientky' : 'pacienta'))
+const humanRefs = (t) => t
+  .replace(/\(zpráva (\d{2})\)/g, (_, id) => `(${refById(id)})`)
+  .replace(/(^|[.!?]\s+)Zpráva (\d{2})/g, (_, pre, id) => { const r = refById(id); return pre + r.charAt(0).toUpperCase() + r.slice(1); })
+  .replace(/\bzpráva (\d{2})/g, (_, id) => refById(id));
+const whyFor = (f) => sentences(humanRefs(f.text.replace(/\s*\(MDT_zapis\)/g, '').replace(/\bpacienta\b/g, female ? 'pacientky' : 'pacienta')))
   .filter((s) => !/ověřte/i.test(s)).join(' ');
 const FIRST = ['performance', 'medication', 'histology'];
 const priority = (t) => { const i = FIRST.indexOf(t.field); return i < 0 ? FIRST.length : i; };
@@ -115,7 +134,7 @@ const todo = r.findings
     kind: f.severity === 'missing' ? 'chybí' : 'rozpor',
     title: titleFor(f),
     why: whyFor(f),
-    quotes: [...new Map(f.citations.map((c) => [c.quote, { docId: c.docId, quote: c.quote }])).values()],
+    quotes: [...new Map(f.citations.map((c) => [c.quote, { docId: c.docId, ref: refById(c.docId), quote: c.quote }])).values()],
     contacts: contactsFor(f),
   }))
   .sort((a, b) => priority(a) - priority(b));
@@ -150,14 +169,12 @@ const data = {
     {
       id: 'prevzit', label: 'Žádost od praktika', title: 'Praktický lékař požádal o převzetí do péče KOC', status: 'done',
       date: referral.date, short: dayMonth(referral.date),
-      summary: `Žádanka přišla ${czDate(referral.date)} · ${gp.name}, praktický lékař.`,
-      ...(request ? { request: { docId: referral.id, quote: request } } : {}),
+      ...(request ? { request: { docId: referral.id, ref: refOf(referral), quote: request } } : {}),
       docs: [doc(referral)],
     },
     {
       id: 'shromazdit', label: 'Předchozí zprávy', title: 'Předchozí zprávy shromážděny', status: 'done',
       short: reports(earlier.length),
-      summary: `${reports(earlier.length)} ${from(new Set(earlier.map((d) => unit(d).place)).size)} ${new Set(earlier.map((d) => unit(d).place)).size} pracovišť je na jednom místě.`,
       docs: earlier.map(doc),
     },
     {

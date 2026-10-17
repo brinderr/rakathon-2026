@@ -94,7 +94,7 @@ export function DocViewer({ doc, marks, onClose }: { doc: DocText | null; marks:
             <DocIcon code={doc.code} />
             <div className="viewer-name">
               <h2 id="viewer-title">{doc.title}</h2>
-              <p className="viewer-meta">{doc.place.split(' – ').join(' » ')} · {czDate(doc.date)} · <span className="mono">zpráva {doc.id}</span></p>
+              <p className="viewer-meta">{doc.place.split(' – ').join(' » ')} · {czDate(doc.date)}</p>
             </div>
             <button type="button" className="viewer-close" onClick={() => ref.current?.close()} aria-label="Zavřít zprávu">
               <Icon name="close" size={20} />

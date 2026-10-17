@@ -3,7 +3,8 @@
 Nová, čistá aplikácia pre koordinátora KOC (výzva VZP „Cesta pacienta bez ztráty informací“). Staviame ju po krokoch,
 každý krok schváli Matej. Stará aplikácia v `app/` ostáva nedotknutá ako záloha.
 
-- **Značka:** názov eKoordinace (v štýle štátnych e-služieb ako eRecept), logo príde – dovtedy kruh. Farby VZP
+- **Značka:** názov eKoordinace (v štýle štátnych e-služieb ako eRecept), logo „K“ s bielou linkou a nožičkou, ktorá sa
+  vracia šípkou späť k praktikovi (`src/ui/Mark.tsx`). Farby VZP
   (červená #D22D0F len pre „teraz“ a hlavnú akciu), písmo Source Sans 3 + Source Code Pro, rohy 10/8/6/4 px.
 - **Dáta:** `npm run data` spustí spoločný motor (`app/src/ai`, len pravidlá) nad fiktívnymi správami a zapíše
   `src/data/alena.json`. Nič nie je vpísané ručne.

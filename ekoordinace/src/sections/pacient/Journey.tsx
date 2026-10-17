@@ -33,17 +33,17 @@ function TodoItem({ t, onOpen }: { t: Todo; onOpen: OpenDoc }) {
         <p className="todo-why">{nb(t.why)}</p>
         {t.quotes.length > 0 && (
           <button type="button" className="link" aria-expanded={open} onClick={() => setOpen(!open)}>
-            {open ? 'Skrýt citaci' : `Citace ze zprávy ${docIds.join(', ')}`}<Icon name={open ? 'up' : 'down'} size={14} />
+            {open ? 'Skrýt citaci' : 'Ukázat citaci'}<Icon name={open ? 'up' : 'down'} size={14} />
           </button>
         )}
         {open && (
           <div className="quotes">
             {t.quotes.map((q) => (
-              <blockquote className="quote" key={q.quote}>„{nb(q.quote)}“<cite>zpráva {q.docId}</cite></blockquote>
+              <blockquote className="quote" key={q.quote}>„{nb(q.quote)}“<cite>{nb(q.ref ?? '')}</cite></blockquote>
             ))}
             {docIds.map((id) => (
               <button type="button" className="link" key={id} onClick={() => onOpen(id, t.quotes.filter((q) => q.docId === id).map((q) => q.quote))}>
-                <Icon name="file" size={14} />Otevřít zprávu {id}
+                <Icon name="file" size={14} />{docIds.length > 1 ? `Otevřít: ${t.quotes.find((q) => q.docId === id)?.ref ?? ''}` : 'Otevřít v dokumentu'}
               </button>
             ))}
           </div>
@@ -69,7 +69,7 @@ export function DocList({ docs, onOpen }: { docs: DocRef[]; onOpen: (id: string)
     <ul className="docs">
       {docs.map((d) => (
         <li key={d.id}>
-          <button type="button" className="doc-row" onClick={() => onOpen(d.id)} aria-label={`Otevřít zprávu ${d.id}: ${d.title}`}>
+          <button type="button" className="doc-row" onClick={() => onOpen(d.id)} aria-label={`Otevřít dokument: ${d.title}`}>
             <DocIcon code={d.code} />
             <span className="doc-main">
               <b>{d.what && `${d.what} · `}{d.title}</b>
@@ -77,7 +77,6 @@ export function DocList({ docs, onOpen }: { docs: DocRef[]; onOpen: (id: string)
             </span>
             <span className="doc-when">
               <span className="doc-date">{d.isNew && <span className="chip new">dnes</span>}{czDate(d.date)}</span>
-              <span className="mono">zpráva {d.id}</span>
             </span>
           </button>
         </li>
@@ -103,7 +102,7 @@ function StepPanel({ step, today, onOpen }: { step: Step; today: string; onOpen:
       {request && (
         <div className="request">
           <p className="request-label">Co praktik žádá</p>
-          <blockquote className="quote">„{nb(request.quote)}“<cite>zpráva {request.docId}</cite></blockquote>
+          <blockquote className="quote">„{nb(request.quote)}“<cite>{nb(request.ref ?? '')}</cite></blockquote>
         </div>
       )}
       {step.todo && step.todo.length > 0 && <ol className="todo">{step.todo.map((t) => <TodoItem t={t} onOpen={onOpen} key={t.title} />)}</ol>}

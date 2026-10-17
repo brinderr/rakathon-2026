@@ -39,7 +39,7 @@ function PatientHead() {
       <dl className="facts">
         <div><dt>{female ? 'Narozena' : 'Narozen'}</dt><dd>{nb(p.born)}<span className="soft"> · {p.age}</span></dd></div>
         <div><dt>Pojišťovna</dt><dd title={p.insurer.name}>{p.insurer.short} <span className="code">{p.insurer.code}</span></dd></div>
-        <div><dt>Diagnóza</dt><dd title={`Podle: ${p.diagnosis.source} (zpráva ${p.diagnosis.docId})`}><span className="code">{p.diagnosis.code}</span> {p.diagnosis.text}</dd></div>
+        <div><dt>Diagnóza</dt><dd title={`Podle: ${p.diagnosis.source}`}><span className="code">{p.diagnosis.code}</span> {p.diagnosis.text}</dd></div>
       </dl>
       <div className="head-actions">
         <PhoneContacts people={phonePeople} />
@@ -99,7 +99,7 @@ export function PatientPage({ path }: { path: string[] }) {
         {news ? (
           <button type="button" className="stat stat-link" onClick={() => openDoc(news.id)}>
             <span className="stat-icon"><Icon name="file" /></span>
-            <span><small>Dnes nové</small><b>{news.what}</b><em>zpráva {news.id} · {news.dept}</em></span>
+            <span><small>Dnes nové</small><b>{news.what}</b><em>{news.dept}</em></span>
           </button>
         ) : (
           <div className="stat"><span className="stat-icon"><Icon name="file" /></span><span><small>Dnes nové</small><b>Nic</b><em>žádná nová zpráva</em></span></div>

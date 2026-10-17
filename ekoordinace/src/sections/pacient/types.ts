@@ -1,9 +1,10 @@
 // Shape of src/data/alena.json (written by scripts/build-case.mjs).
 export type Status = 'done' | 'now' | 'waiting';
 
-export interface DocRef { id: string; date: string; title: string; place: string; code: string; what?: string; isNew?: boolean }
+export interface DocRef { id: string; date: string; title: string; place: string; code: string; ref: string; what?: string; isNew?: boolean }
 export interface Person { role: string; name: string; phone?: string; note?: string }
-export interface Quote { docId: string; quote: string }
+/** `ref` = how the coordinator calls the report ("protokol biopsie 12. 10."), not the dataset number. */
+export interface Quote { docId: string; ref?: string; quote: string }
 
 export interface Todo {
   field: string;
