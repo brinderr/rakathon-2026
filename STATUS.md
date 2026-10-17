@@ -21,9 +21,9 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | Text bez nadpisov (vzory vnútri viet + poctivý pruh) | matej | ✅ | src/ai/plain.ts, `meta.plainText.notice`; `npm run eval:plain`: sada 1 naslepo 41/80 → po úprave 66/80; **sada 2 naslepo 53/80**; 0 vymyslených |
 | **eKoordinace – nová appka** (`ekoordinace/`) | matej | 🔵 | krok 1 hotový: hlavička s diagnózou z histológie, cesta v 5 krokoch (hotové kroky malé), úlohy s kontaktmi, „Dnes nové“; appka rozdelená na sekcie (pravidlá v ekoordinace/README.md); ďalej záložka Zprávy |
 | Sekcia Konzilia (`ekoordinace/src/sections/konzilia/`) | bruno | ⚪ | kostra pripravená, zapína sa v `src/sections.tsx` |
-| Nasadenie eKoordinace na Vercel | bruno / matej | ⛔ | import repa na vercel.com s Root Directory `ekoordinace` (Matejov konektor: 403) |
+| Nasadenie eKoordinace na Vercel | matej + bruno | ⛔ | GitHub Actions pripravené (`.github/workflows/ekoordinace-vercel.yml`); čaká na secret `VERCEL_TOKEN` v repe (pridá Bruno ako vlastník, token od Mateja) |
 | Ostrý AI beh cez Azure OpenAI EU | kapitán | ⚪ | kľúč z portálu do app/.env (AZURE_OPENAI_ENDPOINT/API_KEY/DEPLOYMENT) → `npm run extract` |
 | Titulný obrázok 16:9 | ⚪ | ⚪ | prompt v docs/pitch/COVER-PROMPT.md |
 
 ## Blokery
-- Vercel: Matejov konektor nemá právo zakladať projekty (403) a repo je na Brunovom GitHube → import cez vercel.com (Root Directory `ekoordinace`).
+- Vercel: chýba secret `VERCEL_TOKEN` v GitHub repe (Settings → Secrets and variables → Actions) – pridať môže len Bruno ako vlastník repa.

@@ -45,6 +45,8 @@ jobs:
       - run: npm run check # typecheck + build into dist/
       - name: Deploy dist/ to the Vercel project "ekoordinace"
         run: |
+          # the project is created on the first run (if it already exists, "project add" fails and we go on)
+          npx --yes vercel@latest project add ekoordinace --scope "$SCOPE" --token "$VERCEL_TOKEN" || true
           npx --yes vercel@latest link --yes --project ekoordinace --scope "$SCOPE" --token "$VERCEL_TOKEN" --cwd dist
           url=$(npx --yes vercel@latest deploy --prod --yes --scope "$SCOPE" --token "$VERCEL_TOKEN" --cwd dist)
           echo "Nasadené: $url" >> "$GITHUB_STEP_SUMMARY"
