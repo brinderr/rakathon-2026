@@ -1,16 +1,16 @@
 {
   "caseId": "alena",
-  "generatedAt": "2026-10-16T23:55:15.778Z",
+  "generatedAt": "2026-10-17T00:06:57.050Z",
   "asOf": "2026-10-21",
   "gold": "eval/gold-alena.json",
   "extraction": {
     "file": "public/data/extracted-alena.json",
-    "mode": "rules",
-    "model": null,
-    "generatedAt": "2026-10-16T23:55:15.607Z",
+    "mode": "rules+llm",
+    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
+    "generatedAt": "2026-10-17T00:06:56.877Z",
     "promptVersion": "handover-v1"
   },
-  "headline": "Na kontrolnej sade: 20/20 polí správne · 17/17 pascí zachytených · 0 vymyslených hodnôt · 63/63 citátov doslova v správach",
+  "headline": "Na kontrolnej sade: 20/20 polí správne · 17/17 pascí zachytených · 0 vymyslených hodnôt · 72/72 citátov doslova v správach",
   "summary": {
     "fieldsCorrect": 20,
     "fieldsTotal": 20,
@@ -18,8 +18,8 @@
     "trapsTotal": 17,
     "fieldsWithoutVerifiedCitation": 0,
     "inventedValues": 0,
-    "citationsVerified": 63,
-    "citationsTotal": 63,
+    "citationsVerified": 72,
+    "citationsTotal": 72,
     "goldIntegrity": true
   },
   "fields": [

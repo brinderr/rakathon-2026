@@ -2,9 +2,11 @@
   "meta": {
     "caseId": "alena",
     "asOf": "2026-10-21",
-    "generatedAt": "2026-10-16T23:55:15.607Z",
+    "generatedAt": "2026-10-17T00:06:56.877Z",
     "promptVersion": "handover-v1",
-    "mode": "rules",
+    "mode": "rules+llm",
+    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
+    "requestHash": "4234a107c7884be5",
     "docsUsed": [
       "01",
       "02",
@@ -35,10 +37,10 @@
       "withValue": 19,
       "missing": 1,
       "conflicts": 2,
-      "citations": 63,
-      "citationsVerified": 63,
+      "citations": 72,
+      "citationsVerified": 72,
       "fieldsWithoutVerifiedCitation": 0,
-      "llmFieldsAccepted": 0,
+      "llmFieldsAccepted": 5,
       "llmFieldsRejected": 0
     }
   },
@@ -141,7 +143,7 @@
       "key": "diagnosis",
       "label": "Diagnóza",
       "group": "Diagnóza",
-      "value": "C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom (podozrenie v žiadanke, 2. 10. 2026); histologicky: Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3. (19. 10. 2026)",
+      "value": "C25.0 – suspektní tumor hlavy pankreatu, cholestatický syndrom; ložisko hlavy pankreatu, EUS-FNB 22G: duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí, MKN-O 8500/3.",
       "status": "proposed",
       "citations": [
         {
@@ -150,51 +152,66 @@
         },
         {
           "docId": "11",
+          "quote": "Materiál: ložisko hlavy pankreatu, EUS-FNB 22G"
+        },
+        {
+          "docId": "11",
           "quote": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí. MKN-O 8500/3."
         }
       ],
-      "sourceDate": "2026-10-19"
+      "note": "Kód C25.0 je uveden jen u suspektní diagnózy v žádosti praktického lékaře; bioptický nález uvádí pouze morfologický kód MKN-O. Datum odběru v bioptickém nálezu je pozdější než datum vydání nálezu a liší se od data výkonu EUS-FNB – ověřit."
     },
     {
       "key": "epicrisis",
       "label": "Priebeh ochorenia v skratke",
       "group": "Diagnóza",
-      "value": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Pro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha. UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity. Gastroenterolog doporučil doplnit CT břicha dle pankreatického protokolu, případně EUS.",
+      "value": "63letá pacientka, od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří, teploty se zimnicí a tmavší moč; léčena ciprofloxacinem, poté afebrilní. Pro přetrvávající cholestázu UZ 29. 9. 2026: ložisko hlavy pankreatu suspektní z malignity. CT se nepodařilo zajistit, bolesti přetrvávají.",
       "status": "proposed",
       "citations": [
         {
           "docId": "07",
-          "quote": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč."
+          "quote": "63letá pacientka sledovaná v naší ordinaci. Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč."
         },
         {
           "docId": "07",
-          "quote": "Pro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha."
+          "quote": "Pro suspektní infekci močových cest vs. biliární infekci léčena ciprofloxacinem 7 dní, poté afebrilní."
         },
         {
           "docId": "07",
-          "quote": "UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity."
+          "quote": "Pro přetrvávající cholestázu vyšetřena 15. 9. 2026 gastroenterologem, který doporučil UZ břicha. UZ provedené 29. 9. 2026 prokázalo ložisko hlavy pankreatu suspektní z malignity."
         },
         {
           "docId": "07",
-          "quote": "Gastroenterolog doporučil doplnit CT břicha dle pankreatického protokolu, případně EUS."
+          "quote": "Termín CT se nám v dostupných pracovištích nepodařilo zajistit."
+        },
+        {
+          "docId": "07",
+          "quote": "Při kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva."
+        },
+        {
+          "docId": "07",
+          "quote": "Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší."
         }
       ],
-      "sourceDate": "2026-10-02"
+      "note": "Souhrn podle epikrízy praktického lékaře v žádosti o převzetí do KOC; následná vyšetření (CT, EUS-FNB, histologie) v epikríze nejsou."
     },
     {
       "key": "mdtQuestion",
       "label": "Otázka pre konzílium",
       "group": "Diagnóza",
-      "value": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT. Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení.",
+      "value": "Převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT; urgentní řešení vzhledem k progresi obtíží a nezajištěnému termínu CT.",
       "status": "proposed",
       "citations": [
         {
           "docId": "07",
-          "quote": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT. Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení."
+          "quote": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT."
+        },
+        {
+          "docId": "07",
+          "quote": "Vzhledem k progresi obtíží a nezajištěnému termínu CT prosím o urgentní řešení."
         }
       ],
-      "sourceDate": "2026-10-02",
-      "note": "Otázka je všeobecná (dokončiť diagnostiku a určiť postup) – lekár KOC ju pred konzíliom môže spresniť."
+      "note": "Otázka na MDT je obecná (stanovení dalšího postupu), bez konkrétního dotazu. Požadované CT a histologická verifikace jsou mezitím k dispozici (CT dle pankreatického protokolu, bioptický nález). Odesílající lékař dále žádá o zvážení psychologické podpory."
     },
     {
       "key": "comorbidities",
@@ -297,7 +314,7 @@
       "key": "symptoms",
       "label": "Príznaky a ich začiatok",
       "group": "Stav",
-      "value": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč. Při vyšetření 1. 9. 2026 febrilní (38,1 °C), se subikterem sklér. Při kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva. Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší.",
+      "value": "Od poloviny srpna 2026 bolesti v epigastriu a pravém podžebří; na přelomu srpna a září teploty do 38,6 °C se zimnicí, únava, nechutenství, tmavší moč, subikterus sklér. Bolesti s propagací do zad, horší po jídle a v noci, úbytek hmotnosti 4 kg za poslední měsíc, stolice občas světlejší.",
       "status": "proposed",
       "citations": [
         {
@@ -305,19 +322,27 @@
           "quote": "Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří, na přelomu srpna a září intermitentní teploty se zimnicí a tmavší moč."
         },
         {
-          "docId": "07",
-          "quote": "Při vyšetření 1. 9. 2026 febrilní (38,1 °C), se subikterem sklér."
+          "docId": "04",
+          "quote": "63letá pacientka přišla 1. 9. 2026 pro asi 2 týdny trvající bolesti břicha v epigastriu a pravém podžebří, intermitentní teploty do 38,6 °C se zimnicí, únavu, nechutenství a tmavší moč posledních 5 dní."
+        },
+        {
+          "docId": "05",
+          "quote": "Subikterus sklér."
+        },
+        {
+          "docId": "05",
+          "quote": "Po ciprofloxacinu afebrilní od 4. 9. Přetrvávají tupé bolesti v epigastriu s propagací do zad, horší po jídle a v noci."
+        },
+        {
+          "docId": "05",
+          "quote": "Nechutenství, úbytek hmotnosti 4 kg za poslední měsíc (z 69 na 65 kg). Moč stále tmavší, stolice občas světlejší."
         },
         {
           "docId": "07",
           "quote": "Při kontrole dnes bolesti v epigastriu s propagací do zad přetrvávají, zhoršují se po jídle a v noci, na paracetamolu jen částečná úleva."
-        },
-        {
-          "docId": "07",
-          "quote": "Nechutenství, pokračující úbytek hmotnosti, moč nadále tmavší."
         }
       ],
-      "sourceDate": "2026-10-02"
+      "note": "Po ciprofloxacinu afebrilní od 4. 9.; psychicky velmi úzkostná, špatně spí (viz Jiná důležitá sdělení)."
     },
     {
       "key": "exams",
@@ -496,27 +521,39 @@
       "key": "other",
       "label": "Iné dôležité a želania pacientky",
       "group": "Iné",
-      "value": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa. Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory. Pacientka je o podezření na nádorové onemocnění informována. Souhlasí se sdílením informací s dcerou.",
+      "value": "Informována o podezření na nádorové onemocnění, souhlasí se sdílením informací s dcerou (kontaktní osoba Petra Horká). Velmi úzkostná, špatně spí – zvážení psychologické podpory. Užívá apixaban – před invazivním výkonem nutno vysadit 48 h předem, bez nutnosti překlenovací léčby.",
       "status": "proposed",
       "citations": [
         {
           "docId": "07",
-          "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa."
+          "quote": "Pacientka je o podezření na nádorové onemocnění informována. Souhlasí se sdílením informací s dcerou."
+        },
+        {
+          "docId": "07",
+          "quote": "Kontaktní osoba: Petra Horká (dcera), tel. +420 777 000 542"
+        },
+        {
+          "docId": "07",
+          "quote": "Psychicky pacientka velmi úzkostná, špatně spí."
         },
         {
           "docId": "07",
           "quote": "Vzhledem k výrazné úzkosti pacientky prosím o zvážení psychologické podpory."
         },
         {
-          "docId": "07",
-          "quote": "Pacientka je o podezření na nádorové onemocnění informována."
+          "docId": "05",
+          "quote": "Pacientka užívá apixaban – před případným invazivním výkonem nutno vysadit 48 h předem."
         },
         {
-          "docId": "07",
-          "quote": "Souhlasí se sdílením informací s dcerou."
+          "docId": "01",
+          "quote": "Před plánovaným invazivním výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby."
+        },
+        {
+          "docId": "09",
+          "quote": "Při nekomplikovaném průběhu apixaban znovu od 21. 10. 2026 ráno."
         }
       ],
-      "sourceDate": "2026-10-02"
+      "note": "Jiné přání pacientky není uvedeno. Po EUS-FNB má být apixaban při nekomplikovaném průběhu znovu od 21. 10. 2026 ráno; data kolem EUS-FNB si však ve zprávách odporují (datum výkonu vs. poslední dávka apixabanu a datum odběru v bioptickém nálezu) – aktuální stav antikoagulace k datu MDT ověřit."
     }
   ],
   "provenance": {
@@ -563,22 +600,25 @@
       "rejected": []
     },
     "diagnosis": {
-      "extractor": "rules",
-      "checkedQuotes": 2,
-      "verifiedQuotes": 2,
-      "rejected": []
+      "extractor": "llm",
+      "checkedQuotes": 3,
+      "verifiedQuotes": 3,
+      "rejected": [],
+      "support": 1
     },
     "epicrisis": {
-      "extractor": "rules",
-      "checkedQuotes": 4,
-      "verifiedQuotes": 4,
-      "rejected": []
+      "extractor": "llm",
+      "checkedQuotes": 6,
+      "verifiedQuotes": 6,
+      "rejected": [],
+      "support": 1
     },
     "mdtQuestion": {
-      "extractor": "rules",
-      "checkedQuotes": 1,
-      "verifiedQuotes": 1,
-      "rejected": []
+      "extractor": "llm",
+      "checkedQuotes": 2,
+      "verifiedQuotes": 2,
+      "rejected": [],
+      "support": 1
     },
     "comorbidities": {
       "extractor": "rules",
@@ -611,10 +651,11 @@
       "rejected": []
     },
     "symptoms": {
-      "extractor": "rules",
-      "checkedQuotes": 4,
-      "verifiedQuotes": 4,
-      "rejected": []
+      "extractor": "llm",
+      "checkedQuotes": 6,
+      "verifiedQuotes": 6,
+      "rejected": [],
+      "support": 0.96
     },
     "exams": {
       "extractor": "rules",
@@ -635,10 +676,11 @@
       "rejected": []
     },
     "other": {
-      "extractor": "rules",
-      "checkedQuotes": 4,
-      "verifiedQuotes": 4,
-      "rejected": []
+      "extractor": "llm",
+      "checkedQuotes": 7,
+      "verifiedQuotes": 7,
+      "rejected": [],
+      "support": 1
     }
   },
   "findings": [
