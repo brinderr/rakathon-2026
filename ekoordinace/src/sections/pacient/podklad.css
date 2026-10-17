@@ -83,3 +83,19 @@
 .pk-out-main small { color: var(--ok); font-weight: 600; }
 .pk-draft { margin-left: .6rem; padding: .1rem .5rem; border-radius: var(--r-chip); background: var(--soft); color: var(--muted); font: 600 .7rem var(--mono); letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; }
 @media print { body:has(.pk-paper) .pk-gate, body:has(.pk-paper) .pk-out, .pk-draft { display: none !important; } }
+
+/* each open point: resolve it, or leave it as it is with a reason; the confirm button is visible but locked */
+.pk-gate li { display: grid; gap: .45rem; }
+.pk-gate-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.pk-gate-act { display: inline-flex; align-items: baseline; gap: 1rem; flex: none; }
+.pk-gate-act button { padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; font-weight: 600; cursor: pointer; }
+.pk-gate-act button:hover, .pk-gate-act button[aria-expanded="true"] { color: var(--ink); text-decoration: underline; }
+.pk-waive { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .5rem; padding: .6rem .7rem; border-radius: var(--r-ctl); background: var(--surface); }
+.pk-waive-q { flex-basis: 100%; font-size: .8rem; color: var(--ink-2); }
+.pk-waive input { flex: 1; min-width: 12rem; font: inherit; font-size: .85rem; padding: .4rem .6rem; border: 1px solid var(--line); border-radius: var(--r-ctl); }
+.pk-waive .btn-ghost { padding: .4rem .8rem; font-size: .85rem; }
+.chip-btn { padding: .3rem .7rem; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); color: var(--ink); font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; }
+.chip-btn:hover { border-color: var(--red-200); color: var(--red); }
+.pk-locked { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .9rem; padding-top: .5rem; }
+.pk-locked span { font-size: .85rem; color: var(--ink-2); }
+.pk-left { font-size: .875rem; color: var(--conf); font-weight: 600; }

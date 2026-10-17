@@ -78,3 +78,9 @@
 @media (max-width: 640px) {
   .todo-form { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* leave an item as it is: one-click reasons */
+.todo-form.waive { grid-template-columns: minmax(0, 1fr); }
+.todo-form .wide { grid-column: 1 / -1; }
+.waive-q { font-size: .85rem; color: var(--ink-2); }
+.waive-reasons { display: flex; flex-wrap: wrap; gap: .4rem; }

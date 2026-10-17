@@ -3,7 +3,7 @@
 // be copied ("výstup v kopírovatelných částech", slide 8). When something is missing or does not add up, the row says
 // what to do and whom to call, and the coordinator writes down what she found out – the case updates everywhere.
 import { useEffect, useState } from 'react';
-import { addValue, resolveField, undoField } from '../../../state/caseStore';
+import { WAIVE_REASONS, addValue, resolveField, undoField, waiveField } from '../../../state/caseStore';
 import { copyText } from '../../../ui/clipboard';
 import { Icon } from '../../../ui/Icon';
 import { nb, telHref } from '../../../ui/format';
@@ -21,7 +21,10 @@ const STATUS: Record<string, { label: string; cls: string }> = {
   'neúplné': { label: 'Neúplné', cls: 'miss' },
   'chybí': { label: 'Chybí', cls: 'miss' },
   rozpor: { label: 'Rozpor', cls: 'conf' },
+  'ponecháno': { label: 'Ponecháno', cls: 'conf' },
 };
+
+const OTHER = 'Jiná osoba nebo pracoviště…';
 
 // hint for what the coordinator writes down, per item
 const PLACEHOLDER: Record<string, string> = {
@@ -51,13 +54,17 @@ function ToDo({ f, openDoc, start }: { f: Field; openDoc: OpenDoc; start: boolea
   const todo = f.todo!;
   const conflict = f.status === 'rozpor';
   const people = todo.contacts.map((c) => `${c.name}${c.role ? ` (${c.role.toLowerCase()})` : ''}`);
-  const [open, setOpen] = useState(start);
+  // 'fill' = write down what she found out, 'waive' = leave it as it is (with a reason)
+  const [mode, setMode] = useState<'none' | 'fill' | 'waive'>(start ? 'fill' : 'none');
   // opened from a link to this item while the tab is already shown
-  useEffect(() => { if (start) setOpen(true); }, [start]);
-  const [who, setWho] = useState(people[0] ?? 'jiné pracoviště');
+  useEffect(() => { if (start) setMode('fill'); }, [start]);
+  const [pick, setPick] = useState(people[0] ?? OTHER);
+  const [otherWho, setOtherWho] = useState('');
+  const who = pick === OTHER ? otherWho.trim() : pick;
   const [text, setText] = useState('');
+  const [reason, setReason] = useState('');
   const save = () => {
-    if (!text.trim()) return;
+    if (!text.trim() || !who) return;
     if (conflict) resolveField(id, data.today, f.key, text.trim(), who);
     else addValue(id, data.today, f.key, text.trim(), who);
   };
@@ -86,32 +93,54 @@ function ToDo({ f, openDoc, start }: { f: Field; openDoc: OpenDoc; start: boolea
           ))}
         </ul>
       )}
-      {open ? (
+      {mode === 'fill' && (
         <form className="todo-form" onSubmit={(e) => { e.preventDefault(); save(); }}>
           <label>{conflict ? 'S kým jste to ověřila' : 'Od koho'}
-            <select value={who} onChange={(e) => setWho(e.target.value)}>
+            <select value={pick} onChange={(e) => setPick(e.target.value)}>
               {people.map((p) => <option key={p}>{p}</option>)}
-              <option>jiné pracoviště</option>
+              <option>{OTHER}</option>
             </select>
           </label>
-          <label>{conflict ? 'Co jste zjistila' : 'Zjištěná hodnota'}
-            <input value={text} onChange={(e) => setText(e.target.value)} placeholder={PLACEHOLDER[f.key] ?? ''} autoFocus={start} />
+          {pick === OTHER && (
+            <label>Kdo konkrétně
+              <input value={otherWho} onChange={(e) => setOtherWho(e.target.value)} placeholder="např. MUDr. Jana Malá, patologie Nemocnice Říčany" autoFocus />
+            </label>
+          )}
+          <label className="wide">{conflict ? 'Co jste zjistila' : 'Zjištěná hodnota'}
+            <input value={text} onChange={(e) => setText(e.target.value)} placeholder={PLACEHOLDER[f.key] ?? ''} autoFocus={start && pick !== OTHER} />
           </label>
           <div className="form-actions">
-            <button type="submit" className="btn-primary" disabled={!text.trim()}><Icon name="check" size={16} />Uložit</button>
-            <button type="button" className="btn-ghost" onClick={() => setOpen(false)}>Zrušit</button>
+            <button type="submit" className="btn-primary" disabled={!text.trim() || !who}><Icon name="check" size={16} />Uložit</button>
+            <button type="button" className="btn-ghost" onClick={() => setMode('none')}>Zrušit</button>
           </div>
         </form>
-      ) : (
+      )}
+      {mode === 'waive' && (
+        <form className="todo-form waive" onSubmit={(e) => { e.preventDefault(); if (reason.trim()) waiveField(id, data.today, f.key, reason.trim()); }}>
+          <p className="waive-q">Proč to necháte být? V podkladu bude označeno jako neověřené.</p>
+          <div className="waive-reasons">
+            {WAIVE_REASONS.map((r) => <button key={r} type="button" className="chip-btn" onClick={() => waiveField(id, data.today, f.key, r)}>{r}</button>)}
+          </div>
+          <label className="wide">Jiný důvod
+            <input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="např. pacientka nezvedá telefon, zkusím po konziliu" />
+          </label>
+          <div className="form-actions">
+            <button type="submit" className="btn-primary" disabled={!reason.trim()}>Ponechat</button>
+            <button type="button" className="btn-ghost" onClick={() => setMode('none')}>Zrušit</button>
+          </div>
+        </form>
+      )}
+      {mode === 'none' && (
         <>
           <SentLine field={f.key} conflict={conflict} />
           <div className="form-actions">
-            <button type="button" className="btn-primary" onClick={() => setOpen(true)}>
+            <button type="button" className="btn-primary" onClick={() => setMode('fill')}>
               <Icon name={conflict ? 'check' : 'plus'} size={16} />{conflict ? 'Zapsat ověření' : 'Doplnit údaj'}
             </button>
             <button type="button" className="btn-ghost" onClick={() => compose({ mode: 'request', field: f.key })}>
               <Icon name="mail" size={16} />{conflict ? 'Napsat dotaz' : 'Vyžádat'}
             </button>
+            <button type="button" className="btn-ghost" onClick={() => setMode('waive')}>Ponechat</button>
           </div>
         </>
       )}

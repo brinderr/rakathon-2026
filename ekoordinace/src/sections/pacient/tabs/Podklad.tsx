@@ -4,7 +4,7 @@
 // PDF in the browser's print dialog (the print style shows the document only).
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { ME, confirmCase, unconfirmCase, useCase } from '../../../state/caseStore';
+import { ME, WAIVE_REASONS, confirmCase, unconfirmCase, useCase, waiveField } from '../../../state/caseStore';
 import { copyText } from '../../../ui/clipboard';
 import { Icon } from '../../../ui/Icon';
 import { czDate, nb } from '../../../ui/format';
@@ -22,6 +22,7 @@ const FLAG: Record<string, { label: string; cls: string }> = {
   'chybí': { label: 'chybí', cls: 'miss' },
   'doplněno': { label: 'doplněno', cls: 'ok' },
   'ověřeno': { label: 'ověřeno', cls: 'ok' },
+  'ponecháno': { label: 'ponecháno – neověřeno', cls: 'conf' },
 };
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -118,11 +119,15 @@ export function Podklad({ openDoc }: { openDoc: OpenDoc }) {
   const { id, data } = useCaseData();
   const st = useCase(id);
   const [copied, setCopied] = useState(false);
+  const [waiving, setWaiving] = useState<string | null>(null);
+  const [reason, setReason] = useState('');
   const p = data.patient;
   const f = (k: string) => data.fields.find((x) => x.key === k);
   // what is still open, from the items themselves (stays visible after the doctor confirmed)
   const open = data.fields.filter((x) => x.todo && ['chybí', 'neúplné', 'rozpor'].includes(x.status)).map((x) => ({ key: x.key, title: x.todo!.title, docs: x.todo!.quotes.map((q) => q.docId) }));
   const doubtful = new Set(open.flatMap((t) => t.docs));
+  const left = data.fields.filter((x) => x.status === 'ponecháno').length;
+  const waive = (key: string, why: string) => { waiveField(id, data.today, key, why); setWaiving(null); setReason(''); };
   const confirmed = st.confirmed;
 
   // address and the GP's e-mail are in the referral; the MDT_zapis asks for both
@@ -151,15 +156,37 @@ export function Podklad({ openDoc }: { openDoc: OpenDoc }) {
           <h3><Icon name="alert" size={18} />Nejdřív vyřešte {open.length} {open.length === 1 ? 'bod' : open.length < 5 ? 'body' : 'bodů'}</h3>
           <ul>
             {open.map((t) => (
-              <li key={t.key}><span>{nb(t.title)}</span><a href={`#/pacienti/${id}/udaje/${t.key}`}>Vyřešit<Icon name="right" size={14} /></a></li>
+              <li key={t.key}>
+                <div className="pk-gate-row">
+                  <span>{nb(t.title)}</span>
+                  <span className="pk-gate-act">
+                    <a href={`#/pacienti/${id}/udaje/${t.key}`}>Vyřešit<Icon name="right" size={14} /></a>
+                    <button type="button" aria-expanded={waiving === t.key} onClick={() => { setWaiving(waiving === t.key ? null : t.key); setReason(''); }}>Ponechat</button>
+                  </span>
+                </div>
+                {waiving === t.key && (
+                  <form className="pk-waive" onSubmit={(e) => { e.preventDefault(); if (reason.trim()) waive(t.key, reason.trim()); }}>
+                    <span className="pk-waive-q">Proč to necháte být? V podkladu bude označeno jako neověřené.</span>
+                    {WAIVE_REASONS.map((r) => <button key={r} type="button" className="chip-btn" onClick={() => waive(t.key, r)}>{r}</button>)}
+                    <input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Jiný důvod…" aria-label="Jiný důvod" />
+                    <button type="submit" className="btn-ghost" disabled={!reason.trim()}>Ponechat</button>
+                  </form>
+                )}
+              </li>
             ))}
           </ul>
+          <div className="pk-locked">
+            <button type="button" className="btn-primary" disabled><Icon name="lock" size={16} />Potvrdit a vygenerovat PDF</button>
+            <span>Zamčeno, dokud nejsou všechny body vyřešené nebo ponechané.</span>
+          </div>
         </section>
       ) : !confirmed ? (
         <section className="card pk-gate ready" aria-label="Potvrzení">
           <h3><Icon name="check" size={18} />Vše vyřešeno – zkontrolujte podklad a potvrďte</h3>
-          <div className="form-actions">
-            <button type="button" className="btn-primary" onClick={() => confirmCase(id, data.today, DOCTOR)}><Icon name="check" size={16} />Potvrdit ({DOCTOR})</button>
+          {left > 0 && <p className="pk-left">Ponecháno bez ověření: {left} – v podkladu je to označené.</p>}
+          <div className="pk-locked">
+            <button type="button" className="btn-primary" onClick={() => confirmCase(id, data.today, DOCTOR)}><Icon name="check" size={16} />Potvrdit a vygenerovat PDF</button>
+            <span>Potvrzuje {DOCTOR}</span>
           </div>
         </section>
       ) : (

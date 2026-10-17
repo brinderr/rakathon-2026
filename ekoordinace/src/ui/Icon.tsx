@@ -12,6 +12,7 @@ const PATHS: Record<string, string> = {
   download: 'M12 4v11m-4.5-4.5L12 15l4.5-4.5M4.5 19.5h15',
   file: 'M6.5 3h7.5l4.5 4.5V21h-12V3Zm7.5 0v4.5h4.5M9 12h6m-6 4h6',
   check: 'm5 12.5 4.5 4.5L19 7.5',
+  lock: 'M7.5 11V8a4.5 4.5 0 0 1 9 0v3M5.5 11h13v9h-13zM12 14.5v2',
   alert: 'M12 4 21 19.5H3L12 4Zm0 6v4.5m0 2.5v.5',
   clock: 'M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17ZM12 7.5V12l3 2',
   fields: 'M4 6h16M4 12h16M4 18h10',

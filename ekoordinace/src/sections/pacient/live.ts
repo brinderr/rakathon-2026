@@ -18,6 +18,8 @@ function liveField(f: Field, st: CaseState): Field {
   }
   const res = st.resolved[f.key];
   if (res) return { ...f, status: 'ověřeno', note: `Ověřeno${res.with ? ` – ${res.with}` : ''}: ${res.note} (${time(res.at)})` };
+  const w = st.waived?.[f.key];
+  if (w) return { ...f, status: 'ponecháno', note: `Ponecháno bez ověření: ${w.reason} (${time(w.at)})` };
   return f;
 }
 
@@ -46,7 +48,8 @@ export function liveCase(data: CaseData, st: CaseState): CaseData {
     return todo.length ? { ...s, todo } : { ...s, todo, summary: 'Vše doplněno a ověřeno.' };
   });
   const todo = steps.flatMap((s) => s.todo ?? []);
-  const fixed = data.fields.filter((f) => f.todo && !open(f.key)).length;
+  // filled in or checked counts as ready; an item left as it is does not
+  const fixed = data.fields.filter((f) => f.todo && (st.added[f.key] || st.resolved[f.key])).length;
   return {
     ...data,
     steps,

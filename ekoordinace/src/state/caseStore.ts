@@ -11,12 +11,16 @@ export type EventKind =
 export interface CaseEvent { at: string; who: string; kind: EventKind; text: string; field?: string; docId?: string }
 export interface Added { value: string; source: string; at: string; who: string }
 export interface Resolution { note: string; at: string; who: string; with?: string }
+/** An item the coordinator leaves as it is (e.g. no time before the MDT) – it goes into the podklad marked as unverified. */
+export interface Waiver { reason: string; at: string; who: string }
 
 export interface CaseState {
   /** field key → value added by the coordinator */
   added: Record<string, Added>;
   /** to-do / finding key → how it was resolved */
   resolved: Record<string, Resolution>;
+  /** field key → left as it is, with the reason */
+  waived: Record<string, Waiver>;
   /** the handover confirmed by a doctor */
   confirmed?: { by: string; at: string };
   /** the conclusion of the MDT for the GP and its delivery receipt (state/zaver.ts) */
@@ -26,7 +30,7 @@ export interface CaseState {
 }
 
 const KEY = 'ekoordinace:case:';
-const empty = (): CaseState => ({ added: {}, resolved: {}, events: [] });
+const empty = (): CaseState => ({ added: {}, resolved: {}, waived: {}, events: [] });
 const cache = new Map<string, CaseState>();
 const listeners = new Set<() => void>();
 
@@ -108,15 +112,17 @@ export function undoField(caseId: string, day: string, field: string) {
   updateCase(caseId, (s) => {
     const added = { ...s.added };
     const resolved = { ...s.resolved };
+    const waived = { ...s.waived };
     delete added[field];
     delete resolved[field];
-    return { ...s, added, resolved, confirmed: undefined, events: [...s.events, { at: stamp(day), who: ME, kind: 'poznamka', text: 'zápis vrácen', field }] };
+    delete waived[field];
+    return { ...s, added, resolved, waived, confirmed: undefined, events: [...s.events, { at: stamp(day), who: ME, kind: 'poznamka', text: 'zápis vrácen', field }] };
   });
 }
 
 /** Has the coordinator already dealt with this field? */
 export function isSettled(s: CaseState, field: string): boolean {
-  return Boolean(s.added[field] || s.resolved[field]);
+  return Boolean(s.added[field] || s.resolved[field] || s.waived?.[field]);
 }
 
 /** The doctor confirms the podklad for the MDT (any later change of the data cancels it). */
@@ -127,4 +133,18 @@ export function confirmCase(caseId: string, day: string, by: string) {
 
 export function unconfirmCase(caseId: string, day: string) {
   updateCase(caseId, (s) => ({ ...s, confirmed: undefined, events: [...s.events, { at: stamp(day), who: ME, kind: 'poznamka', text: 'potvrzení podkladu zrušeno' }] }));
+}
+
+/** Why an item is left as it is – one click; she can also write her own reason. */
+export const WAIVE_REASONS = ['Nestihne se do konzilia', 'Výsledek dodá pracoviště později', 'Pro konzilium není podstatné'];
+
+/** Leave an item as it is (no time before the MDT, the result comes later …); the podklad shows it as unverified. */
+export function waiveField(caseId: string, day: string, field: string, reason: string) {
+  const at = stamp(day);
+  updateCase(caseId, (s) => ({
+    ...s,
+    waived: { ...s.waived, [field]: { reason, at, who: ME } },
+    confirmed: undefined,
+    events: [...s.events, { at, who: ME, kind: 'poznamka', text: `ponecháno bez ověření: ${reason}`, field }],
+  }));
 }
