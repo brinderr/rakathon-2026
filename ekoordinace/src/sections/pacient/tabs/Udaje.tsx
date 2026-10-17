@@ -8,6 +8,8 @@ import { copyText } from '../../../ui/clipboard';
 import { Icon } from '../../../ui/Icon';
 import { nb, telHref } from '../../../ui/format';
 import { useCaseData } from '../caseContext';
+import { useCompose } from '../Compose';
+import { SentLine } from '../Journey';
 import type { OpenDoc } from '../Journey';
 import type { Field } from '../types';
 import '../udaje.css';
@@ -45,6 +47,7 @@ function CopyButton({ text, label, caption = 'Kopírovat' }: { text: string; lab
  *  for what the coordinator found out. */
 function ToDo({ f, openDoc, start }: { f: Field; openDoc: OpenDoc; start: boolean }) {
   const { id, data } = useCaseData();
+  const compose = useCompose();
   const todo = f.todo!;
   const conflict = f.status === 'rozpor';
   const people = todo.contacts.map((c) => `${c.name}${c.role ? ` (${c.role.toLowerCase()})` : ''}`);
@@ -98,11 +101,17 @@ function ToDo({ f, openDoc, start }: { f: Field; openDoc: OpenDoc; start: boolea
           </div>
         </form>
       ) : (
-        <div className="form-actions">
-          <button type="button" className="btn-primary" onClick={() => setOpen(true)}>
-            <Icon name={conflict ? 'check' : 'plus'} size={16} />{conflict ? 'Zapsat ověření' : 'Doplnit údaj'}
-          </button>
-        </div>
+        <>
+          <SentLine field={f.key} conflict={conflict} />
+          <div className="form-actions">
+            <button type="button" className="btn-primary" onClick={() => setOpen(true)}>
+              <Icon name={conflict ? 'check' : 'plus'} size={16} />{conflict ? 'Zapsat ověření' : 'Doplnit údaj'}
+            </button>
+            <button type="button" className="btn-ghost" onClick={() => compose({ mode: 'request', field: f.key })}>
+              <Icon name="mail" size={16} />{conflict ? 'Napsat dotaz' : 'Vyžádat'}
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

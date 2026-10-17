@@ -1,0 +1,50 @@
+/* Writing from the case (dialog), the line "Vyžádáno … · čeká na odpověď" at a to-do, and the coordination record. */
+.compose {
+  width: min(640px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 0; border-radius: var(--r-frame);
+  background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgb(22 24 27 / .35);
+}
+.compose::backdrop { background: rgb(22 24 27 / .45); }
+.compose-form { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; max-height: calc(100vh - 32px); }
+.compose-bar { display: flex; align-items: center; gap: .75rem; padding: .8rem 1rem .8rem 1.25rem; border-bottom: 1px solid var(--line); }
+.compose-bar h2 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+.compose-body { display: grid; gap: .75rem; padding: 1rem 1.25rem; overflow: auto; }
+.compose-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 12rem); gap: .75rem; }
+.compose label { display: grid; gap: .25rem; min-width: 0; font-size: .8rem; font-weight: 600; color: var(--ink-2); }
+.compose select, .compose input, .compose textarea {
+  font: inherit; font-size: .9rem; font-weight: 400; min-width: 0; padding: .5rem .65rem;
+  border: 1px solid var(--line); border-radius: var(--r-ctl); background: var(--surface); color: var(--ink);
+}
+.compose textarea { resize: vertical; line-height: 1.5; }
+.compose select:focus, .compose input:focus, .compose textarea:focus { outline: 2px solid var(--red-200); border-color: var(--red-200); }
+.compose-actions { padding: .8rem 1.25rem 1rem; border-top: 1px solid var(--line); }
+@media (max-width: 560px) {
+  .compose-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* a request already sent about a to-do */
+.todo-sent { display: inline-flex; align-items: center; flex-wrap: wrap; gap: .3rem; margin-top: .3rem; font-size: .8rem; color: var(--ink-2); }
+.todo-sent svg { color: var(--muted); }
+
+/* the coordination record */
+.history { padding: 0; }
+.history-head { display: flex; align-items: center; gap: .6rem; width: 100%; min-width: 0; padding: .95rem 1.25rem; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.history-head h2 { margin: 0; flex: none; font-size: 1rem; font-weight: 700; }
+.history-count { flex: none; min-width: 1.5rem; padding: 0 .4rem; border-radius: var(--r-chip); background: var(--soft); color: var(--ink-2); font-size: .8rem; font-weight: 700; text-align: center; }
+.history-last { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: .85rem; }
+.history-head > svg { margin-left: auto; flex: none; color: var(--muted); }
+.history-list { list-style: none; margin: 0; padding: 0 1.25rem .6rem; }
+.history-list li { display: grid; grid-template-columns: 7.5rem 6rem minmax(0, 1fr); gap: .2rem .75rem; padding: .6rem 0; border-top: 1px solid var(--line); font-size: .875rem; }
+.history-list time { font: 500 .8rem var(--mono); color: var(--muted); padding-top: .1rem; }
+.history-kind { font-weight: 600; }
+.history-kind.k-vyzadano, .history-kind.k-email, .history-kind.k-sms, .history-kind.k-odeslano { color: var(--red); }
+.history-kind.k-overeno, .history-kind.k-telefonat, .history-kind.k-potvrzeno, .history-kind.k-doruceno, .history-kind.k-precteno { color: var(--ok); }
+.history-text { min-width: 0; display: grid; gap: .15rem; justify-items: start; }
+.history-text p { overflow-wrap: anywhere; }
+.history-body { width: 100%; margin-top: .25rem; padding: .6rem .75rem; border-radius: var(--r-ctl); background: var(--soft); white-space: pre-wrap; font-size: .85rem; line-height: 1.5; }
+@media (max-width: 640px) {
+  .history-list li { grid-template-columns: minmax(0, 1fr) auto; }
+  .history-list time { grid-row: 1; }
+  .history-kind { grid-row: 1; justify-self: end; }
+  .history-text { grid-column: 1 / -1; }
+  .history-last { display: none; }
+}

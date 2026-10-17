@@ -885,7 +885,12 @@
               "name": "MUDr. Tomáš Řezníček",
               "phone": "+420 311 000 287"
             }
-          ]
+          ],
+          "request": {
+            "to": "onkologická ambulance KOC / odesílající lékař",
+            "channel": "e-mail",
+            "draft": "Dobrý den, před konziliem 21. 10. 2026 prosíme o doplnění výkonnostního stavu (ECOG nebo Karnofsky) – Alena Procházková. V dosavadní dokumentaci není uveden. Děkujeme, koordinátor KOC."
+          }
         },
         {
           "field": "medication",

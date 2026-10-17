@@ -6,7 +6,10 @@ import type { KeyboardEvent, RefObject } from 'react';
 import { DocIcon } from '../../ui/DocIcon';
 import { Icon } from '../../ui/Icon';
 import { czDate, daysBetween, inDays, nb, telHref } from '../../ui/format';
+import { useCase } from '../../state/caseStore';
+import { lastMessage } from '../../state/messages';
 import { useCaseData } from './caseContext';
+import { useCompose } from './Compose';
 import type { DocRef, Step, Todo } from './types';
 
 /** Opens a report in the reader; `marks` are sentences to highlight in it. */
@@ -20,8 +23,21 @@ function eyebrow(step: Step): string {
   return 'Hotovo';
 }
 
+/** "Vyžádáno 11:03 · MUDr. … · čeká na odpověď" – a request already sent about an open to-do. */
+export function SentLine({ field, conflict }: { field: string; conflict: boolean }) {
+  const { id } = useCaseData();
+  const sent = lastMessage(useCase(id), field);
+  if (!sent) return null;
+  return (
+    <p className="todo-sent">
+      <Icon name="clock" size={13} />{sent.kind === 'vyzadano' ? (conflict ? 'Dotaz odeslán' : 'Vyžádáno') : 'Odesláno'} {sent.at.slice(11)} · {sent.to} · čeká na odpověď
+    </p>
+  );
+}
+
 function TodoItem({ t, onOpen }: { t: Todo; onOpen: OpenDoc }) {
   const { id } = useCaseData();
+  const compose = useCompose();
   const [open, setOpen] = useState(false);
   const miss = t.kind === 'chybí';
   const docIds = [...new Set(t.quotes.map((q) => q.docId))];
@@ -33,8 +49,12 @@ function TodoItem({ t, onOpen }: { t: Todo; onOpen: OpenDoc }) {
       <div className="todo-main">
         <p className="todo-title"><span className="sr">{miss ? 'Chybí: ' : 'Rozpor: '}</span>{nb(t.title)}</p>
         <p className="todo-why">{nb(t.why)}</p>
+        <SentLine field={t.field} conflict={!miss} />
         <div className="todo-links">
           <a className="link" href={`#/pacienti/${id}/udaje/${t.field}`}>{miss ? 'Doplnit údaj' : 'Zapsat ověření'}<Icon name="right" size={14} /></a>
+          <button type="button" className="link" onClick={() => compose({ mode: 'request', field: t.field })}>
+            <Icon name="mail" size={14} />{miss ? 'Vyžádat' : 'Napsat dotaz'}
+          </button>
           {t.quotes.length > 0 && (
             <button type="button" className="link" aria-expanded={open} onClick={() => setOpen(!open)}>
               {open ? 'Skrýt citaci' : 'Ukázat citaci'}<Icon name={open ? 'up' : 'down'} size={14} />

@@ -13,6 +13,8 @@ export interface Todo {
   why: string;
   quotes: Quote[];
   contacts: Person[];
+  /** the engine's draft of a request for what is missing (e.g. ECOG, a histology addendum) */
+  request?: { to: string; channel: string; draft: string };
 }
 
 export interface Step {

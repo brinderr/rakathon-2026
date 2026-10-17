@@ -13,6 +13,9 @@ import { Icon } from '../../ui/Icon';
 import { daysBetween, inDays, nb } from '../../ui/format';
 import { AddReports } from './AddReports';
 import { CaseCtx } from './caseContext';
+import { Compose, ComposeCtx, useCompose } from './Compose';
+import type { ComposeRequest } from './Compose';
+import { History } from './History';
 import { Journey } from './Journey';
 import type { OpenDoc } from './Journey';
 import { liveCase } from './live';
@@ -25,8 +28,6 @@ import { Zaver } from './tabs/Zaver';
 import { Zpravy } from './tabs/Zpravy';
 import type { CaseData, Person } from './types';
 import './pacient.css';
-
-const SOON = 'Připravujeme v dalším kroku';
 
 // tabs of the case – #/pacienti/<id>/<tab>; one file per tab in ./tabs/ (owners in README)
 const TABS = [
@@ -50,6 +51,7 @@ function MdtDate({ id, data }: { id: string; data: CaseData }) {
 }
 
 function PatientHead({ id, data }: { id: string; data: CaseData }) {
+  const compose = useCompose();
   const p = data.patient;
   const female = p.sex === 'žena';
   // whom the coordinator calls about this patient: the patient, the contact person, the GP (numbers from the reports)
@@ -75,8 +77,8 @@ function PatientHead({ id, data }: { id: string; data: CaseData }) {
       </dl>
       <div className="head-actions">
         {people.some((x) => x.phone) && <PhoneContacts people={people} />}
-        <button type="button" className="round-btn" disabled title={`Vyžádat zprávu – ${SOON.toLowerCase()}`} aria-label="Vyžádat zprávu"><Icon name="note" size={18} /></button>
-        <button type="button" className="round-btn" disabled title={`Napsat praktikovi – ${SOON.toLowerCase()}`} aria-label="Napsat praktikovi"><Icon name="message" size={18} /></button>
+        <button type="button" className="round-btn" title="Vyžádat zprávu" aria-label="Vyžádat zprávu" onClick={() => compose({ mode: 'request' })}><Icon name="note" size={18} /></button>
+        <button type="button" className="round-btn" title="Napsat praktikovi" aria-label="Napsat praktikovi" onClick={() => compose({ mode: 'message' })}><Icon name="message" size={18} /></button>
       </div>
     </div>
   );
@@ -95,6 +97,7 @@ function CaseView({ id, data: built, stored, path }: { id: string; data: CaseDat
   const news = data.news[0];
   const openTasks = nowStep.todo?.length ?? 0;
   const openDoc: OpenDoc = useCallback((docId, marks = []) => setReading({ id: docId, marks }), []);
+  const [writing, setWriting] = useState<ComposeRequest | null>(null);
 
   const show = useCallback((stepId: string) => {
     setSelected(stepId);
@@ -118,6 +121,7 @@ function CaseView({ id, data: built, stored, path }: { id: string; data: CaseDat
 
   return (
     <CaseCtx.Provider value={{ id, data, focus: path[0] === 'udaje' ? path[1] : undefined }}>
+    <ComposeCtx.Provider value={setWriting}>
       <nav className="crumbs" aria-label="Drobečková navigace">
         <a href="#/pacienti">Pacienti</a><Icon name="right" size={14} /><span className="crumb-now">{data.patient.name}</span>
       </nav>
@@ -160,10 +164,14 @@ function CaseView({ id, data: built, stored, path }: { id: string; data: CaseDat
           cardRef={journeyRef}
         />
 
+        <History />
+
         {stored && !empty && <AddReports patient={stored} />}
       </>)}
 
       <DocViewer doc={reading ? data.documents[reading.id] ?? null : null} marks={reading?.marks ?? []} onClose={() => setReading(null)} />
+      <Compose req={writing} onClose={() => setWriting(null)} />
+    </ComposeCtx.Provider>
     </CaseCtx.Provider>
   );
 }

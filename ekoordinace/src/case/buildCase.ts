@@ -181,6 +181,8 @@ export async function buildCase(input: BuildInput): Promise<CaseData> {
   const whyFor = (f: R.Finding) => sentences(humanRefs(f.text.replace(/\s*\(MDT_zapis\)/g, '').replace(/\bpacienta\b/g, female ? 'pacientky' : 'pacienta')))
     .filter((x) => !/ověřte/i.test(x)).join(' ');
   const priority = (t: Todo) => { const i = FIRST.indexOf(t.field); return i < 0 ? FIRST.length : i; };
+  // the engine's draft of a request for what is missing (ECOG, a histology addendum …), for "Vyžádat"
+  const draftOf = (key?: string) => (key ? r.fields.find((x) => x.key === key)?.request : undefined);
   const todo: Todo[] = known.length === 0 ? [] : r.findings
     .filter((f) => (f.severity === 'missing' || f.severity === 'conflict') && f.fieldKey)
     .map((f) => ({
@@ -190,6 +192,7 @@ export async function buildCase(input: BuildInput): Promise<CaseData> {
       why: whyFor(f),
       quotes: quotesOf(f.citations),
       contacts: contactsFor(f),
+      ...(draftOf(f.fieldKey) ? { request: draftOf(f.fieldKey)! } : {}),
     }))
     .sort((a, b) => priority(a) - priority(b));
   const open = new Set(todo.map((t) => t.field));
