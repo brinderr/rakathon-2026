@@ -43,6 +43,16 @@ const send = (res: Res, status: number, body: unknown) => res.status(status).jso
 interface Req { method?: string; headers: Record<string, string | string[] | undefined>; body?: unknown }
 interface Res { status: (n: number) => Res; json: (b: unknown) => void; setHeader: (k: string, v: string) => void }
 
+/** The AI SDK (v4) always sends `temperature: 0`; the current Claude models reject sampling parameters – drop them. */
+const withoutSampling: typeof fetch = (url, init) => {
+  if (typeof init?.body !== 'string') return fetch(url, init);
+  const body = JSON.parse(init.body) as Record<string, unknown>;
+  delete body.temperature;
+  delete body.top_p;
+  delete body.top_k;
+  return fetch(url, { ...init, body: JSON.stringify(body) });
+};
+
 export default async function handler(req: Req, res: Res) {
   res.setHeader('Cache-Control', 'no-store');
   const key = process.env.ANTHROPIC_API_KEY;
@@ -59,7 +69,7 @@ export default async function handler(req: Req, res: Res) {
   if (docs.reduce((n, d) => n + d.text.length, 0) > MAX_CHARS) return send(res, 413, { error: 'Zprávy jsou příliš dlouhé na jedno čtení.' });
 
   try {
-    const anthropic = createAnthropic({ apiKey: key });
+    const anthropic = createAnthropic({ apiKey: key, fetch: withoutSampling });
     const { object, usage } = await generateObject({
       model: anthropic(MODEL),
       schema: Schema,
