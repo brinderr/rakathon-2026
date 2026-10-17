@@ -593,7 +593,7 @@ export function identityMismatch(included: Doc[]): { doc: Doc; rc: string; quote
   return hits.filter((h) => h.rc !== main).map((h) => ({ ...h, ref }));
 }
 
-const PENDING_RE = /[^.\n]*(?:bude doplněn\w*|bude zaslán\w*|bude dodán\w*|doplníme|dodatkem|výsledek bude|probíhá)[^.\n]*\.?/gi;
+const PENDING_RE = /[^.\n]*(?:bude doplněn\w*|bude zaslán\w*|bude dodán\w*|budou doplněn\w*|doplníme|dodatkem|výsledek bude|výsledky budou)[^.\n]*\.?/gi;
 
 /** Results announced as "will follow" (e.g. predictive markers) that no later report delivers before the as-of date. */
 export function pendingResults(included: Doc[], asOf: ISODate): { doc: Doc; quote: string; items: string[]; ref?: string }[] {
