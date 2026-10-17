@@ -1,2 +1,61 @@
-/* Section "Konzilia" (owner: Bruno). Shared tokens and blocks are in src/styles.css. */
-.konzilia-start p { padding: .5rem 1.25rem 1.25rem; }
+/* Section "Konzilia" (owner: Matej): MDT sessions with the state of each podklad; a session prints as the programme. */
+.konzilia { display: grid; gap: 1rem; }
+.kz-loading { padding: 0 .25rem; }
+.kz-session { padding: 1.1rem 1.25rem .4rem; }
+.kz-session.past { background: var(--soft); }
+.kz-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: .75rem 1rem; padding-bottom: .8rem; border-bottom: 1px solid var(--line); }
+.kz-head h2 { margin: 0 0 .2rem; font-size: 1.15rem; }
+.kz-sub { color: var(--ink-2); font-size: .875rem; }
+.kz-sub b { color: var(--conf); font-weight: 600; }
+.kz-sub b.ok { color: var(--ok); }
+.kz-print-only { display: none; }
+
+.kz-list { list-style: none; margin: 0; padding: 0; }
+.kz-case { display: grid; grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr) minmax(12rem, 16rem); gap: .4rem 1.25rem; align-items: start; padding: .85rem 0; border-top: 1px solid var(--line); }
+.kz-case:first-child { border-top: 0; }
+.kz-who { display: grid; gap: .1rem; }
+.kz-who a { color: var(--ink); text-decoration: none; }
+.kz-who a:hover b { color: var(--red); }
+.kz-who small { color: var(--muted); font-size: .8rem; }
+.kz-main { display: grid; gap: .3rem; min-width: 0; }
+.kz-dx { font-weight: 600; line-height: 1.4; }
+.kz-dx .code { margin-right: .4rem; font: 500 .78rem var(--mono); color: var(--muted); }
+.kz-q { font-size: .875rem; line-height: 1.5; color: var(--ink-2); }
+.kz-q-short { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.kz-q.kz-empty { color: var(--miss); font-weight: 600; }
+.kz-more { margin-left: .3rem; padding: 0; border: 0; background: none; color: var(--red); font: inherit; font-weight: 600; cursor: pointer; }
+.kz-state { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; }
+.kz-state small { flex-basis: 100%; color: var(--muted); font-size: .78rem; }
+.kz-links { flex-basis: 100%; display: inline-flex; gap: .9rem; font-size: .85rem; font-weight: 600; }
+.kz-links a { color: var(--red); text-decoration: none; }
+.kz-links a:hover { text-decoration: underline; }
+
+.kz-nodate { padding: 1rem 1.25rem; display: grid; gap: .4rem; }
+.kz-nodate h2 { margin: 0; font-size: 1rem; }
+.kz-nodate ul { list-style: none; margin: 0; padding: 0; }
+.kz-nodate li { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .9rem; padding: .5rem 0; border-top: 1px solid var(--line); }
+.kz-nodate li:first-child { border-top: 0; }
+.kz-nodate a { color: var(--ink); text-decoration: none; }
+.kz-nodate .kz-set { margin-left: auto; display: inline-flex; align-items: center; gap: .2rem; color: var(--red); font-size: .85rem; font-weight: 600; }
+.kz-empty-card { padding: 1rem 1.25rem; }
+.kz-past-head { margin: .5rem 0 0; font-size: .75rem; font-family: var(--mono); font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .kz-case { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* the programme of one session, printed or saved as PDF */
+@media print {
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  body:has(.kz-print) { background: #fff; }
+  body:has(.kz-print) .side, body:has(.kz-print) .topbar, body:has(.kz-print) .crumbs, body:has(.kz-print) .foot,
+  body:has(.kz-print) .kz-page-head, body:has(.kz-print) .kz-loading, body:has(.kz-print) .kz-session:not(.kz-print),
+  body:has(.kz-print) .kz-nodate, body:has(.kz-print) .kz-empty-card, body:has(.kz-print) .kz-past-head,
+  body:has(.kz-print) .no-print { display: none !important; }
+  body:has(.kz-print) .frame, body:has(.kz-print) .content, body:has(.kz-print) .konzilia { display: block !important; }
+  body:has(.kz-print) .page { display: block; padding: 0; max-width: none; }
+  .kz-print { border: 0; box-shadow: none; padding: 0; background: #fff; }
+  .kz-print .kz-print-only { display: block; color: #555; font-size: .8rem; margin-bottom: .2rem; }
+  .kz-print .kz-q-short { display: block; -webkit-line-clamp: unset; overflow: visible; }
+  .kz-print .kz-case { break-inside: avoid; grid-template-columns: 11rem minmax(0, 1fr) 12rem; }
+}
