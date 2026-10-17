@@ -99,3 +99,16 @@
 .pk-locked { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .9rem; padding-top: .5rem; }
 .pk-locked span { font-size: .85rem; color: var(--ink-2); }
 .pk-left { font-size: .875rem; color: var(--conf); font-weight: 600; }
+
+/* parts 6–7 written at the MDT: a text field on screen, plain text in print */
+.pk-mdt { width: 100%; font: inherit; line-height: 1.5; padding: .6rem .75rem; border: 1px solid var(--line); border-radius: var(--r-ctl); background: var(--surface); color: var(--ink); resize: vertical; }
+.pk-mdt:focus { outline: 2px solid var(--red-200); border-color: var(--red-200); }
+.pk-mdt-print { display: none; white-space: pre-line; line-height: 1.5; }
+.pk-fill a { color: var(--red); font-weight: 600; }
+@media print {
+  .pk-mdt { display: none; }
+  .pk-mdt-print { display: block; }
+  /* Chrome does not split grid items across pages cleanly – lay the sheet out as plain blocks for print */
+  .podklad, .pk-paper { display: block !important; }
+  .pk-paper > * + * { margin-top: 1.1rem; }
+}

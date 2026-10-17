@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { ME, WAIVE_REASONS, confirmCase, unconfirmCase, useCase, waiveField } from '../../../state/caseStore';
+import { editConclusion, initialConclusion } from '../../../state/zaver';
 import { copyText } from '../../../ui/clipboard';
 import { Icon } from '../../../ui/Icon';
 import { czDate, nb } from '../../../ui/format';
@@ -129,6 +130,9 @@ export function Podklad({ openDoc }: { openDoc: OpenDoc }) {
   const left = data.fields.filter((x) => x.status === 'ponecháno').length;
   const waive = (key: string, why: string) => { waiveField(id, data.today, key, why); setWaiving(null); setReason(''); };
   const confirmed = st.confirmed;
+  // parts 6 and 7 are written at the MDT (after the podklad was confirmed); the Závěr for the GP takes them over
+  const base = initialConclusion(id, p.sex === 'žena');
+  const mdt = st.conclusion ?? base;
 
   // address and the GP's e-mail are in the referral; the MDT_zapis asks for both
   const referral = data.steps.find((s) => s.id === 'prevzit')?.docs?.[0];
@@ -281,16 +285,20 @@ export function Podklad({ openDoc }: { openDoc: OpenDoc }) {
           ) : <p className="pk-empty">Zatím žádná vyšetření.</p>}
         </section>
 
-        <section className="pk-sec">
-          <h3><span>6</span>Závěr MDT</h3>
-          <p className="pk-fill">Vyplní MDT.</p>
-          <div className="pk-lines" aria-hidden="true"><i /><i /><i /></div>
-        </section>
-        <section className="pk-sec">
-          <h3><span>7</span>Doporučení MDT</h3>
-          <p className="pk-fill">Vyplní MDT.</p>
-          <div className="pk-lines" aria-hidden="true"><i /><i /><i /></div>
-        </section>
+        {([['6', 'Závěr MDT', 'zaver'], ['7', 'Doporučení MDT', 'doporuceni']] as const).map(([no, title, key]) => (
+          <section className="pk-sec" key={key}>
+            <h3><span>{no}</span>{title}</h3>
+            {confirmed ? (
+              <>
+                <textarea className="pk-mdt" rows={key === 'zaver' ? 4 : 6} value={mdt[key]} placeholder="Zapíše se na konziliu" aria-label={title}
+                  onChange={(e) => editConclusion(id, base, { [key]: e.target.value })} />
+                {mdt[key] && <p className="pk-mdt-print">{mdt[key]}</p>}
+                {key === 'doporuceni' && <p className="pk-fill">Přenese se do <a href={`#/pacienti/${id}/zaver`}>závěru pro praktika</a>.</p>}
+              </>
+            ) : <p className="pk-fill">Vyplní MDT na konziliu.</p>}
+            {!mdt[key] || !confirmed ? <div className="pk-lines" aria-hidden="true"><i /><i /><i /></div> : null}
+          </section>
+        ))}
       </article>
     </div>
   );

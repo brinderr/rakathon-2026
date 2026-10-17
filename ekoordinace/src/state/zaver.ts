@@ -1,7 +1,9 @@
 // The conclusion of the MDT for the GP (owner: matej): what the MDT decided and recommended (the doctors' words), the
 // letter sent to the GP and its delivery receipt – odesláno → doručeno → přečteno, urgence while unread. Kept in the
 // case state (state/caseStore), so it survives a reload and the journey can show the step as done.
+import alenaMdt from '../data/alena-mdt-zaver.json';
 import { ME, stamp, updateCase } from './caseStore';
+import { DEMO_ID } from './patients';
 
 export interface Conclusion {
   /** "Závěr MDT" and "Doporučení MDT" from the MDT record */
@@ -17,6 +19,12 @@ export interface Conclusion {
 }
 
 export const emptyConclusion = (): Conclusion => ({ zaver: '', doporuceni: '', next: '' });
+
+/** Before the first edit: the MDT record of the demo case (VZP sample), otherwise empty. */
+export function initialConclusion(id: string, female: boolean): Conclusion {
+  if (id === DEMO_ID) return { zaver: alenaMdt.zaver, doporuceni: alenaMdt.doporuceni, next: alenaMdt.next };
+  return { ...emptyConclusion(), next: `${female ? 'Pacientku' : 'Pacienta'} o plánu informuje koordinátorka KOC.` };
+}
 
 type Text = Partial<Pick<Conclusion, 'zaver' | 'doporuceni' | 'next'>>;
 

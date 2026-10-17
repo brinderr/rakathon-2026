@@ -3,10 +3,8 @@
 // print / PDF, and sending it as a secure message with a delivery receipt: odesláno → doručeno → přečteno, urgence while
 // unread, "Odeslat znovu" when the text changed. Once delivered, the journey step "Závěr praktikovi" is done (live.ts).
 import { useEffect, useState } from 'react';
-import alenaMdt from '../../../data/alena-mdt-zaver.json';
 import { ME, useCase } from '../../../state/caseStore';
-import { DEMO_ID } from '../../../state/patients';
-import { editConclusion, emptyConclusion, markRead, sendConclusion, simulateReceipt, urge } from '../../../state/zaver';
+import { editConclusion, initialConclusion, markRead, sendConclusion, simulateReceipt, urge } from '../../../state/zaver';
 import type { Conclusion } from '../../../state/zaver';
 import { copyText } from '../../../ui/clipboard';
 import { Icon } from '../../../ui/Icon';
@@ -20,12 +18,6 @@ const KOC = 'KOC Nemocnice Lipová';
 const time = (at: string) => at.slice(11);
 /** "MUDr. Tomáš Řezníček, praktický lékař" (without a doubled role when the reports name no GP) */
 const gpName = (name: string) => (/praktick/i.test(name) ? name : `${name}, praktický lékař`);
-
-/** What the tab shows before the first edit: the MDT record of the demo case, otherwise empty. */
-function initial(id: string, female: boolean): Conclusion {
-  if (id === DEMO_ID) return { zaver: alenaMdt.zaver, doporuceni: alenaMdt.doporuceni, next: alenaMdt.next };
-  return { ...emptyConclusion(), next: `${female ? 'Pacientku' : 'Pacienta'} o plánu informuje koordinátorka KOC.` };
-}
 
 /** The letter as plain text – what is copied and sent. */
 function letter(data: CaseData, c: Conclusion): string {
@@ -101,7 +93,7 @@ export function Zaver({ openDoc }: { openDoc: OpenDoc }) {
   const st = useCase(id);
   const p = data.patient;
   const female = p.sex === 'žena';
-  const base = initial(id, female);
+  const base = initialConclusion(id, female);
   const c = st.conclusion ?? base;
   const text = letter(data, c);
   const sent = c.sent;
