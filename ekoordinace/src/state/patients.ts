@@ -12,7 +12,11 @@ import type { CaseData } from '../sections/pacient/types';
 export const SIM_TODAY = alena.today;
 
 /** An added report; `source` = how its text was read ('ocr' = recognized from a picture, to be checked). */
-export interface StoredReport extends Report { source?: 'docx' | 'text' | 'rtf' | 'pdf' | 'ocr' }
+export interface StoredReport extends Report {
+  source?: 'docx' | 'text' | 'rtf' | 'pdf' | 'ocr';
+  /** when the coordinator added it to the app (ISO time) – the AI assistant can answer "kdy přišla …" */
+  added?: string;
+}
 export interface StoredPatient { id: string; label: string; created: string; mdtDate: string; docs: StoredReport[] }
 
 export const DEMO_ID = 'alena';

@@ -58,7 +58,7 @@ export function AddReports({ patient, first = false }: { patient: StoredPatient;
   const add = (items: Item[]) => updatePatient(patient.id, (p) => {
     const docs: StoredReport[] = [...p.docs];
     for (const it of items) {
-      docs.push({ id: nextDocId({ ...p, docs }), date: reportDate(it.text, SIM_TODAY), title: it.title, text: it.text, ...(it.source ? { source: it.source } : {}) });
+      docs.push({ id: nextDocId({ ...p, docs }), date: reportDate(it.text, SIM_TODAY), title: it.title, text: it.text, added: new Date().toISOString(), ...(it.source ? { source: it.source } : {}) });
     }
     return { ...p, docs };
   });

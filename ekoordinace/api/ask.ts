@@ -1,0 +1,55 @@
+// "Zeptat se AI" (Vercel Function): the coordinator asks anything about what the app holds – patients, reports and
+// when they came, to-dos, MDTs, the coordination record – and Claude answers only from that data, with the source of
+// each fact. The browser sends a snapshot of the app state already pseudonymized (birth numbers, phones, e-mails,
+// addresses and names replaced by tokens) and maps the tokens back in the answer. The key lives only in the Vercel
+// project settings (ANTHROPIC_API_KEY).
+import { createAnthropic } from '@ai-sdk/anthropic';
+import { generateText } from 'ai';
+
+const MODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-5-5';
+const ALLOWED = /^(https:\/\/ekoordinace(-[\w-]+)?\.vercel\.app|http:\/\/localhost(:\d+)?)$/;
+const MAX_CONTEXT = 240_000;
+
+const SYSTEM = `Jsi asistent koordinátorky komplexního onkologického centra v aplikaci eKoordinace.
+Odpovídáš na otázky o pacientech, jejich zprávách (kdy přišly a co v nich je), úkolech, konziliích a záznamu koordinace.
+Odpovídej JEN z dat v bloku <data> (stav aplikace k simulovanému dni). Když odpověď v datech není, napiš „V datech to není.“ a nic nedomýšlej.
+Nedávej lékařská doporučení ani nehodnoť léčbu – jsi pomocník pro koordinaci, ne lékař.
+U každého faktu uveď zdroj v závorce, např. „(Alena, histologie 19. 10.)“ nebo „(záznam koordinace 19. 10. 10:12)“.
+Osobní údaje jsou nahrazené značkami jako [PACIENT_1], [RČ_1], [TEL_1] – používej je přesně tak, jak jsou.
+Piš česky, stručně a věcně: nejvýše 6 vět nebo krátký seznam.`;
+
+interface Req { method?: string; headers: Record<string, string | string[] | undefined>; body?: unknown }
+interface Res { status: (n: number) => Res; json: (b: unknown) => void; setHeader: (k: string, v: string) => void }
+const send = (res: Res, status: number, body: unknown) => res.status(status).json(body);
+
+export default async function handler(req: Req, res: Res) {
+  res.setHeader('Cache-Control', 'no-store');
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (req.method === 'GET') return send(res, 200, { claude: Boolean(key), model: MODEL });
+  if (req.method !== 'POST') return send(res, 405, { error: 'Jen GET nebo POST.' });
+  if (!key) return send(res, 503, { error: 'AI není zapnutá – v nastavení projektu na Vercelu chybí ANTHROPIC_API_KEY.' });
+  const origin = String(req.headers.origin ?? '');
+  if (origin && !ALLOWED.test(origin)) return send(res, 403, { error: 'Volání je povolené jen z eKoordinace.' });
+
+  const body = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) as { question?: unknown; context?: unknown; history?: unknown } | undefined;
+  const question = String(body?.question ?? '').trim().slice(0, 2000);
+  const context = String(body?.context ?? '').slice(0, MAX_CONTEXT);
+  const history = (Array.isArray(body?.history) ? body!.history : [])
+    .filter((m): m is { role: 'user' | 'assistant'; content: string } => Boolean(m) && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+    .slice(-6);
+  if (!question) return send(res, 400, { error: 'Prázdná otázka.' });
+
+  try {
+    const anthropic = createAnthropic({ apiKey: key });
+    const { text, usage } = await generateText({
+      model: anthropic(MODEL),
+      system: `${SYSTEM}\n\n<data>\n${context}\n</data>`,
+      messages: [...history, { role: 'user', content: question }],
+      temperature: 0,
+      maxTokens: 900,
+    });
+    return send(res, 200, { model: MODEL, answer: text, usage });
+  } catch (e) {
+    return send(res, 502, { error: `AI neodpověděla: ${e instanceof Error ? e.message : String(e)}` });
+  }
+}

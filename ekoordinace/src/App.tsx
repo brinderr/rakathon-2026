@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { DEFAULT_SECTION, SECTIONS } from './sections';
 import { useLiveCases } from './sections/pacient/live';
+import { AskAi } from './sections/ai/AskAi';
 import { Search } from './sections/pacient/Search';
 import { SIM_TODAY } from './state/patients';
 import { czDate } from './ui/format';
@@ -64,6 +65,7 @@ export function App() {
             <span className="sim-day" title="Případ z výzvy VZP: poslední zpráva před konziliem přišla 19. 10. 2026, konzilium je 21. 10. Aplikace proto simuluje tento den – všechny lhůty („za 2 dny“) se počítají od něj.">
               <Icon name="calendar" size={16} /><span>Simulovaný den</span> <b>{czDate(SIM_TODAY)}</b>
             </span>
+            <AskAi />
             <a className="icon-btn" href="#/prehled" aria-label={`Co je potřeba udělat (${openTasks})`}>
               <Icon name="bell" />{openTasks > 0 && <span className="badge">{openTasks}</span>}
             </a>

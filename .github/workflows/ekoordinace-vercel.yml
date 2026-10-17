@@ -1,6 +1,8 @@
-# eKoordinace → Vercel: every push to main that touches ekoordinace/ is checked, built and deployed to production.
-# Works with the private repo and with any commit author. Needs one repository secret: VERCEL_TOKEN (a Vercel token
-# for the team "Matej Salat's projects"). Without the secret the deploy job is skipped, not failed.
+# eKoordinace → Vercel: every push to main that touches ekoordinace/ is checked, built and deployed to production –
+# the app (static, dist/) and its backend (Vercel Functions in ekoordinace/api/: the AI assistant and document
+# structuring with Claude). Works with the private repo and with any commit author. Needs one repository secret:
+# VERCEL_TOKEN (a Vercel token for the team "Matej Salat's projects"). Without the secret the deploy job is skipped.
+# The Claude key is NOT here: it is the environment variable ANTHROPIC_API_KEY in the Vercel project settings.
 name: eKoordinace → Vercel
 
 on:
@@ -43,10 +45,14 @@ jobs:
           cache-dependency-path: ekoordinace/package-lock.json
       - run: npm ci
       - run: npm run check # typecheck + build into dist/
-      - name: Deploy dist/ to the Vercel project "ekoordinace"
+      - name: Build (app + functions) and deploy to the Vercel project "ekoordinace"
         run: |
           # the project is created on the first run (if it already exists, "project add" fails and we go on)
           npx --yes vercel@latest project add ekoordinace --scope "$SCOPE" --token "$VERCEL_TOKEN" || true
-          npx --yes vercel@latest link --yes --project ekoordinace --scope "$SCOPE" --token "$VERCEL_TOKEN" --cwd dist
-          url=$(npx --yes vercel@latest deploy --prod --yes --scope "$SCOPE" --token "$VERCEL_TOKEN" --cwd dist)
+          npx --yes vercel@latest link --yes --project ekoordinace --scope "$SCOPE" --token "$VERCEL_TOKEN"
+          # settings and environment variables of production (ANTHROPIC_API_KEY stays on Vercel, only for the functions)
+          npx --yes vercel@latest pull --yes --environment=production --scope "$SCOPE" --token "$VERCEL_TOKEN"
+          # built here, where ../app (the shared engine) is available; vercel.json says vite → dist/, api/*.ts → functions
+          npx --yes vercel@latest build --prod --scope "$SCOPE" --token "$VERCEL_TOKEN"
+          url=$(npx --yes vercel@latest deploy --prebuilt --prod --yes --scope "$SCOPE" --token "$VERCEL_TOKEN")
           echo "Nasadené: $url" >> "$GITHUB_STEP_SUMMARY"
