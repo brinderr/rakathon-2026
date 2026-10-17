@@ -12,6 +12,9 @@
   .cv-page.has-panel .cs-group-compact .cs-row:nth-child(2n) { border-left: 0; }
   .cv-page.has-panel .cs-asof-row { grid-template-columns: auto minmax(160px, 1fr); }
   .cv-page.has-panel .cs-asof-chips { grid-column: 1 / -1; justify-content: flex-start; }
+  /* header: with the panel open the two buttons move under the name (one row), so the meta lines keep their width */
+  .cv-page.has-panel .cs-header { flex-wrap: wrap; }
+  .cv-page.has-panel .cs-header-actions { flex: 1 1 100%; flex-direction: row; flex-wrap: wrap; padding-left: 90px; }
 }
 
 .cv-tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface-glass); border: 1px solid var(--hair); border-radius: 999px; align-self: flex-start; backdrop-filter: blur(10px); }
@@ -46,3 +49,19 @@
 
 .cv-toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); background: var(--ink); color: #fff; font-size: 13.5px; font-weight: 600; padding: 11px 18px; border-radius: 999px; box-shadow: 0 12px 30px rgba(17,24,39,.3); z-index: 90; animation: cv-toast .25s var(--ease); white-space: nowrap; max-width: calc(100vw - 48px); overflow: hidden; text-overflow: ellipsis; }
 @keyframes cv-toast { from { transform: translate(-50%, 12px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+/* ---------------------------------------------------------------- Phone (≤ 760 px) */
+@media (max-width: 760px) {
+  .cv-page { padding: 4px 0 16px; }
+  /* 5 tabs do not fit in 360 px: the pill bar scrolls sideways, the page does not */
+  .cv-tabs { display: flex; align-self: stretch; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .cv-tabs::-webkit-scrollbar { display: none; }
+  .cv-tab { flex: none; height: 34px; padding: 0 13px; font-size: 13px; }
+  .cv-tabs + .cs-asof { margin-top: calc(-1 * var(--gap) + 8px); }
+  .cv-two, .cv-two-wide, .cv-next-in { grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+  .cv-next-text { font-size: 16.5px; }
+  .cv-empty-pad { margin: 0 16px 16px; }
+  .cv-journey-legend { gap: 8px 12px; font-size: 11.5px; }
+  /* toast above the bottom bar, text may wrap */
+  .cv-toast { bottom: calc(14px + var(--bottom-nav) + var(--safe-b)); white-space: normal; text-align: center; line-height: 1.35; max-width: calc(100vw - 32px); }
+}

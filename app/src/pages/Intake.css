@@ -17,3 +17,11 @@
 .intake-found { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
 .intake-sent { margin-top: 28px; }
 
+
+@media (max-width: 760px) {
+  .intake-koc { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .intake-koc__opt { padding: 12px 14px; font-size: 14px; }
+  .intake-counts { margin-left: 0; flex-wrap: wrap; }
+  .intake-found { gap: 6px; }
+  .intake-sent { margin-top: 20px; }
+}

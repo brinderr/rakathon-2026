@@ -1,8 +1,8 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { PathStep, StepState } from '../../types';
 import { SK_STEP, STEP_ORDER, daysBetween, daysWord, fmtShort, stepLateDays, stepStateAt } from './caseUtils';
-import { SourceChip } from './ui';
-import { IcAlert, IcCheck, IcPerson, IcPin } from './icons';
+import { Btn, SourceChip } from './ui';
+import { IcAlert, IcCheck, IcPerson, IcPin, IcSend } from './icons';
 
 interface Col { name: string; steps: PathStep[] }
 
@@ -39,8 +39,8 @@ function Segments({ state }: { state: StepState | null }) {
   );
 }
 
-export function StepCard({ step, asOf, col, urgedAt, onOpenDoc }:
-  { step: PathStep; asOf: string; col: number; urgedAt?: string; onOpenDoc: (docId: string) => void }) {
+export function StepCard({ step, asOf, col, urgedAt, onOpenDoc, onUrge }:
+  { step: PathStep; asOf: string; col: number; urgedAt?: string; onOpenDoc: (docId: string) => void; onUrge?: (step: PathStep) => void }) {
   const state = stepStateAt(step, asOf);
   const late = stepLateDays(step, state, asOf);
   const future = state === null;
@@ -69,12 +69,19 @@ export function StepCard({ step, asOf, col, urgedAt, onOpenDoc }:
         </div>
       )}
       {!done && urgedAt && urgedAt <= asOf && <div className="cs-step-result cs-step-after">urgované {fmtShort(urgedAt)}</div>}
+      {late > 0 && onUrge && (
+        <div className="cs-step-urge">
+          <Btn size="sm" variant="secondary" icon={<IcSend size={14} />} onClick={() => onUrge(step)} title={`Urgovať: ${step.place}`}>
+            {urgedAt && urgedAt <= asOf ? 'Urgovať znova' : 'Urgovať'}
+          </Btn>
+        </div>
+      )}
     </div>
   );
 }
 
-export function Journey({ steps, asOf, mdtDate, urgedAt, onOpenDoc }:
-  { steps: PathStep[]; asOf: string; mdtDate?: string; urgedAt?: Record<string, string>; onOpenDoc: (docId: string) => void }) {
+export function Journey({ steps, asOf, mdtDate, urgedAt, onOpenDoc, onUrge }:
+  { steps: PathStep[]; asOf: string; mdtDate?: string; urgedAt?: Record<string, string>; onOpenDoc: (docId: string) => void; onUrge?: (step: PathStep) => void }) {
   const cols = useMemo(() => buildColumns(steps, mdtDate), [steps, mdtDate]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [paths, setPaths] = useState<string[]>([]);
@@ -120,7 +127,7 @@ export function Journey({ steps, asOf, mdtDate, urgedAt, onOpenDoc }:
         <div className="cs-col" key={col.name}>
           <div className="cs-col-name">{col.name}<span>{col.steps.length}</span></div>
           <div className="cs-col-cards">
-            {col.steps.map((s) => <StepCard key={s.id} step={s} asOf={asOf} col={ci} urgedAt={urgedAt?.[s.id]} onOpenDoc={onOpenDoc} />)}
+            {col.steps.map((s) => <StepCard key={s.id} step={s} asOf={asOf} col={ci} urgedAt={urgedAt?.[s.id]} onOpenDoc={onOpenDoc} onUrge={onUrge} />)}
           </div>
         </div>
       ))}

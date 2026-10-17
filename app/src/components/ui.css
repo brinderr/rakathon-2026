@@ -111,3 +111,15 @@
 .tip__bubble--top { bottom: calc(100% + 8px); }
 .tip__bubble--bottom { top: calc(100% + 8px); transform: translateX(-50%) translateY(-4px); }
 .tip:hover .tip__bubble, .tip:focus-visible .tip__bubble { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------------------------------------------------------------- Phone (≤ 760 px) */
+@media (max-width: 760px) {
+  .card { padding: 16px 16px; }
+  .stat__value { font-size: 26px; }
+  .stat--lg .stat__value { font-size: 32px; }
+  .tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: none; padding: 7px 12px; }
+  /* hover tooltips do not exist on a phone; the invisible bubble would still widen the page */
+  .tip__bubble { display: none; }
+}

@@ -1,0 +1,81 @@
+/* Additions to the case screen from the demo-tuning pass (kept apart from case.css, which another agent edits):
+   „Vyžiadané správy“ card (cs-rq-*), later documents on the Dokumenty tab, „Urgovať“ on a late step.
+   Tokens come from src/theme.css. Prefix: cs- */
+
+/* ---------- Vyžiadané správy ---------- */
+.cs-rq-intro { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); background: var(--canvas); border-radius: 16px; padding: 12px 14px; margin-bottom: 8px; }
+.cs-rq-intro svg { flex: none; margin-top: 2px; color: var(--accent); }
+.cs-rq-list { display: flex; flex-direction: column; }
+.cs-rq-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto auto; gap: 16px; align-items: center; padding: 11px 8px; border-top: 1px solid var(--hair); border-radius: 12px; cursor: pointer; transition: background .15s ease; }
+.cs-rq-row:first-child { border-top: 0; }
+.cs-rq-row:hover { background: var(--canvas); }
+.cs-rq-row:hover .cs-row-chev { transform: translateX(2px); color: var(--accent); }
+.cs-rq-row.is-waiting { cursor: default; }
+.cs-rq-row.is-waiting:hover { background: transparent; }
+.cs-rq-id { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.cs-rq-main { min-width: 0; }
+.cs-rq-title { font-size: 14.5px; font-weight: 650; }
+.cs-rq-from { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+.cs-rq-path { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.cs-rq-path b { color: var(--ink-2); font-weight: 600; }
+.cs-rq-arrow { display: inline-flex; color: var(--faint); }
+.cs-rq-urged { color: var(--orange-ink); font-weight: 600; }
+.cs-rq-days { text-align: right; min-width: 56px; }
+.cs-rq-days strong { display: block; font-size: 20px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+.cs-rq-days span { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.cs-rq-side { display: flex; align-items: center; gap: 10px; }
+.cs-rq-side .cs-row-chev.is-hidden { visibility: hidden; }
+
+/* ---------- Dokumenty: reports that come later than the chosen date ---------- */
+.cs-docs-later-head { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 14px 8px 4px; border-top: 1px solid var(--hair); margin-top: 4px; }
+
+/* ---------- Cesta: „Urgovať“ on a step that is late ---------- */
+.cs-step-urge { display: flex; justify-content: flex-end; margin-top: 2px; }
+
+/* ---------- 2. kolo (QA R5) ---------- */
+/* Conflict row says what the conflict is; a report with another birth number is greyed out (R5 #2). */
+.cs-row-why { display: flex; gap: 6px; align-items: flex-start; margin-top: 5px; font-size: 12.5px; line-height: 1.45; color: var(--orange-ink); }
+.cs-row-why svg { flex: none; margin-top: 2px; }
+.cs-row-value.is-void { color: var(--faint); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--coral) 55%, transparent); }
+.cs-row-void { display: inline-flex; gap: 6px; align-items: center; margin-top: 4px; font-size: 12.5px; font-weight: 600; color: var(--coral-ink); background: var(--coral-soft); border-radius: 8px; padding: 3px 8px; }
+
+/* Safety band under the patient's name: facts from the reports, each with its source (R5 #9). */
+.cs-safety { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 10px; padding: 7px 12px; border-radius: 12px; background: var(--coral-soft); color: var(--coral-ink); font-size: 13px; line-height: 1.4; }
+.cs-safety-k { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; }
+.cs-safety-item { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; font-weight: 600; min-width: 0; }
+.cs-safety .cs-src { font-weight: 500; }
+
+/* „Upozornenie, ktoré musí ísť ďalej“ – doctors' warning passed on, quotes word for word (R5 #1). */
+.cs-card.cv-alert { border: 1px solid color-mix(in srgb, var(--coral) 35%, transparent); background: linear-gradient(180deg, var(--coral-soft) 0%, var(--surface) 70%); }
+.cv-alert .cs-card-title { display: inline-flex; align-items: center; gap: 8px; color: var(--coral-ink); }
+.cv-alert-label { font-size: 17px; font-weight: 650; letter-spacing: -0.01em; margin: 2px 0 10px; }
+.cv-alert-quotes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.cv-alert-quotes li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--hair); min-width: 0; }
+.cv-alert-quotes q { font-size: 14px; line-height: 1.45; color: var(--ink); overflow-wrap: anywhere; flex: 1 1 320px; min-width: 0; }
+.cv-alert-quotes q::before { content: "„"; } .cv-alert-quotes q::after { content: "“"; }
+.cv-alert-src { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.cv-alert-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+
+/* Dokumenty: nobody has been asked yet (R5 #15) */
+.cs-wait li.is-todo .cs-wait-ic { color: var(--coral-ink); background: var(--coral-soft); }
+
+/* Semafor: a conflict must not look like a proposal – stronger orange and an A/B mark (R5 #15) */
+.cs-tile.cs-tile-conflict { position: relative; background: color-mix(in srgb, var(--orange) 26%, var(--surface)); color: var(--orange-ink); border-color: color-mix(in srgb, var(--orange) 55%, transparent); }
+.cs-tile.cs-tile-conflict::after { content: "A/B"; position: absolute; top: 7px; right: 7px; font-size: 9.5px; font-weight: 800; letter-spacing: .02em; padding: 1px 4px; border-radius: 5px; background: var(--orange); color: #fff; }
+.cs-legend-dot.cs-tile-conflict { background: color-mix(in srgb, var(--orange) 45%, var(--surface)); }
+.cs-sem.is-compact .cs-tile.cs-tile-conflict::after { display: none; }
+
+@media (max-width: 760px) {
+  .cs-safety { font-size: 12.5px; padding: 7px 10px; }
+  .cv-alert-label { font-size: 15.5px; }
+  .cv-alert-quotes q { flex-basis: 100%; font-size: 13.5px; }
+  .cv-alert-foot .cs-btn { width: 100%; justify-content: center; }
+  .cs-tile.cs-tile-conflict::after { top: 5px; right: 5px; font-size: 8.5px; }
+}
+
+/* Vyžiadané správy on a phone: id · text · days, the status pill goes under the text (no squeezed 4-column row) */
+@media (max-width: 760px) {
+  .cs-rq-row { grid-template-columns: 26px minmax(0, 1fr) auto; gap: 6px 10px; padding: 11px 4px; }
+  .cs-rq-side { grid-column: 2 / -1; justify-self: start; }
+  .cs-rq-days { min-width: 44px; }
+}

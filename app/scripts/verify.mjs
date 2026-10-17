@@ -58,13 +58,13 @@ async function loadCasesModule() {
 }
 
 const mod = await loadCasesModule();
-const { CASES, EXTRA_DOCS = {}, LATER_VALUES = {}, EVAL_SUMMARY, CASE_AI = {} } = mod;
+const { CASES, EXTRA_DOCS = {}, LATER_VALUES = {}, ALERTS = {}, EVAL_SUMMARY, CASE_AI = {} } = mod;
 if (!Array.isArray(CASES)) {
   console.error('✗ src/data/cases.ts neexportuje CASES');
   process.exit(1);
 }
 
-writeFileSync(outPath, JSON.stringify({ cases: CASES, extraDocs: EXTRA_DOCS, laterValues: LATER_VALUES }, null, 1) + '\n');
+writeFileSync(outPath, JSON.stringify({ cases: CASES, extraDocs: EXTRA_DOCS, laterValues: LATER_VALUES, alerts: ALERTS }, null, 1) + '\n');
 
 const source = JSON.parse(readFileSync(sourcePath, 'utf8'));
 const baseTexts = {};
@@ -186,6 +186,12 @@ for (const c of CASES) {
   (LATER_VALUES[c.id] ?? []).forEach((lv, i) => {
     if (!keys.has(lv.key)) err(`LATER_VALUES[${i}]: neznáme pole ${lv.key}`);
     lv.citations.forEach((x, j) => checkCitation(x, `LATER_VALUES[${i}] ${lv.key}.citations[${j}]`));
+  });
+
+  // Upozornenia (pás v hlavičke, karta „musí ísť ďalej“)
+  (ALERTS[c.id] ?? []).forEach((a, i) => {
+    if (!a.citations?.length) err(`ALERTS[${i}] ${a.id}: upozornenie bez citátu`);
+    a.citations.forEach((x, j) => checkCitation(x, `ALERTS[${i}] ${a.id}.citations[${j}]`));
   });
 
   // Lieky

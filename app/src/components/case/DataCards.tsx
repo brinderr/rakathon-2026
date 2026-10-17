@@ -1,9 +1,9 @@
 // Laboratórium, Lieky, Vyšetrenia, Dokumenty, Záznam o koordinovaní – all filtered by the as-of date.
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { Exam, LabRow, LogEntry, Medication, SourceDoc } from '../../types';
 import { SK_KIND, docDate, fmtDate, fmtShort, visibleLog } from './caseUtils';
 import { Card, Empty, Pill, SourceChip } from './ui';
-import { IcChevron, IcCheck, IcClock, IcDoc } from './icons';
+import { IcChevron, IcCheck, IcClock, IcDoc, IcSend } from './icons';
 
 /* ---------- Laboratórium (one table, a column per sample; by default only out-of-range values and tumour markers) ---------- */
 const isMarker = (test: string) => /CA ?19-9|CA ?125|CA ?15-3|CA ?72-4|\bCEA\b|\bAFP\b|\bPSA\b|\bNSE\b|HE4|marker/i.test(test);
@@ -138,15 +138,21 @@ export function ExamsCard({ exams, asOf, onOpenDoc }: { exams: Exam[]; asOf: str
 }
 
 /* ---------- Dokumenty ---------- */
-export interface WaitingItem { label: string; detail: string }
+/** todo = nobody has been asked yet (goes to „Treba vyžiadať“, not to „Čakáme na“ – QA R5 #15). */
+export interface WaitingItem { label: string; detail: string; todo?: boolean }
 
-export function DocsList({ docs, asOf, waiting, onOpenDoc }:
-  { docs: SourceDoc[]; asOf: string; waiting: WaitingItem[]; onOpenDoc: (docId: string) => void }) {
+/** `after` = a card rendered between „Prijaté dokumenty“ and „Čakáme na“ (e.g. „Vyžiadané správy“).
+ *  Reports received after the chosen date stay in the list but greyed out (README: „tie, ktoré prídu neskôr“). */
+export function DocsList({ docs, asOf, waiting, onOpenDoc, after }:
+  { docs: SourceDoc[]; asOf: string; waiting: WaitingItem[]; onOpenDoc: (docId: string) => void; after?: ReactNode }) {
   const sorted = [...docs].sort((a, b) => (docDate(a) < docDate(b) ? -1 : docDate(a) > docDate(b) ? 1 : a.id.localeCompare(b.id)));
   const received = sorted.filter((d) => docDate(d) <= asOf);
+  const later = sorted.filter((d) => docDate(d) > asOf);
+  const toAsk = waiting.filter((w) => w.todo);
+  const waitingFor = waiting.filter((w) => !w.todo);
   return (
     <div className="cs-docs">
-      <Card title="Prijaté dokumenty" aside={<span className="cs-hint">{received.length} prijatých · {waiting.length} očakávame · k {fmtShort(asOf)}</span>}>
+      <Card title="Prijaté dokumenty" aside={<span className="cs-hint">{received.length} prijatých · {waitingFor.length} očakávame · k {fmtShort(asOf)}</span>}>
         {received.length ? received.map((d) => (
           <div key={d.id} className="cs-docrow" role="button" tabIndex={0} onClick={() => onOpenDoc(d.id)}
             onKeyDown={(e) => { if (e.key === 'Enter') onOpenDoc(d.id); }}>
@@ -163,12 +169,41 @@ export function DocsList({ docs, asOf, waiting, onOpenDoc }:
             </div>
           </div>
         )) : <Empty>K zvolenému dátumu ešte nič neprišlo.</Empty>}
+        {later.length > 0 && (
+          <>
+            <div className="cs-docs-later-head">Neskoršie správy · k {fmtShort(asOf)} ešte neprišli</div>
+            {later.map((d) => (
+              <div key={d.id} className="cs-docrow is-future" aria-disabled="true">
+                <span className="cs-docrow-ic"><IcDoc size={18} /></span>
+                <span className="cs-docrow-id">{d.id}</span>
+                <div className="cs-docrow-main">
+                  <div className="cs-docrow-title">{d.title}</div>
+                  <div className="cs-docrow-meta">{d.place} · {SK_KIND[d.kind]} · vyšetrenie {fmtDate(d.examDate)}</div>
+                </div>
+                <div className="cs-docrow-side"><Pill tone="neutral">ešte neprišlo</Pill></div>
+              </div>
+            ))}
+          </>
+        )}
         <p className="cs-hint">Kanály a dátumy prijatia sú v deme simulované – zadanie ich neuvádza.</p>
       </Card>
-      {waiting.length > 0 && (
+      {after}
+      {toAsk.length > 0 && (
+        <Card title="Treba vyžiadať" aside={<span className="cs-hint">chýba v správach, zatiaľ nikto nebol požiadaný</span>}>
+          <ul className="cs-wait">
+            {toAsk.map((w, i) => (
+              <li key={i} className="is-todo">
+                <span className="cs-wait-ic"><IcSend size={15} /></span>
+                <div><div className="cs-wait-label">{w.label}</div><div className="cs-wait-detail">{w.detail}</div></div>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+      {waitingFor.length > 0 && (
         <Card title="Čakáme na" aside={<span className="cs-hint">vyžiadané alebo objednané, ešte neprišlo</span>}>
           <ul className="cs-wait">
-            {waiting.map((w, i) => (
+            {waitingFor.map((w, i) => (
               <li key={i}>
                 <span className="cs-wait-ic"><IcClock size={15} /></span>
                 <div><div className="cs-wait-label">{w.label}</div><div className="cs-wait-detail">{w.detail}</div></div>
@@ -195,7 +230,7 @@ export function LogCard({ log, asOf, onShowAll }: { log: LogEntry[]; asOf: strin
     <Card title="Záznam o koordinovaní" aside={
       <span className="cs-log-sum">
         <Pill tone="accent"><IcCheck size={13} /> {n} {n === 1 ? 'deň' : n <= 4 ? 'dni' : 'dní'} so zásahom = {czk(n * CZK_PER_DAY)}</Pill>
-        <span className="cs-hint">podklad pre výkon 51887 (ak ho poisťovňa uzná) · vykazuje nemocnica</span>
+        <span className="cs-hint">podklad pre vykázanie výkonu 51887 · vykazuje nemocnica, uznáva poisťovňa</span>
       </span>
     }>
       {hidden > 0 && (

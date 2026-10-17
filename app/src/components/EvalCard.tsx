@@ -3,6 +3,7 @@
 // Voliteľná časť „Test poistky“ číta public/data/vysledok-test-halucinacii.json (ak je skopírovaný z eval/).
 import { useEffect, useState, type ReactNode } from 'react';
 import { Card, Icon, Pill, pluralWord } from './ui';
+import { EVAL_CAVEAT, halluLine } from './case/EvalCard';
 import './EvalCard.css';
 
 interface EvalSummary {
@@ -18,6 +19,7 @@ interface EvalJson {
 }
 interface GuardJson {
   what: string; generatedAt: string; aiProposals: number; accepted: number; rejected: number;
+  evalSummary?: { inventedValues?: number };
   fields: { field: string; aiValue: string; accepted: boolean; reason: string }[];
 }
 
@@ -43,7 +45,7 @@ function useJson<T>(file: string | undefined): T | null {
 
 function modeLabel(e: EvalJson['extraction']): string {
   if (e.mode === 'rules') return 'pravidlá, bez jazykového modelu';
-  if (/náhrada/i.test(e.model ?? '')) return 'pravidlá + jazykový model · odpoveď AI predpočítaná náhradným modelom, bez Azure kľúča';
+  if (/náhrada/i.test(e.model ?? '')) return 'pravidlá + jazykový model · odpoveď vygeneroval Claude na presne ten istý pseudonymizovaný prompt (v prevádzke Azure OpenAI EU)';
   return `pravidlá + jazykový model${e.model ? ` · ${e.model}` : ''}`;
 }
 function fmtStamp(iso: string): string {
@@ -93,9 +95,7 @@ function Row({ row, full, onLoaded }: { row: EvalRow; full: boolean; onLoaded: (
 function Guard({ full }: { full: boolean }) {
   const g = useJson<GuardJson>('data/vysledok-test-halucinacii.json');
   if (!g || !g.aiProposals) return null;
-  const line = (
-    <>Test poistky: úmyselne chybná odpoveď AI · <b>{g.rejected} z {g.aiProposals}</b> návrhov program zamietol, {g.accepted} {pluralWord(g.accepted, 'prijal', 'prijal', 'prijal')}</>
-  );
+  const line = <>{halluLine({ proposals: g.aiProposals, accepted: g.accepted, rejected: g.rejected, invented: g.evalSummary?.inventedValues })}</>;
   if (!full) return <div className="ev-guard">{line}</div>;
   return (
     <details className="ev-traps ev-guard">
@@ -134,6 +134,7 @@ export function EvalCard({ rows, variant = 'compact', manual, title = 'Kontrola 
         {evs.length > 0 && <Pill tone="mint" size="sm">namerané</Pill>}
       </div>
       {manual && <p className="ev-note">Meria sa strojové vyťaženie tých istých správ, nie ručne overená verzia na tejto obrazovke.</p>}
+      <p className="ev-note">2 fiktívni pacienti, zlatá sada 20 polí + pasce.{EVAL_CAVEAT ? ` ${EVAL_CAVEAT}` : ''}</p>
       {rows.map((r) => (
         <Row key={r.file} row={r} full={full} onLoaded={(ev) => setLoaded((m) => (m[r.file] === ev ? m : { ...m, [r.file]: ev }))} />
       ))}

@@ -113,6 +113,7 @@ export default function App() {
       delete next[id];
       return next;
     }),
+    resetAll: () => setSessions({}),
   }), [sessions]);
 
   return (

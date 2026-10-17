@@ -2,7 +2,11 @@
 // src/data (optional, read through import.meta.glob) or, when that is missing, from public/data/eval-<case>.json.
 // No fallback numbers anywhere: without data the card (and the metric tile) is hidden.
 import { useEffect, useMemo, useState } from 'react';
+import { EVAL_SUMMARY } from '../../data/cases';
 import { fmtDate } from './caseUtils';
+
+/** The honest note from the measurement itself (eval/README → EVAL_SUMMARY.caveats): rules were tuned on these patients. */
+export const EVAL_CAVEAT: string | undefined = EVAL_SUMMARY?.caveats?.[0];
 import { Card, Pill } from './ui';
 import { IcAlert, IcCheck } from './icons';
 
@@ -121,13 +125,20 @@ export function useHalluTest(): HalluTest | null | undefined {
 
 /* ---------- labels ---------- */
 const pl = (n: number, one: string, few: string, many: string) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
+/** One wording of the guard test for the queue and the case (QA R5 #5): what was rejected, what was accepted and why. */
+export function halluLine(h: { proposals: number; accepted: number; rejected: number; invented?: number }): string {
+  return `Test poistky: úmyselne chybný model navrhol ${h.proposals} ${pl(h.proposals, 'hodnotu', 'hodnoty', 'hodnôt')}. `
+    + `${h.rejected} ${pl(h.rejected, 'vymyslenú', 'vymyslené', 'vymyslených')} (čísla bez opory v správe) program zamietol`
+    + (h.accepted ? `, ${h.accepted} ${pl(h.accepted, 'pravdivú', 'pravdivé', 'pravdivých')} (citát aj čísla sedia) prijal` : '')
+    + (h.invented !== undefined ? ` → v podklade ${h.invented} ${pl(h.invented, 'vymyslená hodnota', 'vymyslené hodnoty', 'vymyslených hodnôt')}.` : '.');
+}
 export function evalLine(e: EvalInfo): string {
   return `${e.fieldsCorrect}/${e.fieldsTotal} polí správne · ${e.trapsCaught}/${e.trapsTotal} pascí zachytených · ${e.inventedValues} ${pl(e.inventedValues, 'vymyslená hodnota', 'vymyslené hodnoty', 'vymyslených hodnôt')}`;
 }
 export function modeLabel(e: EvalInfo): string {
   if (e.mode === 'rules') return 'pravidlá, bez jazykového modelu';
   if (e.mode === 'rules+llm' || e.mode === 'llm') {
-    return /náhrad/i.test(e.model ?? '') ? 'pravidlá + jazykový model · odpoveď AI predpočítaná náhradným modelom, bez Azure kľúča' : `pravidlá + jazykový model${e.model ? ` · ${e.model}` : ''}`;
+    return /náhrad/i.test(e.model ?? '') ? 'pravidlá + jazykový model · odpoveď vygeneroval Claude na presne ten istý pseudonymizovaný prompt (v prevádzke Azure OpenAI EU)' : `pravidlá + jazykový model${e.model ? ` · ${e.model}` : ''}`;
   }
   return e.mode ?? '';
 }
@@ -138,7 +149,7 @@ export function EvalCard({ info, docsCount, manual = true }: { info: EvalInfo; d
   const hallu = useHalluTest();
   const [open, setOpen] = useState(false);
   return (
-    <Card className="cs-eval" title="Na kontrolnej sade" aside={
+    <Card className="cs-eval" title="Meranie na 2 fiktívnych pacientoch" aside={
       <span className="cs-eval-aside"><Pill tone="mint"><IcCheck size={13} /> namerané</Pill>{info.generatedAt && <span className="cs-hint">{dateOf(info.generatedAt)}</span>}</span>
     }>
       <div className="cs-eval-stats">
@@ -150,12 +161,13 @@ export function EvalCard({ info, docsCount, manual = true }: { info: EvalInfo; d
       <p className="cs-eval-note">
         Meria sa strojové vyťaženie {docsCount ? `tých istých ${docsCount} správ` : 'tých istých správ'} oproti ručne overenej zlatej sade
         ({modeLabel(info) || 'predpočítané'}). Citáty overuje program, nie AI.
-        {manual ? ' Na obrazovke je ručne overená verzia podkladu.' : ''} Zlatú sadu aj pravidlá písal ten istý tím.
+        {manual ? ' Na obrazovke je ručne overená verzia podkladu.' : ''}
       </p>
+      {EVAL_CAVEAT && <p className="cs-eval-note cs-eval-caveat"><strong>Poctivo:</strong> {EVAL_CAVEAT}</p>}
       {hallu && (
         <div className="cs-eval-hallu">
           <IcAlert size={15} />
-          <span>Test poistky: úmyselne chybná odpoveď AI – program zamietol {hallu.rejected} z {hallu.proposals} návrhov{hallu.invented !== undefined ? `, v podklade ${hallu.invented === 0 ? 'ostalo 0 vymyslených hodnôt' : `${hallu.invented} vymyslených hodnôt`}` : ''}.</span>
+          <span>{halluLine(hallu)}</span>
         </div>
       )}
       {info.traps.length > 0 && (

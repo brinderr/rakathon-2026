@@ -10,11 +10,7 @@ export function fmtDate(iso?: string): string {
   return `${d}. ${m}. ${y}`;
 }
 
-/** Current clock time "HH:MM" (log entries added during the demo). */
-export function nowTime(): string {
-  const d = new Date();
-  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-}
+// Times of demo actions come from src/components/case/demoClock.ts (deterministic), never from the real clock.
 
 export function addDays(iso: ISODate, days: number): ISODate {
   const d = new Date(`${iso}T12:00:00`);
@@ -82,6 +78,10 @@ export interface Resolved {
   missing: boolean;
   note?: string;
   conflict?: HandoverField['conflict'];
+  /** The value is a proposal nobody has checked yet (machine or team) – the document must say so (QA R5 #3). */
+  proposed?: boolean;
+  /** …and it was written by the language model. */
+  ai?: boolean;
 }
 
 export const MISSING = 'nie je v dokumentácii';
@@ -95,13 +95,14 @@ export function resolveField(c: Case, f: HandoverField | undefined, asOf: ISODat
   if (!f || f.status === 'missing' || !f.value) return { text: MISSING, missing: true };
   const okCites = f.citations.filter(ci => { const d = docKnownAt(c, ci.docId); return !d || d <= asOf; });
   const newest = f.sourceDate ?? '';
+  const flags = { proposed: f.status === 'proposed', ai: (f as HandoverField & { origin?: string }).origin === 'ai' };
   if (!newest || newest <= asOf) {
     const ci = okCites[0] ?? f.citations[0];
-    return { text: f.value, docId: ci?.docId, quote: ci?.quote, missing: false, conflict: f.conflict };
+    return { text: f.value, docId: ci?.docId, quote: ci?.quote, missing: false, conflict: f.conflict, ...flags };
   }
   if (okCites.length) {
     const ci = okCites[0];
-    return { text: ci.quote, docId: ci.docId, quote: ci.quote, missing: false, note: `stav k ${fmtDate(asOf)}` };
+    return { text: ci.quote, docId: ci.docId, quote: ci.quote, missing: false, note: `stav k ${fmtDate(asOf)}`, ...flags };
   }
   return { text: MISSING, missing: true };
 }

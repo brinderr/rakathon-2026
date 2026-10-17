@@ -15,7 +15,7 @@ export interface DocSessionActions {
   /** Appends a coordinator action to the record (both stores). */
   addLog: (entry: LogEntry) => void;
   /** Marks the handover as confirmed by the KOC physician (simulation). */
-  confirmMdt: (date: ISODate) => void;
+  confirmMdt: (date: ISODate, by?: string) => void;
   /** Marks the case as closed (conclusion delivered). */
   close: (date: ISODate) => void;
 }
@@ -27,7 +27,9 @@ export function mergeSessions(fromCtx: CaseSession, profile: ProfileSession): Ca
     arrived: [...fromCtx.arrived, ...profile.arrived.filter(d => !fromCtx.arrived.some(a => a.id === d.id))],
     sessionLog: [...fromCtx.sessionLog, ...profile.log.filter(l => !fromCtx.sessionLog.includes(l))],
     mdtConfirmedAt: fromCtx.mdtConfirmedAt,
+    mdtConfirmedBy: fromCtx.mdtConfirmedBy,
     closedAt: fromCtx.closedAt ?? profile.closedAt,
+    acceptedAt: fromCtx.acceptedAt ?? profile.acceptedAt,
   };
 }
 export { EMPTY_PROFILE };
@@ -48,9 +50,9 @@ export function useCaseSessionSafe(caseId: string | undefined): [CaseSession, Do
     updateCaseSession(caseId, s => ({ ...s, log: [...s.log, entry] }));
     ctx?.update(caseId, s => ({ sessionLog: [...s.sessionLog, entry] }));
   }, [ctx, caseId]);
-  const confirmMdt = useCallback((date: ISODate) => {
+  const confirmMdt = useCallback((date: ISODate, by?: string) => {
     if (!caseId) return;
-    ctx?.update(caseId, { mdtConfirmedAt: date });
+    ctx?.update(caseId, { mdtConfirmedAt: date, mdtConfirmedBy: by });
   }, [ctx, caseId]);
   const close = useCallback((date: ISODate) => {
     if (!caseId) return;

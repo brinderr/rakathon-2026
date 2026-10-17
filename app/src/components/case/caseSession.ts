@@ -11,6 +11,7 @@ export interface CaseSession {
   arrived: SourceDoc[];      // documents that "arrived" during the demo (simulated answers)
   log: LogEntry[];           // coordinator actions done in this session
   closedAt?: ISODate;        // set by the screen that closes the case (optional)
+  acceptedAt?: ISODate;      // a new referral taken over by the coordinator („Prevziať žiadosť“)
 }
 
 const EMPTY: CaseSession = { overrides: {}, arrived: [], log: [] };
@@ -29,6 +30,12 @@ export function updateCaseSession(caseId: string, fn: (s: CaseSession) => CaseSe
 }
 export function resetCaseSession(caseId: string): void {
   store.delete(caseId);
+  version += 1;
+  for (const l of listeners) l();
+}
+/** „Začať demo odznova“: forgets every demo action of every case. */
+export function resetAllCaseSessions(): void {
+  store.clear();
   version += 1;
   for (const l of listeners) l();
 }

@@ -18,13 +18,12 @@ import './Queue.css';
 
 const TODAY: ISODate = DEMO_TODAY;
 const FULL_CASE: Case = CASES.find((c) => c.demo === 'full') ?? CASES[0];
-const FEE_51887_CZK = 250; // vyhl. 432/2025 Sb., bod 8.5: 250 Kč za uznaný výkon, najviac 1× denne na pacienta
 
 const CLOCK_HINT =
   'Hodiny cesty: dni od prijatia žiadanky oproti cieľovej lehote. Cieľ 33 dní = dánsky vzor pre pankreas ' +
   '(6 dní do prvej návštevy + 27 dní do rozhodnutia, Sundhedsdatastyrelsen). Zahraničný vzor, nie česká norma: ' +
   'ČR záväzné lehoty nemá, MZ uvádza len cieľ „ideálne do 2 týždňov“ pre rýchlo postupujúce nádory.';
-const CLOCK_HINT_OTHER = ' Pri tejto diagnóze je v deme nastavený ten istý cieľ (ukážka).';
+const CLOCK_HINT_OTHER = 'Dni od prijatia žiadanky. Cieľovú lehotu (dánsky vzor) máme len pre pankreas, pri tejto diagnóze ju appka nenastavuje.';
 const isPancreas = (c: Case) => /pankrea|C25/i.test(c.diagnosisShort);
 
 /** Measured accuracy of the AI extraction (numbers are read at runtime from public/data/eval-*.json). */
@@ -57,6 +56,18 @@ interface Row { c: Case; s: CaseSession; status: CaseStatus; open: boolean; next
  *  next step is requested, the request's addressee is on the move; once it is answered, the next open item follows. */
 function effectiveNext(c: Case, s: CaseSession): Case['nextStep'] {
   const ns = c.nextStep;
+  // the KOC doctor confirmed the handover: it is no longer "incomplete" – what is left goes to the MDT (QA R5 #3)
+  if (s.mdtConfirmedAt && c.mdtDate) {
+    const conflicts = c.fields.filter((f) => f.status === 'conflict' && !isDecided(s.overrides[f.key], TODAY)).length;
+    return {
+      text: `Podklad potvrdil ${s.mdtConfirmedBy ?? 'lekár KOC'}${conflicts ? ` · ${conflicts} ${pluralWord(conflicts, 'rozpor nechaný', 'rozpory nechané', 'rozporov nechaných')} konzíliu` : ''}`,
+      owner: 'konzílium', mine: false, due: c.mdtDate,
+    };
+  }
+  if (c.status === 'new' && s.acceptedAt) {
+    const rest = ns.text.replace(/^Prevziať žiadosť praktika( a )?/i, '').trim();
+    return { ...ns, text: rest ? rest.charAt(0).toUpperCase() + rest.slice(1) : 'Zaradiť prípad na konzílium' };
+  }
   const ref = c.fields.find((f) => f.status === 'missing' && ns.text.toLowerCase().includes(f.label.toLowerCase()));
   if (!ref) return ns;
   const ov = s.overrides[ref.key];
@@ -74,12 +85,12 @@ function effectiveNext(c: Case, s: CaseSession): Case['nextStep'] {
     const list = parts.length > 1 ? `${parts.slice(0, -1).join(', ')} a ${parts[parts.length - 1]}` : parts[0];
     return { text: `Skontrolovať ${list}${c.mdtDate ? ' pred konzíliom' : ''}`, owner: 'ja (koordinátor)', mine: true, due: c.mdtDate ? addDays(c.mdtDate, -1) : ns.due };
   }
-  if (c.mdtDate) return { text: `Podklad je kompletný · konzílium ${fmtDate(c.mdtDate)}`, owner: `MDT · ${c.koc}`, mine: false, due: c.mdtDate };
+  if (c.mdtDate) return { text: `Podklad je kompletný · konzílium ${fmtDate(c.mdtDate)}`, owner: 'konzílium', mine: false, due: c.mdtDate };
   return ns;
 }
 
 function rowOf(c: Case, s: CaseSession): Row {
-  const status: CaseStatus = s.closedAt ? 'closed' : c.status;
+  const status: CaseStatus = s.closedAt ? 'closed' : c.status === 'new' && s.acceptedAt ? 'active' : c.status;
   return { c, s, status, open: status !== 'closed', next: effectiveNext(c, s) };
 }
 
@@ -138,49 +149,47 @@ function handoverIssues(r: Row): string[] {
   if (conflicts) out.push(plural(conflicts, 'rozpor', 'rozpory', 'rozporov'));
   return out;
 }
-/** Days with a coordinator intervention up to today (podklad pre výkon 51887): unique dates of billable log entries. */
-function billableDays(r: Row): number {
-  const dates = new Set([...r.c.log, ...r.s.sessionLog].filter((e) => e.billable && e.date <= TODAY).map((e) => e.date));
-  return dates.size;
-}
+/** A handover counts as complete when the KOC doctor confirmed it or nothing is open in it. */
+const handoverDone = (r: Row) => !!r.s.mdtConfirmedAt || handoverIssues(r).length === 0;
 
-/** One administrative sentence for the morning: what is on me today, whom to chase, which MDT lacks data, new referrals. */
-function briefing(rows: Row[]): ReactNode[] {
-  const parts: ReactNode[] = [];
+/** The morning overview: one line per topic, every patient name opens the case (QA R5 #15). Administrative only. */
+function briefing(rows: Row[], open: (c: Case) => void): ReactNode[] {
+  const lines: ReactNode[] = [];
+  const who = (r: Row) => (
+    <button type="button" className="brief__who" onClick={() => open(r.c)}>{r.c.patient.lastName}</button>
+  );
+  const list = <T,>(items: T[], render: (x: T) => ReactNode, sep = ', ') =>
+    items.map((x, i) => <span key={i}>{i > 0 && sep}{render(x)}</span>);
 
   const mine = rows.filter(mineToday);
-  if (mine.length) {
-    const anyEarlier = mine.some((r) => r.next.due < TODAY);
-    const who = mine.length === 1
-      ? `${mine[0].c.patient.lastName} – ${shortStep(mine[0].next.text)}`
-      : mine.map((r) => r.c.patient.lastName).join(', ');
-    parts.push(
-      <><b>{mine.length}</b> {pluralWord(mine.length, 'úloha', 'úlohy', 'úloh')} na mne s termínom {anyEarlier ? 'dnes alebo skôr' : 'dnes'} ({who})</>,
-    );
-  } else {
-    parts.push(<>na mne dnes nič s termínom</>);
-  }
+  lines.push(mine.length
+    ? <><b>Na mne {mine.some((r) => r.next.due < TODAY) ? 'dnes alebo skôr' : 'dnes'}:</b> {list(mine, (r) => <>{who(r)} – {shortStep(r.next.text)}</>)}</>
+    : <><b>Na mne dnes:</b> nič s termínom</>);
 
   const chase = rows.flatMap((r) => {
-    const steps = overdueSteps(r).map((s) => `${r.c.patient.lastName}: ${shortStep(s.title)} mešká ${plural(daysBetween(s.due, TODAY), 'deň', 'dni', 'dní')}`);
+    const steps = overdueSteps(r).map((s) => ({ r, text: `${shortStep(s.title)} mešká ${plural(daysBetween(s.due, TODAY), 'deň', 'dni', 'dní')}` }));
     if (!steps.length && r.open && !r.next.mine && r.next.due < TODAY) {
-      steps.push(`${r.c.patient.lastName}: ${shortStep(r.next.text)} mešká ${plural(daysBetween(r.next.due, TODAY), 'deň', 'dni', 'dní')}`);
+      steps.push({ r, text: `${shortStep(r.next.text)} mešká ${plural(daysBetween(r.next.due, TODAY), 'deň', 'dni', 'dní')}` });
     }
     return steps;
   });
-  parts.push(chase.length ? <>urgovať <b>{chase.length}</b> ({chase.join('; ')})</> : <>urgovať: nikoho</>);
+  lines.push(chase.length
+    ? <><b>Urgovať:</b> {list(chase, (x) => <>{who(x.r)} – {x.text}</>, '; ')}</>
+    : <><b>Urgovať:</b> nikoho</>);
 
   for (const r of rows.filter((x) => x.open && mdtThisWeek(x.c))) {
     const issues = handoverIssues(r);
-    parts.push(issues.length
-      ? <>konzílium <b>{fmtDate(r.c.mdtDate)}</b> má neúplný podklad ({r.c.patient.lastName}: {issues.join(' · ')})</>
-      : <>konzílium <b>{fmtDate(r.c.mdtDate)}</b> má kompletný podklad ({r.c.patient.lastName})</>);
+    lines.push(r.s.mdtConfirmedAt
+      ? <><b>Konzílium {fmtDate(r.c.mdtDate)}:</b> {who(r)} – podklad potvrdil {r.s.mdtConfirmedBy ?? 'lekár KOC'}{issues.length ? ` · nechané konzíliu: ${issues.join(' · ')}` : ''}</>
+      : issues.length
+        ? <><b>Konzílium {fmtDate(r.c.mdtDate)}:</b> {who(r)} – neúplný podklad: {issues.join(' · ')}</>
+        : <><b>Konzílium {fmtDate(r.c.mdtDate)}:</b> {who(r)} – podklad je kompletný</>);
   }
 
-  const fresh = rows.filter((r) => r.status === 'new').length;
-  if (fresh > 0) parts.push(<><b>{fresh}</b> {pluralWord(fresh, 'nová žiadanka', 'nové žiadanky', 'nových žiadaniek')}</>);
+  const fresh = rows.filter((r) => r.status === 'new');
+  if (fresh.length > 0) lines.push(<><b>{fresh.length === 1 ? 'Nová žiadanka' : 'Nové žiadanky'}:</b> {list(fresh, who)}</>);
 
-  return parts;
+  return lines;
 }
 
 /* ---------------------------------------------------------------- Page */
@@ -207,7 +216,7 @@ export default function Queue() {
     ),
     [rows, filter],
   );
-  const brief = useMemo(() => briefing(rows), [rows]);
+  const brief = useMemo(() => briefing(rows, (c) => go({ page: 'case', caseId: c.id })), [rows, go]);
   const lightCount = CASES.filter((c) => c.demo === 'light').length;
   const otherFull = CASES.filter((c) => c.demo === 'full' && c.id !== FULL_CASE.id);
 
@@ -219,19 +228,16 @@ export default function Queue() {
             <h1>Dobré ráno, {COORDINATOR.name}.</h1>
             <div className="queue__date">{fmtDateLong(TODAY)}</div>
           </div>
-          <Button icon="inbox" onClick={() => go({ page: 'intake' })} title="Takto praktik posiela žiadanku do KOC (bez účtu)">Pohľad praktika: nová žiadanka</Button>
+          <Button variant="ghost" icon="inbox" onClick={() => go({ page: 'intake' })} title="Prepne do pohľadu praktika: takto posiela žiadanku do KOC (bez účtu)">Pohľad praktika: nová žiadanka</Button>
         </header>
 
         <div className="brief" aria-label="Ranný prehľad">
           <span className="brief__icon"><Icon name="sun" size={18} /></span>
           <div>
             <div className="kicker">Ranný prehľad</div>
-            <p className="brief__text">
-              Dnes:{' '}
-              {brief.map((p, i) => (
-                <span key={i}>{i > 0 && <span className="brief__sep">·</span>}{p}</span>
-              ))}
-            </p>
+            <ul className="brief__list">
+              {brief.map((p, i) => <li key={i}>{p}</li>)}
+            </ul>
           </div>
         </div>
 
@@ -258,7 +264,7 @@ export default function Queue() {
         )}
         <p className="queue__note">
           {FULL_CASE.patient.firstName} {FULL_CASE.patient.lastName} = prípad zo zadania VZP.
-          {otherFull.length > 0 && <> {otherFull.map((c) => `${c.patient.firstName} ${c.patient.lastName}`).join(', ')} = ďalší fiktívny pacient z kontrolnej sady.</>}
+          {otherFull.length > 0 && <> {otherFull.map((c) => `${c.patient.firstName} ${c.patient.lastName}`).join(', ')} = druhý fiktívny pacient (strojové vyťaženie, každý údaj potvrdí človek).</>}
           {lightCount > 0 && <> {lightCount === 1 ? 'Ďalší prípad je ilustračný' : `Ďalšie ${lightCount} prípady sú ilustračné`} (čip „ukážka“).</>}
           {' '}Poradie len podľa termínov, nikdy podľa zdravotných údajov.
         </p>
@@ -302,13 +308,17 @@ function CaseCard({ r, onOpen }: { r: Row; onOpen: () => void }) {
       </div>
 
       <div className="clock">
-        <div className="clock__bar">
-          <div className={`clock__fill ${!open ? 'clock__fill--done' : day > c.clockTargetDays ? 'clock__fill--late' : ''}`} style={{ width: `${!open ? 100 : pct}%` }} />
+        <div className={`clock__bar ${open && !pancreas ? 'clock__bar--none' : ''}`}>
+          {(pancreas || !open) && (
+            <div className={`clock__fill ${!open ? 'clock__fill--done' : day > c.clockTargetDays ? 'clock__fill--late' : ''}`} style={{ width: `${!open ? 100 : pct}%` }} />
+          )}
         </div>
         <div className="clock__text">
-          <span>{!open ? `uzavreté za ${plural(Math.max(0, daysBetween(c.receivedAt, r.s.closedAt ?? TODAY)), 'deň', 'dni', 'dní')}` : <>deň <b>{day}</b> z {c.clockTargetDays}</>}</span>
-          <Tooltip text={CLOCK_HINT + (pancreas ? '' : CLOCK_HINT_OTHER)}>
-            <span className="clock__hint"><Icon name="info" size={14} /> {pancreas ? 'cieľ' : 'cieľ · ukážka'}</span>
+          <span>{!open
+            ? `uzavreté za ${plural(Math.max(0, daysBetween(c.receivedAt, r.s.closedAt ?? TODAY)), 'deň', 'dni', 'dní')}`
+            : pancreas ? <>deň <b>{day}</b> z {c.clockTargetDays}</> : <>deň <b>{day}</b> od prijatia žiadosti</>}</span>
+          <Tooltip text={pancreas ? CLOCK_HINT : CLOCK_HINT_OTHER}>
+            <span className="clock__hint"><Icon name="info" size={14} /> {pancreas ? 'cieľ' : 'bez cieľa'}</span>
           </Tooltip>
         </div>
       </div>
@@ -335,31 +345,29 @@ function CaseCard({ r, onOpen }: { r: Row; onOpen: () => void }) {
 
 /* ------------------------------------------------- Balance (from data) */
 /** Coordinator's balance derived only from administrative data in CASES + this session; nothing invented. */
+/* The headline is closed loops, never money or the number of interventions (QA R5 #8, CONTRACT „gamifikácia“). */
 function Balance({ rows }: { rows: Row[] }) {
-  const full = rows.find((r) => r.c.id === FULL_CASE.id) ?? rows[0];
   const onMe = rows.filter(mineToday).length;
   const onOthers = rows.filter((r) => r.open && !r.next.mine).length;
   const closedThisWeek = rows.filter((r) => !r.open && (r.s.closedAt ?? '') >= WEEK_START).length;
-  const days = full ? billableDays(full) : 0;
-  const clockDay = full ? Math.max(0, daysBetween(full.c.receivedAt, TODAY)) : 0;
+  const mdtRows = rows.filter((r) => mdtThisWeek(r.c));
+  const complete = mdtRows.filter(handoverDone).length;
 
   return (
     <aside className="side" aria-label="Moja bilancia">
       <div className="kicker side__title">Moja bilancia</div>
       <Card className="wk">
-        {full && (
-          <Stat pastel={2} value={days}
-            label={`${pluralWord(days, 'deň so zásahom', 'dni so zásahom', 'dní so zásahom')} · ${full.c.patient.lastName} · podklad pre výkon 51887`}
-            hint={`${(days * FEE_51887_CZK).toLocaleString('sk-SK')} Kč, ak poisťovňa výkon uzná · deň ${clockDay} z ${full.c.clockTargetDays} cesty`} />
-        )}
-        <div className="wk__row"><span>Na mne dnes</span><strong>{onMe}</strong></div>
+        <Stat pastel={2} value={closedThisWeek}
+          label={`${pluralWord(closedThisWeek, 'slučka uzavretá', 'slučky uzavreté', 'slučiek uzavretých')} tento týždeň`}
+          hint="záver konzília doručený praktikovi a potvrdený" />
+        <div className="wk__row"><span>Podklady na konzílium tento týždeň kompletné</span><strong>{complete}/{mdtRows.length}</strong></div>
+        <div className="wk__row"><span>S termínom dnes (na mne)</span><strong>{onMe}</strong></div>
         <div className="wk__row"><span>Čaká na iných</span><strong>{onOthers}</strong></div>
-        <div className="wk__row"><span>Prípady uzavreté tento týždeň (záver doručený)</span><strong>{closedThisWeek}</strong></div>
       </Card>
-      <p className="side__note">Len administratívne kroky z dát prípadov, nikdy zdravotné údaje.</p>
+      <p className="side__note">Len administratívne kroky z dát prípadov, nikdy zdravotné údaje. Dni so zásahom (podklad pre výkon 51887) sú v zázname každého prípadu.</p>
 
       <EvalCard rows={EVAL_ROWS} variant="compact" />
-      <p className="side__note">Strojové vyťaženie správ porovnané s ručne overenou kontrolnou sadou (npm run eval).</p>
+      <p className="side__note">Strojové vyťaženie správ porovnané s ručne overenou zlatou sadou (npm run eval).</p>
     </aside>
   );
 }

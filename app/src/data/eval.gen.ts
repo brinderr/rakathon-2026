@@ -1,5 +1,5 @@
 // GENEROVANÉ: node scripts/build-pacient2.mjs – NEUPRAVOVAŤ RUČNE.
-// Namerané čísla z public/data/eval-alena.json, public/data/eval-pacient-2.json a eval/vysledok-test-halucinacii.json. Žiadne čísla napevno.
+// Namerané čísla z public/data/eval-alena.json, public/data/eval-pacient-2.json a public/data/vysledok-test-halucinacii.json. Žiadne čísla napevno.
 
 export interface EvalTrap { id: string; title: string; caught: boolean }
 export interface EvalCaseResult {
@@ -56,7 +56,7 @@ export const EVAL_SUMMARY: EvalSummary = {
    "patient": "Alena P.",
    "topic": "pankreas",
    "file": "data/eval-alena.json",
-   "measuredAt": "2026-10-17T00:45:27.888Z",
+   "measuredAt": "2026-10-17T01:52:16.257Z",
    "extraction": {
     "mode": "rules+llm",
     "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
@@ -169,7 +169,7 @@ export const EVAL_SUMMARY: EvalSummary = {
    "patient": "Josef N.",
    "topic": "pľúca",
    "file": "data/eval-pacient-2.json",
-   "measuredAt": "2026-10-17T00:45:28.026Z",
+   "measuredAt": "2026-10-17T01:52:30.597Z",
    "extraction": {
     "mode": "rules+llm",
     "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
@@ -271,7 +271,7 @@ export const EVAL_SUMMARY: EvalSummary = {
   "allInSync": true
  },
  "hallucinationTest": {
-  "file": "eval/vysledok-test-halucinacii.json",
+  "file": "public/data/vysledok-test-halucinacii.json",
   "what": "Test poistky: úmyselne chybná AI odpoveď (eval/llm-fixtures/halucinujuci-model-alena.json) prešla celým vyťažením.",
   "generatedAt": "2026-10-17T00:01:38+00:00",
   "aiProposals": 5,
@@ -326,9 +326,9 @@ export const EVAL_SUMMARY: EvalSummary = {
  ],
  "sources": {
   "public/data/extracted-pacient-2.json": "2026-10-17T00:03:41.238Z",
-  "public/data/eval-alena.json": "2026-10-17T00:45:27.888Z",
+  "public/data/eval-alena.json": "2026-10-17T01:52:16.257Z",
   "public/data/extracted-alena.json": "2026-10-17T00:06:56.877Z",
-  "public/data/eval-pacient-2.json": "2026-10-17T00:45:28.026Z",
-  "eval/vysledok-test-halucinacii.json": "2026-10-17T00:01:38+00:00"
+  "public/data/eval-pacient-2.json": "2026-10-17T01:52:30.597Z",
+  "public/data/vysledok-test-halucinacii.json": "2026-10-17T00:01:38+00:00"
  }
 };

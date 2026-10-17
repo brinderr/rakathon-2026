@@ -1,5 +1,5 @@
 import type { Case } from '../../types';
-import { DK_DECISION_DAYS, DK_FIRST_VISIT_DAYS, clockDay, daysWord, plural } from './caseUtils';
+import { DK_DECISION_DAYS, DK_FIRST_VISIT_DAYS, clockDay, daysWord, fmtDate, plural } from './caseUtils';
 import type { Counts } from './caseUtils';
 import type { EvalInfo } from './EvalCard';
 import { Ring } from './ui';
@@ -38,22 +38,29 @@ export function Metrics({ c, counts, asOf, stepsDone, stepsTotal, flash, evalInf
         <div className="cs-metric-foot">{!started ? 'podklad sa ešte nezačal – čakáme na správy' : issues.length ? issues.join(' · ') : 'všetky polia potvrdené'}</div>
       </div>
 
-      <div className={`cs-metric cs-metric-2 ${over ? 'is-over' : ''}`}>
-        <div className="cs-metric-big">deň {day}<span className="cs-metric-of"> z {target}</span></div>
-        <div className="cs-metric-label">Hodiny cesty</div>
-        <div className="cs-clock" aria-hidden="true">
-          <div className="cs-clock-seg cs-clock-seg-a" style={{ width: `${firstPct * 100}%` }} />
-          <div className="cs-clock-seg cs-clock-seg-b" style={{ left: `${firstPct * 100}%`, width: `${(1 - firstPct) * 100}%` }} />
-          <div className="cs-clock-fill" style={{ width: `${pct * 100}%` }} />
-          <div className="cs-clock-now" style={{ left: `${pct * 100}%` }} />
+      {pancreas ? (
+        <div className={`cs-metric cs-metric-2 ${over ? 'is-over' : ''}`}>
+          <div className="cs-metric-big">deň {day}<span className="cs-metric-of"> z {target}</span></div>
+          <div className="cs-metric-label">Hodiny cesty</div>
+          <div className="cs-clock" aria-hidden="true">
+            <div className="cs-clock-seg cs-clock-seg-a" style={{ width: `${firstPct * 100}%` }} />
+            <div className="cs-clock-seg cs-clock-seg-b" style={{ left: `${firstPct * 100}%`, width: `${(1 - firstPct) * 100}%` }} />
+            <div className="cs-clock-fill" style={{ width: `${pct * 100}%` }} />
+            <div className="cs-clock-now" style={{ left: `${pct * 100}%` }} />
+          </div>
+          <div className="cs-metric-foot">
+            {over ? `${day - target} ${daysWord(day - target)} po lehote · ` : ''}
+            dánsky vzor pre pankreas: {DK_FIRST_VISIT_DAYS} + {DK_DECISION_DAYS} dní · zahraničný vzor, nie česká norma
+          </div>
         </div>
-        <div className="cs-metric-foot">
-          {over ? `${day - target} ${daysWord(day - target)} po lehote · ` : ''}
-          {pancreas
-            ? `dánsky vzor pre pankreas: ${DK_FIRST_VISIT_DAYS} + ${DK_DECISION_DAYS} dní · zahraničný vzor, nie česká norma`
-            : `predvolená lehota (ukážka) · dánsky vzor pre pankreas ${DK_FIRST_VISIT_DAYS} + ${DK_DECISION_DAYS} dní`}
+      ) : (
+        // the Danish target exists only for pancreas – other diagnoses show the plain day count (QA R5 #4)
+        <div className="cs-metric cs-metric-2">
+          <div className="cs-metric-big">deň {day}</div>
+          <div className="cs-metric-label">Hodiny cesty</div>
+          <div className="cs-metric-foot">od prijatia žiadosti {fmtDate(c.receivedAt)} · cieľovú lehotu pre túto diagnózu v deme nenastavujeme</div>
         </div>
-      </div>
+      )}
 
       <div className="cs-metric cs-metric-3">
         <div className="cs-metric-big">{stepsDone}<span className="cs-metric-of">/{stepsTotal}</span></div>
@@ -66,9 +73,9 @@ export function Metrics({ c, counts, asOf, stepsDone, stepsTotal, flash, evalInf
 
       {showEval && evalInfo ? (
         <button type="button" className={`cs-metric cs-metric-4 is-eval ${evalOpen ? 'is-open' : ''}`} onClick={onEval}
-          title="Namerané na kontrolnej sade (zlatá sada 20 polí + pasce). Klik ukáže, ako sme merali.">
+          title="Namerané na 2 fiktívnych pacientoch (zlatá sada 20 polí + pasce); pravidlá sme ladili na tých istých dátach. Klik ukáže, ako sme merali.">
           <div className="cs-metric-big">{evalInfo.fieldsCorrect}<span className="cs-metric-of">/{evalInfo.fieldsTotal}</span></div>
-          <div className="cs-metric-label">polí správne na kontrolnej sade</div>
+          <div className="cs-metric-label">polí správne · strojové vyťaženie</div>
           <div className="cs-metric-sub">{evalInfo.trapsCaught}/{evalInfo.trapsTotal} pascí · {evalInfo.inventedValues} vymyslených · {evalInfo.citationsVerified}/{evalInfo.citationsTotal} citátov doslova</div>
           <div className="cs-metric-foot cs-metric-more">{evalOpen ? 'skryť meranie' : 'ako sme merali'} <IcArrow size={12} /></div>
         </button>

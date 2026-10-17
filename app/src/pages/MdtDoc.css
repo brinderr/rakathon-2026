@@ -16,10 +16,21 @@
   .paper-table tr { break-inside: avoid; }
   .doc-sup { color: #000; }
   .doc-missing { color: #B8373B; }
+  .paper-proposed { border-color: #A26A12; color: #A26A12; background: none; }
 }
 
 /* line under the action bar: what the physician is asked to confirm */
 .mdt-pre { max-width: 860px; margin: -6px auto 18px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.mdt-pre.mdt-lang { margin-top: -10px; font-size: 12.5px; color: var(--faint); }
+/* a value nobody has checked yet is marked in the document itself (QA R5 #3) */
+.doc-proposed { background: color-mix(in srgb, var(--amber) 16%, transparent); border-radius: 4px; padding: 0 2px; }
+.paper-proposed { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 700; color: var(--amber-ink); background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 40%, transparent); border-radius: 999px; padding: 0 7px; line-height: 18px; vertical-align: 1px; white-space: nowrap; }
 .paper-notes__group + .paper-notes__group { margin-top: 10px; }
 .paper-notes__src { font-size: 12.5px; color: var(--ink-2); margin-bottom: 3px; }
 .paper-notes__src strong { font-weight: 650; color: var(--ink); }
+
+@media (max-width: 760px) {
+  .mdt-bar { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 14px; }
+  .mdt-bar__confirm .doc-btn { width: 100%; }
+  .mdt-pre { margin: -2px 0 14px; }
+}

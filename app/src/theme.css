@@ -32,6 +32,9 @@
   --shadow-3: 0 2px 8px rgba(17,24,39,.08), 0 28px 80px rgba(17,24,39,.18);
   --gap: 18px;                /* vertical rhythm between cards */
   --page-max: 1360px;         /* content width on every screen */
+  --gutter: 36px;             /* side padding of the main column */
+  --bottom-nav: 0px;          /* height of the phone bottom bar (0 on desktop); overlays add it to their offset */
+  --safe-b: env(safe-area-inset-bottom, 0px);
   --ease: cubic-bezier(.2, .8, .2, 1);
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
   --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -61,3 +64,11 @@ button { font-family: inherit; }
 @keyframes page-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* Phone (≤ 760 px): tighter rhythm, 16 px gutters, bottom bar instead of the left rail.
+   The page must never scroll sideways – every screen's CSS has its own block under this query. */
+@media (max-width: 760px) {
+  :root { --gap: 14px; --gutter: 16px; --bottom-nav: 64px; --r-lg: 20px; --r-xl: 22px; }
+  html { overflow-x: hidden; }   /* only on html: it propagates to the viewport, body keeps scrolling the document */
+  body { font-size: 14.5px; }
+}

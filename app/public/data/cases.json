@@ -1277,6 +1277,48 @@
       "docId": "07",
       "quote": "paracetamol 500 mg při bolesti max. 4× denně"
      }
+    },
+    {
+     "name": "tramadol",
+     "dose": "100 mg retard · 1-0-1 (od 26. 10.)",
+     "note": "Algeziológ upozorňuje: s antidepresívami (SSRI, SNRI) vyššie riziko serotonínového syndrómu.",
+     "citation": {
+      "docId": "12",
+      "quote": "tramadol tbl. ret. 100 mg 1-0-1"
+     }
+    },
+    {
+     "name": "metamizol",
+     "dose": "500 mg · 1-1-1 (od 26. 10.)",
+     "citation": {
+      "docId": "12",
+      "quote": "metamizol 500 mg 1-1-1"
+     }
+    },
+    {
+     "name": "paracetamol",
+     "dose": "500 mg pri prielomovej bolesti, najviac 3× denne (od 26. 10.)",
+     "note": "Zmena oproti správe 07 (tam najviac 4× denne).",
+     "citation": {
+      "docId": "12",
+      "quote": "paracetamol 500 mg při průlomové bolesti, max. 3× denně"
+     }
+    },
+    {
+     "name": "metoklopramid",
+     "dose": "10 mg pri nevoľnosti, najviac 3× denne (od 26. 10.)",
+     "citation": {
+      "docId": "12",
+      "quote": "metoklopramid 10 mg při nauzee, max. 3× denně"
+     }
+    },
+    {
+     "name": "laktulóza",
+     "dose": "sirup 15 ml · 1× denne (od 26. 10.)",
+     "citation": {
+      "docId": "12",
+      "quote": "laktulóza sirup 15 ml 1× denně jako prevence obstipace"
+     }
     }
    ],
    "exams": [
@@ -1683,12 +1725,12 @@
       "severity": "missing"
      },
      {
-      "text": "Chýba e-mail pacientky.",
-      "severity": "missing"
+      "text": "E-mail pacientky nie je uvedený (na vedomie, nie je to chyba).",
+      "severity": "info"
      },
      {
-      "text": "Chýba e-mail praktika na doručenie záveru (uvedený je len telefón).",
-      "severity": "missing"
+      "text": "E-mail praktika nie je uvedený, je len telefón (na vedomie – záver ide cez eZprávu).",
+      "severity": "info"
      },
      {
       "text": "Telefón pacientky a kontakt na dcéru sú uvedené. Pacientka súhlasí so zdieľaním informácií s dcérou.",
@@ -3031,6 +3073,51 @@
     "note": "Váha 63 kg je zo správy algeziológa z 26. 10. – po konzíliu. K 21. 10. platilo 65 kg (15. 9.)."
    },
    {
+    "key": "medication",
+    "from": "2026-10-26",
+    "value": "apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1 (správa 07) · od 26. 10. liečba bolesti (správa 12): tramadol 100 mg 1-0-1, metamizol 500 mg 1-1-1, paracetamol 500 mg pri prielomovej bolesti najviac 3× denne, metoklopramid 10 mg pri nevoľnosti, laktulóza 15 ml 1× denne",
+    "citations": [
+     {
+      "docId": "07",
+      "quote": "FA: apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně"
+     },
+     {
+      "docId": "12",
+      "quote": "tramadol tbl. ret. 100 mg 1-0-1"
+     },
+     {
+      "docId": "12",
+      "quote": "metamizol 500 mg 1-1-1"
+     },
+     {
+      "docId": "12",
+      "quote": "paracetamol 500 mg při průlomové bolesti, max. 3× denně"
+     },
+     {
+      "docId": "12",
+      "quote": "metoklopramid 10 mg při nauzee, max. 3× denně"
+     },
+     {
+      "docId": "12",
+      "quote": "laktulóza sirup 15 ml 1× denně jako prevence obstipace"
+     },
+     {
+      "docId": "12",
+      "quote": "Upozornění: tramadol zvyšuje riziko serotoninového syndromu v kombinaci s antidepresivy (SSRI, SNRI)."
+     },
+     {
+      "docId": "01",
+      "quote": "vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby"
+     },
+     {
+      "docId": "09",
+      "quote": "Při nekomplikovaném průběhu apixaban znovu od 21. 10. 2026 ráno."
+     }
+    ],
+    "sourceDate": "2026-10-26",
+    "note": "Zmena 26. 10. (algeziológ, správa 12): nová liečba bolesti, paracetamol už najviac 3× denne (predtým 4×). Algeziológ upozorňuje: tramadol spolu s antidepresívami (SSRI, SNRI) zvyšuje riziko serotonínového syndrómu."
+   },
+   {
     "key": "other",
     "from": "2026-10-27",
     "value": "Pacientka si želá, aby informácie o liečbe dostávala aj dcéra a aby sa mohla zúčastniť dôležitých rozhovorov. Výrazná úzkosť a depresívna nálada – psychológ odporúča pokračovať v podpornej psychoterapii 1× týždenne.",
@@ -3068,6 +3155,83 @@
     ],
     "sourceDate": "2026-10-27",
     "note": "Váha 73 kg je zo správy nutričnej ambulancie z 27. 10. – po konzíliu. K 22. 10. platilo 76 kg (7. 10.)."
+   }
+  ]
+ },
+ "alerts": {
+  "alena": [
+   {
+    "id": "apixaban",
+    "from": "2026-10-02",
+    "kind": "safety",
+    "label": "Antikoagulácia – apixaban",
+    "citations": [
+     {
+      "docId": "07",
+      "quote": "Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa."
+     }
+    ]
+   },
+   {
+    "id": "tramadol",
+    "from": "2026-10-26",
+    "kind": "forward",
+    "label": "Tramadol + antidepresíva: riziko serotonínového syndrómu",
+    "citations": [
+     {
+      "docId": "12",
+      "quote": "Upozornění: tramadol zvyšuje riziko serotoninového syndromu v kombinaci s antidepresivy (SSRI, SNRI)."
+     },
+     {
+      "docId": "13",
+      "quote": "Pacientka užívá tramadol – při volbě antidepresiva zohlednit riziko serotoninového syndromu."
+     },
+     {
+      "docId": "13",
+      "quote": "Psychiatrické vyšetření k zvážení farmakoterapie – objednána na 3. 11. 2026"
+     }
+    ],
+    "forward": {
+     "button": "Pripraviť správu pre psychiatriu a praktika",
+     "to": "Psychiatrická ambulancia KOC 2 · Nemocnica Lipová · kópia: MUDr. Tomáš Řezníček (praktik)",
+     "channel": "NIS",
+     "needsDocId": "13",
+     "beforeNote": "Správa 12 išla podľa textu v kópii aj praktikovi."
+    }
+   }
+  ],
+  "novak": [
+   {
+    "id": "contrast",
+    "from": "2026-10-07",
+    "kind": "safety",
+    "label": "Alergia na jódovú kontrastnú látku (iná správa uvádza „neguje“)",
+    "citations": [
+     {
+      "docId": "N-05",
+      "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku"
+     },
+     {
+      "docId": "N-08",
+      "quote": "Poznámka: CT část bez jodové kontrastní látky (alergie na jodovou kontrastní látku v anamnéze)"
+     }
+    ]
+   },
+   {
+    "id": "rc",
+    "from": "2026-10-07",
+    "kind": "safety",
+    "label": "Laboratórium N-04 má iné rodné číslo – nepoužívať, kým sa neoverí",
+    "citations": [
+     {
+      "docId": "N-04",
+      "quote": "RČ 660314/1234"
+     },
+     {
+      "docId": "N-09",
+      "quote": "Rodné číslo: 660314/1243"
+     }
+    ]
    }
   ]
  }

@@ -3,19 +3,23 @@
 // components/case/caseSession.ts so they survive leaving the screen and other screens can read them.
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import type { Case, SourceDoc } from '../types';
+import type { Case, PathStep, SourceDoc } from '../types';
 import { DEMO_TODAY } from '../types';
 import { useNav } from '../nav';
 import type { Route } from '../nav';
-import { CASES, EXTRA_DOCS, fieldsAsOf } from '../data/cases';
+import { ALERTS, CASES, EXTRA_DOCS, fieldsAsOf } from '../data/cases';
+import type { CaseAlert } from '../data/cases';
+import { useSessions } from '../components/session';
 import { loadSources } from '../data/source';
 import {
-  SK_STEP, addDays, countFields, docDate, effectiveField, fieldOrigin, fmtDate, fmtShort, normalizeDocs, normalizeSources, nowTime,
-  patientWords, plural, stepStateAt,
+  SK_STEP, addDays, countFields, daysWord, docDate, effectiveField, fieldOrigin, fmtDate, fmtShort, normalizeDocs, normalizeSources,
+  patientWords, plural, stepLateDays, stepStateAt,
 } from '../components/case/caseUtils';
 import type { EffField, FieldOverride } from '../components/case/caseUtils';
 import { updateCaseSession, useCaseSession } from '../components/case/caseSession';
 import type { CaseSession } from '../components/case/caseSession';
+import { lastTimeOn, nextDemoTime } from '../components/case/demoClock';
+import { RequestedDocs } from '../components/case/RequestedDocs';
 import { EvalCard, useEvalInfo } from '../components/case/EvalCard';
 import { CaseHeader } from '../components/case/CaseHeader';
 import { Metrics } from '../components/case/Metrics';
@@ -29,9 +33,10 @@ import type { RequestDraft } from '../components/case/RequestModal';
 import { Journey, StepsStrip } from '../components/case/Journey';
 import { DocsList, ExamsCard, LabsCard, LogCard, MedsCard } from '../components/case/DataCards';
 import type { WaitingItem } from '../components/case/DataCards';
-import { Btn, Card, Pill } from '../components/case/ui';
-import { IcArrow, IcCheck, IcPerson } from '../components/case/icons';
+import { Btn, Card, Pill, SourceChip } from '../components/case/ui';
+import { IcAlert, IcArrow, IcCheck, IcPerson, IcSend } from '../components/case/icons';
 import '../components/case/case.css';
+import '../components/case/case-additions.css';
 import './CaseView.css';
 
 type Tab = NonNullable<Extract<Route, { page: 'case' }>['tab']>;
@@ -42,7 +47,8 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'dokumenty', label: 'Dokumenty' },
   { id: 'zaznam', label: 'Záznam' },
 ];
-type Reason = 'missing' | 'conflict' | 'addendum';
+/** 'urge' = chasing a late step of the journey (modal key = step id); the others are field requests (key = field key). */
+type Reason = 'missing' | 'conflict' | 'addendum' | 'urge' | 'forward';
 interface NextStep { text: string; owner: string; mine: boolean; due?: string; derived?: string }
 /** The only coordinator named in the sources (VZP template „MDT zaver“). */
 const SIGNATURE = 'Bc. Lucie Dvořáková, koordinátorka KOC';
@@ -74,6 +80,10 @@ export default function CaseView() {
   /* ---- demo state (per case, survives navigation) + screen-local state ---- */
   const session = useCaseSession(c?.id ?? '');
   const { overrides, arrived, log: sessionLog } = session;
+  // App-level session (queue, documents): handover confirmed by the doctor, referral taken over.
+  const { get: getShared, update: updateShared } = useSessions();
+  const shared = getShared(c?.id ?? '');
+  const accepted = !!(session.acceptedAt ?? shared.acceptedAt);
   const [panel, setPanel] = useState<PanelState | null>(null);
   const [modal, setModal] = useState<{ key: string; req: RequestDraft; reason: Reason } | null>(null);
   const [flashKey, setFlashKey] = useState<string | null>(null);
@@ -134,26 +144,58 @@ export default function CaseView() {
   const stepsVisible = useMemo(() => (c ? c.steps.filter((s) => stepStateAt(s, asOf) !== null) : []), [c, asOf]);
   const stepsDone = useMemo(() => (c ? c.steps.filter((s) => stepStateAt(s, asOf) === 'delivered').length : 0), [c, asOf]);
   const log = useMemo(() => [...(c?.log ?? []), ...sessionLog], [c, sessionLog]);
+  /** Safety facts and doctors' warnings known by the chosen date (each with its verbatim sources). */
+  const alerts: CaseAlert[] = useMemo(() => {
+    if (!c) return [];
+    const known = (docId: string) => (c.docs.find((d) => d.id === docId)?.receivedAt ?? '9999-12-31') <= asOf;
+    return (ALERTS[c.id] ?? []).filter((a) => a.from <= asOf)
+      .map((a) => ({ ...a, citations: a.citations.filter((ci) => known(ci.docId)) }))
+      .filter((a) => a.citations.length > 0);
+  }, [c, asOf]);
+  /** A report that arrived after the case was closed opens it again (QA R5 #1). */
+  const reopened = useMemo(() => {
+    const closed = session.closedAt;
+    if (!c || !closed) return undefined;
+    return c.docs.filter((d) => d.receivedAt > closed && d.receivedAt <= asOf).sort((a, b) => a.receivedAt.localeCompare(b.receivedAt))[0];
+  }, [c, session.closedAt, asOf]);
   const sliderMax = useMemo(() => {
     const all = [DEMO_TODAY, c?.mdtDate ?? '', ...docs.map(docDate), ...log.map((e) => e.date)].filter(Boolean);
     return all.sort()[all.length - 1] ?? DEMO_TODAY;
   }, [c, docs, log]);
 
-  /** Steps that were chased: "Urgencia: histológia…" in the log → step whose title starts with that word. */
+  /** Steps that were chased: "Urgencia: histológia…" in the log → step whose title starts with that word
+   *  (or whose whole title is in the entry). The latest chase known by the chosen date wins. */
   const urgedAt = useMemo(() => {
     const m: Record<string, string> = {};
     for (const s of c?.steps ?? []) {
-      const kw = s.title.split(/[\s(]/)[0].toLowerCase();
-      if (kw.length < 3) continue;
-      const e = log.find((x) => /urgen/i.test(x.action) && `${x.action} ${x.detail}`.toLowerCase().includes(kw));
-      if (e) m[s.id] = e.date;
+      const title = s.title.toLowerCase();
+      const kw = title.split(/[\s(]/)[0];
+      const dates = log
+        .filter((x) => /urgen/i.test(x.action) && x.date <= asOf)
+        .filter((x) => { const t = `${x.action} ${x.detail}`.toLowerCase(); return t.includes(title) || (kw.length >= 3 && t.includes(kw)); })
+        .map((x) => x.date).sort();
+      if (dates.length) m[s.id] = dates[dates.length - 1];
     }
     return m;
-  }, [c, log]);
+  }, [c, log, asOf]);
 
   /** "Ďalší krok" follows the demo: once the missing field is answered, the next open item is shown. */
   const nextStep: NextStep = useMemo(() => {
     if (!c) return { text: '', owner: '', mine: false };
+    if (reopened) {
+      return { text: `Nová správa po uzavretí – skontrolovať (správa ${reopened.id}, ${fmtShort(reopened.receivedAt)})`, owner: 'ja (koordinátor)', mine: true, due: reopened.receivedAt, derived: 'prípad sa znovu otvoril' };
+    }
+    if (c.status === 'new' && accepted) {
+      const rest = c.nextStep.text.replace(/^Prevziať žiadosť praktika( a )?/i, '').trim();
+      return { text: rest ? rest.charAt(0).toUpperCase() + rest.slice(1) : 'Zaradiť prípad na konzílium', owner: 'ja (koordinátor)', mine: true, due: c.nextStep.due, derived: 'žiadosť prevzatá' };
+    }
+    if (shared.mdtConfirmedAt && c.mdtDate && asOf <= c.mdtDate) {
+      const left = [
+        counts.conflict ? `${counts.conflict} ${plural(counts.conflict, 'rozpor nechaný', 'rozpory nechané', 'rozporov nechaných')} konzíliu` : '',
+        counts.missing ? `${counts.missing} ${plural(counts.missing, 'údaj chýba', 'údaje chýbajú', 'údajov chýba')}` : '',
+      ].filter(Boolean).join(' · ');
+      return { text: `Podklad potvrdil ${shared.mdtConfirmedBy ?? 'lekár KOC'} ${fmtShort(shared.mdtConfirmedAt)}${left ? ` · ${left}` : ''}`, owner: `MDT · ${c.koc}`, mine: false, due: c.mdtDate, derived: 'podklad potvrdený (simulácia)' };
+    }
     const base: NextStep = { text: c.nextStep.text, owner: c.nextStep.mine ? 'ja (koordinátor)' : c.nextStep.owner, mine: c.nextStep.mine, due: c.nextStep.due };
     const text = c.nextStep.text.toLowerCase();
     const ref = c.fields.find((f) => f.status === 'missing' && text.includes(f.label.toLowerCase()));
@@ -175,14 +217,14 @@ export default function CaseView() {
     }
     if (c.mdtDate && asOf < c.mdtDate) return { text: `Podklad je kompletný · konzílium ${fmtDate(c.mdtDate)}`, owner: `MDT · ${c.koc}`, mine: false, due: c.mdtDate, derived };
     return { text: 'Odoslať záver praktikovi po konzíliu', owner: 'ja (koordinátor)', mine: true, derived };
-  }, [c, fields, counts, asOf]);
+  }, [c, fields, counts, asOf, reopened, accepted, shared.mdtConfirmedAt, shared.mdtConfirmedBy]);
 
   /** Dokumenty → „Čakáme na“: only what was requested or ordered, never titles of future reports. */
   const waiting: WaitingItem[] = useMemo(() => {
     if (!c) return [];
     const out: WaitingItem[] = [];
     for (const f of fields) {
-      if (f.status === 'missing') out.push({ label: f.field.label, detail: f.field.request ? `chýba · vyžiadať od: ${f.field.request.to}` : 'chýba v dostupných správach' });
+      if (f.status === 'missing') out.push({ label: f.field.label, detail: f.field.request ? `chýba · vyžiadať od: ${f.field.request.to}` : 'chýba v dostupných správach', todo: true });
       else if (f.status === 'pending' && f.override?.kind === 'pending') out.push({ label: f.field.label, detail: `vyžiadané od: ${f.override.to} · ${fmtShort(f.override.sentAt)} · ${f.override.channel}` });
       else if (f.status === 'conflict' && f.override?.kind === 'pending') out.push({ label: `Upresnenie: ${f.field.label}`, detail: `vyžiadané od: ${f.override.to} · ${fmtShort(f.override.sentAt)}` });
     }
@@ -210,8 +252,9 @@ export default function CaseView() {
   /* ---- session helpers ---- */
   const patch = (fn: (s: CaseSession) => CaseSession) => updateCaseSession(c.id, fn);
   const setOverride = (key: string, ov: FieldOverride) => patch((s) => ({ ...s, overrides: { ...s.overrides, [key]: ov } }));
-  const addLog = (action: string, detail: string) =>
-    patch((s) => ({ ...s, log: [...s.log, { date: actDate, time: nowTime(), action, detail, billable: true }] }));
+  // Deterministic demo time: after the day's fixed entries (e.g. 12:40 „Doručená histológia“ on 19. 10.), then +2–4 min each.
+  const addLog = (action: string, detail: string, date: string = actDate) =>
+    patch((s) => ({ ...s, log: [...s.log, { date, time: nextDemoTime(date, lastTimeOn(c.log, date)), action, detail, billable: true }] }));
   const flash = (key: string) => {
     setFlashKey(key); setFlashMetric(true);
     window.setTimeout(() => { setFlashKey(null); setFlashMetric(false); }, 1900);
@@ -246,8 +289,61 @@ export default function CaseView() {
     const reason: Reason = f?.status === 'conflict' ? 'conflict' : f?.status === 'missing' || f?.status === 'pending' ? 'missing' : 'addendum';
     setModal({ key, req: buildRequest(key, reason), reason });
   };
+  /** „Urgovať“ on a late step: the same concept window as „Vyžiadať“, sending is simulated, the record gets a day with an intervention. */
+  const urgeStep = (step: PathStep) => {
+    const late = stepLateDays(step, stepStateAt(step, actDate), actDate);
+    const lateTxt = late > 0 ? ` – mešká ${late} ${daysWord(late)}` : '';
+    setModal({
+      key: step.id, reason: 'urge',
+      req: {
+        to: step.place, channel: 'e-mail', subject: `Urgencia: ${step.title}`,
+        draft: `Dobrý deň,\n\nkrok „${step.title}“ (${pw.nom}: ${who}${mdtTxt ? `, konzílium${mdtTxt}` : ''}) mal termín ${fmtDate(step.due)}. K ${fmtDate(actDate)} stále nie je hotový${lateTxt}.\n\nProsím o informáciu, kedy ho môžeme očakávať, a ak je to možné, o jeho urýchlenie.\n\nĎakujem za spoluprácu.\n${SIGNATURE}, ${c.koc}`,
+      },
+    });
+  };
+  /** „Prevziať žiadosť“ on a new referral (QA R5 #12): record entry, the case becomes active. */
+  const accept = () => {
+    patch((s) => ({ ...s, acceptedAt: actDate }));
+    updateShared(c.id, { acceptedAt: actDate });
+    addLog('Prevzatá žiadosť praktika', `${c.referringGp.name} · prípad je aktívny, bežia hodiny cesty`);
+    setToast('Žiadosť prevzatá · prípad je aktívny');
+  };
+  /** A doctors' warning goes on to whoever needs it (concept, simulated). Only quotes from the reports, no advice. */
+  const forwardAlert = (a: CaseAlert) => {
+    if (!a.forward) return;
+    const lines = a.citations.map((ci) => {
+      const d = docsById[ci.docId];
+      return `– ${d ? `${d.title}, ${fmtDate(d.examDate)}` : 'Správa'} (správa ${ci.docId}): „${ci.quote}“`;
+    });
+    setModal({
+      key: a.id, reason: 'forward',
+      req: {
+        to: a.forward.to, channel: a.forward.channel, subject: `Upozornenie z dokumentácie: ${a.label}`,
+        draft: `Dobrý deň,\n\nposielam upozornenie, ktoré je v správach lekárov (${pw.nom}: ${who}):\n\n${lines.join('\n')}\n\nPosúdenie je na ošetrujúcom lekárovi – posielam len to, čo píšu správy.\n\nĎakujem.\n${SIGNATURE}, ${c.koc}`,
+      },
+    });
+  };
   const sendRequest = (r: RequestDraft) => {
     if (!modal) return;
+    if (modal.reason === 'forward') {
+      const a = alerts.find((x) => x.id === modal.key);
+      if (a) {
+        addLog('Upozornenie poslané ďalej', `${a.label} · ${r.to} · ${r.channel} (simulované)`, asOf > actDate ? asOf : actDate);
+        setToast(`Upozornenie poslané · ${r.to.split(' · ')[0]}`);
+      }
+      setModal(null);
+      return;
+    }
+    if (modal.reason === 'urge') {
+      const step = c.steps.find((s) => s.id === modal.key);
+      if (step) {
+        const late = stepLateDays(step, stepStateAt(step, actDate), actDate);
+        addLog(`Urgencia: ${step.title}`, `${r.to} · ${r.channel} · termín bol ${fmtShort(step.due)}${late > 0 ? `, mešká ${late} ${daysWord(late)}` : ''} (simulované)`);
+        setToast(`Urgencia odoslaná · ${r.to}`);
+      }
+      setModal(null);
+      return;
+    }
     const f = c.fields.find((x) => x.key === modal.key)!;
     if (modal.reason === 'addendum') {
       addLog('Vyžiadaný dodatok', `${f.label} · ${r.to} · ${r.channel}`);
@@ -300,11 +396,14 @@ export default function CaseView() {
   const todo = (f: EffField) => f.status === 'missing' || f.status === 'conflict' || f.status === 'pending' || f.status === 'proposed';
   const todoCount = fields.filter(todo).length;
   const started = fields.length > 0;
+  const forwardedOn = (a: CaseAlert) => log.filter((e) => e.action === 'Upozornenie poslané ďalej' && e.detail.startsWith(a.label) && e.date <= asOf).map((e) => e.date).sort()[0];
+  const forwardCards = alerts.filter((a) => a.kind === 'forward');
   const slider = <AsOfSlider asOf={asOf} min={c.receivedAt} max={sliderMax} docs={docs} mdtDate={c.mdtDate} onChange={nav.setAsOf} />;
 
   return (
     <div className={`cv-page ${panel ? 'has-panel' : ''}`}>
-      <CaseHeader c={c} referral={referral} asOf={asOf} closedAt={session.closedAt} onMdt={() => nav.go({ page: 'mdt', caseId: c.id })} onGp={() => nav.go({ page: 'gp', caseId: c.id })} />
+      <CaseHeader c={c} referral={referral} asOf={asOf} closedAt={session.closedAt} reopened={reopened} accepted={accepted} alerts={alerts}
+        onMdt={() => nav.go({ page: 'mdt', caseId: c.id })} onGp={() => nav.go({ page: 'gp', caseId: c.id })} onAccept={accept} onOpenDoc={(id, q) => openDoc(id, q)} />
 
       <nav className="cv-tabs" aria-label="Časti prípadu">
         {TABS.map((t) => (
@@ -319,6 +418,31 @@ export default function CaseView() {
 
       {tab === 'prehlad' && (
         <div className="cv-stack">
+          {forwardCards.map((a) => {
+            const sent = forwardedOn(a);
+            const canSend = !!a.forward && (!a.forward.needsDocId || (docsById[a.forward.needsDocId] && docDate(docsById[a.forward.needsDocId]) <= asOf));
+            return (
+              <Card key={a.id} className="cv-alert" title={<><IcAlert size={17} /> Upozornenie, ktoré musí ísť ďalej</>} aside={<span className="cs-hint">z lekárskych správ · appka nič neodporúča</span>}>
+                <div className="cv-alert-label">{a.label}</div>
+                <ul className="cv-alert-quotes">
+                  {a.citations.map((ci, i) => {
+                    const d = docsById[ci.docId];
+                    return (
+                      <li key={i}>
+                        <q>{ci.quote}</q>
+                        <span className="cv-alert-src">{d ? `${d.title} · ${fmtShort(d.examDate)}` : ''} <SourceChip docId={ci.docId} onClick={() => openDoc(ci.docId, ci.quote)} /></span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="cv-alert-foot">
+                  {sent ? <Pill tone="mint"><IcCheck size={13} /> poslané ďalej {fmtShort(sent)} · simulované</Pill>
+                    : canSend ? <Btn variant="primary" icon={<IcSend size={15} />} onClick={() => forwardAlert(a)}>{a.forward!.button}</Btn>
+                      : a.forward?.beforeNote ? <span className="cs-hint">{a.forward.beforeNote}</span> : null}
+                </div>
+              </Card>
+            );
+          })}
           <Metrics c={c} counts={counts} asOf={asOf} stepsDone={stepsDone} stepsTotal={c.steps.length} flash={flashMetric}
             evalInfo={evalInfo} evalOpen={showEval} onEval={() => setShowEval((v) => !v)} />
           {showEval && evalInfo && <EvalCard info={evalInfo} manual={!machine} />}
@@ -341,7 +465,7 @@ export default function CaseView() {
             <Semaphore fields={fields} counts={counts} activeKey={activeKey} flashKey={flashKey} onPick={pickTile} />
           </Card>
           {todoCount > 0 ? (
-            <Card title="Čo treba vyriešiť" aside={<span className="cs-hint">{todoCount} {todoCount === 1 ? 'položka' : todoCount <= 4 ? 'položky' : 'položiek'} · jedno sloveso na riadok</span>}>
+            <Card title="Čo treba vyriešiť" aside={<span className="cs-hint">{todoCount} {todoCount === 1 ? 'položka' : todoCount <= 4 ? 'položky' : 'položiek'}</span>}>
               <FieldList fields={fields} activeKey={activeKey} flashKey={flashKey} onOpen={openField} onRequest={requestField} onConfirm={confirmField} onOpenDoc={openDoc} only={todo} byAction />
             </Card>
           ) : started ? (
@@ -375,17 +499,18 @@ export default function CaseView() {
               <span><i className="is-latedone" /> doručené po termíne</span>
               <span><i className="is-late" /> mešká</span>
               <span><i className="is-future" /> k dátumu ešte nevzniklo</span>
-              <span className="cs-hint">{stepsVisible.length} z {c.steps.length} krokov k {fmtShort(asOf)}</span>
+              <span className="cs-hint">{stepsVisible.length} {plural(stepsVisible.length, 'krok', 'kroky', 'krokov')} · {stepsDone} s výsledkom k {fmtShort(asOf)}</span>
             </span>
           }>
-            <Journey steps={c.steps} asOf={asOf} mdtDate={c.mdtDate} urgedAt={urgedAt} onOpenDoc={openDoc} />
+            <Journey steps={c.steps} asOf={asOf} mdtDate={c.mdtDate} urgedAt={urgedAt} onOpenDoc={openDoc} onUrge={urgeStep} />
           </Card>
         </div>
       )}
 
       {tab === 'dokumenty' && (
         <div className="cv-stack">
-          <DocsList docs={docs} asOf={asOf} waiting={waiting} onOpenDoc={(id) => openDoc(id)} />
+          <DocsList docs={docs} asOf={asOf} waiting={waiting} onOpenDoc={(id) => openDoc(id)}
+            after={<RequestedDocs c={c} log={log} asOf={asOf} onOpenDoc={(id) => openDoc(id)} />} />
         </div>
       )}
 
@@ -402,7 +527,10 @@ export default function CaseView() {
         document.body,
       )}
       {modal && createPortal(
-        <RequestModal title={c.fields.find((f) => f.key === modal.key)?.label ?? ''} req={modal.req} onSend={sendRequest} onClose={() => setModal(null)} />,
+        <RequestModal
+          title={modal.reason === 'urge' ? (c.steps.find((s) => s.id === modal.key)?.title ?? '')
+            : modal.reason === 'forward' ? (alerts.find((a) => a.id === modal.key)?.label ?? '') : (c.fields.find((f) => f.key === modal.key)?.label ?? '')}
+          kind={modal.reason === 'urge' ? 'urge' : modal.reason === 'forward' ? 'forward' : 'request'} req={modal.req} onSend={sendRequest} onClose={() => setModal(null)} />,
         document.body,
       )}
       {toast && createPortal(<div className="cv-toast" role="status">{toast}</div>, document.body)}

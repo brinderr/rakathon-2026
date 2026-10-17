@@ -25,6 +25,7 @@ npm run dev        # http://localhost:5173
 | `node scripts/build-pacient2.mjs` | po novom `extract`/`eval` pregeneruje `src/data/pacient2.gen.ts` a `src/data/eval.gen.ts` (potom `npm run verify`) |
 
 Demo „dnes“ je pevne **19. 10. 2026**, konzílium Aleny **21. 10. 2026** (`DEMO_TODAY` v `src/types.ts`).
+Čo sa v deme urobí (žiadosti, potvrdenia, uzavretie), žije len v pamäti prehliadača. „Ukážka v 8 krokoch“ vždy začína z čistého stavu a po prvom úkone je v hornej lište „Začať odznova“. Funguje aj na mobile (≤ 760 px spodná lišta).
 
 ## Obrazovky a priame odkazy
 

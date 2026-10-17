@@ -17,6 +17,8 @@
 .gpr-a__src { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
 
 .gpr-foryou { margin-top: 24px; background: var(--pastel-2); border-radius: var(--r-lg); padding: 20px 22px; }
+.gpr-aside { display: block; margin-top: 6px; font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.gpr-running { margin: 0 0 14px; padding: 8px 12px; border-radius: 12px; background: var(--sky-soft); color: var(--sky-ink); line-height: 1.45; }
 .gpr-foryou__title { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 14px; }
 .gpr-foryou .doc-list__ico--mint { background: rgba(255,255,255,.85); }
 
@@ -37,3 +39,14 @@
 .gpr-stats .doc-stat { display: flex; align-items: baseline; gap: 10px; padding: 10px 14px; }
 .gpr-stats .doc-stat__v { font-size: 22px; min-width: 56px; }
 .gpr-stats .doc-stat__l { margin: 0; }
+
+@media (max-width: 760px) {
+  .gpr-paper { padding: 20px 16px; }
+  .gpr-q { padding: 14px 14px; }
+  .gpr-q__quote { font-size: 15px; }
+  .gpr-a__text { font-size: 14.5px; }
+  .gpr-foryou { padding: 16px 14px; }
+  .gpr-sign { flex-wrap: wrap; }
+  .gpr-sign__pill { margin-left: 0; flex-basis: 100%; }
+  .gpr-rail { gap: var(--gap); }
+}

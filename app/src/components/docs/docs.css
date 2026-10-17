@@ -178,3 +178,64 @@
 .doc-stat--3 { background: var(--pastel-3); }
 .doc-stat__v { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
 .doc-stat__l { font-size: 12.5px; color: var(--ink-2); margin-top: 4px; }
+
+/* ---------------------------------------------------------------- Phone (≤ 760 px) */
+@media (max-width: 760px) {
+  .doc-page { padding: 2px 0 36px; }
+  .doc-head { flex-direction: column; align-items: stretch; gap: 12px; margin: 4px 0 18px; }
+  .doc-title { font-size: 24px; }
+  .doc-sub { font-size: 14px; gap: 6px 10px; }
+  .doc-sub .doc-pill { white-space: normal; height: auto; min-height: 26px; padding: 4px 10px; line-height: 1.3; }
+  .doc-head__actions { flex-wrap: wrap; }
+  .doc-head__actions .doc-btn { flex: 1 1 auto; }
+  .doc-notice { margin: -6px 0 16px; align-items: flex-start; }
+  .doc-notice .icon, .doc-notice svg { flex: none; margin-top: 2px; }
+  .doc-card { padding: 16px 16px; }
+  .doc-card__title { flex-wrap: wrap; gap: 8px 10px; }
+  .doc-grid { grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+  .doc-rail { position: static; }
+  .doc-btn { white-space: normal; height: auto; min-height: 40px; padding: 9px 16px; line-height: 1.2; text-align: center; }
+  .doc-btn--sm { min-height: 32px; padding: 6px 12px; }
+  .doc-btn--lg { min-height: 46px; }
+  .doc-kv { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .doc-kv dt { margin-top: 8px; font-size: 12.5px; }
+  .doc-kv dt:first-child { margin-top: 0; }
+  .doc-kv dd { overflow-wrap: anywhere; }
+  .doc-stats { gap: 8px; }
+  .doc-stat { padding: 10px 12px; }
+  .doc-stat__v { font-size: 22px; }
+  .doc-stat__l { font-size: 12px; }
+  .doc-hero h2 { font-size: 22px; }
+  .doc-hero__ico { width: 60px; height: 60px; }
+
+  /* e-mail preview */
+  .mail__head { grid-template-columns: 62px minmax(0, 1fr); padding: 12px 14px; font-size: 13px; }
+  .mail__body { padding: 14px; font-size: 14px; }
+  .mail__foot { flex-direction: column; gap: 4px; padding: 10px 14px; }
+
+  /* delivery receipt */
+  .dtl__step { padding-right: 6px; }
+  .dtl__label { font-size: 13px; }
+  .dtl__detail, .dtl__time { font-size: 11.5px; }
+
+  /* printable paper */
+  .paper { padding: 22px 16px; border-radius: 20px; }
+  .paper__head { flex-direction: column; gap: 10px; padding-bottom: 14px; margin-bottom: 18px; }
+  .paper__meta { text-align: left; white-space: normal; }
+  .paper__title { font-size: 19px; }
+  .paper-sec { margin-bottom: 20px; }
+  .paper-sec__head { flex-wrap: wrap; }
+  .paper-line { grid-template-columns: minmax(0, 1fr); gap: 1px 0; padding: 7px 0; }
+  .paper-line__label { font-size: 12.5px; }
+  /* tables scroll inside the section; the sheet itself stays as wide as the screen */
+  .paper-sec:has(> .paper-table) { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px 20px; padding: 0 16px; }
+  .paper-sec:has(> .paper-table) > :not(.paper-table) { position: sticky; left: 0; }
+  .paper-table { min-width: 560px; }
+  .paper-table td:nth-child(2) { width: 170px; }
+  .paper__foot { flex-direction: column; gap: 4px; }
+
+  /* drop zone, file chip */
+  .drop { padding: 20px 14px; }
+  .drop__actions { flex-wrap: wrap; }
+  .filechip__name { font-size: 13.5px; }
+}

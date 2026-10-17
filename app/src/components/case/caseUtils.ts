@@ -52,10 +52,7 @@ export function daysWord(n: number): string {
   if (a >= 2 && a <= 4) return 'dni';
   return 'dní';
 }
-export function nowTime(): string {
-  const d = new Date();
-  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-}
+// Times of demo actions are deterministic (demoClock.ts), never the real clock of the computer.
 
 /* ---------- misc ---------- */
 export function initials(first: string, last: string): string {

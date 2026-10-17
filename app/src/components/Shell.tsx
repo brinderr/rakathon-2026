@@ -6,6 +6,8 @@ import { useNav, type Route } from '../nav';
 import { CASES } from '../data/cases';
 import { DEMO_TODAY, type Case } from '../types';
 import { useSessions } from './session';
+import { resetAllCaseSessions, useAllCaseSessions } from './case/caseSession';
+import { resetDemoClock } from './case/demoClock';
 import { Avatar, Button, CASE_STATUS_LABEL, CASE_STATUS_TONE, Icon, Pill, fmtDate, type IconName } from './ui';
 import './Shell.css';
 
@@ -118,7 +120,7 @@ function tourSteps(c: Case): TourStep[] {
   ];
 }
 
-function Tour({ step, onStep, onClose }: { step: number; onStep: (i: number) => void; onClose: () => void }) {
+function Tour({ step, onStep, onClose, onRestart }: { step: number; onStep: (i: number) => void; onClose: () => void; onRestart: () => void }) {
   const steps = useMemo(() => tourSteps(FULL_CASE), []);
   const s = steps[step];
   const last = step === steps.length - 1;
@@ -126,7 +128,10 @@ function Tour({ step, onStep, onClose }: { step: number; onStep: (i: number) => 
     <aside className="tour" aria-label="Ukážka v 8 krokoch">
       <div className="tour__head">
         <span className="kicker">Ukážka · krok {step + 1} z {steps.length}</span>
-        <button type="button" className="tour__close" onClick={onClose} aria-label="Zavrieť ukážku"><Icon name="x" size={16} /></button>
+        <span className="tour__head-r">
+          <button type="button" className="tour__restart" onClick={onRestart} title="Zabudne všetko, čo sa v deme urobilo, a začne krokom 1">Začať odznova</button>
+          <button type="button" className="tour__close" onClick={onClose} aria-label="Zavrieť ukážku"><Icon name="x" size={16} /></button>
+        </span>
       </div>
       <div className="tour__dots" role="tablist">
         {steps.map((st, i) => (
@@ -152,10 +157,15 @@ function Tour({ step, onStep, onClose }: { step: number; onStep: (i: number) => 
 /* ------------------------------------------------------------------ Shell */
 export default function Shell({ children }: { children: ReactNode }) {
   const { route, go, setAsOf } = useNav();
-  const { get } = useSessions();
+  const { get, sessions, resetAll } = useSessions();
+  const profiles = useAllCaseSessions();
   const active = sectionOf(route.page);
   const gpMode = route.page === 'intake';
   const [tour, setTour] = useState<number | null>(null);
+  /** Something was done in the demo (request, answer, confirmation, closing…) – the next juror would see it. */
+  const dirty = Object.keys(sessions).length > 0 || Object.keys(profiles).length > 0;
+  /** „Začať demo odznova“ (QA R5 #6): forget every demo action, the clock and the slider. */
+  const restart = () => { resetAll(); resetAllCaseSessions(); resetDemoClock(); setAsOf(DEMO_TODAY); };
 
   /** Case with the nearest upcoming MDT that is not closed (falls back to the full case). */
   const nextMdt = useMemo(() => {
@@ -185,26 +195,35 @@ export default function Shell({ children }: { children: ReactNode }) {
     go(s.route);
     if (s.asOf) setAsOf(s.asOf);
   };
+  /** The guided demo always starts from a clean state, so every juror sees 19. 10. as it is. */
+  const startTour = () => { restart(); goStep(0); };
 
   return (
     <div className={`shell ${gpMode ? 'shell--gp' : ''}`}>
       {!gpMode && (
-        <aside className="rail" aria-label="Hlavná navigácia">
-          {nav.map((n) => (
-            <button key={n.id} type="button" title={n.title} aria-current={active === n.id ? 'page' : undefined}
-              className={`rail__btn ${active === n.id ? 'rail__btn--active' : ''}`} onClick={() => open(n.id)}>
-              <Icon name={n.icon} size={22} />
-              <span>{n.label}</span>
-              {n.sub && <span className="rail__sub">{n.sub}</span>}
-            </button>
-          ))}
-        </aside>
+        /* rail-col carries the background for the full page height; the rail itself sticks to the viewport.
+           On phones (≤ 760 px) the column becomes a bottom bar with icons (see Shell.css). */
+        <div className="rail-col">
+          <aside className="rail" aria-label="Hlavná navigácia">
+            {nav.map((n) => (
+              <button key={n.id} type="button" title={n.title} aria-current={active === n.id ? 'page' : undefined}
+                className={`rail__btn ${active === n.id ? 'rail__btn--active' : ''}`} onClick={() => open(n.id)}>
+                <Icon name={n.icon} size={22} />
+                <span>{n.label}</span>
+                {n.sub && <span className="rail__sub">{n.sub}</span>}
+              </button>
+            ))}
+          </aside>
+        </div>
       )}
 
       <div className="shell__main">
         {gpMode ? GP_BAR_IN_SHELL && (
           <header className="topbar topbar--gp">
-            <Button variant="ghost" size="sm" icon="arrow-left" onClick={() => go({ page: 'queue' })}>Späť do appky koordinátora</Button>
+            <Button variant="ghost" size="sm" icon="arrow-left" onClick={() => go({ page: 'queue' })} title="Späť do appky koordinátora">
+              <span className="gpbar__back-long">Späť do appky koordinátora</span>
+              <span className="gpbar__back-short">Späť</span>
+            </Button>
             <span className="gpbar__who"><Icon name="user" size={16} /> Pohľad praktika · {FULL_CASE.referringGp.name}</span>
             <Pill tone="amber" size="sm">ukážka · bez účtu, takto dnes posiela žiadanku</Pill>
           </header>
@@ -215,12 +234,20 @@ export default function Shell({ children }: { children: ReactNode }) {
               <span className="brand__name">Koordinátor</span>
             </button>
 
-            <QuickSearch onOpen={(c) => go({ page: 'case', caseId: c.id })} />
+            {/* keyed by the screen: a half-typed search does not follow the user to another screen */}
+            <QuickSearch key={`${route.page}/${'caseId' in route ? route.caseId : ''}`} onOpen={(c) => go({ page: 'case', caseId: c.id })} />
 
             <div className="topbar__right">
+              {dirty && (
+                <button type="button" className="topbar__restart" onClick={() => { restart(); go({ page: 'queue' }); }}
+                  title="Zabudne všetko, čo sa v deme urobilo (žiadosti, potvrdenia, uzavretie), a vráti stav k 19. 10." aria-label="Začať demo odznova">
+                  <Icon name="history" size={16} /><span className="topbar__restart-text">Začať odznova</span>
+                </button>
+              )}
               <Button variant="ghost" size="sm" icon="route" className="topbar__tour" aria-pressed={tour !== null}
-                onClick={() => (tour === null ? goStep(0) : setTour(null))}>
-                Ukážka v 8 krokoch
+                aria-label="Ukážka v 8 krokoch" title="Ukážka v 8 krokoch (začne od čistého stavu)"
+                onClick={() => (tour === null ? startTour() : setTour(null))}>
+                <span className="topbar__tour-text">Ukážka v 8 krokoch</span>
               </Button>
               <div className="me" title={COORDINATOR.fullName}>
                 <div className="me__text">
@@ -238,7 +265,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         <footer className="foot">Prototyp · fiktívne dáta · nie je zdravotnícka pomôcka</footer>
       </div>
 
-      {tour !== null && <Tour step={tour} onStep={goStep} onClose={() => setTour(null)} />}
+      {tour !== null && <Tour step={tour} onStep={goStep} onClose={() => setTour(null)} onRestart={startTour} />}
     </div>
   );
 }

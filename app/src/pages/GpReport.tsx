@@ -11,6 +11,7 @@ import { DeliveryTimeline } from '../components/docs/DeliveryTimeline';
 import { useCaseSessionSafe } from '../components/docs/useCaseSessionSafe';
 import type { DeliveryStep } from '../components/docs/DeliveryTimeline';
 import { addBusinessDays, addDays, billableDays, docById, findCase, fmtDate, PROTO_NOTE } from '../components/docs/docUtils';
+import { stepStateAt } from '../components/case/caseUtils';
 import { IconArrowDown, IconArrowRight, IconCheck, IconClock, IconFlag, IconList, IconQuote, IconSend, IconShield, IconStamp } from '../components/docs/DocIcons';
 import '../components/docs/docs.css';
 import './GpReport.css';
@@ -20,12 +21,12 @@ const CHANNEL = 'eZpráva';
 const FEE_PER_DAY = 250; // Kč, výkon 51887 – za intervenciu uznanú poisťovňou, najviac 1× denne; vykazuje nemocnica
 const NL_BUSINESS_DAYS = 2; // holandský vzor (norma SONCOS): záver praktikovi do 2 pracovných dní; ČR lehotu neurčuje
 
-/** "16:40" + 1 minute → "16:41" */
+/** "16:40" + 1 minute → "16:41" (hours zero-padded like every other time in the record) */
 function plusMinute(t: string): string {
   const m = t.match(/^(\d{1,2}):(\d{2})$/);
   if (!m) return t;
   const total = (Number(m[1]) * 60 + Number(m[2]) + 1) % (24 * 60);
-  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
 }
 const findLog = (log: LogEntry[], re: RegExp) => log.find(l => re.test(l.action));
 
@@ -67,7 +68,7 @@ export default function GpReport() {
   const steps: DeliveryStep[] = useMemo(() => [
     { label: 'Odoslané', detail: `${CHANNEL} · zapečatené nemocnicou`, time: `${fmtDate(sentDate)} ${sentTime}` },
     { label: 'Doručené', detail: 'schránka ordinácie praktika', time: `${fmtDate(sentDate)} ${plusMinute(sentTime)}` },
-    { label: 'Potvrdené', detail: 'praktik otvoril a potvrdil', time: confirmEntry ? `${fmtDate(confirmEntry.date)} ${confirmEntry.time ?? ''}`.trim() : `${fmtDate(addDays(sentDate, 1))} 8:15` },
+    { label: 'Potvrdené', detail: 'praktik otvoril a potvrdil', time: confirmEntry ? `${fmtDate(confirmEntry.date)} ${confirmEntry.time ?? ''}`.trim() : `${fmtDate(addDays(sentDate, 1))} 08:15` },
   ], [sentDate, sentTime, confirmEntry]);
   const reached = stage === 'sent' ? 0 : stage === 'delivered' ? 1 : stage === 'confirmed' || stage === 'closed' ? 2 : -1;
 
@@ -100,6 +101,11 @@ export default function GpReport() {
   const openRecord = () => { setAsOf(lastLogDate); nav.go({ page: 'case', caseId: c.id, tab: 'zaznam' }); };
   // The loop closes when the GP confirmed the delivery (from the record); the slider shows the whole record.
   const closeDate = confirmEntry?.date ?? addDays(sentDate, 1);
+  // Steps after the MDT that are still running when the loop closes (QA R5 #1): their reports reopen the case.
+  const stillRunning = c.steps.filter(s => s.due > mdt && stepStateAt(s, closeDate) !== null && stepStateAt(s, closeDate) !== 'delivered');
+  const runningText = stillRunning.map(s => `${s.title.replace(/\s*\(.*\)$/, '')} ${fmtDate(s.due).replace(/ \d{4}$/, '')}`).join(', ');
+  // ECOG came in the demo before the MDT, but the (fictional VZP) MDT record still asks for it (QA R5 #13).
+  const ecog = session.overrides.performance?.kind === 'resolved' ? session.overrides.performance : undefined;
   const closeCase = () => {
     setAsOf(lastLogDate);
     setStage('closed');
@@ -179,7 +185,13 @@ export default function GpReport() {
                 <div className="gpr-foryou__title">Čo to znamená pre vás, {gpFemale ? 'pani doktorka' : 'pán doktor'}</div>
                 <ul className="doc-list">
                   {rep.forYou.map((t, i) => (
-                    <li key={i}><span className="doc-list__ico doc-list__ico--mint"><IconCheck size={15} /></span><span>{t}</span></li>
+                    <li key={i}><span className="doc-list__ico doc-list__ico--mint"><IconCheck size={15} /></span>
+                      <span>{t}
+                        {i === 0 && ecog && /ECOG/.test(t) && (
+                          <span className="gpr-aside">{ecog.value} bol v podklade od {fmtDate(ecog.date)} (správa {ecog.docId} – ukážka pre demo). Zápis konzília je fiktívny podklad VZP a ECOG ešte neuvádza.</span>
+                        )}
+                      </span>
+                    </li>
                   ))}
                 </ul>
                 <p className="doc-small doc-muted" style={{ margin: '12px 0 0' }}>Len to, čo je v zázname konzília a v správach. Nič domyslené, žiadne vlastné odporúčanie liečby.</p>
@@ -259,6 +271,11 @@ export default function GpReport() {
                   <p className="doc-small doc-muted" style={{ margin: '0 0 14px' }}>
                     Praktik potvrdil doručenie, revízny lekár má súhrn. {female ? 'Pacientka' : 'Pacient'} má termín na ďalší krok. Prípad môžete uzavrieť; vznikne záznam o koordinovaní.
                   </p>
+                  {stillRunning.length > 0 && (
+                    <p className="doc-small gpr-running">
+                      Po konzíliu ešte {stillRunning.length === 1 ? 'beží 1 krok' : `bežia ${stillRunning.length} kroky`}: {runningText}. Keď príde ich správa, prípad sa sám znova otvorí a ukáže ju.
+                    </p>
+                  )}
                   <button type="button" className="doc-btn doc-btn--primary doc-btn--lg doc-btn--block" onClick={closeCase}>
                     <IconCheck size={16} /> Uzavrieť prípad
                   </button>
@@ -271,6 +288,9 @@ export default function GpReport() {
                     <div className="doc-stat"><div className="doc-stat__v">{c.log.length}</div><div className="doc-stat__l">úkonov v zázname</div></div>
                     <div className="doc-stat doc-stat--3"><div className="doc-stat__v">{(days.length * FEE_PER_DAY).toLocaleString('sk-SK')} Kč</div><div className="doc-stat__l">podklad pre výkon 51887 (ak ho poisťovňa uzná)</div></div>
                   </div>
+                  {stillRunning.length > 0 && (
+                    <p className="doc-small gpr-running">Sledujeme ďalej: {runningText}. Nová správa prípad znova otvorí.</p>
+                  )}
                   <p className="doc-small" style={{ margin: '14px 0 0', color: 'var(--ink-2)' }}>
                     Výkon 51887 = {FEE_PER_DAY} Kč za jednu intervenciu koordinátora, ktorú uzná poisťovňa, najviac 1× denne na pacienta; vykazuje nemocnica.
                     {days.length > 0 && <> Záznam od {fmtDate(days[0])} do {fmtDate(days[days.length - 1])}.</>}

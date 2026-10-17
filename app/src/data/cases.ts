@@ -318,6 +318,24 @@ export const LATER_VALUES: Record<string, LaterValue[]> = {
       note: 'Váha 63 kg je zo správy algeziológa z 26. 10. – po konzíliu. K 21. 10. platilo 65 kg (15. 9.).',
     },
     {
+      // Algeziológ 26. 10. nasadil novú liečbu bolesti (správa 12) – pole Lieky od toho dňa ukazuje novú verziu.
+      key: 'medication', from: '2026-10-26',
+      value: 'apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1 (správa 07) · od 26. 10. liečba bolesti (správa 12): tramadol 100 mg 1-0-1, metamizol 500 mg 1-1-1, paracetamol 500 mg pri prielomovej bolesti najviac 3× denne, metoklopramid 10 mg pri nevoľnosti, laktulóza 15 ml 1× denne',
+      citations: [
+        cite('07', 'FA: apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně'),
+        cite('12', 'tramadol tbl. ret. 100 mg 1-0-1'),
+        cite('12', 'metamizol 500 mg 1-1-1'),
+        cite('12', 'paracetamol 500 mg při průlomové bolesti, max. 3× denně'),
+        cite('12', 'metoklopramid 10 mg při nauzee, max. 3× denně'),
+        cite('12', 'laktulóza sirup 15 ml 1× denně jako prevence obstipace'),
+        cite('12', 'Upozornění: tramadol zvyšuje riziko serotoninového syndromu v kombinaci s antidepresivy (SSRI, SNRI).'),
+        cite('01', 'vysadit apixaban 48 hodin předem, bez nutnosti překlenovací léčby'),
+        cite('09', 'Při nekomplikovaném průběhu apixaban znovu od 21. 10. 2026 ráno.'),
+      ],
+      sourceDate: '2026-10-26',
+      note: 'Zmena 26. 10. (algeziológ, správa 12): nová liečba bolesti, paracetamol už najviac 3× denne (predtým 4×). Algeziológ upozorňuje: tramadol spolu s antidepresívami (SSRI, SNRI) zvyšuje riziko serotonínového syndrómu.',
+    },
+    {
       key: 'other', from: '2026-10-27',
       value: 'Pacientka si želá, aby informácie o liečbe dostávala aj dcéra a aby sa mohla zúčastniť dôležitých rozhovorov. Výrazná úzkosť a depresívna nálada – psychológ odporúča pokračovať v podpornej psychoterapii 1× týždenne.',
       citations: [
@@ -336,6 +354,56 @@ export const LATER_VALUES: Record<string, LaterValue[]> = {
       citations: [cite('N-10', 'Výška 176 cm, hmotnost 73 kg, BMI 23,6.')],
       sourceDate: '2026-10-27',
       note: 'Váha 73 kg je zo správy nutričnej ambulancie z 27. 10. – po konzíliu. K 22. 10. platilo 76 kg (7. 10.).',
+    },
+  ],
+};
+
+/**
+ * Upozornenia, ktoré nesmú zapadnúť v riadkoch podkladu: pás v hlavičke prípadu (QA R5 #1, #9).
+ * Len fakty zo správ, každé s doslovným citátom, žiadne odporúčanie liečby. `from` = doručenie správy, ktorá ho prináša.
+ * kind 'forward' = varovanie lekárov, ktoré treba posunúť ďalej (karta na Prehľade + koncept správy, odoslanie simulované).
+ */
+export interface CaseAlert {
+  id: string;
+  from: ISODate;
+  kind: 'safety' | 'forward';
+  label: string;
+  citations: Citation[];
+  /** kind 'forward': to whom the warning goes (simulated), once the report naming the recipient (`needsDocId`) has arrived. */
+  forward?: { button: string; to: string; channel: SourceDoc['channel']; needsDocId?: string; beforeNote?: string };
+}
+export const ALERTS: Record<string, CaseAlert[]> = {
+  alena: [
+    {
+      id: 'apixaban', from: '2026-10-02', kind: 'safety', label: 'Antikoagulácia – apixaban',
+      citations: [cite('07', 'Upozorňuji na antikoagulační léčbu apixabanem – před invazivními výkony nutné vysazení dle doporučení kardiologa.')],
+    },
+    {
+      id: 'tramadol', from: '2026-10-26', kind: 'forward', label: 'Tramadol + antidepresíva: riziko serotonínového syndrómu',
+      citations: [
+        cite('12', 'Upozornění: tramadol zvyšuje riziko serotoninového syndromu v kombinaci s antidepresivy (SSRI, SNRI).'),
+        cite('13', 'Pacientka užívá tramadol – při volbě antidepresiva zohlednit riziko serotoninového syndromu.'),
+        cite('13', 'Psychiatrické vyšetření k zvážení farmakoterapie – objednána na 3. 11. 2026'),
+      ],
+      forward: {
+        button: 'Pripraviť správu pre psychiatriu a praktika',
+        to: 'Psychiatrická ambulancia KOC 2 · Nemocnica Lipová · kópia: MUDr. Tomáš Řezníček (praktik)',
+        channel: 'NIS', needsDocId: '13',
+        beforeNote: 'Správa 12 išla podľa textu v kópii aj praktikovi.',
+      },
+    },
+  ],
+  novak: [
+    {
+      id: 'contrast', from: '2026-10-07', kind: 'safety', label: 'Alergia na jódovú kontrastnú látku (iná správa uvádza „neguje“)',
+      citations: [
+        cite('N-05', 'Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku'),
+        cite('N-08', 'Poznámka: CT část bez jodové kontrastní látky (alergie na jodovou kontrastní látku v anamnéze)'),
+      ],
+    },
+    {
+      id: 'rc', from: '2026-10-07', kind: 'safety', label: 'Laboratórium N-04 má iné rodné číslo – nepoužívať, kým sa neoverí',
+      citations: [cite('N-04', 'RČ 660314/1234'), cite('N-09', 'Rodné číslo: 660314/1243')],
     },
   ],
 };
@@ -468,6 +536,20 @@ const ALENA_MEDS: Medication[] = [
     note: 'Podľa praktika len čiastočná úľava.',
     citation: cite('07', 'paracetamol 500 mg při bolesti max. 4× denně'),
   },
+  // Správa 12 (algeziológ, 26. 10.) – po konzíliu; MedsCard ich ukáže až od dátumu doručenia.
+  {
+    name: 'tramadol', dose: '100 mg retard · 1-0-1 (od 26. 10.)',
+    note: 'Algeziológ upozorňuje: s antidepresívami (SSRI, SNRI) vyššie riziko serotonínového syndrómu.',
+    citation: cite('12', 'tramadol tbl. ret. 100 mg 1-0-1'),
+  },
+  { name: 'metamizol', dose: '500 mg · 1-1-1 (od 26. 10.)', citation: cite('12', 'metamizol 500 mg 1-1-1') },
+  {
+    name: 'paracetamol', dose: '500 mg pri prielomovej bolesti, najviac 3× denne (od 26. 10.)',
+    note: 'Zmena oproti správe 07 (tam najviac 4× denne).',
+    citation: cite('12', 'paracetamol 500 mg při průlomové bolesti, max. 3× denně'),
+  },
+  { name: 'metoklopramid', dose: '10 mg pri nevoľnosti, najviac 3× denne (od 26. 10.)', citation: cite('12', 'metoklopramid 10 mg při nauzee, max. 3× denně') },
+  { name: 'laktulóza', dose: 'sirup 15 ml · 1× denne (od 26. 10.)', citation: cite('12', 'laktulóza sirup 15 ml 1× denně jako prevence obstipace') },
 ];
 
 const ALENA_EXAMS: Exam[] = [
@@ -546,8 +628,8 @@ const ALENA: Case = {
       { text: 'Chýbajú výsledky 5 vyšetrení, ktoré žiadosť vymenúva (kardiológ 20. 7., laboratórium 1. 9., RTG 3. 9., gastroenterológ 15. 9., ultrazvuk 29. 9.). Podľa žiadosti sú na jednotlivých pracoviskách.', severity: 'missing' },
       { text: 'Chýba výkonnostný stav pacientky (ECOG alebo Karnofského skóre).', severity: 'missing' },
       { text: 'Chýba aktuálna váha a výška – v žiadosti je len „pokračujúci úbytok hmotnosti“.', severity: 'missing' },
-      { text: 'Chýba e-mail pacientky.', severity: 'missing' },
-      { text: 'Chýba e-mail praktika na doručenie záveru (uvedený je len telefón).', severity: 'missing' },
+      { text: 'E-mail pacientky nie je uvedený (na vedomie, nie je to chyba).', severity: 'info' },
+      { text: 'E-mail praktika nie je uvedený, je len telefón (na vedomie – záver ide cez eZprávu).', severity: 'info' },
       { text: 'Telefón pacientky a kontakt na dcéru sú uvedené. Pacientka súhlasí so zdieľaním informácií s dcérou.', severity: 'info' },
       { text: 'Termín CT sa praktikovi nepodarilo zabezpečiť – žiada urgentné riešenie.', severity: 'info' },
       { text: 'Pacientka užíva apixaban – praktik upozorňuje na vysadenie pred výkonmi podľa kardiológa.', severity: 'info' },
@@ -819,6 +901,18 @@ export function stepDelayDays(step: PathStep, asOf: ISODate): number {
   return Math.max(0, days(step.due, delivered ? delivered.date : asOf));
 }
 
+const SENTENCE_END = /[.!?]\s+(?=[A-ZÁÄČĎÉÍĹĽŇÓÔŔŠŤÚÝŽ])/g;
+/** Removes the sentence that contains `token` ("Skôr: 78 kg (3. 9. 2026). Novšia hodnota 73 kg …" → "Skôr: 78 kg (3. 9. 2026)."). */
+function dropSentenceWith(note: string, token: string): string {
+  const i = token ? note.indexOf(token) : -1;
+  if (i < 0) return note;
+  const before = [...note.slice(0, i).matchAll(SENTENCE_END)].pop();
+  const start = before ? before.index! + 1 : 0;
+  const after = [...note.slice(i).matchAll(SENTENCE_END)][0];
+  const end = after ? i + after.index! + 1 : note.length;
+  return `${note.slice(0, start)} ${note.slice(end)}`.replace(/\s+/g, ' ').trim();
+}
+
 /**
  * Podklad k dátumu asOf: použije neskoršie hodnoty (LATER_VALUES), skryje citáty zo správ,
  * ktoré ešte neprišli, a pole bez doručeného zdroja označí ako chýbajúce.
@@ -832,6 +926,9 @@ export function fieldsAsOf(c: Case, asOf: ISODate): HandoverField[] {
     for (const lv of later) {
       if (lv.key === f.key && lv.from <= asOf) {
         f = { ...f, value: lv.value, citations: lv.citations, sourceDate: lv.sourceDate, note: lv.note ?? f.note };
+      } else if (lv.key === f.key && f.note) {
+        // a later value is not known yet: drop the sentence of the note that already names it (QA R5 #11)
+        f = { ...f, note: dropSentenceWith(f.note, lv.value.split(/\s[(·]/)[0].trim()) || undefined };
       }
     }
     if (f.status === 'missing') return f;

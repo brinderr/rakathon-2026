@@ -3,6 +3,7 @@
 import type { Case, HandoverField, ISODate, SourceDoc } from '../../types';
 import { DEMO_TODAY } from '../../types';
 import type { FieldOverride } from '../case/caseUtils';
+import { stepStateAt } from '../case/caseUtils';
 import { docById, docKnownAt, findField, fmtDate, MISSING, plain, resolveField } from './docUtils';
 import type { Resolved } from './docUtils';
 
@@ -62,7 +63,13 @@ export interface MdtModel {
   sections: Section[];
   notes: Footnote[];
   omittedDocs: SourceDoc[];
-  stats: { values: number; cited: number; missing: number; conflicts: number; missingLabels: string[] };
+  stats: {
+    values: number; cited: number; missing: number; conflicts: number; missingLabels: string[];
+    /** fields of the handover still waiting for a human check (the doctor cannot confirm before they are checked) */
+    proposed: number;
+    /** footnotes: verbatim quotes vs. a reference to the whole report vs. taken from the VZP sample */
+    quoted: number; refs: number; template: number;
+  };
 }
 
 const TEMPLATE_SOURCE = 'Vzor VZP „MDT zaver“';
@@ -209,7 +216,8 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
       const dg = fields.find(x => /diagn/i.test(x.key + ' ' + x.label));
       const r = resolveField(c, dg, asOf);
       const m = r.missing ? null : r.text.match(/\b[A-Z]\d{2}(?:\.\d)?\b/);
-      return [val(m ? { ...r, text: m[0] } : { text: MISSING, missing: true })];
+      // the code is only read out of the diagnosis – a conflict about e.g. the lung lobe is not about the code (QA R5 #14)
+      return [val(m ? { ...r, text: m[0], conflict: undefined } : { text: MISSING, missing: true })];
     }
     return [val({ text: MISSING, missing: true })];
   };
@@ -273,6 +281,9 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
         { label: 'Léková anamnéza', values: [faVal] },
         { label: 'Alergie', values: [val(res(/alerg|^aa$|\(aa\)/i))] },
       ] });
+      // wishes of the patient (consent to share with the daughter, anxiety, request for a psychologist) – QA R5 #7
+      const wishes = field(/^other$/i, /želani|iné dôležité/i);
+      if (wishes) sec.groups.push({ heading: 'Doplnené nad rámec šablóny', lines: [{ label: 'Želania a sociálne', values: [val(resolveField(c, wishes, asOf))] }] });
       return sec;
     }
     if (/výsledk|vysledk/.test(t)) {
@@ -281,6 +292,11 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
         { label: 'Celkový stav', values: [val(res(/sympt|pr[íi]zn/i))] },
         { label: 'Stav výkonnosti (ECOG)', values: [val(res(/ecog|v[ýy]konn|karnof|performance/i))] },
       ] });
+      // an announced addendum that has not arrived is missing, not "0 nie je v dokumentácii" (QA R5 #3: EGFR, ALK, ROS1, PD-L1)
+      const addenda = c.steps.filter(st => /dodatok/i.test(st.title) && stepStateAt(st, asOf) !== null && stepStateAt(st, asOf) !== 'delivered');
+      if (addenda.length) {
+        sec.groups.push({ heading: 'Avizované, ešte neprišlo', lines: addenda.map(st => ({ label: st.title, values: [{ text: MISSING, missing: true, note: 'avizovaný, neprišiel' }] })) });
+      }
       return sec;
     }
     if (/závěr|zaver|doporuč|doporuc/.test(t)) {
@@ -293,12 +309,22 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
       if (!cur || cur.heading !== it.group) { cur = { heading: it.group, lines: [] }; sec.groups.push(cur); }
       cur.lines.push({ label: it.label, values: valuesFor(it.group, it.label) });
     }
+    // the GP's question goes to the MDT word for word, at the top of the diagnosis (QA R5 #7)
+    if (/diagn/.test(t)) {
+      const q = field(/^mdtQuestion$/i, /otázk/i);
+      const r = resolveField(c, q, asOf);
+      if (q && !r.missing) {
+        sec.groups.unshift({ heading: 'Otázka praktika pre konzílium · doplnené nad rámec šablóny', lines: [{ label: 'Otázka', values: [val({ ...r, text: r.quote ?? r.text })] }] });
+      }
+    }
     return sec;
   });
 
   /* --- stats --- */
   let values = 0, cited = 0, missing = 0, conflicts = 0;
   const missingLabels: string[] = [];
+  const SK_HEADING: Record<string, string> = { 'pacient': 'pacient', 'referující lékař': 'odosielajúci lekár' };
+  const skHeading = (h: string) => SK_HEADING[h.toLowerCase()] ?? h.toLowerCase();
   const count = (v: Val, label?: string) => {
     values++;
     if (v.n) cited++;
@@ -306,13 +332,17 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
     if (v.missing) { missing++; if (label) missingLabels.push(label); }
   };
   for (const s of sections) {
-    s.groups.forEach(g => g.lines.forEach(l => l.values.forEach(v => count(v, `${v.prefix ?? l.label}${g.heading ? ` (${g.heading.toLowerCase()})` : ''}`))));
+    s.groups.forEach(g => g.lines.forEach(l => l.values.forEach(v => count(v, `${v.prefix ?? l.label}${g.heading && !/šablón|neprišlo/i.test(g.heading) ? ` (${skHeading(g.heading)})` : ''}`))));
     s.table?.rows.forEach(r => count(r[2]));
   }
   // Reports received after the MDT date are never part of the handover (no foretelling of what will arrive).
   const omittedDocs = c.docs.filter(d => (d.receivedAt ?? d.examDate) > (mdt ?? asOf));
 
-  return { title: tpl.title, mdtDate: mdt, asOf, sections, notes, omittedDocs, stats: { values, cited, missing, conflicts, missingLabels } };
+  const proposed = fields.filter(f => f.status === 'proposed' && resolveField(c, f, asOf).missing === false).length;
+  const quoted = notes.filter(n => n.quote).length;
+  const refs = notes.filter(n => !n.quote && n.docId).length;
+  const template = notes.length - quoted - refs;
+  return { title: tpl.title, mdtDate: mdt, asOf, sections, notes, omittedDocs, stats: { values, cited, missing, conflicts, missingLabels, proposed, quoted, refs, template } };
 }
 
 /* ---------- plain text (for "Kopírovať sekciu" and the clipboard) ---------- */

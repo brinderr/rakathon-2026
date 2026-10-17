@@ -418,3 +418,124 @@ p.cs-hint { margin: 12px 0 0; }
 
 /* very long machine-extracted values (e.g. all exams in one field): 4 lines in the row, full text in the panel */
 .cs-row-value.is-long { display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ---------------------------------------------------------------- Phone (≤ 760 px) */
+@media (max-width: 760px) {
+  /* primitives */
+  .cs-card-pad { padding: 16px 16px; }
+  .cs-card:not(.cs-card-pad) > .cs-card-head { padding: 16px 16px 0; }
+  .cs-card-head { flex-wrap: wrap; gap: 6px 12px; margin-bottom: 12px; }
+  .cs-card-aside { flex-wrap: wrap; row-gap: 4px; }
+  .cs-kv { grid-template-columns: 80px minmax(0, 1fr); gap: 8px; }
+  .cs-kv em, .cs-kv strong { overflow-wrap: anywhere; }
+
+  /* header: avatar + name, buttons under the name on full width */
+  .cs-header { flex-wrap: wrap; gap: 12px 14px; padding: 18px 16px; }
+  .cs-avatar { width: 52px; height: 52px; font-size: 19px; }
+  .cs-header-main { flex: 1 1 0; }
+  .cs-name { font-size: 22px; }
+  .cs-meta { font-size: 13px; }
+  .cs-dx { font-size: 14px; }
+  .cs-header-actions { flex: 1 1 100%; }
+  .cs-header-actions .cs-btn { width: 100%; white-space: normal; height: auto; min-height: 40px; padding: 9px 14px; line-height: 1.2; text-align: center; }
+
+  /* metrics: 2 columns */
+  .cs-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .cs-metric { min-height: 0; padding: 14px 14px 12px; border-radius: 18px; }
+  .cs-metric-row { gap: 10px; }
+  .cs-metric-big { font-size: 24px; }
+  .cs-metric-of { font-size: 13px; }
+  .cs-metric-label { font-size: 12.5px; }
+  .cs-metric-foot { font-size: 11px; }
+  .cs-metric-sub { font-size: 11px; }
+  .cs-eval-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .cs-eval-traps ul { grid-template-columns: minmax(0, 1fr); }
+
+  /* "stav k dátumu": label, full-width slider, chips – three rows */
+  .cs-asof { padding: 12px 14px; border-radius: 18px; }
+  .cs-asof-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .cs-asof-lead { flex-wrap: wrap; white-space: normal; gap: 6px 10px; }
+  .cs-asof-date { font-size: 16px; }
+  .cs-asof-chips { justify-content: flex-start; }
+  .cs-asof-off { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+  /* semaphore: 4 columns */
+  .cs-sem-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .cs-tile { min-height: 68px; padding: 8px 8px 7px; border-radius: 12px; }
+  .cs-tile-l { font-size: 10.5px; }
+  .cs-sem-legend { gap: 6px 12px; font-size: 12px; }
+
+  /* field rows: index + text, the status/source chips wrap under the text */
+  .cs-group-name { padding: 16px 16px 6px; }
+  .cs-row { grid-template-columns: 22px minmax(0, 1fr); gap: 8px 10px; padding: 12px 16px; }
+  .cs-row-main { min-width: 0; }
+  .cs-row-value { font-size: 14.5px; flex-wrap: wrap; overflow-wrap: anywhere; }
+  .cs-row-side { grid-column: 2; justify-content: flex-start; flex-wrap: wrap; gap: 6px 8px; }
+  .cs-row-srcs { flex-wrap: wrap; }
+  .cs-row-chev { display: none; }
+  .cs-row-ab { font-size: 13.5px; gap: 6px; }
+  /* A / B versions: letter · text · source chip in one grid row, the text wraps inside its column */
+  .cs-ab { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 4px 7px; align-items: start; }
+  .cs-ab em { margin-top: 1px; }
+  .cs-row-pend { flex-wrap: wrap; }
+  .cs-group-compact .cs-group-rows { grid-template-columns: minmax(0, 1fr); }
+  .cs-group-compact .cs-row { padding-right: 16px; }
+  .cs-group-compact .cs-row:nth-child(2n) { border-left: 0; }
+  .cs-more { margin: 6px 16px 12px; }
+
+  /* original / field panel = bottom sheet over the whole screen */
+  .cs-panel, .cs-panel.is-wide { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none; height: 90vh; height: 90dvh; border-radius: 22px 22px 0 0; border-bottom: 0; animation: cs-rise .32s var(--ease); }
+  .cs-panel::before { content: ''; position: absolute; top: 8px; left: 50%; width: 40px; height: 4px; border-radius: 999px; background: var(--hair-2); transform: translateX(-50%); }
+  .cs-panel-close { top: 16px; right: 14px; width: 34px; height: 34px; }
+  .cs-panel-head { padding: 24px 56px 12px 16px; gap: 10px; }
+  .cs-panel-body { padding: 14px 16px calc(20px + var(--safe-b)); gap: 12px; }
+  .cs-panel-title { font-size: 17px; }
+  .cs-doctext { padding: 12px 14px; font-size: 13px; }
+  .cs-conflict-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .cs-panel-actions { gap: 8px; }
+  .cs-panel-actions .cs-btn { white-space: normal; height: auto; min-height: 40px; padding: 9px 14px; line-height: 1.2; text-align: center; }
+  .cs-verify-row .cs-input { flex: 1 1 100%; min-width: 0; }
+  .cs-verify-row .cs-btn { width: 100%; }
+
+  /* request window = bottom sheet */
+  .cs-modal-back { align-items: flex-end; }
+  .cs-modal { width: 100%; max-width: none; max-height: 92vh; max-height: 92dvh; overflow: auto; border-radius: 22px 22px 0 0; padding: 20px 16px calc(18px + var(--safe-b)); gap: 10px; }
+  .cs-modal-title { font-size: 18px; padding-right: 40px; }
+  .cs-modal-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .cs-modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cs-modal-btns .cs-btn { width: 100%; }
+  .cs-textarea { font-size: 16px; }   /* iOS: no zoom on focus */
+
+  /* journey: columns under each other, no connecting lines */
+  .cs-journey { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 0; }
+  .cs-journey-lines { display: none; }
+  .cs-col-cards { min-height: 0; padding: 10px; gap: 10px; }
+  .cs-step { padding: 12px 14px 10px; }
+  .cs-step-top { flex-wrap: wrap; }
+  .cs-step-foot { flex-wrap: wrap; }
+  .cs-strip-item { padding: 5px 9px 5px 5px; text-align: left; }
+
+  /* laboratory: the table scrolls inside its card, the page does not */
+  .cs-labs { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px; }
+  .cs-table-labs { min-width: 520px; }
+  .cs-table th, .cs-table td { padding: 6px 6px; }
+  .cs-labs .cs-hint, .cs-labs .cs-more { position: sticky; left: 0; }
+  .cs-lab-head { flex-wrap: wrap; }
+
+  /* medication, exams, documents, log: one column per row */
+  .cs-med { flex-direction: column; gap: 6px; }
+  .cs-med-side { flex-direction: row; align-items: center; justify-content: flex-start; gap: 10px; }
+  .cs-tl-item { grid-template-columns: 20px 48px minmax(0, 1fr); gap: 8px; }
+  .cs-tl-side { grid-column: 2 / -1; padding-top: 0; }
+  .cs-docrow { grid-template-columns: 22px 26px minmax(0, 1fr); gap: 6px 10px; padding: 10px 4px; }
+  .cs-docrow-title { font-size: 14px; }
+  .cs-docrow-side { grid-column: 3; justify-content: flex-start; flex-wrap: wrap; gap: 6px 10px; }
+  .cs-docrow-side .cs-row-chev { display: none; }
+  .cs-log-sum { flex-wrap: wrap; gap: 6px 10px; }
+  .cs-log-item { grid-template-columns: 56px minmax(0, 1fr); gap: 4px 10px; }
+  .cs-log-detail { grid-column: 2; }
+  .cs-log-dayhead { flex-wrap: wrap; }
+  .cs-wait li { gap: 10px; }
+
+  .cs-eval-hallu, .cs-conflict-explain { font-size: 12.5px; }
+}

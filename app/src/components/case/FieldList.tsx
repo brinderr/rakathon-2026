@@ -2,7 +2,11 @@ import { useState } from 'react';
 import type { EffField, EffStatus } from './caseUtils';
 import { fieldOrigin, fmtShort } from './caseUtils';
 import { Btn, SourceChip, StatusPill } from './ui';
-import { IcCheck, IcChevron, IcClock, IcSend } from './icons';
+import { IcAlert, IcCheck, IcChevron, IcClock, IcSend } from './icons';
+
+/** A conflict about the identity of the report (birth number): its values must not be used until checked (QA R5 #2). */
+export const isIdentityConflict = (f: EffField) =>
+  f.status === 'conflict' && !!f.field.conflict && /rodn[ée]\s*č|\bRČ\b/i.test(`${f.field.conflict.a.value} ${f.field.conflict.b.value}`);
 
 export function FieldRow({ f, active, flash, onOpen, onRequest, onConfirm, onOpenDoc }:
   { f: EffField; active?: boolean; flash?: boolean; onOpen: () => void; onRequest: () => void; onConfirm?: () => void;
@@ -10,6 +14,7 @@ export function FieldRow({ f, active, flash, onOpen, onRequest, onConfirm, onOpe
   const isFuture = f.status === 'future';
   const origin = fieldOrigin(f.field);
   const pendClar = f.status === 'conflict' && f.override?.kind === 'pending';
+  const identity = isIdentityConflict(f);
   return (
     <div className={`cs-row cs-row-${f.status} ${active ? 'is-active' : ''} ${flash ? 'is-flash' : ''}`} id={`field-${f.field.key}`}
       role="button" tabIndex={0} onClick={onOpen} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); } }}>
@@ -21,7 +26,8 @@ export function FieldRow({ f, active, flash, onOpen, onRequest, onConfirm, onOpe
         </div>
         {f.status === 'conflict' && f.field.conflict ? (
           <>
-          {f.value && <div className="cs-row-value">{f.value}</div>}
+          {f.value && <div className={`cs-row-value ${identity ? 'is-void' : ''}`}>{f.value}</div>}
+          {identity && <div className="cs-row-void"><IcAlert size={13} /> Nepoužívať, kým sa neoverí, či správa patrí tomuto pacientovi.</div>}
           <div className="cs-row-ab">
             <span className="cs-ab"><em>A</em> {f.field.conflict.a.value} <SourceChip docId={f.field.conflict.a.citation.docId} onClick={() => onOpenDoc(f.field.conflict!.a.citation.docId, f.field.conflict!.a.citation.quote)} /></span>
             <span className="cs-ab"><em>B</em> {f.field.conflict.b.value} <SourceChip docId={f.field.conflict.b.citation.docId} onClick={() => onOpenDoc(f.field.conflict!.b.citation.docId, f.field.conflict!.b.citation.quote)} /></span>
@@ -37,8 +43,11 @@ export function FieldRow({ f, active, flash, onOpen, onRequest, onConfirm, onOpe
         ) : (
           <div className={`cs-row-value ${f.value.length > 300 ? 'is-long' : ''}`} title={f.value.length > 300 ? 'Celý text v paneli (klik na riadok)' : undefined}>{f.value || <span className="is-muted">bez hodnoty</span>}</div>
         )}
-        {(f.note || f.asOfNote) && f.status !== 'future' && (
-          <div className="cs-row-note">{f.asOfNote ?? (origin === 'ai' ? `Vysvetlivka AI: ${f.note}` : f.note)}</div>
+        {f.status === 'conflict' && f.field.conflict ? (
+          // the row says WHAT the conflict is (the explanation used to be only in the side panel)
+          <div className="cs-row-why"><IcAlert size={13} /><span>{f.field.conflict.explain}</span></div>
+        ) : (f.note || f.asOfNote) && f.status !== 'future' && (
+          <div className="cs-row-note">{f.asOfNote ?? (origin === 'ai' ? `Vysvetlivka AI (píše jazykom správy): ${f.note}` : f.note)}</div>
         )}
       </div>
       <div className="cs-row-side">
