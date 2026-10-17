@@ -29,17 +29,13 @@ interface Req { method?: string; headers: Record<string, string | string[] | und
 interface Res { status: (n: number) => Res; json: (b: unknown) => void; setHeader: (k: string, v: string) => void }
 const send = (res: Res, status: number, body: unknown) => res.status(status).json(body);
 
-/** The AI SDK (v4) always sends `temperature: 0`; the current Claude models reject sampling parameters – drop them.
- *  A quick chat answer does not need extended thinking (it would eat the whole answer budget on a large context), so
- *  it is switched off; if a model does not allow that, the request goes again as it was. */
-const tuned: typeof fetch = async (url, init) => {
+/** The AI SDK (v4) always sends `temperature: 0`; the current Claude models reject sampling parameters – drop them. */
+const tuned: typeof fetch = (url, init) => {
   if (typeof init?.body !== 'string') return fetch(url, init);
   const body = JSON.parse(init.body) as Record<string, unknown>;
   delete body.temperature;
   delete body.top_p;
   delete body.top_k;
-  const first = await fetch(url, { ...init, body: JSON.stringify({ ...body, thinking: { type: 'disabled' } }) });
-  if (first.status !== 400) return first;
   return fetch(url, { ...init, body: JSON.stringify(body) });
 };
 
@@ -62,14 +58,16 @@ export default async function handler(req: Req, res: Res) {
 
   try {
     const anthropic = createAnthropic({ apiKey: key, fetch: tuned });
-    const { text, usage, finishReason } = await generateText({
+    // Claude thinks first (its own budget, so the answer always has room) and the coordinator can read how it got there
+    const { text, reasoning, usage, finishReason } = await generateText({
       model: anthropic(MODEL),
       system: `${SYSTEM}\n\n<data>\n${context}\n</data>`,
       messages: [...history, { role: 'user', content: question }],
-      maxTokens: 4000,
+      maxTokens: 3000,
+      providerOptions: { anthropic: { thinking: { type: 'enabled', budgetTokens: 4000 } } },
     });
     if (!text.trim()) return send(res, 502, { error: `AI nevrátila odpověď (${finishReason}) – zkuste otázku zúžit.` });
-    return send(res, 200, { model: MODEL, answer: text, usage });
+    return send(res, 200, { model: MODEL, answer: text, reasoning: reasoning ?? '', usage });
   } catch (e) {
     return send(res, 502, { error: `AI neodpověděla: ${e instanceof Error ? e.message : String(e)}` });
   }

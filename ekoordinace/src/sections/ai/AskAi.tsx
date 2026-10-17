@@ -9,7 +9,7 @@ import { Answer } from './Answer';
 import { snapshot } from './context';
 import './ask.css';
 
-interface Msg { role: 'user' | 'assistant'; content: string; error?: boolean }
+interface Msg { role: 'user' | 'assistant'; content: string; error?: boolean; reasoning?: string }
 
 const SUGGEST = ['Co mám dnes udělat jako první?', 'Kdy přišla histologie a co v ní je?', 'Komu mám zavolat kvůli chybějícímu ECOG?', 'Které zprávy jsem nahrála a kdy?'];
 
@@ -20,6 +20,14 @@ export function AskAi() {
   const [q, setQ] = useState('');
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [busy, setBusy] = useState(false);
+  // how long Claude has been thinking (shown while waiting)
+  const [secs, setSecs] = useState(0);
+  useEffect(() => {
+    if (!busy) return;
+    setSecs(0);
+    const t = window.setInterval(() => setSecs((n) => n + 1), 1000);
+    return () => window.clearInterval(t);
+  }, [busy]);
   const list = useRef<HTMLDivElement | null>(null);
   const input = useRef<HTMLTextAreaElement | null>(null);
 
@@ -45,12 +53,12 @@ export function AskAi() {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ question: snap.apply(text), context: snap.text, history: history.map((m) => ({ role: m.role, content: snap.apply(m.content) })) }),
       });
-      const body = await r.json().catch(() => null) as { answer?: string; error?: string } | null;
+      const body = await r.json().catch(() => null) as { answer?: string; reasoning?: string; error?: string } | null;
       if (!r.ok || !body?.answer) {
         const why = r.status === 404 ? 'AI běží jen na webu ekoordinace.vercel.app.' : body?.error ?? (r.ok ? 'AI nevrátila odpověď – zkuste otázku zúžit.' : `AI neodpověděla (${r.status}).`);
         setMsgs((m) => [...m, { role: 'assistant', content: why, error: true }]);
       } else {
-        setMsgs((m) => [...m, { role: 'assistant', content: snap.restore(body.answer!) }]);
+        setMsgs((m) => [...m, { role: 'assistant', content: snap.restore(body.answer!), reasoning: body.reasoning ? snap.restore(body.reasoning) : undefined }]);
       }
     } catch {
       setMsgs((m) => [...m, { role: 'assistant', content: 'Spojení s AI se nepodařilo.', error: true }]);
@@ -76,9 +84,14 @@ export function AskAi() {
               </div>
             )}
             {msgs.map((m, i) => (m.role === 'assistant' && !m.error
-              ? <div key={i} className="ai-msg assistant"><Answer text={m.content} /></div>
+              ? (
+                <div key={i} className="ai-msg assistant">
+                  <Answer text={m.content} />
+                  {m.reasoning && <details className="ai-why"><summary>Zobrazit úvahu</summary><p>{m.reasoning}</p></details>}
+                </div>
+              )
               : <p key={i} className={`ai-msg ${m.role}${m.error ? ' error' : ''}`}>{m.content}</p>))}
-            {busy && <p className="ai-msg assistant busy">Hledám v datech…</p>}
+            {busy && <p className="ai-msg assistant busy"><span className="ai-dots" aria-hidden="true"><i /><i /><i /></span>Claude přemýšlí… {secs > 1 && `${secs} s`}</p>}
           </div>
           <form className="ai-form" onSubmit={(e) => { e.preventDefault(); void ask(q); }}>
             <textarea ref={input} rows={2} value={q} placeholder="Zeptejte se na pacienta, zprávu, termín…" aria-label="Otázka"
