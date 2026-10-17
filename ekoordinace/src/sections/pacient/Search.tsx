@@ -5,7 +5,7 @@ import { DEMO_ID, demoCase, useStoredPatients } from '../../state/patients';
 import { Icon } from '../../ui/Icon';
 import { czDate } from '../../ui/format';
 
-interface Hit { id: string; name: string; what: string }
+interface Hit { id: string; name: string; what: string; docId?: string }
 
 const fold = (s: string) => s.toLocaleLowerCase('cs').normalize('NFD').replace(/[̀-ͯ]/g, '');
 
@@ -18,17 +18,17 @@ export function Search() {
     const demo = demoCase;
     const rows: (Hit & { text: string })[] = [
       { id: DEMO_ID, name: demo.patient.name, what: `${demo.patient.diagnosis.code} ${demo.patient.diagnosis.text}`, text: `${demo.patient.name} ${demo.patient.diagnosis.code} ${demo.patient.diagnosis.text}` },
-      ...Object.values(demo.documents).map((d) => ({ id: DEMO_ID, name: demo.patient.name, what: d.ref, text: `${d.ref} ${d.title} ${d.place}` })),
+      ...Object.values(demo.documents).map((d) => ({ id: DEMO_ID, name: demo.patient.name, what: d.ref, docId: d.id, text: `${d.ref} ${d.title} ${d.place}` })),
     ];
     for (const p of stored) {
       rows.push({ id: p.id, name: p.label, what: p.docs.length ? `${p.docs.length} zpráv` : 'bez zpráv', text: p.label });
-      for (const d of p.docs) rows.push({ id: p.id, name: p.label, what: `${d.title} · ${czDate(d.date)}`, text: `${d.title} ${d.text.slice(0, 400)}` });
+      for (const d of p.docs) rows.push({ id: p.id, name: p.label, what: `${(d.title ?? '').replace(/_/g, ' ')} · ${czDate(d.date)}`, docId: d.id, text: `${d.title} ${d.text.slice(0, 400)}` });
     }
     return rows.map((r) => ({ ...r, key: fold(r.text) }));
   }, [stored]);
   const words = fold(q).split(/\s+/).filter(Boolean);
   const hits = words.length ? index.filter((r) => words.every((w) => r.key.includes(w))).slice(0, 8) : [];
-  const go = (h: Hit) => { window.location.hash = `#/pacienti/${h.id}`; setQ(''); setOpen(false); };
+  const go = (h: Hit) => { window.location.hash = h.docId ? `#/pacienti/${h.id}/zpravy/${h.docId}` : `#/pacienti/${h.id}`; setQ(''); setOpen(false); };
   return (
     <div className="search-box">
       <label className="search">

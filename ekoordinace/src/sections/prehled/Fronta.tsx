@@ -17,7 +17,7 @@ const plural = (n: number, one: string, few: string, many: string) => `${n} ${n 
 interface Item { id: string; name: string; initials: string; what: string; detail?: string; due?: string; href: string; today: string }
 
 /** What a case needs now: from the coordinator ("mine") or from someone else ("theirs"). */
-function itemsOf(id: string, data: CaseData, st: CaseState): { mine: Item[]; theirs: Item[] } {
+export function itemsOf(id: string, data: CaseData, st: CaseState): { mine: Item[]; theirs: Item[] } {
   const p = data.patient;
   const base = { id, name: p.name, initials: p.initials, today: data.today };
   const mine: Item[] = [];

@@ -6,13 +6,14 @@ import { DEFAULT_SECTION, SECTIONS } from './sections';
 import { useLiveCases } from './sections/pacient/live';
 import { AskAi } from './sections/ai/AskAi';
 import { Search } from './sections/pacient/Search';
+import { itemsOf } from './sections/prehled/Fronta';
 import { Icon } from './ui/Icon';
 import { Mark } from './ui/Mark';
 
 const SOON = 'Připravujeme';
-/** The bell: open to-dos of all patients, without those the coordinator already dealt with; opens the overview. */
+/** The bell: what is on the coordinator now across patients – the same number as "Na tahu jste vy" in Přehled. */
 function useOpenTasks(): number {
-  return useLiveCases().reduce((n, x) => n + (x.data?.steps.find((s) => s.status === 'now')?.todo?.length ?? 0), 0);
+  return useLiveCases().reduce((n, x) => n + (x.data ? itemsOf(x.id, x.data, x.state).mine.length : 0), 0);
 }
 
 function readRoute(): string[] {
@@ -35,6 +36,8 @@ export function App() {
   const section = SECTIONS.find((s) => s.id === route[0] && s.render) ?? SECTIONS.find((s) => s.id === DEFAULT_SECTION)!;
   // a new array only when the address changes, so a section can react to it (e.g. #/pacienti/ukoly)
   const path = useMemo(() => (route[0] === section.id ? route.slice(1) : []), [route, section.id]);
+  // the window title says where she is (a patient page sets its own, with the tab and the name)
+  useEffect(() => { if (!(section.id === 'pacienti' && path.length)) document.title = `${section.label} · eKoordinace`; }, [section.id, section.label, path.length]);
 
   return (
     <div className="frame">
@@ -52,7 +55,6 @@ export function App() {
         <div className="side-user">
           <span className="avatar">LD</span>
           <span className="side-user-text"><b>Bc. Lucie Dvořáková</b><small>Koordinátorka · KOC Nemocnice Lipová</small></span>
-          <Icon name="up" size={18} />
         </div>
       </aside>
       <div className="content">
@@ -60,7 +62,7 @@ export function App() {
           <Search />
           <div className="top-actions">
             <AskAi />
-            <a className="icon-btn" href="#/prehled" aria-label={`Co je potřeba udělat (${openTasks})`}>
+            <a className="icon-btn" href="#/prehled" aria-label={`Na tahu jste vy (${openTasks})`} title={`Na tahu jste vy (${openTasks})`}>
               <Icon name="bell" />{openTasks > 0 && <span className="badge">{openTasks}</span>}
             </a>
           </div>

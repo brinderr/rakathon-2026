@@ -42,10 +42,10 @@ export function PhoneContacts({ people }: { people: Person[] }) {
   return (
     <div className="phone-contacts" ref={wrapRef}>
       <button
-        ref={buttonRef} type="button" className="round-btn" title="Telefonní kontakty" aria-label="Telefonní kontakty"
+        ref={buttonRef} type="button" className="btn-ghost head-btn" title="Telefonní kontakty"
         aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}
       >
-        <Icon name="phone" size={18} />
+        <Icon name="phone" size={17} /><span>Zavolat</span>
       </button>
       {open && (
         <div className="popover" id={id} role="dialog" aria-label="Telefonní kontakty">

@@ -5,7 +5,7 @@ import { useCase } from '../../state/caseStore';
 import { DEMO_ID, SIM_TODAY, addPatient, removePatient, useCaseOf, useStoredPatients } from '../../state/patients';
 import { Icon } from '../../ui/Icon';
 import { czDate } from '../../ui/format';
-import { liveCase } from './live';
+import { liveCase, openPoints } from './live';
 
 function Row({ id, removable }: { id: string; removable: boolean }) {
   const { data: built } = useCaseOf(id);
@@ -15,7 +15,7 @@ function Row({ id, removable }: { id: string; removable: boolean }) {
   if (!data) return <li className="pt-row"><span className="pt-busy muted">Zpracovávám zprávy…</span></li>;
   const now = data.steps.find((s) => s.status === 'now');
   const empty = Object.keys(data.documents).length === 0;
-  const todo = now?.todo?.length ?? 0;
+  const todo = openPoints(data, st);
   const p = data.patient;
   return (
     <li className="pt-row">
@@ -26,23 +26,24 @@ function Row({ id, removable }: { id: string; removable: boolean }) {
           <small>{[p.born && `nar. ${p.born}`, [p.diagnosis.code, p.diagnosis.text].filter(Boolean).join(' ')].filter(Boolean).join(' · ') || 'zatím bez zpráv'}</small>
         </span>
         <span className="pt-step">
-          <small>{empty ? 'Stav' : 'Teď na řadě'}</small>
-          <b>{empty ? 'Nový – přidejte zprávy' : now?.label ?? 'Uzavřeno'}</b>
+          <small>Teď na řadě</small>
+          <b>{empty ? 'Přidat zprávy' : now?.label ?? 'Uzavřeno'}</b>
           {now?.due && <small>do {czDate(now.due)}</small>}
         </span>
         <span className="pt-mdt"><small>Konzilium</small><b>{data.mdtDate ? czDate(data.mdtDate) : '—'}</b></span>
         <span className="pt-todo">
           {empty ? <span className="chip new">nový</span> : todo > 0 ? <span className="chip miss">{todo} k vyřešení</span> : <span className="chip ok">bez úkolů</span>}
         </span>
+        <Icon name="right" size={16} />
       </a>
-      {removable && (
+      {removable ? (
         <button
           type="button" className="pt-remove" title="Odstranit pacienta" aria-label={`Odstranit pacienta ${p.name}`}
           onClick={() => { if (window.confirm(`Odstranit pacienta ${p.name} z tohoto prohlížeče?`)) removePatient(id); }}
         >
           <Icon name="close" size={16} />
         </button>
-      )}
+      ) : <span className="chip pt-demo" title="Případ ze zadání VZP – nejde odstranit">demo</span>}
     </li>
   );
 }
@@ -91,10 +92,9 @@ export function PatientsList() {
       <div className="list-head">
         <div>
           <h1>Pacienti</h1>
-          <p className="muted">{n} {n === 1 ? 'pacient' : n < 5 ? 'pacienti' : 'pacientů'} · kliknutím otevřete</p>
+          <p className="muted">{n} {n === 1 ? 'pacient' : n < 5 ? 'pacienti' : 'pacientů'} · <button type="button" className="link-quiet" onClick={resetDemo} title="Vrátit demo do výchozího stavu">obnovit demo</button></p>
         </div>
         <div className="form-actions">
-          <button type="button" className="btn-ghost" onClick={resetDemo} title="Vrátit demo do výchozího stavu">Obnovit demo</button>
           {!adding && <button type="button" className="btn-primary" onClick={() => setAdding(true)}><Icon name="plus" size={18} />Nový pacient</button>}
         </div>
       </div>

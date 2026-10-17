@@ -134,6 +134,9 @@ export function Zaver({ openDoc }: { openDoc: OpenDoc }) {
       </section>
 
       <article className="card zaver-paper" aria-label="Závěr konzilia pro praktického lékaře">
+        {data.mdtDate && data.today < data.mdtDate && (
+          <p className="zaver-sample"><b>Ukázka</b> · konzilium proběhne {czDate(data.mdtDate)} – takto pak závěr dostane praktik.</p>
+        )}
         <header className="zaver-head">
           <p className="muted">{KOC} – Komplexní onkologické centrum</p>
           <h2>Závěr konzilia pro praktického lékaře</h2>

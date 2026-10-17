@@ -70,3 +70,9 @@ export function useLiveCases(): { id: string; label: string; data: CaseData | nu
   const stateOf = useCaseStates();
   return all.map((x) => { const state = stateOf(x.id); return { ...x, state, data: x.data ? liveCase(x.data, state) : null }; });
 }
+
+/** Open points before the MDT – the one number shown everywhere (patient, list, overview, MDTs). 0 once confirmed. */
+export function openPoints(data: CaseData, state: CaseState): number {
+  if (state.confirmed) return 0;
+  return data.fields.filter((f) => f.todo && ['chybí', 'neúplné', 'rozpor'].includes(f.status)).length;
+}

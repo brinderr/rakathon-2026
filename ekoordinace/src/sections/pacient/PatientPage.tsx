@@ -10,7 +10,7 @@ import { DEMO_ID, setMdtDate, useCaseOf } from '../../state/patients';
 import type { StoredPatient } from '../../state/patients';
 import { DocViewer } from '../../ui/DocViewer';
 import { Icon } from '../../ui/Icon';
-import { daysBetween, inDays, nb } from '../../ui/format';
+import { czDate, daysBetween, inDays, nb } from '../../ui/format';
 import { AddReports } from './AddReports';
 import { CaseCtx } from './caseContext';
 import { Compose, ComposeCtx, useCompose } from './Compose';
@@ -18,7 +18,7 @@ import type { ComposeRequest } from './Compose';
 import { History } from './History';
 import { Journey } from './Journey';
 import type { OpenDoc } from './Journey';
-import { liveCase } from './live';
+import { liveCase, openPoints } from './live';
 import { PatientsList } from './PatientsList';
 import { PhoneContacts } from './PhoneContacts';
 import { Plan } from './tabs/Plan';
@@ -31,7 +31,7 @@ import './pacient.css';
 
 // tabs of the case – #/pacienti/<id>/<tab>; one file per tab in ./tabs/ (owners in README)
 const TABS = [
-  { id: 'prehled', label: 'Přehled' },
+  { id: 'prehled', label: 'Souhrn' },
   { id: 'zpravy', label: 'Zprávy', Tab: Zpravy },
   { id: 'udaje', label: 'Údaje pro konzilium', Tab: Udaje },
   { id: 'plan', label: 'Plán cesty', Tab: Plan },
@@ -41,10 +41,15 @@ const TABS = [
 
 /** The date of the MDT – it changes, so it is a field the coordinator edits right in the header. */
 function MdtDate({ id, data }: { id: string; data: CaseData }) {
+  // shown as text – changing it moves every deadline, so it opens only on purpose
+  const [editing, setEditing] = useState(false);
   const days = data.mdtDate ? daysBetween(data.today, data.mdtDate) : null;
   return (
     <>
-      <input type="date" className="fact-date" value={data.mdtDate} aria-label="Termín konzilia" onChange={(e) => setMdtDate(id, e.target.value)} />
+      {editing || !data.mdtDate
+        ? <input type="date" className="fact-date" value={data.mdtDate} aria-label="Termín konzilia" autoFocus={editing}
+            onChange={(e) => setMdtDate(id, e.target.value)} onBlur={() => setEditing(false)} />
+        : <>{czDate(data.mdtDate)} <button type="button" className="fact-change" onClick={() => setEditing(true)}>změnit</button></>}
       <span className="soft">{days !== null ? ` · ${inDays(days)}` : ' · nenaplánováno'}</span>
     </>
   );
@@ -77,8 +82,8 @@ function PatientHead({ id, data }: { id: string; data: CaseData }) {
       </dl>
       <div className="head-actions">
         {people.some((x) => x.phone) && <PhoneContacts people={people} />}
-        <button type="button" className="round-btn" title="Vyžádat zprávu" aria-label="Vyžádat zprávu" onClick={() => compose({ mode: 'request' })}><Icon name="note" size={18} /></button>
-        <button type="button" className="round-btn" title="Napsat praktikovi" aria-label="Napsat praktikovi" onClick={() => compose({ mode: 'message' })}><Icon name="message" size={18} /></button>
+        <button type="button" className="btn-ghost head-btn" onClick={() => compose({ mode: 'request' })}><Icon name="note" size={17} /><span>Vyžádat zprávu</span></button>
+        <button type="button" className="btn-ghost head-btn" onClick={() => compose({ mode: 'message' })}><Icon name="message" size={17} /><span>Napsat praktikovi</span></button>
       </div>
     </div>
   );
@@ -95,7 +100,9 @@ function CaseView({ id, data: built, stored, path }: { id: string; data: CaseDat
   const journeyRef = useRef<HTMLElement | null>(null);
   const s = data.stats;
   const news = data.news[0];
-  const openTasks = nowStep.todo?.length ?? 0;
+  // the same number as in the list, the overview and the MDTs
+  const openTasks = openPoints(data, st);
+  const todoStep = steps.find((x) => x.todo?.length)?.id ?? nowStep.id;
   const openDoc: OpenDoc = useCallback((docId, marks = []) => setReading({ id: docId, marks }), []);
   const [writing, setWriting] = useState<ComposeRequest | null>(null);
 
@@ -117,13 +124,16 @@ function CaseView({ id, data: built, stored, path }: { id: string; data: CaseDat
 
   const tab = TABS.find((t) => t.id === path[0]) ?? TABS[0];
   const Tab = tab.Tab;
+  useEffect(() => { document.title = `${tab.label} · ${data.patient.name} · eKoordinace`; }, [tab.label, data.patient.name]);
+  // #/pacienti/<id>/zpravy/<report> (from the search) opens that report
+  useEffect(() => { if (path[0] === 'zpravy' && path[1] && data.documents[path[1]]) setReading({ id: path[1], marks: [] }); }, [path, data.documents]);
   const empty = Object.keys(data.documents).length === 0;
 
   return (
     <CaseCtx.Provider value={{ id, data, focus: path[0] === 'udaje' ? path[1] : undefined }}>
     <ComposeCtx.Provider value={setWriting}>
       <nav className="crumbs" aria-label="Drobečková navigace">
-        <a href="#/pacienti">Pacienti</a><Icon name="right" size={14} /><span className="crumb-now">{data.patient.name}</span>
+        <a href="#/pacienti">Pacienti</a><Icon name="right" size={14} /><a href={`#/pacienti/${id}`}>{data.patient.name}</a><Icon name="right" size={14} /><span className="crumb-now">{tab.label}</span>
       </nav>
 
       <PatientHead id={id} data={data} />
@@ -139,8 +149,8 @@ function CaseView({ id, data: built, stored, path }: { id: string; data: CaseDat
       {Tab ? <Tab openDoc={openDoc} /> : (<>
         {stored && empty && <AddReports patient={stored} first />}
         <section className="card stats three" aria-label="Hlavní údaje">
-          <div className="stat"><span className="stat-icon"><Icon name="fields" /></span><span><small>Údaje pro konzilium</small><b>{s.ready} z {s.fields}</b><em>připraveno k potvrzení</em></span></div>
-          <button type="button" className="stat stat-link" onClick={() => show(nowStep.id)}>
+          <a className="stat stat-link" href={`#/pacienti/${id}/udaje`}><span className="stat-icon"><Icon name="fields" /></span><span><small>Údaje pro konzilium</small><b>{s.ready} z {s.fields}</b><em>připraveno k potvrzení</em></span></a>
+          <button type="button" className="stat stat-link" onClick={() => show(todoStep)}>
             <span className="stat-icon red"><Icon name="alert" /></span>
             <span><small>K vyřešení</small><b>{openTasks}</b><em>{openTasks ? `${s.missing} chybí · ${s.conflicts} ${s.conflicts === 1 ? 'rozpor' : s.conflicts < 5 ? 'rozpory' : 'rozporů'}` : 'vše vyřešeno'}</em></span>
           </button>
