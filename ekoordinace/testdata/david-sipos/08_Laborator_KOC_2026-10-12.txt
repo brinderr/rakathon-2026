@@ -1,0 +1,103 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+KOC Nemocnice Lipová (fiktivní)
+Oddělení klinické biochemie a hematologie
+Nemocniční 15, 140 00 Praha 4
+Výsledky laboratorního vyšetření
+Pacient: David Sipos, RČ 680509/1722, ZP 205
+Indikující lékař: MUDr. Lenka Marková, onkologická ambulance KOC
+Odběr: 12. 10. 2026 7:35
+KREVNÍ OBRAZ
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+Leukocyty
+7,2
+10⁹/l
+4,0–10,0
+Hemoglobin
+97 L
+g/l
+135–175
+MCV
+72 L
+fl
+82–98
+Trombocyty
+418 H
+10⁹/l
+150–400
+KOAGULACE
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+INR
+1,0
+1
+0,8–1,2
+BIOCHEMIE
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+Sodík
+138
+mmol/l
+136–145
+Draslík
+4,6
+mmol/l
+3,5–5,1
+Kreatinin
+91
+µmol/l
+62–106
+eGFR (CKD-EPI)
+1,32
+ml/s/1,73 m²
+> 1,0
+Glukóza
+8,1 H
+mmol/l
+3,9–5,6
+Bilirubin celkový
+11
+µmol/l
+2–17
+ALT
+0,36
+µkat/l
+0,10–0,78
+AST
+0,41
+µkat/l
+0,10–0,72
+Albumin
+33 L
+g/l
+35–52
+CRP
+9 H
+mg/l
+0–5
+NÁDOROVÉ MARKERY
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+CEA
+6,8 H
+µg/l
+< 5,0
+CA 19-9
+52 H
+kU/l
+< 37
+CA 72-4
+14,2 H
+kU/l
+< 6,9
+Vydáno: 12. 10. 2026
+Ing. Martina Šebestová
+odborný pracovník laboratoře

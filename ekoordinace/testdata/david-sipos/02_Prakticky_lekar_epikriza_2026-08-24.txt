@@ -1,0 +1,35 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+Ordinace praktického lékaře pro dospělé
+MUDr. Hana Benešová
+Masarykovo nám. 5, 251 01 Říčany
+IČP: 81234567 Tel.: +420 323 000 614
+Epikríza a žádost o vyšetření gastroenterologem
+Pacient: David Sipos
+Rodné číslo: 680509/1722
+Bydliště: Polní 12, 251 01 Říčany
+Zdravotní pojišťovna: 205
+Datum narození: 9. 5. 1968 (58 let)
+Telefon: +420 606 000 318
+E-mail: david.sipos@example.cz
+Kontaktní osoba: Jana Siposová (manželka), tel. +420 606 000 319
+EPIKRÍZA
+58letý pacient přichází pro asi 6 týdnů trvající tlaky a bolesti v epigastriu, pocit plnosti po malém množství jídla a nechutenství. Za poslední 2 měsíce zhubl asi 5 kg. Únava, námahová dušnost při chůzi do schodů. Zvracení, melénu ani polykací obtíže neguje.
+Objektivně TK 142/86 mmHg, TF 84/min, bledší kůže a spojivky, břicho měkké, palpačně citlivé v epigastriu, bez hmatné rezistence. Váha 83 kg, výška 181 cm.
+Laboratorně 21. 8. 2026 mikrocytární anémie (Hb 104 g/l, MCV 74 fl), ferritin 9 µg/l, CRP 6 mg/l.
+Závěr: dyspeptický syndrom s úbytkem hmotnosti, sideropenická anémie – nutno vyloučit malignitu horní části trávicího traktu.
+Terapie: od 24. 8. 2026 pantoprazol 40 mg 1-0-0.
+ANAMNÉZA
+RA: otec karcinom tlustého střeva v 72 letech, matka hypertenze
+OA: ischemická choroba srdeční – st. p. PCI s implantací DES do RIA 3/2025 (kardiolog MUDr. Jan Pospíšil, Říčany), arteriální hypertenze, diabetes mellitus 2. typu na PAD, dyslipidémie, st. p. appendektomii (1985)
+FA: kyselina acetylsalicylová 100 mg 0-1-0, klopidogrel 75 mg 1-0-0, metformin 1000 mg 1-0-1, ramipril 5 mg 1-0-0, atorvastatin 40 mg 0-0-1, pantoprazol 40 mg 1-0-0
+AA: neguje
+Abusus: bývalý kuřák (20 let, nekouří od r. 2015), alkohol příležitostně
+SA: ženatý, žije s manželkou v rodinném domě
+PA: řidič autobusu, dosud pracuje
+DOPORUČENÍ
+1. Gastroskopie – objednán na 9. 9. 2026, MUDr. Pavel Hrubý, gastroenterologie Nemocnice Říčany.
+2. Klopidogrel vysadit 5 dní před gastroskopií, kyselinu acetylsalicylovou ponechat.
+3. Při meléně, zvracení krve nebo zhoršení stavu neprodleně kontaktovat lékaře.
+V Říčanech dne 24. 8. 2026
+MUDr. Hana Benešová
+praktický lékař, Masarykovo nám. 5, 251 01 Říčany

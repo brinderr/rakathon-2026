@@ -47,7 +47,7 @@ const codeOf = (d: Report) => {
   return CODE[kind] ?? 'DOC';
 };
 /** Who signed the report: the last line that starts with a medical title ("MUDr. Martin Svoboda"). */
-const signer = (d: Report) => d.text.split('\n').map((l) => l.trim()).findLast((l) => /^(?:MUDr|MDDr|doc|prof)\.\s/.test(l)) ?? '';
+const signer = (d: Report) => d.text.split('\n').map((l) => l.trim()).findLast((l) => /^(?:MUDr|MDDr|doc|prof|Ing|Mgr|Bc)\.\s/.test(l)) ?? '';
 const INSURER_SHORT: Record<string, string> = { 111: 'VZP ČR', 201: 'VoZP ČR', 205: 'ČPZP', 207: 'OZP', 209: 'ZPŠ', 211: 'ZPMV ČR', 213: 'RBP' };
 const FIRST = ['performance', 'medication', 'histology'];
 
@@ -68,12 +68,18 @@ export async function buildCase(input: BuildInput): Promise<CaseData> {
     const title = R.docTitle(d);
     if (kind === 'referral') return /převzetí|KOC/i.test(title) ? 'žádanka praktika' : 'epikríza praktika';
     if (kind === 'histology') return 'histologie';
-    if (kind === 'procedure') return /FNB|FNA|biops/i.test(title) ? 'protokol biopsie' : 'protokol výkonu';
+    if (kind === 'procedure') {
+      if (/FNB|FNA|biops/i.test(title)) return 'protokol biopsie';
+      const head = `${title}\n${d.text.split('\n').slice(0, 8).join('\n')}`;
+      const scope = head.match(/gastroskop|koloskop|bronchoskop|endosonograf|\bEUS\b/i)?.[0].toLowerCase();
+      return scope ? ({ endosonograf: 'EUS', eus: 'EUS' } as Record<string, string>)[scope] ?? `${scope}ie` : 'protokol výkonu';
+    }
     if (kind === 'lab') return refDate && d.date > refDate ? 'kontrolní odběry' : 'laboratoř';
     if (kind === 'imaging') return title.split(/\s+/).slice(0, 2).join(' ').replace(/,$/, '');
     if (/léčby bolesti|algeziolog/i.test(R.facility(d) + title)) return 'algeziologie';
     const spec = R.facility(d).match(/(\p{L}+?)ická ambulance/iu);
-    return spec ? `${spec[1].toLowerCase()}ie` : 'zpráva';
+    const other = R.facility(d).match(/(\p{L}+)\s+ambulance/iu);
+    return spec ? `${spec[1].toLowerCase()}ie` : other ? `${other[1].toLowerCase()} ambulance` : 'zpráva';
   };
   const refOf = (d: Report) => `${labelOf(d)} ${dayMonth(d.date)}`;
   const refById = (id: string) => { const d = docs.find((x) => x.id === id); return d ? refOf(d) : id; };
@@ -112,12 +118,19 @@ export async function buildCase(input: BuildInput): Promise<CaseData> {
     ...(phoneOf(field('contactPerson').value) ? { phone: phoneOf(field('contactPerson').value) } : {}),
     ...(referral && new RegExp(`Souhlasí se sdílením informací s ${cp[2].slice(0, 3)}`, 'i').test(referral.text) ? { note: `souhlas se sdílením informací (${refOf(referral)})` } : {}),
   } : null;
+  const personOf = (d: Report): Person => {
+    if (d.id === referral?.id) return GP;
+    const phone = phoneOf(d.text.split(/^Pacient(?:ka)?:/m)[0].match(/Tel[^\n]*/i)?.[0] ?? '');
+    const name = signer(d);
+    return { role: name ? unit(d).dept : 'Pracoviště', name: name || unit(d).place, ...(phone ? { phone } : {}) };
+  };
+  // whom to call: the authors of the reports behind the finding (both sides of a conflict), else the GP
   const contactsFor = (f: R.Finding): Person[] => {
     if (f.fieldKey === 'patientContact') return relative ? [PATIENT, relative] : [PATIENT];
-    const d = docs.find((x) => x.id === f.citations[0]?.docId);
-    if (!d || d.id === referral?.id) return [GP];
-    const phone = phoneOf(d.text.split(/^Pacient(?:ka)?:/m)[0].match(/Tel[^\n]*/i)?.[0] ?? '');
-    return [{ role: unit(d).dept, name: signer(d), ...(phone ? { phone } : {}) }];
+    const people = [...new Set(f.citations.map((c) => c.docId))]
+      .map((id) => docs.find((x) => x.id === id)).filter((d): d is Report => Boolean(d)).map(personOf);
+    const unique = [...new Map(people.map((x) => [x.name, x])).values()];
+    return unique.length ? unique : [GP];
   };
 
   // ---------- what the coordinator still has to do before the MDT ----------
@@ -126,16 +139,44 @@ export async function buildCase(input: BuildInput): Promise<CaseData> {
     const quoted = f.citations.map((c) => c.quote).join(' ').toLowerCase();
     if (f.fieldKey === 'performance' && f.severity === 'missing') return 'Doplnit výkonnostní stav (ECOG)';
     if (f.fieldKey === 'patientContact' && /e-mail/i.test(f.text)) return `Zjistit e-mail ${female ? 'pacientky' : 'pacienta'}`;
-    const drug = f.fieldKey === 'medication' && /vysazen/.test(quoted) && drugs.find((m) => quoted.includes(m));
+    const who = female ? 'pacientka' : 'pacient';
+    if (f.id.startsWith('medication-change')) {
+      const stopped = f.citations[1]?.quote.match(/(\p{L}+)\s+(?:trvale|definitivně)\s+vysazen/iu)?.[1];
+      if (stopped) return `Ověřit, zda ${who} ještě užívá ${stopped.toLowerCase()}`;
+    }
+    const drug = f.id.startsWith('date-conflict') && f.fieldKey === 'medication' && /vysazen/.test(quoted) && drugs.find((m) => quoted.includes(m));
     if (drug) return `Ověřit, kdy byl vysazen ${drug}`;
     if (f.fieldKey === 'histology' && /odběr/.test(quoted)) return 'Ověřit datum odběru vzorku na histologii';
+    if (f.id.startsWith('pending')) {
+      const items = f.text.match(/avizuje doplnění: ([^.]+)\./)?.[1];
+      return f.fieldKey === 'histology' ? `Vyžádat dodatek k histologii${items ? ` (${items})` : ''}` : `Vyžádat avizovaný výsledek${items ? ` (${items})` : ''}`;
+    }
+    if (f.id === 'allergy-conflict') {
+      const found = f.text.match(/zaznamenala: ([^.]+)\./)?.[1];
+      return found ? `Ověřit alergii: ${found}` : 'Ověřit alergie';
+    }
+    if (f.id === 'staging-conflict') return 'Ověřit M-stadium – vzdálené metastázy nejsou vyloučeny';
+    if (f.id.startsWith('rc-mismatch')) {
+      const d = docs.find((x) => x.id === f.citations[1]?.docId);
+      return `Ověřit, zda ${d ? refOf(d) : 'zpráva'} patří ${female ? 'pacientce' : 'pacientovi'} (jiné rodné číslo)`;
+    }
+    if (f.id === 'side-conflict') return 'Ověřit stranu nálezu';
+    if (f.id === 'location-conflict') return 'Ověřit lokalizaci nálezu';
+    if (f.id.startsWith('recommended')) {
+      const exam = f.text.match(/doporučuje doplnit (.+?) –/)?.[1];
+      if (exam) return `Zajistit doporučené vyšetření: ${exam}`;
+    }
     const l = label(f.fieldKey ?? '');
-    return `${f.severity === 'missing' ? 'Doplnit' : 'Ověřit'} ${l.charAt(0).toLowerCase()}${l.slice(1)}`;
+    return `${f.severity === 'missing' ? 'Doplnit' : 'Ověřit'}: ${l.charAt(0).toLowerCase()}${l.slice(1)}`;
   };
+  // "Zpráva 06 (28. 9. 2026)" → "Žádanka praktika 28. 9."; in other cases, where the name cannot be declined,
+  // "podle zprávy 05 (CT …, 21. 9. 2026)" → "podle zprávy „CT hrudníku 21. 9.“"
+  const DATED = String.raw`(?:\s*\([^()]*\d{1,2}\. ?\d{1,2}\. ?\d{4}\)|\s+z\s+\d{1,2}\. ?\d{1,2}\. ?\d{4})?`;
   const humanRefs = (t: string) => t
     .replace(/\(zpráva (\d{2})\)/g, (_, id: string) => `(${refById(id)})`)
-    .replace(/(^|[.!?]\s+)Zpráva (\d{2})/g, (_, pre: string, id: string) => { const x = refById(id); return pre + x.charAt(0).toUpperCase() + x.slice(1); })
-    .replace(/\bzpráva (\d{2})/g, (_, id: string) => refById(id));
+    .replace(new RegExp(String.raw`(^|[.!?]\s+)Zpráva (\d{2})${DATED}`, 'g'), (_, pre: string, id: string) => { const x = refById(id); return pre + x.charAt(0).toUpperCase() + x.slice(1); })
+    .replace(new RegExp(String.raw`\bzpráva (\d{2})${DATED}( zaznamenala)?`, 'g'), (_, id: string, verb?: string) => `${refById(id)}${verb ? ' uvádí' : ''}`)
+    .replace(new RegExp(String.raw`\b(zprávy|zprávě|zprávu) (\d{2})${DATED}`, 'g'), (_, w: string, id: string) => `${w} „${refById(id)}“`);
   // the engine's reason without its instruction ("ověřte s …") – the title and the contact already say that
   const whyFor = (f: R.Finding) => sentences(humanRefs(f.text.replace(/\s*\(MDT_zapis\)/g, '').replace(/\bpacienta\b/g, female ? 'pacientky' : 'pacienta')))
     .filter((x) => !/ověřte/i.test(x)).join(' ');

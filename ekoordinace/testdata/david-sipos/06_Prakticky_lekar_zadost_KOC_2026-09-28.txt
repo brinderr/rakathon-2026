@@ -1,0 +1,42 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+Ordinace praktického lékaře pro dospělé
+MUDr. Hana Benešová
+Masarykovo nám. 5, 251 01 Říčany
+IČP: 81234567 Tel.: +420 323 000 614
+Epikríza a žádost o převzetí do péče KOC
+Adresát: Komplexní onkologické centrum Nemocnice Lipová – koordinátor KOC
+Pacient: David Sipos
+Rodné číslo: 680509/1722
+Bydliště: Polní 12, 251 01 Říčany
+Zdravotní pojišťovna: 205
+Datum narození: 9. 5. 1968 (58 let)
+Telefon: +420 606 000 318
+E-mail: david.sipos@example.cz
+Kontaktní osoba: Jana Siposová (manželka), tel. +420 606 000 319
+EPIKRÍZA
+58letý pacient sledovaný v naší ordinaci. Od poloviny července 2026 tlaky a bolesti v epigastriu, pocit plnosti po jídle, nechutenství a úbytek hmotnosti. Laboratorně 21. 8. 2026 sideropenická anémie (Hb 104 g/l).
+Gastroskopie 9. 9. 2026 (MUDr. Pavel Hrubý, Nemocnice Říčany) prokázala exulcerovaný tumor antra žaludku na malé kurvatuře, histologicky 14. 9. 2026 adenokarcinom žaludku intestinálního typu, G2.
+CT hrudníku a břicha 21. 9. 2026: tumor antra cT3 N1, bez vzdálených metastáz (cM0).
+Nyní tlaky v epigastriu po jídle přetrvávají, jí menší porce, váha 81 kg. Melénu ani zvracení neudává. Soběstačný, t. č. v pracovní neschopnosti.
+ANAMNÉZA
+RA: otec karcinom tlustého střeva v 72 letech, matka hypertenze
+OA: ischemická choroba srdeční – st. p. PCI s implantací DES do RIA 3/2025 (kardiolog MUDr. Jan Pospíšil, Říčany), arteriální hypertenze, diabetes mellitus 2. typu na PAD, dyslipidémie, st. p. appendektomii (1985)
+FA: kyselina acetylsalicylová 100 mg 0-1-0, klopidogrel 75 mg 1-0-0, metformin 1000 mg 1-0-1, ramipril 5 mg 1-0-0, atorvastatin 40 mg 0-0-1, pantoprazol 40 mg 1-0-0
+AA: neguje
+Abusus: bývalý kuřák (nekouří od r. 2015), alkohol příležitostně
+SA: ženatý, žije s manželkou v rodinném domě
+PA: řidič autobusu, t. č. v pracovní neschopnosti
+PROVEDENÁ VYŠETŘENÍ (VÝSLEDKY V PŘÍLOZE)
+1. Laboratorní vyšetření 21. 8. 2026 (Laboratoř Říčany)
+2. Gastroskopie 9. 9. 2026 (Nemocnice Říčany)
+3. Histologie 14. 9. 2026, č. B-2026/08812 (Nemocnice Říčany)
+4. CT hrudníku a břicha s k. l. 21. 9. 2026 (Nemocnice Říčany)
+ŽÁDOST
+Diagnóza: C16.3 – adenokarcinom antra žaludku
+Žádám o převzetí pacienta do péče KOC a projednání v MDT: stanovení léčebného postupu – perioperační chemoterapie vs. primární resekce žaludku.
+Pacient užívá duální antiagregaci (kyselina acetylsalicylová a klopidogrel) po PCI 3/2025 – před invazivními výkony a operací prosím o posouzení kardiologem.
+Pacient je o diagnóze informován a přeje si začít léčbu co nejdříve, aby se mohl vrátit do práce. Souhlasí se sdílením informací s manželkou.
+Děkuji za spolupráci.
+V Říčanech dne 28. 9. 2026
+MUDr. Hana Benešová
+praktický lékař, Masarykovo nám. 5, 251 01 Říčany

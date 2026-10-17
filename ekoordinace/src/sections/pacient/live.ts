@@ -9,7 +9,10 @@ const time = (at: string) => at.slice(11);
 function liveField(f: Field, st: CaseState): Field {
   const added = st.added[f.key];
   if (added) {
-    const value = f.key === 'patientContact' && f.value ? f.value.replace(/e-mail neuveden/, `e-mail ${added.value}`) : added.value;
+    // a missing item gets the value; an incomplete one keeps what the reports say and gets the addition below it
+    const value = !f.value ? added.value
+      : f.key === 'patientContact' && /e-mail neuveden/.test(f.value) ? f.value.replace(/e-mail neuveden/, `e-mail ${added.value}`)
+        : `${f.value}\n${added.value}`;
     return { ...f, value, status: 'doplněno', note: `Doplněno: ${added.source}, ${time(added.at)}` };
   }
   const res = st.resolved[f.key];

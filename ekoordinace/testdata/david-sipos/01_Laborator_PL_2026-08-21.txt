@@ -1,0 +1,85 @@
+FIKTIVNÍ PACIENT – testovací data pro Rakathon 2026
+Laboratoř Říčany s.r.o. (fiktivní)
+Klinická biochemie a hematologie
+Masarykovo nám. 40, 251 01 Říčany
+Výsledky laboratorního vyšetření
+Pacient: David Sipos, RČ 680905/1722, ZP 205
+Indikující lékař: MUDr. Hana Benešová, praktický lékař
+Odběr: 21. 8. 2026 7:20
+KREVNÍ OBRAZ
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+Leukocyty
+7,8
+10⁹/l
+4,0–10,0
+Erytrocyty
+4,05 L
+10¹²/l
+4,30–5,70
+Hemoglobin
+104 L
+g/l
+135–175
+Hematokrit
+0,33 L
+1
+0,40–0,50
+MCV
+74 L
+fl
+82–98
+Trombocyty
+402 H
+10⁹/l
+150–400
+BIOCHEMIE
+Vyšetření
+Výsledek
+Jednotky
+Ref. meze
+Sodík
+139
+mmol/l
+136–145
+Draslík
+4,4
+mmol/l
+3,5–5,1
+Kreatinin
+86
+µmol/l
+62–106
+Glukóza
+7,9 H
+mmol/l
+3,9–5,6
+ALT
+0,42
+µkat/l
+0,10–0,78
+AST
+0,38
+µkat/l
+0,10–0,72
+Bilirubin celkový
+9
+µmol/l
+2–17
+Železo
+5,1 L
+µmol/l
+5,8–34,5
+Ferritin
+9 L
+µg/l
+30–400
+CRP
+6 H
+mg/l
+0–5
+Vydáno: 21. 8. 2026
+Ing. Pavla Kubátová
+odborný pracovník laboratoře
