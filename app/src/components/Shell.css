@@ -164,7 +164,7 @@
   .me__text { display: none; }
   .me .avatar { width: 34px !important; height: 34px !important; font-size: 13px !important; }
 
-  /* GP bar: "Späť" · who, pill on its own line */
+  /* GP bar: „Zpět“ · who, pill on its own line */
   .topbar--gp { grid-template-columns: auto minmax(0, 1fr); gap: 8px 12px; padding: 10px var(--gutter) 10px; }
   .gpbar__back-long { display: none; }
   .gpbar__back-short { display: inline; }

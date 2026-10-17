@@ -4,7 +4,7 @@ import './theme.css';
 import App from './App';
 
 document.title = 'Koordinátor';
-document.documentElement.lang = 'sk';
+document.documentElement.lang = 'cs';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

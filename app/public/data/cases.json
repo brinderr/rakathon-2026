@@ -13,23 +13,23 @@
     "phone": "+420 777 000 541",
     "contact": {
      "name": "Petra Horká",
-     "relation": "dcéra",
+     "relation": "dcera",
      "phone": "+420 777 000 542"
     }
    },
    "referringGp": {
     "name": "MUDr. Tomáš Řezníček",
-    "practice": "Praktický lekár pre dospelých, Na Návsi 3, 252 41 Dolní Břežany",
+    "practice": "Praktický lékař pro dospělé, Na Návsi 3, 252 41 Dolní Břežany",
     "phone": "+420 311 000 287"
    },
-   "diagnosisShort": "nádor hlavy pankreasu (C25.0)",
-   "koc": "KOC 2 · Nemocnica Lipová",
+   "diagnosisShort": "nádor hlavy pankreatu (C25.0)",
+   "koc": "KOC 2 · Nemocnice Lipová",
    "mdtDate": "2026-10-21",
    "receivedAt": "2026-10-02",
    "status": "active",
    "nextStep": {
-    "text": "Doplniť výkonnostný stav (ECOG) do podkladu na konzílium",
-    "owner": "ja (koordinátor)",
+    "text": "Doplnit stav výkonnosti (ECOG) do podkladu pro MDT",
+    "owner": "já (koordinátorka)",
     "due": "2026-10-20",
     "mine": true
    },
@@ -37,7 +37,7 @@
    "fields": [
     {
      "key": "firstName",
-     "label": "Meno",
+     "label": "Jméno",
      "group": "Pacient",
      "value": "Alena",
      "status": "confirmed",
@@ -52,7 +52,7 @@
     },
     {
      "key": "lastName",
-     "label": "Priezvisko",
+     "label": "Příjmení",
      "group": "Pacient",
      "value": "Procházková",
      "status": "confirmed",
@@ -67,9 +67,9 @@
     },
     {
      "key": "age",
-     "label": "Vek",
+     "label": "Věk",
      "group": "Pacient",
-     "value": "63 rokov",
+     "value": "63 let",
      "status": "confirmed",
      "citations": [
       {
@@ -78,12 +78,12 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "Narodená 22. 7. 1963.",
+     "note": "Narozena 22. 7. 1963.",
      "origin": "manual"
     },
     {
      "key": "sex",
-     "label": "Pohlavie",
+     "label": "Pohlaví",
      "group": "Pacient",
      "value": "žena",
      "status": "proposed",
@@ -98,12 +98,12 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "V správach nie je ako samostatný údaj. Odvodené zo slova „pacientka“ a z rodného čísla (mesiac +50 = žena). Prosím, potvrďte.",
+     "note": "Ve zprávách není uvedeno jako samostatný údaj. Odvozeno ze slova „pacientka“ a z rodného čísla (měsíc +50 = žena). Prosím potvrďte.",
      "origin": "manual"
     },
     {
      "key": "insurer",
-     "label": "Zdravotná poisťovňa",
+     "label": "Zdravotní pojišťovna",
      "group": "Pacient",
      "value": "211 · Zdravotní pojišťovna ministerstva vnitra ČR",
      "status": "confirmed",
@@ -114,12 +114,12 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "Pozor: nie je to VZP, ale ZP MV ČR (211). Ak má súhrn dostať aj revízny lekár (chce to prezentácia VZP), išiel by poisťovni 211.",
+     "note": "Pozor: není to VZP, ale ZP MV ČR (211). Pokud má souhrn dostat i revizní lékař, šel by pojišťovně 211.",
      "origin": "manual"
     },
     {
      "key": "patientContact",
-     "label": "Kontakt na pacientku",
+     "label": "Kontakt na pacienta",
      "group": "Kontakty",
      "value": "+420 777 000 541",
      "status": "confirmed",
@@ -130,14 +130,14 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "E-mail pacientky v žiadnej správe nie je.",
+     "note": "E-mail pacientky v žádné zprávě není.",
      "origin": "manual"
     },
     {
      "key": "contactPerson",
-     "label": "Kontaktná osoba",
+     "label": "Kontaktní osoba a telefon",
      "group": "Kontakty",
-     "value": "Petra Horká (dcéra), +420 777 000 542",
+     "value": "Petra Horká (dcera), +420 777 000 542",
      "status": "confirmed",
      "citations": [
       {
@@ -150,14 +150,14 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "Pacientka súhlasí so zdieľaním informácií s dcérou.",
+     "note": "Pacientka souhlasí se sdílením informací s dcerou.",
      "origin": "manual"
     },
     {
      "key": "diagnosis",
      "label": "Diagnóza",
      "group": "Diagnóza",
-     "value": "C25.0 – nádor hlavy pankreasu; histológia: duktálny adenokarcinóm (G2–G3)",
+     "value": "C25.0 – nádor hlavy pankreatu; histologie: duktální adenokarcinom (G2–G3)",
      "status": "proposed",
      "citations": [
       {
@@ -174,14 +174,14 @@
       }
      ],
      "sourceDate": "2026-10-19",
-     "note": "Kód C25.0 uviedol praktik ako podozrenie. Histológia nádor potvrdzuje. Konečnú diagnózu potvrdí konzílium.",
+     "note": "Kód C25.0 uvedl praktický lékař jako podezření. Histologie nádor potvrzuje. Konečnou diagnózu potvrdí MDT.",
      "origin": "manual"
     },
     {
      "key": "epicrisis",
-     "label": "Priebeh ochorenia v skratke",
+     "label": "Epikríza (stručný souhrn nemoci)",
      "group": "Diagnóza",
-     "value": "Od polovice augusta 2026 bolesti brucha, koncom augusta teploty a tmavý moč. Ultrazvuk 29. 9. ukázal ložisko v hlave pankreasu podozrivé z nádoru. Termín CT praktik nezabezpečil.",
+     "value": "Od poloviny srpna 2026 bolesti břicha, na přelomu srpna a září teploty a tmavší moč. Ultrazvuk 29. 9. ukázal ložisko v hlavě pankreatu podezřelé z nádoru. Termín CT praktický lékař nezajistil.",
      "status": "proposed",
      "citations": [
       {
@@ -202,14 +202,14 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "Skrátené z epikrízy praktika (správa 07). Prosím, skontrolujte so zdrojom.",
+     "note": "Zkráceno z epikrízy praktického lékaře (zpráva 07). Prosím zkontrolujte se zdrojem.",
      "origin": "manual"
     },
     {
      "key": "mdtQuestion",
-     "label": "Otázka pre konzílium",
+     "label": "Požadavek / otázka na MDT",
      "group": "Diagnóza",
-     "value": "Dokončiť diagnostiku (CT brucha, histológia) a určiť ďalší postup. Praktik žiada urgentné riešenie.",
+     "value": "Dokončit diagnostiku (CT břicha, histologie) a stanovit další postup. Praktický lékař žádá urgentní řešení.",
      "status": "confirmed",
      "citations": [
       {
@@ -226,9 +226,9 @@
     },
     {
      "key": "comorbidities",
-     "label": "Pridružené ochorenia",
+     "label": "Komorbidity (přidružené nemoci)",
      "group": "Anamnéza",
-     "value": "Paroxyzmálna fibrilácia predsiení (od 2021, na antikoagulácii), vysoký krvný tlak, vysoký cholesterol, po odstránení maternice (2010).",
+     "value": "Paroxysmální fibrilace síní (od 2021, na antikoagulaci), vysoký krevní tlak, vysoký cholesterol, po odstranění dělohy (2010).",
      "status": "confirmed",
      "citations": [
       {
@@ -249,14 +249,14 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "Kardiológ 20. 7. 2026: stabilný stav, bez návratu fibrilácie. V roku 2019 prechodne depresívne ladenie, neliečené.",
+     "note": "Kardiolog 20. 7. 2026: stabilní stav, bez návratu fibrilace. V roce 2019 přechodně depresivní ladění, neléčeno.",
      "origin": "manual"
     },
     {
      "key": "medication",
-     "label": "Lieky, ktoré užíva",
+     "label": "Léková anamnéza (užívané léky)",
      "group": "Anamnéza",
-     "value": "apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg pri bolesti (max. 4× denne)",
+     "value": "apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti (max. 4× denně)",
      "status": "conflict",
      "citations": [
       {
@@ -273,23 +273,23 @@
       }
      ],
      "sourceDate": "2026-10-12",
-     "note": "Pokyn kardiológa: pred výkonom s vysokým rizikom krvácania vysadiť apixaban 48 hodín vopred. Protokol biopsie: znovu nasadiť od 21. 10. ráno.",
+     "note": "Pokyn kardiologa: před výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem. Protokol biopsie: znovu nasadit od 21. 10. ráno.",
      "conflict": {
       "a": {
-       "value": "Biopsia bola 12. 10. 2026",
+       "value": "Biopsie byla 12. 10. 2026",
        "citation": {
         "docId": "09",
         "quote": "Datum výkonu: 12. 10. 2026"
        }
       },
       "b": {
-       "value": "Posledná dávka apixabanu 18. 10. 2026 večer",
+       "value": "Poslední dávka apixabanu 18. 10. 2026 večer",
        "citation": {
         "docId": "09",
         "quote": "Apixaban vysazen 48 h před výkonem (poslední dávka 18. 10. 2026 večer)."
        }
       },
-      "explain": "Ten istý protokol uvádza výkon 12. 10. a poslednú dávku apixabanu až 18. 10., teda 6 dní po výkone. Jeden z dátumov je chybný. Kedy pacientka liek naozaj vysadila, treba overiť – rozhodne lekár."
+      "explain": "Tentýž protokol uvádí výkon 12. 10. a poslední dávku apixabanu až 18. 10., tedy 6 dní po výkonu. Jedno z dat je chybné. Kdy pacientka lék skutečně vysadila, je třeba ověřit – rozhodne lékař."
      },
      "origin": "manual"
     },
@@ -306,29 +306,21 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "Nefajčiarka, alkohol nepije.",
+     "note": "Nekuřačka, alkohol nepije.",
      "origin": "manual"
     },
     {
      "key": "performance",
-     "label": "Výkonnostný stav (ECOG)",
+     "label": "Stav výkonnosti (ECOG)",
      "group": "Stav",
      "value": "",
      "status": "missing",
      "citations": [],
-     "note": "V žiadnej správe nie je ECOG ani Karnofského skóre. Slovo „sebestačná“ v žiadosti praktika nie je skóre, preto ho nedomýšľame.",
+     "note": "V žádné zprávě není ECOG ani Karnofského skóre. Slovo „soběstačná“ v žádosti praktického lékaře není skóre, proto je nedomýšlíme.",
      "request": {
-      "to": "MUDr. Lenka Marková, onkologická ambulancia KOC 2",
+      "to": "MUDr. Lenka Marková, onkologická ambulance KOC 2",
       "channel": "NIS",
-      "draft": "Dobrý deň, pani doktorka,\npripravujem podklad na konzílium 21. 10. 2026 pre pacientku Alenu Procházkovú (nar. 22. 7. 1963). V dostupných správach chýba výkonnostný stav (ECOG alebo Karnofského skóre). Mohli by ste ho, prosím, doplniť do 20. 10.?\nĎakujem,\nBc. Lucie Dvořáková, koordinátorka KOC 2"
-     },
-     "resolvedBy": {
-      "docId": "14",
-      "value": "ECOG 1",
-      "citation": {
-       "docId": "14",
-       "quote": "Stav výkonnosti: ECOG 1"
-      }
+      "draft": "Dobrý den, paní doktorko,\npřipravuji podklad pro MDT 21. 10. 2026 pro pacientku Alenu Procházkovou (nar. 22. 7. 1963). V dostupných zprávách chybí stav výkonnosti (ECOG nebo Karnofského skóre). Mohla byste ho prosím doplnit do 20. 10.?\nDěkuji,\nBc. Lucie Dvořáková, koordinátorka KOC 2"
      },
      "origin": "manual"
     },
@@ -353,14 +345,14 @@
       }
      ],
      "sourceDate": "2026-09-15",
-     "note": "Úbytok 4 kg za mesiac (zo 69 na 65 kg). Váha je z 15. 9., novšie meranie zatiaľ nie je.",
+     "note": "Úbytek 4 kg za měsíc (z 69 na 65 kg). Váha je z 15. 9., novější měření zatím není.",
      "origin": "manual"
     },
     {
      "key": "symptoms",
-     "label": "Príznaky a ich začiatok",
+     "label": "Příznaky nemoci a jejich počátek",
      "group": "Stav",
-     "value": "Od polovice augusta bolesti v nadbrušku a pod pravým rebrom; teraz bolesť vystreľuje do chrbta, horšia po jedle a v noci. Nechutenstvo, chudnutie, tmavý moč, 1. 9. žltkasté bielka očí. Teploty od septembra nemala.",
+     "value": "Od poloviny srpna bolesti v nadbřišku a pod pravým žebrem; nyní bolest vystřeluje do zad, horší po jídle a v noci. Nechutenství, hubnutí, tmavší moč, 1. 9. nažloutlé bělmo očí. Teploty od září neměla.",
      "status": "confirmed",
      "citations": [
       {
@@ -385,14 +377,14 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "Na paracetamole len čiastočná úľava. Sebestačná, t. č. práceneschopná.",
+     "note": "Na paracetamolu jen částečná úleva. Soběstačná, nyní v pracovní neschopnosti.",
      "origin": "manual"
     },
     {
      "key": "exams",
-     "label": "Vykonané vyšetrenia",
+     "label": "Provedená vyšetření",
      "group": "Vyšetrenia",
-     "value": "Kardiológia 20. 7. · RTG hrudníka 3. 9. · gastroenterológ 15. 9. · ultrazvuk brucha 29. 9. · CT brucha a hrudníka 8. 10. (KOC 1) · biopsia EUS-FNB 12. 10. (KOC 2)",
+     "value": "Kardiologie 20. 7. · RTG plic 3. 9. · gastroenterolog 15. 9. · ultrazvuk břicha 29. 9. · CT břicha a hrudníku 8. 10. (KOC 1) · biopsie EUS-FNB 12. 10. (KOC 2)",
      "status": "confirmed",
      "citations": [
       {
@@ -417,14 +409,14 @@
       }
      ],
      "sourceDate": "2026-10-12",
-     "note": "Dátum, miesto a typ každého vyšetrenia sú v časti Vyšetrenia, plné znenie po kliknutí v origináli správy. Veľkosť ložiska sa líši podľa metódy (UZ 34 × 30 mm, CT 35 × 31 mm, EUS 33 × 29 mm).",
+     "note": "Datum, místo a typ každého vyšetření jsou v části Vyšetření, plné znění po kliknutí v originálu zprávy. Velikost ložiska se liší podle metody (UZ 34 × 30 mm, CT 35 × 31 mm, EUS 33 × 29 mm).",
      "origin": "manual"
     },
     {
      "key": "labs",
-     "label": "Laboratórium a nádorové markery",
+     "label": "Laboratorní výsledky včetně onkomarkerů",
      "group": "Laboratórium",
-     "value": "15. 10.: CA 19-9 312 kU/l (norma do 37), CA 125 48 kU/l (do 35), CEA 4,1 µg/l v norme. Bilirubín 23 µmol/l, hemoglobín 118 g/l.",
+     "value": "15. 10.: CA 19-9 312 kU/l (norma do 37), CA 125 48 kU/l (do 35), CEA 4,1 µg/l v normě. Bilirubin 23 µmol/l, hemoglobin 118 g/l.",
      "status": "confirmed",
      "citations": [
       {
@@ -449,14 +441,14 @@
       }
      ],
      "sourceDate": "2026-10-15",
-     "note": "Dva odbery: 1. 9. (LabJih, cez praktika) a 15. 10. (KOC 2). Nádorové markery len 15. 10. Celá tabuľka je v časti Laboratórium.",
+     "note": "Dva odběry: 1. 9. (LabJih, přes praktického lékaře) a 15. 10. (KOC 2). Nádorové markery jen 15. 10. Celá tabulka je v části Laboratoř.",
      "origin": "manual"
     },
     {
      "key": "histology",
-     "label": "Histológia (výsledok biopsie)",
+     "label": "Histologie",
      "group": "Histológia",
-     "value": "Duktálny adenokarcinóm pankreasu, G2–G3, s perineurálnou inváziou",
+     "value": "Duktální adenokarcinom pankreatu, G2–G3, s perineurální invazí",
      "status": "conflict",
      "citations": [
       {
@@ -473,31 +465,31 @@
       }
      ],
      "sourceDate": "2026-10-19",
-     "note": "Výsledok bol sľúbený do 3 pracovných dní (do 15. 10.), prišiel 19. 10.",
+     "note": "Výsledek byl slíben do 3 pracovních dnů (do 15. 10.), přišel 19. 10.",
      "conflict": {
       "a": {
-       "value": "Odber vzorky 20. 10. 2026",
+       "value": "Odběr vzorku 20. 10. 2026",
        "citation": {
         "docId": "11",
         "quote": "EUS-FNB 22G (odběr 20. 10. 2026)"
        }
       },
       "b": {
-       "value": "Správa vydaná 19. 10. 2026",
+       "value": "Zpráva vydána 19. 10. 2026",
        "citation": {
         "docId": "11",
         "quote": "Datum vydání: 19. 10. 2026"
        }
       },
-      "explain": "Správa je vydaná deň pred uvedeným odberom. Biopsia podľa protokolu prebehla 12. 10. Jeden z dátumov je chybný – overte s patológiou, že výsledok patrí k tejto vzorke."
+      "explain": "Zpráva je vydána den před uvedeným odběrem. Biopsie podle protokolu proběhla 12. 10. Jedno z dat je chybné – ověřte s patologií, že výsledek patří k tomuto vzorku."
      },
      "origin": "manual"
     },
     {
      "key": "other",
-     "label": "Iné dôležité a želania pacientky",
+     "label": "Jiná důležitá sdělení a přání pacienta",
      "group": "Iné",
-     "value": "Pacientka vie o podozrení na nádor a súhlasí so zdieľaním informácií s dcérou. Je veľmi úzkostná a zle spí – praktik prosí o psychologickú podporu. Žije sama, dcéra býva v tej istej obci.",
+     "value": "Pacientka ví o podezření na nádor a souhlasí se sdílením informací s dcerou. Je velmi úzkostná a špatně spí – praktický lékař prosí o psychologickou podporu. Žije sama, dcera bydlí v téže obci.",
      "status": "confirmed",
      "citations": [
       {
@@ -526,16 +518,16 @@
       }
      ],
      "sourceDate": "2026-10-02",
-     "note": "Praktik upozorňuje na liečbu apixabanom pred výkonmi.",
+     "note": "Praktický lékař upozorňuje na léčbu apixabanem před výkony.",
      "origin": "manual"
     }
    ],
    "steps": [
     {
      "id": "ct",
-     "title": "CT brucha a hrudníka (pankreatický protokol)",
-     "place": "KOC 1 · Nemocnica Severní",
-     "owner": "rádiológia KOC 1",
+     "title": "CT břicha a hrudníku (pankreatický protokol)",
+     "place": "KOC 1 · Nemocnice Severní",
+     "owner": "radiologie KOC 1",
      "due": "2026-10-08",
      "state": "delivered",
      "history": [
@@ -560,9 +552,9 @@
     },
     {
      "id": "biopsy",
-     "title": "Biopsia pod endosonografiou (EUS-FNB)",
-     "place": "KOC 2 · Nemocnica Lipová – endoskopia",
-     "owner": "endoskopia KOC 2",
+     "title": "Biopsie pod endosonografií (EUS-FNB)",
+     "place": "KOC 2 · Nemocnice Lipová – endoskopie",
+     "owner": "endoskopie KOC 2",
      "due": "2026-10-12",
      "state": "delivered",
      "history": [
@@ -587,9 +579,9 @@
     },
     {
      "id": "labs",
-     "title": "Kontrolné odbery a nádorové markery",
-     "place": "KOC 2 · Nemocnica Lipová – laboratórium",
-     "owner": "laboratórium KOC 2",
+     "title": "Kontrolní odběry a nádorové markery",
+     "place": "KOC 2 · Nemocnice Lipová – laboratoř",
+     "owner": "laboratoř KOC 2",
      "due": "2026-10-15",
      "state": "delivered",
      "history": [
@@ -614,9 +606,9 @@
     },
     {
      "id": "histology",
-     "title": "Histológia (výsledok biopsie)",
-     "place": "KOC 2 · Nemocnica Lipová – patológia",
-     "owner": "patológia KOC 2",
+     "title": "Histologie (výsledek biopsie)",
+     "place": "KOC 2 · Nemocnice Lipová – patologie",
+     "owner": "patologie KOC 2",
      "due": "2026-10-15",
      "state": "delivered",
      "history": [
@@ -641,9 +633,9 @@
     },
     {
      "id": "mdt",
-     "title": "Konzílium (MDT) pre nádory GIT",
-     "place": "KOC 2 · Nemocnica Lipová",
-     "owner": "ja (koordinátor) – podklad",
+     "title": "MDT (multidisciplinární tým) pro nádory GIT",
+     "place": "KOC 2 · Nemocnice Lipová",
+     "owner": "já (koordinátorka) – podklad",
      "due": "2026-10-21",
      "state": "ordered",
      "history": [
@@ -668,9 +660,9 @@
     },
     {
      "id": "pain",
-     "title": "Algeziológ (liečba bolesti)",
-     "place": "KOC 1 · Nemocnica Severní – centrum liečby bolesti",
-     "owner": "centrum liečby bolesti KOC 1",
+     "title": "Algeziolog (léčba bolesti)",
+     "place": "KOC 1 · Nemocnice Severní – centrum léčby bolesti",
+     "owner": "centrum léčby bolesti KOC 1",
      "due": "2026-10-26",
      "state": "ordered",
      "history": [
@@ -695,9 +687,9 @@
     },
     {
      "id": "psych",
-     "title": "Klinický psychológ",
-     "place": "KOC 2 · Nemocnica Lipová – psychoonkológia",
-     "owner": "psychoonkológia KOC 2",
+     "title": "Klinický psycholog",
+     "place": "KOC 2 · Nemocnice Lipová – psychoonkologie",
+     "owner": "psychoonkologie KOC 2",
      "due": "2026-10-27",
      "state": "ordered",
      "history": [
@@ -729,7 +721,7 @@
      "ref": "< 37",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -739,7 +731,7 @@
      "ref": "< 35",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -748,7 +740,7 @@
      "unit": "µg/l",
      "ref": "< 5,0",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -757,7 +749,7 @@
      "unit": "10⁹/l",
      "ref": "4,0–10,0",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -766,17 +758,17 @@
      "unit": "10¹²/l",
      "ref": "3,80–5,20",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
-     "test": "Hemoglobín",
+     "test": "Hemoglobin",
      "value": "118",
      "unit": "g/l",
      "ref": "120–160",
      "flag": "L",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -785,7 +777,7 @@
      "unit": "",
      "ref": "0,35–0,47",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -794,7 +786,7 @@
      "unit": "fl",
      "ref": "82–98",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -803,7 +795,7 @@
      "unit": "10⁹/l",
      "ref": "150–400",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -812,7 +804,7 @@
      "unit": "%",
      "ref": "45–70",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -821,7 +813,7 @@
      "unit": "%",
      "ref": "20–45",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -830,7 +822,7 @@
      "unit": "mmol/l",
      "ref": "136–145",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -839,16 +831,16 @@
      "unit": "mmol/l",
      "ref": "3,5–5,1",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
-     "test": "Vápnik",
+     "test": "Vápník",
      "value": "2,31",
      "unit": "mmol/l",
      "ref": "2,15–2,55",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -857,16 +849,16 @@
      "unit": "mmol/l",
      "ref": "2,8–8,1",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
-     "test": "Kreatinín",
+     "test": "Kreatinin",
      "value": "74",
      "unit": "µmol/l",
      "ref": "45–84",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -875,7 +867,7 @@
      "unit": "ml/s/1,73 m²",
      "ref": "> 1,0",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -885,27 +877,27 @@
      "ref": "3,9–5,6",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
-     "test": "Bilirubín celkový",
+     "test": "Bilirubin celkový",
      "value": "23",
      "unit": "µmol/l",
      "ref": "2–17",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
-     "test": "Bilirubín konjugovaný",
+     "test": "Bilirubin konjugovaný",
      "value": "6",
      "unit": "µmol/l",
      "ref": "0–5",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -915,7 +907,7 @@
      "ref": "0,10–0,60",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -925,7 +917,7 @@
      "ref": "0,10–0,60",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -935,7 +927,7 @@
      "ref": "0,10–0,70",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -945,25 +937,25 @@
      "ref": "0,58–1,75",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
-     "test": "Celková bielkovina",
+     "test": "Celková bílkovina",
      "value": "66",
      "unit": "g/l",
      "ref": "64–83",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
-     "test": "Albumín",
+     "test": "Albumin",
      "value": "36",
      "unit": "g/l",
      "ref": "35–52",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -973,7 +965,7 @@
      "ref": "0–5",
      "flag": "H",
      "date": "2026-10-15",
-     "lab": "Laboratórium KOC 2 · Nemocnica Lipová",
+     "lab": "Laboratoř KOC 2 · Nemocnice Lipová",
      "docId": "10"
     },
     {
@@ -983,7 +975,7 @@
      "ref": "4,0–10,0",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -992,16 +984,16 @@
      "unit": "10¹²/l",
      "ref": "3,80–5,20",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
-     "test": "Hemoglobín",
+     "test": "Hemoglobin",
      "value": "124",
      "unit": "g/l",
      "ref": "120–160",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1010,7 +1002,7 @@
      "unit": "",
      "ref": "0,35–0,47",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1019,7 +1011,7 @@
      "unit": "10⁹/l",
      "ref": "150–400",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1029,7 +1021,7 @@
      "ref": "45–70",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1039,7 +1031,7 @@
      "ref": "20–45",
      "flag": "L",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1048,7 +1040,7 @@
      "unit": "mmol/l",
      "ref": "136–145",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1057,7 +1049,7 @@
      "unit": "mmol/l",
      "ref": "3,5–5,1",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1066,7 +1058,7 @@
      "unit": "mmol/l",
      "ref": "98–107",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1075,16 +1067,16 @@
      "unit": "mmol/l",
      "ref": "2,8–8,1",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
-     "test": "Kreatinín",
+     "test": "Kreatinin",
      "value": "78",
      "unit": "µmol/l",
      "ref": "45–84",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1094,17 +1086,17 @@
      "ref": "3,9–5,6",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
-     "test": "Bilirubín celkový",
+     "test": "Bilirubin celkový",
      "value": "38",
      "unit": "µmol/l",
      "ref": "2–17",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1114,7 +1106,7 @@
      "ref": "0,10–0,60",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1124,7 +1116,7 @@
      "ref": "0,10–0,60",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1134,7 +1126,7 @@
      "ref": "0,10–0,70",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1144,7 +1136,7 @@
      "ref": "0,58–1,75",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1153,7 +1145,7 @@
      "unit": "µkat/l",
      "ref": "0,47–1,67",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1162,7 +1154,7 @@
      "unit": "µkat/l",
      "ref": "0,22–1,00",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1172,37 +1164,37 @@
      "ref": "0–5",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
-     "test": "Moč – bilirubín",
+     "test": "Moč – bilirubin",
      "value": "++",
      "unit": "",
      "ref": "neg.",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
-     "test": "Moč – bielkovina",
+     "test": "Moč – bílkovina",
      "value": "+",
      "unit": "",
      "ref": "neg.",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
-     "test": "Moč – krv",
+     "test": "Moč – krev",
      "value": "+",
      "unit": "",
      "ref": "neg.",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1212,7 +1204,7 @@
      "ref": "neg.",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
@@ -1222,16 +1214,16 @@
      "ref": "0–10",
      "flag": "H",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     },
     {
-     "test": "Moč – kultivácia",
+     "test": "Moč – kultivace",
      "value": "Escherichia coli 10⁴ CFU/ml",
      "unit": "",
-     "ref": "hraničný nález",
+     "ref": "hraniční nález",
      "date": "2026-09-01",
-     "lab": "LabJih (odber cez praktika)",
+     "lab": "LabJih (odběr přes praktického lékaře)",
      "docId": "02"
     }
    ],
@@ -1239,7 +1231,7 @@
     {
      "name": "apixaban",
      "dose": "5 mg · 1-0-1 (ráno a večer)",
-     "note": "Pred výkonom s vysokým rizikom krvácania vysadiť 48 h vopred (pokyn kardiológa).",
+     "note": "Před výkonem s vysokým rizikem krvácení vysadit 48 h předem (pokyn kardiologa).",
      "citation": {
       "docId": "07",
       "quote": "apixaban 5 mg 1-0-1"
@@ -1271,8 +1263,8 @@
     },
     {
      "name": "paracetamol",
-     "dose": "500 mg pri bolesti, najviac 4× denne",
-     "note": "Podľa praktika len čiastočná úľava.",
+     "dose": "500 mg při bolesti, nejvýše 4× denně",
+     "note": "Podle praktického lékaře jen částečná úleva.",
      "citation": {
       "docId": "07",
       "quote": "paracetamol 500 mg při bolesti max. 4× denně"
@@ -1281,7 +1273,7 @@
     {
      "name": "tramadol",
      "dose": "100 mg retard · 1-0-1 (od 26. 10.)",
-     "note": "Algeziológ upozorňuje: s antidepresívami (SSRI, SNRI) vyššie riziko serotonínového syndrómu.",
+     "note": "Algeziolog upozorňuje: s antidepresivy (SSRI, SNRI) vyšší riziko serotoninového syndromu.",
      "citation": {
       "docId": "12",
       "quote": "tramadol tbl. ret. 100 mg 1-0-1"
@@ -1297,8 +1289,8 @@
     },
     {
      "name": "paracetamol",
-     "dose": "500 mg pri prielomovej bolesti, najviac 3× denne (od 26. 10.)",
-     "note": "Zmena oproti správe 07 (tam najviac 4× denne).",
+     "dose": "500 mg při průlomové bolesti, nejvýše 3× denně (od 26. 10.)",
+     "note": "Změna oproti zprávě 07 (tam nejvýše 4× denně).",
      "citation": {
       "docId": "12",
       "quote": "paracetamol 500 mg při průlomové bolesti, max. 3× denně"
@@ -1306,7 +1298,7 @@
     },
     {
      "name": "metoklopramid",
-     "dose": "10 mg pri nevoľnosti, najviac 3× denne (od 26. 10.)",
+     "dose": "10 mg při nevolnosti, nejvýše 3× denně (od 26. 10.)",
      "citation": {
       "docId": "12",
       "quote": "metoklopramid 10 mg při nauzee, max. 3× denně"
@@ -1314,7 +1306,7 @@
     },
     {
      "name": "laktulóza",
-     "dose": "sirup 15 ml · 1× denne (od 26. 10.)",
+     "dose": "sirup 15 ml · 1× denně (od 26. 10.)",
      "citation": {
       "docId": "12",
       "quote": "laktulóza sirup 15 ml 1× denně jako prevence obstipace"
@@ -1324,80 +1316,80 @@
    "exams": [
     {
      "date": "2026-07-20",
-     "place": "Kardiologická ambulancia Jesenice",
+     "place": "Kardiologická ambulance Jesenice",
      "type": "Kardiologická kontrola",
-     "summary": "Stabilný stav, sínusový rytmus, bez návratu fibrilácie predsiení. Ejekčná frakcia ľavej komory 60 %. Pred výkonom s vysokým rizikom krvácania vysadiť apixaban 48 hodín vopred.",
+     "summary": "Stabilní stav, sinusový rytmus, bez návratu fibrilace síní. Ejekční frakce levé komory 60 %. Před výkonem s vysokým rizikem krvácení vysadit apixaban 48 hodin předem.",
      "docId": "01"
     },
     {
      "date": "2026-09-01",
-     "place": "Ordinácia praktického lekára, Dolní Břežany",
-     "type": "Vyšetrenie u praktického lekára",
-     "summary": "Teploty, bolesti v nadbrušku, žltkasté bielka. Podozrenie na infekciu močových alebo žlčových ciest, cholestáza. Liečba ciprofloxacínom 7 dní, odoslaná ku gastroenterológovi.",
+     "place": "Ordinace praktického lékaře, Dolní Břežany",
+     "type": "Vyšetření u praktického lékaře",
+     "summary": "Teploty, bolesti v nadbřišku, nažloutlé bělmo. Podezření na infekci močových nebo žlučových cest, cholestáza. Léčba ciprofloxacinem 7 dní, odeslána ke gastroenterologovi.",
      "docId": "04"
     },
     {
      "date": "2026-09-03",
      "place": "Radiologické centrum Modřany",
-     "type": "RTG hrudníka",
-     "summary": "Bez známok zápalu pľúc. Primeraný nález na srdci a pľúcach.",
+     "type": "RTG plic",
+     "summary": "Bez známek zánětu plic. Přiměřený nález na srdci a plicích.",
      "docId": "03"
     },
     {
      "date": "2026-09-15",
-     "place": "Poliklinika Jižní – gastroenterológia",
-     "type": "Gastroenterologické vyšetrenie",
-     "summary": "Cholestáza, bolesti v nadbrušku vystreľujúce do chrbta, úbytok 4 kg za mesiac. Odporučený ultrazvuk brucha, podľa výsledku CT alebo EUS.",
+     "place": "Poliklinika Jižní – gastroenterologie",
+     "type": "Gastroenterologické vyšetření",
+     "summary": "Cholestáza, bolesti v nadbřišku vystřelující do zad, úbytek 4 kg za měsíc. Doporučen ultrazvuk břicha, podle výsledku CT nebo EUS.",
      "docId": "05"
     },
     {
      "date": "2026-09-29",
-     "place": "Poliklinika Jižní – rádiológia",
-     "type": "Ultrazvuk brucha",
-     "summary": "Ložisko v hlave pankreasu 34 × 30 mm podozrivé z nádoru, mierne rozšírené žlčové cesty. Odporučené CT podľa pankreatického protokolu, prípadne EUS.",
+     "place": "Poliklinika Jižní – radiologie",
+     "type": "Ultrazvuk břicha",
+     "summary": "Ložisko v hlavě pankreatu 34 × 30 mm podezřelé z nádoru, mírně rozšířené žlučové cesty. Doporučeno CT podle pankreatického protokolu, případně EUS.",
      "docId": "06"
     },
     {
      "date": "2026-10-08",
-     "place": "KOC 1 · Nemocnica Severní – rádiológia",
-     "type": "CT brucha a hrudníka (pankreatický protokol)",
-     "summary": "Nádor hlavy pankreasu 35 mm, postihuje žilu VMS so zúžením a dotýka sa tepny AMS. Podozrivá uzlina pri pankrease. Bez známok vzdialených metastáz.",
+     "place": "KOC 1 · Nemocnice Severní – radiologie",
+     "type": "CT břicha a hrudníku (pankreatický protokol)",
+     "summary": "Nádor hlavy pankreatu 35 mm, postihuje žílu VMS se zúžením a dotýká se tepny AMS. Podezřelá uzlina u pankreatu. Bez známek vzdálených metastáz.",
      "docId": "08"
     },
     {
      "date": "2026-10-12",
-     "place": "KOC 2 · Nemocnica Lipová – endoskopia",
-     "type": "Biopsia pod endosonografiou (EUS-FNB)",
-     "summary": "Ložisko 33 × 29 mm, 3 vpichy, vzorky odoslané na histológiu, bez komplikácií. Výsledok histológie do 3 pracovných dní.",
+     "place": "KOC 2 · Nemocnice Lipová – endoskopie",
+     "type": "Biopsie pod endosonografií (EUS-FNB)",
+     "summary": "Ložisko 33 × 29 mm, 3 vpichy, vzorky odeslány na histologii, bez komplikací. Výsledek histologie do 3 pracovních dnů.",
      "docId": "09"
     },
     {
      "date": "2026-10-19",
-     "place": "KOC 2 · Nemocnica Lipová – patológia",
-     "type": "Histológia",
-     "summary": "Duktálny adenokarcinóm pankreasu, stredne až málo diferencovaný (G2–G3), s perineurálnou inváziou.",
+     "place": "KOC 2 · Nemocnice Lipová – patologie",
+     "type": "Histologie",
+     "summary": "Duktální adenokarcinom pankreatu, středně až málo diferencovaný (G2–G3), s perineurální invazí.",
      "docId": "11"
     },
     {
      "date": "2026-10-26",
-     "place": "KOC 1 · Nemocnica Severní – centrum liečby bolesti",
-     "type": "Algeziologické vyšetrenie",
-     "summary": "Bolesť v pokoji 6/10, po jedle a v noci 8/10, paracetamol nestačí. Nasadená nová liečba bolesti, kontrola o 14 dní. Váha 63 kg.",
+     "place": "KOC 1 · Nemocnice Severní – centrum léčby bolesti",
+     "type": "Algeziologické vyšetření",
+     "summary": "Bolest v klidu 6/10, po jídle a v noci 8/10, paracetamol nestačí. Nasazena nová léčba bolesti, kontrola za 14 dní. Váha 63 kg.",
      "docId": "12"
     },
     {
      "date": "2026-10-27",
-     "place": "KOC 2 · Nemocnica Lipová – psychoonkológia",
-     "type": "Klinický psychológ",
-     "summary": "Zmiešaná úzkostno-depresívna porucha v reakcii na ochorenie. Psychiatria objednaná na 3. 11., psychoterapia raz týždenne. Pacientka si želá, aby informácie dostávala aj dcéra.",
+     "place": "KOC 2 · Nemocnice Lipová – psychoonkologie",
+     "type": "Klinický psycholog",
+     "summary": "Smíšená úzkostně-depresivní porucha v reakci na nemoc. Psychiatrie objednána na 3. 11., psychoterapie jednou týdně. Pacientka si přeje, aby informace dostávala i dcera.",
      "docId": "13"
     }
    ],
    "docs": [
     {
      "id": "01",
-     "title": "Kardiológia – kontrola",
-     "place": "Kardiologická ambulancia Jesenice",
+     "title": "Kardiologie – kontrola",
+     "place": "Kardiologická ambulance Jesenice",
      "kind": "report",
      "examDate": "2026-07-20",
      "receivedAt": "2026-10-06",
@@ -1405,8 +1397,8 @@
     },
     {
      "id": "02",
-     "title": "Laboratórium – krv a moč",
-     "place": "Laboratórium LabJih",
+     "title": "Laboratoř – krev a moč",
+     "place": "Laboratoř LabJih",
      "kind": "result",
      "examDate": "2026-09-01",
      "receivedAt": "2026-10-03",
@@ -1414,7 +1406,7 @@
     },
     {
      "id": "03",
-     "title": "RTG hrudníka",
+     "title": "RTG plic",
      "place": "Radiologické centrum Modřany",
      "kind": "result",
      "examDate": "2026-09-03",
@@ -1423,8 +1415,8 @@
     },
     {
      "id": "04",
-     "title": "Praktický lekár – epikríza",
-     "place": "Ordinácia praktického lekára, Dolní Břežany",
+     "title": "Praktický lékař – epikríza",
+     "place": "Ordinace praktického lékaře, Dolní Břežany",
      "kind": "report",
      "examDate": "2026-09-04",
      "receivedAt": "2026-10-05",
@@ -1432,8 +1424,8 @@
     },
     {
      "id": "05",
-     "title": "Gastroenterológia – vstupné vyšetrenie",
-     "place": "Poliklinika Jižní – gastroenterológia",
+     "title": "Gastroenterologie – vstupní vyšetření",
+     "place": "Poliklinika Jižní – gastroenterologie",
      "kind": "report",
      "examDate": "2026-09-15",
      "receivedAt": "2026-10-05",
@@ -1441,8 +1433,8 @@
     },
     {
      "id": "06",
-     "title": "Ultrazvuk brucha",
-     "place": "Poliklinika Jižní – rádiológia",
+     "title": "Ultrazvuk břicha",
+     "place": "Poliklinika Jižní – radiologie",
      "kind": "result",
      "examDate": "2026-09-29",
      "receivedAt": "2026-10-05",
@@ -1450,8 +1442,8 @@
     },
     {
      "id": "07",
-     "title": "Žiadosť praktika o prevzatie do KOC",
-     "place": "Ordinácia praktického lekára, Dolní Břežany",
+     "title": "Žádost praktického lékaře o převzetí do KOC",
+     "place": "Ordinace praktického lékaře, Dolní Břežany",
      "kind": "request",
      "examDate": "2026-10-02",
      "receivedAt": "2026-10-02",
@@ -1459,8 +1451,8 @@
     },
     {
      "id": "08",
-     "title": "CT brucha a hrudníka",
-     "place": "KOC 1 · Nemocnica Severní – rádiológia",
+     "title": "CT břicha a hrudníku",
+     "place": "KOC 1 · Nemocnice Severní – radiologie",
      "kind": "result",
      "examDate": "2026-10-08",
      "receivedAt": "2026-10-08",
@@ -1468,8 +1460,8 @@
     },
     {
      "id": "09",
-     "title": "Biopsia EUS-FNB – protokol",
-     "place": "KOC 2 · Nemocnica Lipová – endoskopia",
+     "title": "Biopsie EUS-FNB – protokol",
+     "place": "KOC 2 · Nemocnice Lipová – endoskopie",
      "kind": "report",
      "examDate": "2026-10-12",
      "receivedAt": "2026-10-12",
@@ -1477,8 +1469,8 @@
     },
     {
      "id": "10",
-     "title": "Laboratórium – kontrolné odbery",
-     "place": "KOC 2 · Nemocnica Lipová – laboratórium",
+     "title": "Laboratoř – kontrolní odběry",
+     "place": "KOC 2 · Nemocnice Lipová – laboratoř",
      "kind": "result",
      "examDate": "2026-10-15",
      "receivedAt": "2026-10-15",
@@ -1486,8 +1478,8 @@
     },
     {
      "id": "11",
-     "title": "Histológia – výsledok biopsie",
-     "place": "KOC 2 · Nemocnica Lipová – patológia",
+     "title": "Histologie – výsledek biopsie",
+     "place": "KOC 2 · Nemocnice Lipová – patologie",
      "kind": "result",
      "examDate": "2026-10-19",
      "receivedAt": "2026-10-19",
@@ -1495,8 +1487,8 @@
     },
     {
      "id": "12",
-     "title": "Algeziológia – liečba bolesti",
-     "place": "KOC 1 · Nemocnica Severní – centrum liečby bolesti",
+     "title": "Algeziologie – léčba bolesti",
+     "place": "KOC 1 · Nemocnice Severní – centrum léčby bolesti",
      "kind": "report",
      "examDate": "2026-10-26",
      "receivedAt": "2026-10-26",
@@ -1504,27 +1496,17 @@
     },
     {
      "id": "13",
-     "title": "Klinický psychológ",
-     "place": "KOC 2 · Nemocnica Lipová – psychoonkológia",
+     "title": "Klinický psycholog",
+     "place": "KOC 2 · Nemocnice Lipová – psychoonkologie",
      "kind": "report",
      "examDate": "2026-10-27",
      "receivedAt": "2026-10-27",
      "channel": "NIS"
     },
     {
-     "id": "14",
-     "title": "Doplnenie ECOG (fiktívna správa pre demo)",
-     "place": "KOC 2 · Nemocnica Lipová – onkologická ambulancia",
-     "kind": "report",
-     "examDate": "2026-10-19",
-     "receivedAt": "2026-10-19",
-     "channel": "NIS",
-     "text": "FIKTÍVNA DOPLNKOVÁ SPRÁVA PRE DEMO – nie je súčasťou podkladov zadania Rakathon 2026\nKOC Nemocnice Lipová (fiktivní)\nOnkologická ambulance\nNemocniční 15, 140 00 Praha 4\nDoplnění údaje na žádost koordinátorky KOC\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nDatum: 19. 10. 2026\nSTAV VÝKONNOSTI\nStav výkonnosti: ECOG 1 (omezena při fyzicky náročné činnosti, chodící, schopna lehké práce).\nV Praze dne 19. 10. 2026\nMUDr. Lenka Marková\nonkologická ambulance KOC"
-    },
-    {
      "id": "MDT",
-     "title": "Zápis z konzília (MDT)",
-     "place": "KOC 2 · Nemocnica Lipová – MDT pre nádory GIT",
+     "title": "Zápis z jednání MDT",
+     "place": "KOC 2 · Nemocnice Lipová – MDT pro nádory GIT",
      "kind": "report",
      "examDate": "2026-10-21",
      "receivedAt": "2026-10-21",
@@ -1535,177 +1517,177 @@
     {
      "date": "2026-10-02",
      "time": "08:40",
-     "action": "Prevzatá žiadosť praktika",
-     "detail": "Cez eZprávu prišla epikríza MUDr. Řezníčka (správa 07). Založený prípad, spustené hodiny cesty.",
+     "action": "Převzata žádost praktického lékaře",
+     "detail": "Přes eZprávu přišla epikríza MUDr. Řezníčka (zpráva 07). Založen případ, počítají se dny od přijetí žádosti.",
      "billable": true
     },
     {
      "date": "2026-10-02",
      "time": "08:55",
-     "action": "Potvrdenie prijatia praktikovi",
-     "detail": "Potvrdenie so zoznamom toho, čo chýba: výsledky vyšetrení, ECOG, váha, e-mail.",
+     "action": "Potvrzení přijetí praktickému lékaři",
+     "detail": "Potvrzení se seznamem toho, co chybí: výsledky vyšetření, ECOG, váha, e-mail.",
      "billable": true
     },
     {
      "date": "2026-10-02",
      "time": "09:30",
-     "action": "Vyžiadané správy 01–06",
-     "detail": "Kardiológia Jesenice, LabJih, RC Modřany, praktik (epikríza zo 4. 9.), Poliklinika Jižní (gastroenterológia, ultrazvuk).",
+     "action": "Vyžádány zprávy 01–06",
+     "detail": "Kardiologie Jesenice, LabJih, RC Modřany, praktický lékař (epikríza ze 4. 9.), Poliklinika Jižní (gastroenterologie, ultrazvuk).",
      "billable": true
     },
     {
      "date": "2026-10-02",
      "time": "10:10",
-     "action": "Vyžiadané CT v KOC 1",
-     "detail": "V KOC 2 nebol voľný termín. Žiadosť o CT brucha a hrudníka podľa pankreatického protokolu do Nemocnice Severní.",
+     "action": "Vyžádáno CT v KOC 1",
+     "detail": "V KOC 2 nebyl volný termín. Žádost o CT břicha a hrudníku podle pankreatického protokolu do Nemocnice Severní.",
      "billable": true
     },
     {
      "date": "2026-10-02",
      "time": "10:30",
-     "action": "Vyžiadaný klinický psychológ",
-     "detail": "Na prosbu praktika o psychologickú podporu (správa 07).",
+     "action": "Vyžádán klinický psycholog",
+     "detail": "Na prosbu praktického lékaře o psychologickou podporu (zpráva 07).",
      "billable": true
     },
     {
      "date": "2026-10-03",
-     "action": "Doručené: laboratórium LabJih (02)",
-     "detail": "Prišlo cez eZprávu.",
+     "action": "Doručeno: laboratoř LabJih (02)",
+     "detail": "Přišlo přes eZprávu.",
      "billable": false
     },
     {
      "date": "2026-10-05",
      "time": "09:15",
-     "action": "Objednané CT v KOC 1 na 8. 10.",
-     "detail": "Termín potvrdila rádiológia KOC 1. Pacientke oznámený telefonicky.",
+     "action": "Objednáno CT v KOC 1 na 8. 10.",
+     "detail": "Termín potvrdila radiologie KOC 1. Pacientce oznámen telefonicky.",
      "billable": true
     },
     {
      "date": "2026-10-05",
      "time": "11:00",
-     "action": "Doručené: správy 04, 05, 06",
-     "detail": "Epikríza praktika e-mailom, gastroenterológ a ultrazvuk cez eZprávu.",
+     "action": "Doručeno: zprávy 04, 05, 06",
+     "detail": "Epikríza praktického lékaře e-mailem, gastroenterolog a ultrazvuk přes eZprávu.",
      "billable": false
     },
     {
      "date": "2026-10-05",
      "time": "14:20",
-     "action": "Urgencia: kardiológia Jesenice",
-     "detail": "Telefonát – správa z 20. 7. ešte neprišla.",
+     "action": "Urgence: kardiologie Jesenice",
+     "detail": "Telefonát – zpráva z 20. 7. ještě nepřišla.",
      "billable": true
     },
     {
      "date": "2026-10-06",
-     "action": "Doručené: správy 01 a 03",
-     "detail": "Kardiológia e-mailom, RTG hrudníka poštou (naskenované).",
+     "action": "Doručeno: zprávy 01 a 03",
+     "detail": "Kardiologie e-mailem, RTG plic poštou (naskenováno).",
      "billable": false
     },
     {
      "date": "2026-10-08",
      "time": "13:00",
-     "action": "Doručené: CT z KOC 1 (08)",
-     "detail": "Snímky aj popis cez ePACS.",
+     "action": "Doručeno: CT z KOC 1 (08)",
+     "detail": "Snímky i popis přes ePACS.",
      "billable": false
     },
     {
      "date": "2026-10-08",
      "time": "14:00",
-     "action": "Objednaná biopsia EUS-FNB na 12. 10.",
-     "detail": "Endoskopia KOC 2. Pacientke oznámený termín a príprava podľa pokynov lekára.",
+     "action": "Objednána biopsie EUS-FNB na 12. 10.",
+     "detail": "Endoskopie KOC 2. Pacientce oznámen termín a příprava podle pokynů lékaře.",
      "billable": true
     },
     {
      "date": "2026-10-08",
      "time": "14:30",
-     "action": "Vyžiadaný algeziológ",
-     "detail": "Bolesti napriek paracetamolu (správa 07).",
+     "action": "Vyžádán algeziolog",
+     "detail": "Bolesti navzdory paracetamolu (zpráva 07).",
      "billable": true
     },
     {
      "date": "2026-10-09",
      "time": "10:00",
-     "action": "Prípad zaradený na konzílium 21. 10.",
-     "detail": "MDT pre nádory GIT, KOC 2 · Nemocnica Lipová.",
+     "action": "Případ zařazen na MDT 21. 10.",
+     "detail": "MDT pro nádory GIT, KOC 2 · Nemocnice Lipová.",
      "billable": true
     },
     {
      "date": "2026-10-12",
      "time": "13:30",
-     "action": "Biopsia vykonaná (09)",
-     "detail": "Protokol v NIS. Histológia sľúbená do 3 pracovných dní, teda do 15. 10. Objednané kontrolné odbery na 15. 10.",
+     "action": "Biopsie provedena (09)",
+     "detail": "Protokol v NIS. Histologie slíbena do 3 pracovních dnů, tedy do 15. 10. Objednány kontrolní odběry na 15. 10.",
      "billable": true
     },
     {
      "date": "2026-10-13",
      "time": "09:40",
-     "action": "Objednaný algeziológ na 26. 10.",
-     "detail": "Centrum liečby bolesti, KOC 1 · Nemocnica Severní.",
+     "action": "Objednán algeziolog na 26. 10.",
+     "detail": "Centrum léčby bolesti, KOC 1 · Nemocnice Severní.",
      "billable": true
     },
     {
      "date": "2026-10-14",
      "time": "11:10",
-     "action": "Objednaný klinický psychológ na 27. 10.",
-     "detail": "Psychoonkologická ambulancia KOC 2.",
+     "action": "Objednán klinický psycholog na 27. 10.",
+     "detail": "Psychoonkologická ambulance KOC 2.",
      "billable": true
     },
     {
      "date": "2026-10-15",
-     "action": "Doručené: kontrolné odbery (10)",
-     "detail": "Vrátane nádorových markerov CA 19-9, CEA a CA 125.",
+     "action": "Doručeno: kontrolní odběry (10)",
+     "detail": "Včetně nádorových markerů CA 19-9, CEA a CA 125.",
      "billable": false
     },
     {
      "date": "2026-10-16",
      "time": "09:00",
-     "action": "Urgencia: histológia po termíne",
-     "detail": "Výsledok mal prísť do 15. 10. Telefonát na Ústav patológie KOC 2.",
+     "action": "Urgence: histologie po termínu",
+     "detail": "Výsledek měl přijít do 15. 10. Telefonát na Ústav patologie KOC 2.",
      "billable": true
     },
     {
      "date": "2026-10-19",
      "time": "12:40",
-     "action": "Doručená histológia (11) – 4 dni po termíne",
-     "detail": "Rozpor v dátumoch: vydané 19. 10., odber uvedený 20. 10. Poslané patológii na overenie.",
+     "action": "Doručena histologie (11) – 4 dny po termínu",
+     "detail": "Rozpor v datech: vydáno 19. 10., odběr uveden 20. 10. Posláno patologii k ověření.",
      "billable": true
     },
     {
      "date": "2026-10-21",
      "time": "14:00",
-     "action": "Konzílium prebehlo",
-     "detail": "Zápis z konzília uložený do prípadu.",
+     "action": "MDT proběhlo",
+     "detail": "Zápis z jednání MDT uložen do případu.",
      "billable": true
     },
     {
      "date": "2026-10-21",
      "time": "16:40",
-     "action": "Záver odoslaný praktikovi",
-     "detail": "eZpráva, zapečatené nemocnicou; doručené 16:41 (v prototype simulované).",
+     "action": "Závěr odeslán praktickému lékaři",
+     "detail": "eZpráva, zapečetěno nemocnicí; doručeno 16:41.",
      "billable": true
     },
     {
      "date": "2026-10-21",
      "time": "16:45",
-     "action": "Súhrn pre revízneho lekára ZP MV ČR (211)",
-     "detail": "Diagnóza, rozhodnutie konzília, plánovaná liečba (v prototype simulované).",
+     "action": "Souhrn pro revizního lékaře ZP MV ČR (211)",
+     "detail": "Diagnóza, rozhodnutí MDT, plánovaná léčba.",
      "billable": true
     },
     {
      "date": "2026-10-22",
      "time": "08:15",
-     "action": "Praktik potvrdil doručenie záveru",
-     "detail": "Doručenka (v prototype simulované).",
+     "action": "Praktický lékař potvrdil doručení závěru",
+     "detail": "Doručenka.",
      "billable": false
     },
     {
      "date": "2026-10-26",
-     "action": "Doručené: algeziológ (12)",
-     "detail": "Prišlo cez eZprávu.",
+     "action": "Doručeno: algeziolog (12)",
+     "detail": "Přišlo přes eZprávu.",
      "billable": false
     },
     {
      "date": "2026-10-27",
-     "action": "Doručené: klinický psychológ (13)",
+     "action": "Doručeno: klinický psycholog (13)",
      "detail": "Zápis v NIS.",
      "billable": false
     }
@@ -1713,51 +1695,51 @@
    "precheck": {
     "findings": [
      {
-      "text": "Chýbajú výsledky 5 vyšetrení, ktoré žiadosť vymenúva (kardiológ 20. 7., laboratórium 1. 9., RTG 3. 9., gastroenterológ 15. 9., ultrazvuk 29. 9.). Podľa žiadosti sú na jednotlivých pracoviskách.",
+      "text": "Chybí výsledky 5 vyšetření, která žádost vyjmenovává (kardiolog 20. 7., laboratoř 1. 9., RTG 3. 9., gastroenterolog 15. 9., ultrazvuk 29. 9.). Podle žádosti jsou na jednotlivých pracovištích.",
       "severity": "missing"
      },
      {
-      "text": "Chýba výkonnostný stav pacientky (ECOG alebo Karnofského skóre).",
+      "text": "Chybí stav výkonnosti pacientky (ECOG nebo Karnofského skóre).",
       "severity": "missing"
      },
      {
-      "text": "Chýba aktuálna váha a výška – v žiadosti je len „pokračujúci úbytok hmotnosti“.",
+      "text": "Chybí aktuální váha a výška – v žádosti je jen „pokračující úbytek hmotnosti“.",
       "severity": "missing"
      },
      {
-      "text": "E-mail pacientky nie je uvedený (na vedomie, nie je to chyba).",
+      "text": "E-mail pacientky není uveden (na vědomí, není to chyba).",
       "severity": "info"
      },
      {
-      "text": "E-mail praktika nie je uvedený, je len telefón (na vedomie – záver ide cez eZprávu).",
+      "text": "E-mail praktického lékaře není uveden, je jen telefon (na vědomí – závěr jde přes eZprávu).",
       "severity": "info"
      },
      {
-      "text": "Telefón pacientky a kontakt na dcéru sú uvedené. Pacientka súhlasí so zdieľaním informácií s dcérou.",
+      "text": "Telefon pacientky a kontakt na dceru jsou uvedeny. Pacientka souhlasí se sdílením informací s dcerou.",
       "severity": "info"
      },
      {
-      "text": "Termín CT sa praktikovi nepodarilo zabezpečiť – žiada urgentné riešenie.",
+      "text": "Termín CT se praktickému lékaři nepodařilo zajistit – žádá urgentní řešení.",
       "severity": "info"
      },
      {
-      "text": "Pacientka užíva apixaban – praktik upozorňuje na vysadenie pred výkonmi podľa kardiológa.",
+      "text": "Pacientka užívá apixaban – praktický lékař upozorňuje na vysazení před výkony podle kardiologa.",
       "severity": "info"
      },
      {
-      "text": "Poisťovňa 211 (ZP MV ČR), nie VZP.",
+      "text": "Pojišťovna 211 (ZP MV ČR), nikoli VZP.",
       "severity": "info"
      }
     ]
    },
    "gpReport": {
     "question": "Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT.",
-    "answer": "Biopsia potvrdila nádor hlavy pankreasu (duktálny adenokarcinóm, G2–G3). Na CT nádor zasahuje do ciev, je podozrivá regionálna uzlina, bez známok vzdialených metastáz. Konzílium ho hodnotí ako hranične resekabilný (hranične operovateľný) a odporúča najprv chemoterapiu, potom nové CT a opätovné posúdenie operácie.",
+    "answer": "Biopsie potvrdila nádor hlavy pankreatu (duktální adenokarcinom, G2–G3). Na CT nádor zasahuje do cév, je podezřelá regionální uzlina, bez známek vzdálených metastáz. MDT ho hodnotí jako hraničně resekabilní (hraničně operovatelný) a doporučuje nejprve chemoterapii, potom nové CT a opětovné posouzení operace.",
     "forYou": [
-     "Konzílium odporúča najprv chemoterapiu (neoadjuvantnú). Ďalší krok: termín na onkologickom konzíliu 4. 11. 2026 o 10:30 (MUDr. Kalous). Pred začiatkom liečby konzílium žiada určiť ECOG, doplniť krvné testy a CA 19-9 a posúdiť žlčové cesty. Termíny zariadi koordinátorka KOC, Bc. Lucie Dvořáková.",
-     "Apixaban: pacientka ho nemá vysadzovať sama. Postup pred každým výkonom určí lekár, ktorý výkon robí.",
-     "Čo sledovať: horúčka, zimnica, pribúdajúca žltačka alebo zhoršenie celkového stavu – vtedy neodkladné vyšetrenie. Drenáž žlčových ciest zatiaľ v správach nie je.",
-     "Bolesť, výživa, psychika: konzílium odporúča nutričnú podporu, úpravu liečby bolesti a psychoonkologickú podporu. Vašu prosbu o psychológa sme vybavili – termín 27. 10."
+     "MDT doporučuje nejprve chemoterapii (neoadjuvantní). Další krok: termín na onkologickém konziliu 4. 11. 2026 v 10:30 (MUDr. Kalous). Před zahájením léčby MDT žádá stanovit ECOG, doplnit krevní testy a CA 19-9 a posoudit žlučové cesty. Termíny zařídí koordinátorka KOC, Bc. Lucie Dvořáková.",
+     "Apixaban: pacientka ho nemá vysazovat sama. Postup před každým výkonem určí lékař, který výkon provádí.",
+     "Co sledovat: horečka, zimnice, přibývající žloutenka nebo zhoršení celkového stavu – pak neodkladné vyšetření. Drenáž žlučových cest zatím ve zprávách není.",
+     "Bolest, výživa, psychika: MDT doporučuje nutriční podporu, úpravu léčby bolesti a psychoonkologickou podporu. Vaši prosbu o psychologa jsme vyřídili – termín 27. 10."
     ],
     "citations": [
      {
@@ -1825,10 +1807,10 @@
    "reviewer": {
     "insurerCode": "211",
     "insurerName": "Zdravotní pojišťovna ministerstva vnitra ČR",
-    "note": "Pacientka nie je poistenkyňa VZP. Prezentácia VZP chce, aby informáciu dostal aj revízny lekár; pri tejto pacientke by to bol revízny lekár ZP MV ČR (211). Kanál v ČR nemáme overený, odoslanie je v prototype simulované."
+    "note": "Pacientka není pojištěnkou VZP. Prezentace VZP chce, aby informaci dostal i revizní lékař; u této pacientky by to byl revizní lékař ZP MV ČR (211). Kanál v ČR nemáme ověřený, odeslání je v prototypu jen naznačeno."
    },
    "ai": {
-    "label": "ručne overené",
+    "label": "ručně ověřeno",
     "mode": "manual",
     "evalFile": "data/eval-alena.json"
    }
@@ -1852,18 +1834,18 @@
    },
    "referringGp": {
     "name": "MUDr. Karel Veselý",
-    "practice": "Pľúcna ambulancia, Nemocnica Podhájí",
+    "practice": "Plicní ambulance, Nemocnice Podhájí",
     "phone": "+420 317 000 450",
     "email": "plicni.ambulance@example.com"
    },
-   "diagnosisShort": "adenokarcinóm pľúc (C34.1)",
-   "koc": "KOC 2 · Nemocnica Lipová",
+   "diagnosisShort": "adenokarcinom plic (C34.1)",
+   "koc": "KOC 2 · Nemocnice Lipová",
    "mdtDate": "2026-10-22",
    "receivedAt": "2026-10-07",
    "status": "active",
    "nextStep": {
-    "text": "Skontrolovať návrh podkladu od AI: 3 rozpory, chýba dodatok k histológii (EGFR, ALK, ROS1, PD-L1)",
-    "owner": "ja (koordinátor)",
+    "text": "Zkontrolovat návrh podkladu od AI: 3 rozpory, chybí dodatek k histologii (EGFR, ALK, ROS1, PD-L1)",
+    "owner": "já (koordinátorka)",
     "due": "2026-10-21",
     "mine": true
    },
@@ -1871,7 +1853,7 @@
    "fields": [
     {
      "key": "firstName",
-     "label": "Meno",
+     "label": "Jméno",
      "group": "Pacient",
      "value": "Josef",
      "status": "proposed",
@@ -1885,7 +1867,7 @@
     },
     {
      "key": "lastName",
-     "label": "Priezvisko",
+     "label": "Příjmení",
      "group": "Pacient",
      "value": "Novák",
      "status": "proposed",
@@ -1899,9 +1881,9 @@
     },
     {
      "key": "age",
-     "label": "Vek",
+     "label": "Věk",
      "group": "Pacient",
-     "value": "60 rokov (nar. 14. 3. 1966)",
+     "value": "60 let (nar. 14. 3. 1966)",
      "status": "proposed",
      "citations": [
       {
@@ -1913,22 +1895,22 @@
     },
     {
      "key": "sex",
-     "label": "Pohlavie",
+     "label": "Pohlaví",
      "group": "Pacient",
      "value": "muž",
      "status": "proposed",
      "citations": [
       {
        "docId": "N-09",
-       "quote": "Pacient: Josef Novák"
+       "quote": "60letý kuřák"
       }
      ],
-     "note": "Podľa označenia „Pacient“ v správe.",
+     "note": "Podle označení „60letý kuřák“ ve zprávě.",
      "origin": "rules"
     },
     {
      "key": "insurer",
-     "label": "Zdravotná poisťovňa",
+     "label": "Zdravotní pojišťovna",
      "group": "Pacient",
      "value": "111",
      "status": "proposed",
@@ -1961,7 +1943,7 @@
     },
     {
      "key": "contactPerson",
-     "label": "Kontaktná osoba",
+     "label": "Kontaktní osoba a telefon",
      "group": "Kontakty",
      "value": "Marie Nováková (manželka), tel. +420 603 000 119",
      "status": "proposed",
@@ -2011,7 +1993,7 @@
     },
     {
      "key": "epicrisis",
-     "label": "Priebeh ochorenia v skratke",
+     "label": "Epikríza (stručný souhrn nemoci)",
      "group": "Diagnóza",
      "value": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg. CT 10. 9. 2026: tumor pravého horního laloku 42 × 35 mm, suspektní uzliny 10R a 4R. EBUS-TBNA 17. 9. 2026: adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez vzdálených metastáz.",
      "status": "proposed",
@@ -2038,7 +2020,7 @@
     },
     {
      "key": "mdtQuestion",
-     "label": "Otázka pre konzílium",
+     "label": "Požadavek / otázka na MDT",
      "group": "Diagnóza",
      "value": "Převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R.",
      "status": "proposed",
@@ -2052,7 +2034,7 @@
     },
     {
      "key": "comorbidities",
-     "label": "Pridružené ochorenia",
+     "label": "Komorbidity (přidružené nemoci)",
      "group": "Anamnéza",
      "value": "diabetes mellitus 2. typu na PAD, arteriální hypertenze, dyslipidémie",
      "status": "proposed",
@@ -2067,7 +2049,7 @@
     },
     {
      "key": "medication",
-     "label": "Lieky, ktoré užíva",
+     "label": "Léková anamnéza (užívané léky)",
      "group": "Anamnéza",
      "value": "metformin 1000 mg 1-0-1, amlodipin 5 mg 1-0-0, atorvastatin 20 mg 0-0-1",
      "status": "proposed",
@@ -2112,13 +2094,13 @@
         "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku"
        }
       },
-      "explain": "Správa 09 (7. 10. 2026) uvádza „AA: neguje“, ale správa 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Overiť pred ďalším vyšetrením alebo liečbou – novšia správa alergiu pravdepodobne neprevzala."
+      "explain": "Zpráva 09 (7. 10. 2026) uvádí „AA: neguje“, ale zpráva 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala."
      },
      "origin": "rules"
     },
     {
      "key": "performance",
-     "label": "Výkonnostný stav (ECOG)",
+     "label": "Stav výkonnosti (ECOG)",
      "group": "Stav",
      "value": "Výkonnostní stav ECOG 1.",
      "status": "proposed",
@@ -2152,12 +2134,12 @@
       }
      ],
      "sourceDate": "2026-10-07",
-     "note": "Skôr: 78 kg (3. 9. 2026). Novšia hodnota 73 kg (správa 10, 27. 10. 2026) vznikla až po 22. 10. 2026, preto do podkladu nepatrí.",
+     "note": "Dříve: 78 kg (3. 9. 2026). Novější hodnota 73 kg (zpráva 10, 27. 10. 2026) vznikla až po 22. 10. 2026, proto do podkladu nepatří.",
      "origin": "rules"
     },
     {
      "key": "symptoms",
-     "label": "Príznaky a ich začiatok",
+     "label": "Příznaky nemoci a jejich počátek",
      "group": "Stav",
      "value": "Suchý dráždivý kašel asi 6 týdnů (vyšetřen praktickou lékařkou 24. 8. 2026), poslední týden 2× drobná příměs krve ve sputu, mírná námahová dušnost, bez teplot; za 2 měsíce zhubl asi 3 kg. Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater, váha 76 kg, nadále ubývá.",
      "status": "proposed",
@@ -2184,7 +2166,7 @@
     },
     {
      "key": "exams",
-     "label": "Vykonané vyšetrenia",
+     "label": "Provedená vyšetření",
      "group": "Vyšetrenia",
      "value": "26. 8. 2026 · RTG hrudníku PA · Nemocnice Podhájí – Radiologické oddělení – Opacita v pravém horním plicním poli suspektní z tumoru, rozšířený pravý hilus. Doporučeno CT hrudníku s k. l.\n3. 9. 2026 · vstupní vyšetření · Nemocnice Podhájí – Plicní ambulance – Suspektní tumor pravého horního laloku plíce u kuřáka 40 balíčkoroků. Výkonnostní stav ECOG 1.\n10. 9. 2026 · CT hrudníku a horního břicha s k. l. · Nemocnice Podhájí – Radiologické oddělení – Tumor pravého horního laloku 42 × 35 mm, suspektní metastatické uzliny 10R a 4R. Bez známek vzdálených metastáz v rozsahu vyšetření.\n17. 9. 2026 · bronchoskopie s EBUS-TBNA · KOC Nemocnice Lipová – Bronchologické pracoviště, Klinika pneumologie – Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření. EBUS: uzlina 4R 13 × 10 mm a uzlina 10R 15 × 11 mm, z každé 3 vpichy jehlou 22G.\n1. 10. 2026 · PET/CT (18F-FDG) celotělové · KOC Nemocnice Severní – Oddělení nukleární medicíny – Metabolicky aktivní tumor pravého horního laloku s postižením uzlin 10R a 4R, bez známek vzdálených metastáz.",
      "status": "proposed",
@@ -2215,14 +2197,14 @@
       }
      ],
      "sourceDate": "2026-10-01",
-     "note": "Plné znenie výsledku je v pôvodnej správe (klik na citát).",
+     "note": "Plné znění výsledku je v původní zprávě (klik na citaci).",
      "origin": "rules"
     },
     {
      "key": "labs",
-     "label": "Laboratórium a nádorové markery",
+     "label": "Laboratorní výsledky včetně onkomarkerů",
      "group": "Laboratórium",
-     "value": "8. 9. 2026 (Laboratoř LabPodhájí s.r.o.): nádorové markery: CEA 8,2 µg/l ↑, CYFRA 21-1 6,4 µg/l ↑, NSE 14,1 µg/l; mimo normy: Hemoglobin 128 g/l ↓, Glukóza 8,4 mmol/l ↑, CRP 12 mg/l ↑",
+     "value": "8. 9. 2026 (Laboratoř LabPodhájí s.r.o.): nádorové markery: CEA 8,2 µg/l ↑, CYFRA 21-1 6,4 µg/l ↑, NSE 14,1 µg/l; mimo normu: Hemoglobin 128 g/l ↓, Glukóza 8,4 mmol/l ↑, CRP 12 mg/l ↑",
      "status": "conflict",
      "citations": [
       {
@@ -2251,7 +2233,7 @@
       }
      ],
      "sourceDate": "2026-09-08",
-     "note": "Uvedené všetky nádorové markery (CEA, CYFRA 21-1, NSE), nielen zvýšené.",
+     "note": "Uvedeny všechny nádorové markery (CEA, CYFRA 21-1, NSE), nejen zvýšené.",
      "conflict": {
       "a": {
        "value": "Rodné číslo: 660314/1243",
@@ -2267,15 +2249,15 @@
         "quote": "RČ 660314/1234"
        }
       },
-      "explain": "Správa 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má iné rodné číslo (660314/1234) ako ostatné správy (660314/1243). Overiť, či patrí tomuto pacientovi – dovtedy jej údaje nepoužívať ako fakt."
+      "explain": "Zpráva 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má jiné rodné číslo (660314/1234) než ostatní zprávy (660314/1243). Ověřte, zda patří tomuto pacientovi – do té doby její údaje nepoužívat jako fakt."
      },
      "origin": "rules"
     },
     {
      "key": "histology",
-     "label": "Histológia (výsledok biopsie)",
+     "label": "Histologie",
      "group": "Histológia",
-     "value": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. · vydané 23. 9. 2026",
+     "value": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. · vydáno 23. 9. 2026",
      "status": "proposed",
      "citations": [
       {
@@ -2288,17 +2270,17 @@
       }
      ],
      "sourceDate": "2026-09-23",
-     "note": "Chýba avizovaný dodatok (EGFR, ALK, ROS1, PD-L1).",
+     "note": "Chybí avizovaný dodatek (EGFR, ALK, ROS1, PD-L1).",
      "request": {
       "to": "KOC Nemocnice Lipová – Ústav patologie",
       "channel": "e-mail",
-      "draft": "Dobrý deň, pred konzíliom 22. 10. 2026 prosíme o zaslanie dodatku (EGFR, ALK, ROS1, PD-L1) k vyšetreniu B-2026/14388 – Josef Novák. Ďakujeme, koordinátor KOC."
+      "draft": "Dobrý den, před konziliem 22. 10. 2026 prosíme o zaslání dodatku (EGFR, ALK, ROS1, PD-L1) k vyšetření B-2026/14388 – Josef Novák. Děkujeme, koordinátor KOC."
      },
      "origin": "rules"
     },
     {
      "key": "other",
-     "label": "Iné dôležité a želania pacienta",
+     "label": "Jiná důležitá sdělení a přání pacienta",
      "group": "Iné",
      "value": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka. Kontaktní osoba: Marie Nováková (manželka), tel. +420 603 000 119.",
      "status": "proposed",
@@ -2319,9 +2301,9 @@
    "steps": [
     {
      "id": "rtg",
-     "title": "RTG hrudníka",
-     "place": "Nemocnica Podhájí – rádiológia",
-     "owner": "rádiológia Nemocnice Podhájí",
+     "title": "RTG hrudníku",
+     "place": "Nemocnice Podhájí – radiologie",
+     "owner": "radiologie Nemocnice Podhájí",
      "due": "2026-08-26",
      "state": "delivered",
      "history": [
@@ -2338,9 +2320,9 @@
     },
     {
      "id": "ct",
-     "title": "CT hrudníka a horného brucha",
-     "place": "Nemocnica Podhájí – rádiológia",
-     "owner": "rádiológia Nemocnice Podhájí",
+     "title": "CT hrudníku a horního břicha",
+     "place": "Nemocnice Podhájí – radiologie",
+     "owner": "radiologie Nemocnice Podhájí",
      "due": "2026-09-10",
      "state": "delivered",
      "history": [
@@ -2357,9 +2339,9 @@
     },
     {
      "id": "bronch",
-     "title": "Bronchoskopia s EBUS-TBNA",
-     "place": "KOC 2 · Nemocnica Lipová – bronchológia",
-     "owner": "bronchológia KOC 2",
+     "title": "Bronchoskopie s EBUS-TBNA",
+     "place": "KOC 2 · Nemocnice Lipová – bronchologie",
+     "owner": "bronchologie KOC 2",
      "due": "2026-09-17",
      "state": "delivered",
      "history": [
@@ -2376,9 +2358,9 @@
     },
     {
      "id": "histology",
-     "title": "Histológia (výsledok biopsie)",
-     "place": "KOC 2 · Nemocnica Lipová – patológia",
-     "owner": "patológia KOC 2",
+     "title": "Histologie (výsledek biopsie)",
+     "place": "KOC 2 · Nemocnice Lipová – patologie",
+     "owner": "patologie KOC 2",
      "due": "2026-09-23",
      "state": "delivered",
      "history": [
@@ -2395,9 +2377,9 @@
     },
     {
      "id": "pet",
-     "title": "PET/CT celotelové",
-     "place": "KOC 1 · Nemocnica Severní – nukleárna medicína",
-     "owner": "nukleárna medicína KOC 1",
+     "title": "PET/CT celotělové",
+     "place": "KOC 1 · Nemocnice Severní – nukleární medicína",
+     "owner": "nukleární medicína KOC 1",
      "due": "2026-10-01",
      "state": "delivered",
      "history": [
@@ -2414,9 +2396,9 @@
     },
     {
      "id": "markers",
-     "title": "Dodatok k histológii: EGFR, ALK, ROS1, PD-L1",
-     "place": "KOC 2 · Nemocnica Lipová – patológia",
-     "owner": "patológia KOC 2",
+     "title": "Dodatek k histologii: EGFR, ALK, ROS1, PD-L1",
+     "place": "KOC 2 · Nemocnice Lipová – patologie",
+     "owner": "patologie KOC 2",
      "due": "2026-10-21",
      "state": "ordered",
      "history": [
@@ -2428,9 +2410,9 @@
     },
     {
      "id": "mdt",
-     "title": "Konzílium (MDT)",
-     "place": "KOC 2 · Nemocnica Lipová",
-     "owner": "ja (koordinátor) – podklad",
+     "title": "MDT (multidisciplinární tým)",
+     "place": "KOC 2 · Nemocnice Lipová",
+     "owner": "já (koordinátorka) – podklad",
      "due": "2026-10-22",
      "state": "ordered",
      "history": [
@@ -2622,8 +2604,8 @@
    "docs": [
     {
      "id": "N-01",
-     "title": "Praktická lekárka – žiadosť o vyšetrenie u pneumológa",
-     "place": "Ordinácia praktického lekára, Benešov",
+     "title": "Praktická lékařka – žádost o vyšetření u pneumologa",
+     "place": "Ordinace praktického lékaře, Benešov",
      "kind": "report",
      "examDate": "2026-08-24",
      "receivedAt": "2026-10-07",
@@ -2632,8 +2614,8 @@
     },
     {
      "id": "N-02",
-     "title": "RTG hrudníka",
-     "place": "Nemocnica Podhájí – rádiológia",
+     "title": "RTG hrudníku",
+     "place": "Nemocnice Podhájí – radiologie",
      "kind": "result",
      "examDate": "2026-08-26",
      "receivedAt": "2026-10-07",
@@ -2642,8 +2624,8 @@
     },
     {
      "id": "N-03",
-     "title": "Pneumológ – vstupné vyšetrenie",
-     "place": "Nemocnica Podhájí – pľúcna ambulancia",
+     "title": "Pneumolog – vstupní vyšetření",
+     "place": "Nemocnice Podhájí – plicní ambulance",
      "kind": "report",
      "examDate": "2026-09-03",
      "receivedAt": "2026-10-07",
@@ -2652,7 +2634,7 @@
     },
     {
      "id": "N-04",
-     "title": "Laboratórium a nádorové markery",
+     "title": "Laboratoř a nádorové markery",
      "place": "Laboratoř LabPodhájí s.r.o.",
      "kind": "result",
      "examDate": "2026-09-08",
@@ -2662,8 +2644,8 @@
     },
     {
      "id": "N-05",
-     "title": "CT hrudníka a horného brucha",
-     "place": "Nemocnica Podhájí – rádiológia",
+     "title": "CT hrudníku a horního břicha",
+     "place": "Nemocnice Podhájí – radiologie",
      "kind": "result",
      "examDate": "2026-09-10",
      "receivedAt": "2026-10-07",
@@ -2672,8 +2654,8 @@
     },
     {
      "id": "N-06",
-     "title": "Bronchoskopia s EBUS-TBNA – protokol",
-     "place": "KOC 2 · Nemocnica Lipová – bronchológia",
+     "title": "Bronchoskopie s EBUS-TBNA – protokol",
+     "place": "KOC 2 · Nemocnice Lipová – bronchologie",
      "kind": "report",
      "examDate": "2026-09-17",
      "receivedAt": "2026-10-07",
@@ -2682,8 +2664,8 @@
     },
     {
      "id": "N-07",
-     "title": "Histológia – bioptický nález",
-     "place": "KOC 2 · Nemocnica Lipová – patológia",
+     "title": "Histologie – bioptický nález",
+     "place": "KOC 2 · Nemocnice Lipová – patologie",
      "kind": "result",
      "examDate": "2026-09-23",
      "receivedAt": "2026-10-07",
@@ -2692,8 +2674,8 @@
     },
     {
      "id": "N-08",
-     "title": "PET/CT celotelové",
-     "place": "KOC 1 · Nemocnica Severní – nukleárna medicína",
+     "title": "PET/CT celotělové",
+     "place": "KOC 1 · Nemocnice Severní – nukleární medicína",
      "kind": "result",
      "examDate": "2026-10-01",
      "receivedAt": "2026-10-07",
@@ -2702,8 +2684,8 @@
     },
     {
      "id": "N-09",
-     "title": "Žiadosť pneumológa o prevzatie do KOC (epikríza)",
-     "place": "Nemocnica Podhájí – pľúcna ambulancia",
+     "title": "Žádost pneumologa o převzetí do KOC (epikríza)",
+     "place": "Nemocnice Podhájí – plicní ambulance",
      "kind": "request",
      "examDate": "2026-10-07",
      "receivedAt": "2026-10-07",
@@ -2712,8 +2694,8 @@
     },
     {
      "id": "N-10",
-     "title": "Nutričná ambulancia – skríning",
-     "place": "KOC 2 · Nemocnica Lipová – nutričná ambulancia",
+     "title": "Nutriční ambulance – screening",
+     "place": "KOC 2 · Nemocnice Lipová – nutriční ambulance",
      "kind": "report",
      "examDate": "2026-10-27",
      "receivedAt": "2026-10-27",
@@ -2724,21 +2706,21 @@
    "log": [
     {
      "date": "2026-10-07",
-     "action": "Prevzatá žiadosť pneumológa o prevzatie do KOC",
-     "detail": "Správa N-09 s výsledkami v prílohe (RTG, laboratórium, CT, bronchoskopia, histológia, PET/CT). Založený prípad, spustené hodiny cesty.",
+     "action": "Převzata žádost pneumologa o převzetí do KOC",
+     "detail": "Zpráva N-09 s výsledky v příloze (RTG, laboratoř, CT, bronchoskopie, histologie, PET/CT). Založen případ, počítají se dny od přijetí žádosti.",
      "billable": true
     },
     {
      "date": "2026-10-07",
-     "action": "Podklad predvyplnený strojovo",
-     "detail": "20 polí · 49/49 citátov doslova · 3 rozpory · v deme predpočítané, čaká na kontrolu človekom.",
+     "action": "Podklad předvyplněn strojově",
+     "detail": "20 polí · 49/49 citátů doslova · 3 rozpory · v demu předpočítáno, čeká na kontrolu člověkem.",
      "billable": false
     }
    ],
    "precheck": {
     "findings": [
      {
-      "text": "Žiadanka neuvádza výkonnostný stav – je v správe 03: „Výkonnostní stav ECOG 1.“.",
+      "text": "Žádanka neuvádí výkonnostní stav – je ve zprávě 03: „Výkonnostní stav ECOG 1.“.",
       "severity": "info"
      }
     ]
@@ -2746,13 +2728,13 @@
    "reviewer": {
     "insurerCode": "111",
     "insurerName": "Všeobecná zdravotní pojišťovna ČR",
-    "note": "Pacient je poistencom VZP (111). Ak má súhrn dostať aj revízny lekár (chce to prezentácia VZP), išiel by revíznemu lekárovi VZP. Kanál v ČR nemáme overený, odoslanie je v prototype simulované."
+    "note": "Pacient je pojištěncem VZP (111). Pokud má souhrn dostat i revizní lékař (chce to prezentace VZP), šel by reviznímu lékaři VZP. Kanál v ČR nemáme ověřený, odeslání je v prototypu jen naznačeno."
    },
    "ai": {
-    "label": "AI výstup (predpočítaný)",
+    "label": "AI výstup (předpočítaný)",
     "mode": "rules+llm",
-    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
-    "generatedAt": "2026-10-17T00:03:41.238Z",
+    "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
+    "generatedAt": "2026-10-17T03:40:32.718Z",
     "evalFile": "data/eval-pacient-2.json"
    }
   },
@@ -2770,16 +2752,16 @@
    },
    "referringGp": {
     "name": "MUDr. Jana Sedláčková",
-    "practice": "Praktický lekár pre dospelých, Říčany",
+    "practice": "Praktický lékař pro dospělé, Říčany",
     "phone": "+420 311 000 611"
    },
-   "diagnosisShort": "podozrenie na nádor pľúc",
-   "koc": "KOC 2 · Nemocnica Lipová",
+   "diagnosisShort": "podezření na nádor plic",
+   "koc": "KOC 2 · Nemocnice Lipová",
    "receivedAt": "2026-10-19",
    "status": "new",
    "nextStep": {
-    "text": "Prevziať žiadosť praktika a vyžiadať CT hrudníka a brucha",
-    "owner": "ja (koordinátor)",
+    "text": "Převzít žádost praktického lékaře a vyžádat CT hrudníku a břicha",
+    "owner": "já (koordinátorka)",
     "due": "2026-10-19",
     "mine": true
    },
@@ -2792,8 +2774,8 @@
    "docs": [
     {
      "id": "K-01",
-     "title": "Žiadosť praktika o prevzatie do KOC",
-     "place": "Praktický lekár, Říčany",
+     "title": "Žádost praktického lékaře o převzetí do KOC",
+     "place": "Praktický lékař, Říčany",
      "kind": "request",
      "examDate": "2026-10-19",
      "receivedAt": "2026-10-19",
@@ -2805,8 +2787,8 @@
     {
      "date": "2026-10-19",
      "time": "07:50",
-     "action": "Nová žiadosť praktika",
-     "detail": "Prišla e-mailom, čaká na prevzatie.",
+     "action": "Nová žádost praktického lékaře",
+     "detail": "Přišla e-mailem, čeká na převzetí.",
      "billable": false
     }
    ]
@@ -2825,16 +2807,16 @@
    },
    "referringGp": {
     "name": "MUDr. Karel Novotný",
-    "practice": "Praktický lekár pre dospelých, Benešov",
+    "practice": "Praktický lékař pro dospělé, Benešov",
     "phone": "+420 311 000 621"
    },
-   "diagnosisShort": "podozrenie na nádor hrubého čreva",
-   "koc": "KOC 2 · Nemocnica Lipová",
+   "diagnosisShort": "podezření na nádor tlustého střeva",
+   "koc": "KOC 2 · Nemocnice Lipová",
    "receivedAt": "2026-10-09",
    "status": "active",
    "nextStep": {
-    "text": "Urgovať histológiu z kolonoskopie (mala prísť do 16. 10.)",
-    "owner": "ja (koordinátor)",
+    "text": "Urgovat histologii z kolonoskopie (měla přijít do 16. 10.)",
+    "owner": "já (koordinátorka)",
     "due": "2026-10-19",
     "mine": true
    },
@@ -2843,9 +2825,9 @@
    "steps": [
     {
      "id": "colonoscopy",
-     "title": "Kolonoskopia s biopsiou",
-     "place": "KOC 2 · Nemocnica Lipová – endoskopia",
-     "owner": "endoskopia KOC 2",
+     "title": "Kolonoskopie s biopsií",
+     "place": "KOC 2 · Nemocnice Lipová – endoskopie",
+     "owner": "endoskopie KOC 2",
      "due": "2026-10-14",
      "state": "delivered",
      "history": [
@@ -2870,9 +2852,9 @@
     },
     {
      "id": "histology",
-     "title": "Histológia z kolonoskopie",
-     "place": "KOC 2 · Nemocnica Lipová – patológia",
-     "owner": "patológia KOC 2",
+     "title": "Histologie z kolonoskopie",
+     "place": "KOC 2 · Nemocnice Lipová – patologie",
+     "owner": "patologie KOC 2",
      "due": "2026-10-16",
      "state": "ordered",
      "history": [
@@ -2888,9 +2870,9 @@
     },
     {
      "id": "ct",
-     "title": "CT hrudníka a brucha",
-     "place": "KOC 1 · Nemocnica Severní",
-     "owner": "rádiológia KOC 1",
+     "title": "CT hrudníku a břicha",
+     "place": "KOC 1 · Nemocnice Severní",
+     "owner": "radiologie KOC 1",
      "due": "2026-10-23",
      "state": "ordered",
      "history": [
@@ -2911,8 +2893,8 @@
    "docs": [
     {
      "id": "P-01",
-     "title": "Žiadosť praktika o prevzatie do KOC",
-     "place": "Praktický lekár, Benešov",
+     "title": "Žádost praktického lékaře o převzetí do KOC",
+     "place": "Praktický lékař, Benešov",
      "kind": "request",
      "examDate": "2026-10-09",
      "receivedAt": "2026-10-09",
@@ -2921,8 +2903,8 @@
     },
     {
      "id": "P-02",
-     "title": "Kolonoskopia s biopsiou",
-     "place": "KOC 2 · Nemocnica Lipová – endoskopia",
+     "title": "Kolonoskopie s biopsií",
+     "place": "KOC 2 · Nemocnice Lipová – endoskopie",
      "kind": "report",
      "examDate": "2026-10-14",
      "receivedAt": "2026-10-14",
@@ -2934,28 +2916,28 @@
     {
      "date": "2026-10-09",
      "time": "10:20",
-     "action": "Prevzatá žiadosť praktika",
-     "detail": "Prišla cez eZprávu. Potvrdenie prijatia odoslané.",
+     "action": "Převzata žádost praktického lékaře",
+     "detail": "Přišla přes eZprávu. Potvrzení přijetí odesláno.",
      "billable": true
     },
     {
      "date": "2026-10-12",
      "time": "08:30",
-     "action": "Objednaná kolonoskopia na 14. 10.",
-     "detail": "Endoskopia KOC 2.",
+     "action": "Objednána kolonoskopie na 14. 10.",
+     "detail": "Endoskopie KOC 2.",
      "billable": true
     },
     {
      "date": "2026-10-14",
-     "action": "Doručené: kolonoskopia (P-02)",
-     "detail": "Histológia sľúbená do 2 pracovných dní, teda do 16. 10.",
+     "action": "Doručeno: kolonoskopie (P-02)",
+     "detail": "Histologie slíbena do 2 pracovních dnů, tedy do 16. 10.",
      "billable": false
     },
     {
      "date": "2026-10-15",
      "time": "09:00",
-     "action": "Objednané CT v KOC 1 na 23. 10.",
-     "detail": "V KOC 2 nebol skorší termín.",
+     "action": "Objednáno CT v KOC 1 na 23. 10.",
+     "detail": "V KOC 2 nebyl dřívější termín.",
      "billable": true
     }
    ]
@@ -2974,16 +2956,16 @@
    },
    "referringGp": {
     "name": "MUDr. Petra Šťastná",
-    "practice": "Mamologická ambulancia, Kolín",
+    "practice": "Mamologická ambulance, Kolín",
     "phone": "+420 311 000 631"
    },
-   "diagnosisShort": "podozrenie na nádor prsníka",
-   "koc": "KOC 2 · Nemocnica Lipová",
+   "diagnosisShort": "podezření na nádor prsu",
+   "koc": "KOC 2 · Nemocnice Lipová",
    "mdtDate": "2026-11-02",
    "receivedAt": "2026-10-05",
    "status": "postponed",
    "nextStep": {
-    "text": "Biopsia presunutá na žiadosť pacientky na 26. 10.",
+    "text": "Biopsie přesunuta na žádost pacientky na 26. 10.",
     "owner": "pacientka",
     "due": "2026-10-26",
     "mine": false
@@ -2993,9 +2975,9 @@
    "steps": [
     {
      "id": "biopsy",
-     "title": "Biopsia prsníka pod ultrazvukom",
-     "place": "KOC 2 · Nemocnica Lipová – mamológia",
-     "owner": "pacientka (presun termínu)",
+     "title": "Biopsie prsu pod ultrazvukem",
+     "place": "KOC 2 · Nemocnice Lipová – mamologie",
+     "owner": "pacientka (přesun termínu)",
      "due": "2026-10-26",
      "state": "ordered",
      "history": [
@@ -3016,8 +2998,8 @@
    "docs": [
     {
      "id": "R-01",
-     "title": "Žiadosť o prevzatie do KOC",
-     "place": "Mamologická ambulancia, Kolín",
+     "title": "Žádost o převzetí do KOC",
+     "place": "Mamologická ambulance, Kolín",
      "kind": "request",
      "examDate": "2026-10-05",
      "receivedAt": "2026-10-05",
@@ -3029,30 +3011,27 @@
     {
      "date": "2026-10-05",
      "time": "13:00",
-     "action": "Prevzatá žiadosť",
-     "detail": "Prišla e-mailom. Potvrdenie prijatia odoslané.",
+     "action": "Převzata žádost",
+     "detail": "Přišla e-mailem. Potvrzení přijetí odesláno.",
      "billable": true
     },
     {
      "date": "2026-10-07",
      "time": "10:45",
-     "action": "Objednaná biopsia na 14. 10.",
-     "detail": "Mamológia KOC 2.",
+     "action": "Objednána biopsie na 14. 10.",
+     "detail": "Mamologie KOC 2.",
      "billable": true
     },
     {
      "date": "2026-10-12",
      "time": "15:30",
-     "action": "Biopsia presunutá na 26. 10.",
-     "detail": "Pacientka telefonicky požiadala o neskorší termín z rodinných dôvodov.",
+     "action": "Biopsie přesunuta na 26. 10.",
+     "detail": "Pacientka telefonicky požádala o pozdější termín z rodinných důvodů.",
      "billable": true
     }
    ]
   }
  ],
- "extraDocs": {
-  "14": "FIKTÍVNA DOPLNKOVÁ SPRÁVA PRE DEMO – nie je súčasťou podkladov zadania Rakathon 2026\nKOC Nemocnice Lipová (fiktivní)\nOnkologická ambulance\nNemocniční 15, 140 00 Praha 4\nDoplnění údaje na žádost koordinátorky KOC\nPacientka: Alena Procházková, RČ 635722/1013, ZP 211\nDatum: 19. 10. 2026\nSTAV VÝKONNOSTI\nStav výkonnosti: ECOG 1 (omezena při fyzicky náročné činnosti, chodící, schopna lehké práce).\nV Praze dne 19. 10. 2026\nMUDr. Lenka Marková\nonkologická ambulance KOC"
- },
  "laterValues": {
   "alena": [
    {
@@ -3070,12 +3049,12 @@
      }
     ],
     "sourceDate": "2026-10-26",
-    "note": "Váha 63 kg je zo správy algeziológa z 26. 10. – po konzíliu. K 21. 10. platilo 65 kg (15. 9.)."
+    "note": "Váha 63 kg je ze zprávy algeziologa z 26. 10. – po MDT. K 21. 10. platilo 65 kg (15. 9.)."
    },
    {
     "key": "medication",
     "from": "2026-10-26",
-    "value": "apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1 (správa 07) · od 26. 10. liečba bolesti (správa 12): tramadol 100 mg 1-0-1, metamizol 500 mg 1-1-1, paracetamol 500 mg pri prielomovej bolesti najviac 3× denne, metoklopramid 10 mg pri nevoľnosti, laktulóza 15 ml 1× denne",
+    "value": "apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1 (zpráva 07) · od 26. 10. léčba bolesti (zpráva 12): tramadol 100 mg 1-0-1, metamizol 500 mg 1-1-1, paracetamol 500 mg při průlomové bolesti nejvýše 3× denně, metoklopramid 10 mg při nevolnosti, laktulóza 15 ml 1× denně",
     "citations": [
      {
       "docId": "07",
@@ -3115,12 +3094,12 @@
      }
     ],
     "sourceDate": "2026-10-26",
-    "note": "Zmena 26. 10. (algeziológ, správa 12): nová liečba bolesti, paracetamol už najviac 3× denne (predtým 4×). Algeziológ upozorňuje: tramadol spolu s antidepresívami (SSRI, SNRI) zvyšuje riziko serotonínového syndrómu."
+    "note": "Změna 26. 10. (algeziolog, zpráva 12): nová léčba bolesti, paracetamol už nejvýše 3× denně (dříve 4×). Algeziolog upozorňuje: tramadol spolu s antidepresivy (SSRI, SNRI) zvyšuje riziko serotoninového syndromu."
    },
    {
     "key": "other",
     "from": "2026-10-27",
-    "value": "Pacientka si želá, aby informácie o liečbe dostávala aj dcéra a aby sa mohla zúčastniť dôležitých rozhovorov. Výrazná úzkosť a depresívna nálada – psychológ odporúča pokračovať v podpornej psychoterapii 1× týždenne.",
+    "value": "Pacientka si přeje, aby informace o léčbě dostávala i dcera a aby se mohla účastnit důležitých rozhovorů. Výrazná úzkost a depresivní nálada – psycholog doporučuje pokračovat v podpůrné psychoterapii 1× týdně.",
     "citations": [
      {
       "docId": "13",
@@ -3154,7 +3133,7 @@
      }
     ],
     "sourceDate": "2026-10-27",
-    "note": "Váha 73 kg je zo správy nutričnej ambulancie z 27. 10. – po konzíliu. K 22. 10. platilo 76 kg (7. 10.)."
+    "note": "Váha 73 kg je ze zprávy nutriční ambulance z 27. 10. – po MDT. K 22. 10. platilo 76 kg (7. 10.)."
    }
   ]
  },
@@ -3164,7 +3143,7 @@
     "id": "apixaban",
     "from": "2026-10-02",
     "kind": "safety",
-    "label": "Antikoagulácia – apixaban",
+    "label": "Antikoagulace – apixaban",
     "citations": [
      {
       "docId": "07",
@@ -3176,7 +3155,7 @@
     "id": "tramadol",
     "from": "2026-10-26",
     "kind": "forward",
-    "label": "Tramadol + antidepresíva: riziko serotonínového syndrómu",
+    "label": "Tramadol + antidepresiva: riziko serotoninového syndromu",
     "citations": [
      {
       "docId": "12",
@@ -3192,11 +3171,11 @@
      }
     ],
     "forward": {
-     "button": "Pripraviť správu pre psychiatriu a praktika",
-     "to": "Psychiatrická ambulancia KOC 2 · Nemocnica Lipová · kópia: MUDr. Tomáš Řezníček (praktik)",
+     "button": "Připravit zprávu pro psychiatrii a praktického lékaře",
+     "to": "Psychiatrická ambulance KOC 2 · Nemocnice Lipová · kopie: MUDr. Tomáš Řezníček (praktický lékař)",
      "channel": "NIS",
      "needsDocId": "13",
-     "beforeNote": "Správa 12 išla podľa textu v kópii aj praktikovi."
+     "beforeNote": "Zpráva 12 šla podle textu v kopii i praktickému lékaři."
     }
    }
   ],
@@ -3205,7 +3184,7 @@
     "id": "contrast",
     "from": "2026-10-07",
     "kind": "safety",
-    "label": "Alergia na jódovú kontrastnú látku (iná správa uvádza „neguje“)",
+    "label": "Alergie na jodovou kontrastní látku (jiná zpráva uvádí „neguje“)",
     "citations": [
      {
       "docId": "N-05",
@@ -3221,7 +3200,7 @@
     "id": "rc",
     "from": "2026-10-07",
     "kind": "safety",
-    "label": "Laboratórium N-04 má iné rodné číslo – nepoužívať, kým sa neoverí",
+    "label": "Laboratoř N-04 má jiné rodné číslo – nepoužívat, dokud se neověří",
     "citations": [
      {
       "docId": "N-04",
@@ -3234,5 +3213,15 @@
     ]
    }
   ]
+ },
+ "callNotes": {
+  "alena": {
+   "performance": {
+    "date": "2026-10-20",
+    "with": "MUDr. Lenka Marková (onkologická ambulance KOC)",
+    "note": "Telefonát 20. 10. 2026 s MUDr. Lenkou Markovou (onkologická ambulance KOC): ECOG 1.",
+    "value": "ECOG 1"
+   }
+  }
  }
 }

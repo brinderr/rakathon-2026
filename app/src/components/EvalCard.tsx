@@ -1,6 +1,7 @@
-// Karta „Kontrola presnosti“: čísla LEN z public/data/eval-*.json (meranie Maťovho vyťaženia na kontrolnej sade).
-// Žiadne číslo nie je v kóde napevno. Bez súboru alebo bez celistvej zlatej sady sa riadok nezobrazí.
-// Voliteľná časť „Test poistky“ číta public/data/vysledok-test-halucinacii.json (ak je skopírovaný z eval/).
+// Karta „Kontrola přesnosti“: čísla JEN z public/data/eval-*.json (měření strojového vytěžení na kontrolní sadě).
+// Žádné číslo není v kódu napevno. Bez souboru nebo bez celistvé zlaté sady se řádek nezobrazí.
+// Volitelná část „Test pojistky“ čte public/data/vysledok-test-halucinacii.json (pokud je zkopírován z eval/).
+// Na frontě se karta už nezobrazuje (rozhodnutí kapitána 17. 10.); zůstává pro záložku Podklad / pitch.
 import { useEffect, useState, type ReactNode } from 'react';
 import { Card, Icon, Pill, pluralWord } from './ui';
 import { EVAL_CAVEAT, halluLine } from './case/EvalCard';
@@ -44,9 +45,9 @@ function useJson<T>(file: string | undefined): T | null {
 }
 
 function modeLabel(e: EvalJson['extraction']): string {
-  if (e.mode === 'rules') return 'pravidlá, bez jazykového modelu';
-  if (/náhrada/i.test(e.model ?? '')) return 'pravidlá + jazykový model · odpoveď vygeneroval Claude na presne ten istý pseudonymizovaný prompt (v prevádzke Azure OpenAI EU)';
-  return `pravidlá + jazykový model${e.model ? ` · ${e.model}` : ''}`;
+  if (e.mode === 'rules') return 'pravidla, bez jazykového modelu';
+  if (/náhrada/i.test(e.model ?? '')) return 'pravidla + jazykový model · odpověď vygeneroval Claude na přesně tentýž pseudonymizovaný prompt (v provozu Azure OpenAI EU)';
+  return `pravidla + jazykový model${e.model ? ` · ${e.model}` : ''}`;
 }
 function fmtStamp(iso: string): string {
   const d = new Date(iso);
@@ -58,25 +59,25 @@ export interface EvalRow { name: string; sub?: string; file: string; expectGener
 function Row({ row, full, onLoaded }: { row: EvalRow; full: boolean; onLoaded: (ev: EvalJson | null) => void }) {
   const ev = useJson<EvalJson>(row.file);
   useEffect(() => { onLoaded(ev); }, [ev, onLoaded]);
-  if (!ev || ev.summary?.goldIntegrity !== true) return null;             // nikdy záložné čísla
+  if (!ev || ev.summary?.goldIntegrity !== true) return null;             // nikdy záložní čísla
   const s = ev.summary;
   const stale = !!row.expectGeneratedAt && ev.extraction.generatedAt !== row.expectGeneratedAt;
   return (
     <div className="ev-row">
       <div className="ev-who">{row.name}{row.sub && <span className="ev-sub"> · {row.sub}</span>}</div>
       {stale ? (
-        <div className="ev-stale">Meranie patrí k inej verzii vyťaženia – spustiť npm run eval.</div>
+        <div className="ev-stale">Měření patří k jiné verzi vytěžení – spustit npm run eval.</div>
       ) : (
         <>
           <div className="ev-nums">
-            <span><b>{s.fieldsCorrect}/{s.fieldsTotal}</b> polí správne</span>
-            <span><b>{s.trapsCaught}/{s.trapsTotal}</b> {full ? 'pascí zachytených' : 'pascí'}</span>
-            <span><b>{s.inventedValues}</b> {full ? pluralWord(s.inventedValues, 'vymyslená hodnota', 'vymyslené hodnoty', 'vymyslených hodnôt') : 'vymyslených'}</span>
-            <span><b>{s.citationsVerified}/{s.citationsTotal}</b> {full ? 'citátov doslova v správach' : 'citátov doslova'}</span>
+            <span><b>{s.fieldsCorrect}/{s.fieldsTotal}</b> polí správně</span>
+            <span><b>{s.trapsCaught}/{s.trapsTotal}</b> {full ? 'pastí zachyceno' : 'pastí'}</span>
+            <span><b>{s.inventedValues}</b> {full ? pluralWord(s.inventedValues, 'vymyšlená hodnota', 'vymyšlené hodnoty', 'vymyšlených hodnot') : 'vymyšlených'}</span>
+            <span><b>{s.citationsVerified}/{s.citationsTotal}</b> {full ? 'citátů doslova ve zprávách' : 'citátů doslova'}</span>
           </div>
           {full && ev.traps?.length > 0 && (
             <details className="ev-traps">
-              <summary>Ktoré pasce ({ev.traps.length})</summary>
+              <summary>Které pasti ({ev.traps.length})</summary>
               <ul>
                 {ev.traps.map((t) => (
                   <li key={t.id} title={t.why} className={t.caught ? 'is-ok' : 'is-bad'}>
@@ -113,10 +114,10 @@ function Guard({ full }: { full: boolean }) {
 }
 
 /**
- * rows: ktoré merania ukázať. variant 'compact' (fronta) / 'full' (záložka Podklad: aj zoznam pascí a test poistky).
- * manual: na obrazovke je ručne overená verzia, meria sa strojové vyťaženie tých istých správ (Alena).
+ * rows: která měření ukázat. variant 'compact' / 'full' (záložka Podklad: i seznam pastí a test pojistky).
+ * manual: na obrazovce je ručně ověřená verze, měří se strojové vytěžení týchž zpráv (Alena).
  */
-export function EvalCard({ rows, variant = 'compact', manual, title = 'Kontrola presnosti' }: {
+export function EvalCard({ rows, variant = 'compact', manual, title = 'Kontrola přesnosti' }: {
   rows: EvalRow[]; variant?: 'compact' | 'full'; manual?: boolean; title?: string;
 }) {
   const [loaded, setLoaded] = useState<Record<string, EvalJson | null>>({});
@@ -124,21 +125,21 @@ export function EvalCard({ rows, variant = 'compact', manual, title = 'Kontrola 
   const evs = rows.map((r) => loaded[r.file]).filter((e): e is EvalJson => !!e && e.summary?.goldIntegrity === true);
   const first = evs[0];
   const foot: ReactNode = first
-    ? <>Vyťaženie: {modeLabel(first.extraction)}{first.generatedAt ? ` · ${fmtStamp(first.generatedAt)}` : ''}. Citáty overuje program, nie AI.</>
+    ? <>Vytěžení: {modeLabel(first.extraction)}{first.generatedAt ? ` · ${fmtStamp(first.generatedAt)}` : ''}. Citáty ověřuje program, ne AI.</>
     : null;
 
   return (
     <Card className={`ev-card ${full ? 'ev-card--full' : ''}`} ariaLabel={title}>
       <div className="ev-head">
         <h3>{title}</h3>
-        {evs.length > 0 && <Pill tone="mint" size="sm">namerané</Pill>}
+        {evs.length > 0 && <Pill tone="mint" size="sm">naměřeno</Pill>}
       </div>
-      {manual && <p className="ev-note">Meria sa strojové vyťaženie tých istých správ, nie ručne overená verzia na tejto obrazovke.</p>}
-      <p className="ev-note">2 fiktívni pacienti, zlatá sada 20 polí + pasce.{EVAL_CAVEAT ? ` ${EVAL_CAVEAT}` : ''}</p>
+      {manual && <p className="ev-note">Měří se strojové vytěžení týchž zpráv, ne ručně ověřená verze na této obrazovce.</p>}
+      <p className="ev-note">2 fiktivní pacienti, zlatá sada 20 polí + pasti.{EVAL_CAVEAT ? ` ${EVAL_CAVEAT}` : ''}</p>
       {rows.map((r) => (
         <Row key={r.file} row={r} full={full} onLoaded={(ev) => setLoaded((m) => (m[r.file] === ev ? m : { ...m, [r.file]: ev }))} />
       ))}
-      {evs.length === 0 && <p className="ev-note">Meranie sa načítava (public/data/eval-*.json).</p>}
+      {evs.length === 0 && <p className="ev-note">Měření se načítá (public/data/eval-*.json).</p>}
       <Guard full={full} />
       {foot && <p className="ev-foot">{foot}</p>}
     </Card>

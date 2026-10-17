@@ -1,4 +1,4 @@
-/* Karta „Kontrola presnosti“ (čísla z eval-*.json) */
+/* Karta „Kontrola přesnosti“ (čísla z eval-*.json) – na frontě se už nezobrazuje */
 .ev-card { display: flex; flex-direction: column; gap: 12px; padding: 18px 20px; }
 .ev-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .ev-head h3 { font-size: 15px; font-weight: 650; }

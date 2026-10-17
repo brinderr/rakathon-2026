@@ -13,10 +13,15 @@
 // - Názov nemocnice v Benešove je nahradený fiktívnym (QA R2 #3: „Máchova 400, Benešov“ je adresa skutočnej
 //   nemocnice). Nahrádza sa rovnako v textoch aj v citátoch, takže citáty ostávajú doslovné (stráži verify).
 // - Predpoklady prototypu (dátum prijatia, kanál, termín ďalšieho kroku) sú označené „predpoklad“.
+// - Jazyk UI je čeština: názvy správ, pracovísk, krokov, záznamu a popisy 20 polí (CZ_LABEL podľa Handover_obsah)
+//   sú tu po česky. Hodnoty, poznámky a vysvetlenia rozporov prichádzajú z Maťovho motora (src/ai/*); ich vlastné
+//   vety (mimo citátov „…“) prevedie do češtiny ten istý prevodník ako obrazovka „Zpracování naživo“
+//   (src/components/live/cesky.ts). Citáty sa nemenia. Český text motora prejde bez zmeny.
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { cz } from '../src/components/live/cesky.ts';
 
 const APP = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const rd = (p) => JSON.parse(readFileSync(join(APP, p), 'utf8'));
@@ -49,17 +54,27 @@ const MDT = src.mdtDate;       // 2026-10-22
 const DUE = '2026-10-21';      // predpoklad prototypu: termín = deň pred konzíliom
 
 // ------------------------------------------------------------------ správy
-const META = { // [názov, pracovisko, druh] podľa hlavičky správy; 'request' má len 09 (appka ju berie ako žiadanku do KOC)
-  '01': ['Praktická lekárka – žiadosť o vyšetrenie u pneumológa', 'Ordinácia praktického lekára, Benešov', 'report'],
-  '02': ['RTG hrudníka', 'Nemocnica Podhájí – rádiológia', 'result'],
-  '03': ['Pneumológ – vstupné vyšetrenie', 'Nemocnica Podhájí – pľúcna ambulancia', 'report'],
-  '04': ['Laboratórium a nádorové markery', 'Laboratoř LabPodhájí s.r.o.', 'result'],
-  '05': ['CT hrudníka a horného brucha', 'Nemocnica Podhájí – rádiológia', 'result'],
-  '06': ['Bronchoskopia s EBUS-TBNA – protokol', 'KOC 2 · Nemocnica Lipová – bronchológia', 'report'],
-  '07': ['Histológia – bioptický nález', 'KOC 2 · Nemocnica Lipová – patológia', 'result'],
-  '08': ['PET/CT celotelové', 'KOC 1 · Nemocnica Severní – nukleárna medicína', 'result'],
-  '09': ['Žiadosť pneumológa o prevzatie do KOC (epikríza)', 'Nemocnica Podhájí – pľúcna ambulancia', 'request'],
-  '10': ['Nutričná ambulancia – skríning', 'KOC 2 · Nemocnica Lipová – nutričná ambulancia', 'report'],
+const META = { // [název, pracoviště, druh] podle hlavičky zprávy; 'request' má jen 09 (appka ji bere jako žádanku do KOC)
+  '01': ['Praktická lékařka – žádost o vyšetření u pneumologa', 'Ordinace praktického lékaře, Benešov', 'report'],
+  '02': ['RTG hrudníku', 'Nemocnice Podhájí – radiologie', 'result'],
+  '03': ['Pneumolog – vstupní vyšetření', 'Nemocnice Podhájí – plicní ambulance', 'report'],
+  '04': ['Laboratoř a nádorové markery', 'Laboratoř LabPodhájí s.r.o.', 'result'],
+  '05': ['CT hrudníku a horního břicha', 'Nemocnice Podhájí – radiologie', 'result'],
+  '06': ['Bronchoskopie s EBUS-TBNA – protokol', 'KOC 2 · Nemocnice Lipová – bronchologie', 'report'],
+  '07': ['Histologie – bioptický nález', 'KOC 2 · Nemocnice Lipová – patologie', 'result'],
+  '08': ['PET/CT celotělové', 'KOC 1 · Nemocnice Severní – nukleární medicína', 'result'],
+  '09': ['Žádost pneumologa o převzetí do KOC (epikríza)', 'Nemocnice Podhájí – plicní ambulance', 'request'],
+  '10': ['Nutriční ambulance – screening', 'KOC 2 · Nemocnice Lipová – nutriční ambulance', 'report'],
+};
+// Popisy 20 polí podle šablony VZP „Handover_obsah“ (česky) – stejné jako u Aleny (src/data/cases.ts), klíče jsou pevné.
+const CZ_LABEL = {
+  firstName: 'Jméno', lastName: 'Příjmení', age: 'Věk', sex: 'Pohlaví', insurer: 'Zdravotní pojišťovna',
+  patientContact: 'Kontakt na pacienta', contactPerson: 'Kontaktní osoba a telefon',
+  diagnosis: 'Diagnóza', epicrisis: 'Epikríza (stručný souhrn nemoci)', mdtQuestion: 'Požadavek / otázka na MDT',
+  comorbidities: 'Komorbidity (přidružené nemoci)', medication: 'Léková anamnéza (užívané léky)', allergies: 'Alergie',
+  performance: 'Stav výkonnosti (ECOG)', weightHeight: 'Váha a výška', symptoms: 'Příznaky nemoci a jejich počátek',
+  exams: 'Provedená vyšetření', labs: 'Laboratorní výsledky včetně onkomarkerů', histology: 'Histologie',
+  other: 'Jiná důležitá sdělení a přání pacienta',
 };
 const docs = src.documents.map((d) => {
   if (!META[d.id]) die(`správa ${d.id} nemá metadáta v META`);
@@ -76,12 +91,13 @@ const docs = src.documents.map((d) => {
 const origin = {};
 const fields = ex.fields.map((f) => {
   origin[f.key] = ex.provenance?.[f.key]?.extractor === 'llm' ? 'ai' : 'rules';
-  const out = { ...f, citations: f.citations.map(cit) };
+  const out = { ...f, label: CZ_LABEL[f.key] ?? f.label, value: cz(f.value), citations: f.citations.map(cit) };
+  if (f.note) out.note = cz(f.note);
   if (f.conflict) {
     out.conflict = {
-      a: { ...f.conflict.a, citation: cit(f.conflict.a.citation) },
-      b: { ...f.conflict.b, citation: cit(f.conflict.b.citation) },
-      explain: f.conflict.explain,
+      a: { ...f.conflict.a, value: cz(f.conflict.a.value), citation: cit(f.conflict.a.citation) },
+      b: { ...f.conflict.b, value: cz(f.conflict.b.value), citation: cit(f.conflict.b.citation) },
+      explain: cz(f.conflict.explain),
     };
   }
   return out;
@@ -93,17 +109,18 @@ const h = (state, date) => ({ state, date });
 const exam = (id, title, place, owner, done, delivered, doc) =>
   ({ id, title, place, owner, due: delivered, state: 'delivered', history: [h('done', done), h('delivered', delivered)], resultDocId: pid(doc) });
 const steps = [
-  exam('rtg', 'RTG hrudníka', 'Nemocnica Podhájí – rádiológia', 'rádiológia Nemocnice Podhájí', '2026-08-26', '2026-08-26', '02'),
-  exam('ct', 'CT hrudníka a horného brucha', 'Nemocnica Podhájí – rádiológia', 'rádiológia Nemocnice Podhájí', '2026-09-10', '2026-09-10', '05'),
-  exam('bronch', 'Bronchoskopia s EBUS-TBNA', 'KOC 2 · Nemocnica Lipová – bronchológia', 'bronchológia KOC 2', '2026-09-17', '2026-09-17', '06'),
-  exam('histology', 'Histológia (výsledok biopsie)', 'KOC 2 · Nemocnica Lipová – patológia', 'patológia KOC 2', '2026-09-17', '2026-09-23', '07'),
-  exam('pet', 'PET/CT celotelové', 'KOC 1 · Nemocnica Severní – nukleárna medicína', 'nukleárna medicína KOC 1', '2026-10-01', '2026-10-01', '08'),
-  { // správa 07: „Prediktivní vyšetření (EGFR, ALK, ROS1, PD-L1) probíhá“ – termín je predpoklad (deň pred konzíliom)
-    id: 'markers', title: 'Dodatok k histológii: EGFR, ALK, ROS1, PD-L1', place: 'KOC 2 · Nemocnica Lipová – patológia',
-    owner: 'patológia KOC 2', due: DUE, state: 'ordered', history: [h('ordered', '2026-09-23')],
+  exam('rtg', 'RTG hrudníku', 'Nemocnice Podhájí – radiologie', 'radiologie Nemocnice Podhájí', '2026-08-26', '2026-08-26', '02'),
+  exam('ct', 'CT hrudníku a horního břicha', 'Nemocnice Podhájí – radiologie', 'radiologie Nemocnice Podhájí', '2026-09-10', '2026-09-10', '05'),
+  exam('bronch', 'Bronchoskopie s EBUS-TBNA', 'KOC 2 · Nemocnice Lipová – bronchologie', 'bronchologie KOC 2', '2026-09-17', '2026-09-17', '06'),
+  exam('histology', 'Histologie (výsledek biopsie)', 'KOC 2 · Nemocnice Lipová – patologie', 'patologie KOC 2', '2026-09-17', '2026-09-23', '07'),
+  exam('pet', 'PET/CT celotělové', 'KOC 1 · Nemocnice Severní – nukleární medicína', 'nukleární medicína KOC 1', '2026-10-01', '2026-10-01', '08'),
+  { // zpráva 07: „Prediktivní vyšetření (EGFR, ALK, ROS1, PD-L1) probíhá“ – termín je předpoklad (den před MDT)
+    // POZOR: components/docs/mdtModel.ts hledá tento krok podle /dodatok/i – po přechodu na češtinu tam patří /dodat[eo]k/i.
+    id: 'markers', title: 'Dodatek k histologii: EGFR, ALK, ROS1, PD-L1', place: 'KOC 2 · Nemocnice Lipová – patologie',
+    owner: 'patologie KOC 2', due: DUE, state: 'ordered', history: [h('ordered', '2026-09-23')],
   },
-  { // predpoklad: dátum zaradenia na konzílium nepoznáme, použitý dátum prijatia žiadosti
-    id: 'mdt', title: 'Konzílium (MDT)', place: 'KOC 2 · Nemocnica Lipová', owner: 'ja (koordinátor) – podklad', due: MDT,
+  { // předpoklad: datum zařazení na MDT neznáme, použito datum přijetí žádosti
+    id: 'mdt', title: 'MDT (multidisciplinární tým)', place: 'KOC 2 · Nemocnice Lipová', owner: 'já (koordinátorka) – podklad', due: MDT,
     state: 'ordered', history: [h('ordered', RECEIVED)],
   },
 ];
@@ -113,8 +130,8 @@ const conflicts = fields.filter((f) => f.status === 'conflict').length;
 const pendingAddenda = (ex.findings ?? []).filter((x) => x.severity === 'missing').length;
 const plural = (n, one, few, many) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
 const nextText = [
-  `${conflicts} ${plural(conflicts, 'rozpor', 'rozpory', 'rozporov')}`,
-  pendingAddenda ? 'chýba dodatok k histológii (EGFR, ALK, ROS1, PD-L1)' : '',
+  `${conflicts} ${plural(conflicts, 'rozpor', 'rozpory', 'rozporů')}`,
+  pendingAddenda ? 'chybí dodatek k histologii (EGFR, ALK, ROS1, PD-L1)' : '',
 ].filter(Boolean).join(', ');
 
 const NOVAK = deep({
@@ -127,16 +144,16 @@ const NOVAK = deep({
     contact: { name: 'Marie Nováková', relation: 'manželka', phone: need('09', '+420 603 000 119') },
   },
   referringGp: {
-    name: ex.referringGp.name, practice: 'Pľúcna ambulancia, Nemocnica Podhájí',
+    name: ex.referringGp.name, practice: 'Plicní ambulance, Nemocnice Podhájí',
     phone: ex.referringGp.phone, email: ex.referringGp.email,
   },
-  diagnosisShort: 'adenokarcinóm pľúc (C34.1)', // bez strany – strana je v rozpore (06 vs. ostatné správy)
-  koc: 'KOC 2 · Nemocnica Lipová',
+  diagnosisShort: 'adenokarcinom plic (C34.1)', // bez strany – strana je v rozporu (06 vs. ostatní zprávy)
+  koc: 'KOC 2 · Nemocnice Lipová',
   mdtDate: MDT,
   receivedAt: RECEIVED,
   status: 'active',
-  nextStep: { text: `Skontrolovať návrh podkladu od AI: ${nextText}`, owner: 'ja (koordinátor)', due: DUE, mine: true },
-  clockTargetDays: 33, // predvolená lehota (dánsky vzor pre pankreas); overenú lehotu pre pľúca nemáme
+  nextStep: { text: `Zkontrolovat návrh podkladu od AI: ${nextText}`, owner: 'já (koordinátorka)', due: DUE, mine: true },
+  clockTargetDays: 33, // vyžaduje typ Case; v UI se cílová lhůta neukazuje (jen „den X od přijetí žádosti“)
   fields,
   steps,
   labs: ex.labs.map((r) => ({ ...r, docId: pid(r.docId) })),
@@ -145,27 +162,32 @@ const NOVAK = deep({
   docs,
   log: [
     {
-      date: RECEIVED, action: 'Prevzatá žiadosť pneumológa o prevzatie do KOC',
-      detail: `Správa ${pid('09')} s výsledkami v prílohe (RTG, laboratórium, CT, bronchoskopia, histológia, PET/CT). Založený prípad, spustené hodiny cesty.`,
+      date: RECEIVED, action: 'Převzata žádost pneumologa o převzetí do KOC',
+      detail: `Zpráva ${pid('09')} s výsledky v příloze (RTG, laboratoř, CT, bronchoskopie, histologie, PET/CT). Založen případ, počítají se dny od přijetí žádosti.`,
       billable: true,
     },
     {
-      date: RECEIVED, action: 'Podklad predvyplnený strojovo',
-      detail: `${fields.length} polí · ${ex.meta.stats.citationsVerified}/${ex.meta.stats.citations} citátov doslova · ${conflicts} ${plural(conflicts, 'rozpor', 'rozpory', 'rozporov')} · v deme predpočítané, čaká na kontrolu človekom.`,
+      date: RECEIVED, action: 'Podklad předvyplněn strojově',
+      detail: `${fields.length} polí · ${ex.meta.stats.citationsVerified}/${ex.meta.stats.citations} citátů doslova · ${conflicts} ${plural(conflicts, 'rozpor', 'rozpory', 'rozporů')} · v demu předpočítáno, čeká na kontrolu člověkem.`,
       billable: false,
     },
   ],
   precheck: ex.precheck,
   reviewer: {
     insurerCode: '111', insurerName: 'Všeobecná zdravotní pojišťovna ČR',
-    note: 'Pacient je poistencom VZP (111). Ak má súhrn dostať aj revízny lekár (chce to prezentácia VZP), išiel by revíznemu lekárovi VZP. Kanál v ČR nemáme overený, odoslanie je v prototype simulované.',
+    note: 'Pacient je pojištěncem VZP (111). Pokud má souhrn dostat i revizní lékař (chce to prezentace VZP), šel by reviznímu lékaři VZP. Kanál v ČR nemáme ověřený, odeslání je v prototypu jen naznačeno.',
   },
 });
 
+/** Popis modelu z motora (po slovensky) → česky pro tooltip v hlavičce prípadu. */
+const czModel = (m) => (m ? m
+  .replace('náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)',
+    'náhrada bez klíče k Azure – odpověď z Claude Code na přesně tento prompt (ostrý režim: Azure OpenAI EU)') : null);
+
 const NOVAK_AI = {
-  label: 'AI výstup (predpočítaný)',
+  label: 'AI výstup (předpočítaný)',
   mode: ex.meta.mode,
-  model: ex.meta.model ?? null,
+  model: czModel(ex.meta.model ?? null),
   generatedAt: ex.meta.generatedAt,
   evalFile: 'data/eval-pacient-2.json',
   fieldOrigin: origin,
@@ -174,7 +196,7 @@ const NOVAK_AI = {
 // ------------------------------------------------------------------ meranie (EVAL_SUMMARY)
 const EVALS = [
   { file: 'public/data/eval-alena.json', extracted: 'public/data/extracted-alena.json', caseId: 'alena', patient: 'Alena P.', topic: 'pankreas', appShows: 'manual' },
-  { file: 'public/data/eval-pacient-2.json', extracted: EXTRACTED, caseId: 'novak', patient: 'Josef N.', topic: 'pľúca', appShows: 'this-extraction' },
+  { file: 'public/data/eval-pacient-2.json', extracted: EXTRACTED, caseId: 'novak', patient: 'Josef N.', topic: 'plíce', appShows: 'this-extraction' },
 ];
 const sources = { [EXTRACTED]: ex.meta.generatedAt };
 const cases = EVALS.map((e) => {
@@ -244,7 +266,7 @@ import type { Case } from '../types';
 
 export type FieldOrigin = 'manual' | 'rules' | 'ai';
 export interface CaseAi {
-  label: 'ručne overené' | 'AI výstup (predpočítaný)';
+  label: 'ručně ověřeno' | 'AI výstup (předpočítaný)';
   mode: 'manual' | 'rules' | 'rules+llm';
   model?: string | null;
   generatedAt?: string;

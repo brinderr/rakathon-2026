@@ -1,6 +1,7 @@
-// Karta „Na kontrolnej sade“ – numbers come ONLY from measured data: `EVAL_SUMMARY` exported by a module in
-// src/data (optional, read through import.meta.glob) or, when that is missing, from public/data/eval-<case>.json.
-// No fallback numbers anywhere: without data the card (and the metric tile) is hidden.
+// Měření přesnosti strojového vytěžení – numbers come ONLY from measured data: `EVAL_SUMMARY` exported by a module
+// in src/data (optional, read through import.meta.glob) or, when that is missing, from public/data/eval-<case>.json.
+// No fallback numbers anywhere: without data the card is hidden. The case screen no longer shows this card
+// (it measures the engine, not the patient); the helpers (halluLine, EVAL_CAVEAT) are still used elsewhere.
 import { useEffect, useMemo, useState } from 'react';
 import { EVAL_SUMMARY } from '../../data/cases';
 import { fmtDate } from './caseUtils';
@@ -55,7 +56,7 @@ export function toEvalInfo(raw: unknown, caseId: string): EvalInfo | null {
   if ([fieldsCorrect, fieldsTotal, trapsCaught, trapsTotal, inventedValues, citationsVerified, citationsTotal].some((x) => x === undefined)) return null;
   const trapsRaw = Array.isArray(raw.traps) ? raw.traps : Array.isArray(summary.traps) ? summary.traps : [];
   const traps = trapsRaw.filter(isObj).map((t, i) => ({
-    id: str(t.id) ?? String(i), title: str(t.title) ?? str(t.name) ?? `pasca ${i + 1}`, why: str(t.why), caught: t.caught === true,
+    id: str(t.id) ?? String(i), title: str(t.title) ?? str(t.name) ?? `past ${i + 1}`, why: str(t.why), caught: t.caught === true,
   }));
   const ex = isObj(raw.extraction) ? raw.extraction : undefined;
   return {
@@ -105,7 +106,7 @@ export function useEvalInfo(caseId: string, file?: string): EvalInfo | null | un
 }
 
 export interface HalluTest { proposals: number; accepted: number; rejected: number; invented?: number; generatedAt?: string }
-/** Test „poistky“: deliberately wrong AI answer (public/data/vysledok-test-halucinacii.json, copied from eval/). Hidden when missing. */
+/** Test „pojistky“: deliberately wrong AI answer (public/data/vysledok-test-halucinacii.json, copied from eval/). Hidden when missing. */
 export function useHalluTest(): HalluTest | null | undefined {
   const [v, setV] = useState<HalluTest | null | undefined>(undefined);
   useEffect(() => {
@@ -127,18 +128,18 @@ export function useHalluTest(): HalluTest | null | undefined {
 const pl = (n: number, one: string, few: string, many: string) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
 /** One wording of the guard test for the queue and the case (QA R5 #5): what was rejected, what was accepted and why. */
 export function halluLine(h: { proposals: number; accepted: number; rejected: number; invented?: number }): string {
-  return `Test poistky: úmyselne chybný model navrhol ${h.proposals} ${pl(h.proposals, 'hodnotu', 'hodnoty', 'hodnôt')}. `
-    + `${h.rejected} ${pl(h.rejected, 'vymyslenú', 'vymyslené', 'vymyslených')} (čísla bez opory v správe) program zamietol`
-    + (h.accepted ? `, ${h.accepted} ${pl(h.accepted, 'pravdivú', 'pravdivé', 'pravdivých')} (citát aj čísla sedia) prijal` : '')
-    + (h.invented !== undefined ? ` → v podklade ${h.invented} ${pl(h.invented, 'vymyslená hodnota', 'vymyslené hodnoty', 'vymyslených hodnôt')}.` : '.');
+  return `Test pojistky: úmyslně chybný model navrhl ${h.proposals} ${pl(h.proposals, 'hodnotu', 'hodnoty', 'hodnot')}. `
+    + `${h.rejected} ${pl(h.rejected, 'vymyšlenou', 'vymyšlené', 'vymyšlených')} (čísla bez opory ve zprávě) program zamítl`
+    + (h.accepted ? `, ${h.accepted} ${pl(h.accepted, 'pravdivou', 'pravdivé', 'pravdivých')} (citát i čísla sedí) přijal` : '')
+    + (h.invented !== undefined ? ` → v podkladu ${h.invented} ${pl(h.invented, 'vymyšlená hodnota', 'vymyšlené hodnoty', 'vymyšlených hodnot')}.` : '.');
 }
 export function evalLine(e: EvalInfo): string {
-  return `${e.fieldsCorrect}/${e.fieldsTotal} polí správne · ${e.trapsCaught}/${e.trapsTotal} pascí zachytených · ${e.inventedValues} ${pl(e.inventedValues, 'vymyslená hodnota', 'vymyslené hodnoty', 'vymyslených hodnôt')}`;
+  return `${e.fieldsCorrect}/${e.fieldsTotal} polí správně · ${e.trapsCaught}/${e.trapsTotal} pastí zachyceno · ${e.inventedValues} ${pl(e.inventedValues, 'vymyšlená hodnota', 'vymyšlené hodnoty', 'vymyšlených hodnot')}`;
 }
 export function modeLabel(e: EvalInfo): string {
-  if (e.mode === 'rules') return 'pravidlá, bez jazykového modelu';
+  if (e.mode === 'rules') return 'pravidla, bez jazykového modelu';
   if (e.mode === 'rules+llm' || e.mode === 'llm') {
-    return /náhrad/i.test(e.model ?? '') ? 'pravidlá + jazykový model · odpoveď vygeneroval Claude na presne ten istý pseudonymizovaný prompt (v prevádzke Azure OpenAI EU)' : `pravidlá + jazykový model${e.model ? ` · ${e.model}` : ''}`;
+    return /náhrad/i.test(e.model ?? '') ? 'pravidla + jazykový model · odpověď vygeneroval Claude na přesně tentýž pseudonymizovaný prompt (v provozu Azure OpenAI EU)' : `pravidla + jazykový model${e.model ? ` · ${e.model}` : ''}`;
   }
   return e.mode ?? '';
 }
@@ -149,21 +150,21 @@ export function EvalCard({ info, docsCount, manual = true }: { info: EvalInfo; d
   const hallu = useHalluTest();
   const [open, setOpen] = useState(false);
   return (
-    <Card className="cs-eval" title="Meranie na 2 fiktívnych pacientoch" aside={
-      <span className="cs-eval-aside"><Pill tone="mint"><IcCheck size={13} /> namerané</Pill>{info.generatedAt && <span className="cs-hint">{dateOf(info.generatedAt)}</span>}</span>
+    <Card className="cs-eval" title="Měření na 2 fiktivních pacientech" aside={
+      <span className="cs-eval-aside"><Pill tone="mint"><IcCheck size={13} /> naměřeno</Pill>{info.generatedAt && <span className="cs-hint">{dateOf(info.generatedAt)}</span>}</span>
     }>
       <div className="cs-eval-stats">
-        <div className="cs-eval-stat"><strong>{info.fieldsCorrect}<span>/{info.fieldsTotal}</span></strong><em>polí správne</em></div>
-        <div className="cs-eval-stat"><strong>{info.trapsCaught}<span>/{info.trapsTotal}</span></strong><em>pascí zachytených</em></div>
-        <div className="cs-eval-stat"><strong>{info.inventedValues}</strong><em>{pl(info.inventedValues, 'vymyslená hodnota', 'vymyslené hodnoty', 'vymyslených hodnôt')}</em></div>
-        <div className="cs-eval-stat"><strong>{info.citationsVerified}<span>/{info.citationsTotal}</span></strong><em>citátov doslova v správach</em></div>
+        <div className="cs-eval-stat"><strong>{info.fieldsCorrect}<span>/{info.fieldsTotal}</span></strong><em>polí správně</em></div>
+        <div className="cs-eval-stat"><strong>{info.trapsCaught}<span>/{info.trapsTotal}</span></strong><em>pastí zachyceno</em></div>
+        <div className="cs-eval-stat"><strong>{info.inventedValues}</strong><em>{pl(info.inventedValues, 'vymyšlená hodnota', 'vymyšlené hodnoty', 'vymyšlených hodnot')}</em></div>
+        <div className="cs-eval-stat"><strong>{info.citationsVerified}<span>/{info.citationsTotal}</span></strong><em>citátů doslova ve zprávách</em></div>
       </div>
       <p className="cs-eval-note">
-        Meria sa strojové vyťaženie {docsCount ? `tých istých ${docsCount} správ` : 'tých istých správ'} oproti ručne overenej zlatej sade
-        ({modeLabel(info) || 'predpočítané'}). Citáty overuje program, nie AI.
-        {manual ? ' Na obrazovke je ručne overená verzia podkladu.' : ''}
+        Měří se strojové vytěžení {docsCount ? `týchž ${docsCount} zpráv` : 'týchž zpráv'} oproti ručně ověřené zlaté sadě
+        ({modeLabel(info) || 'předpočítáno'}). Citáty ověřuje program, ne AI.
+        {manual ? ' Na obrazovce je ručně ověřená verze podkladu.' : ''}
       </p>
-      {EVAL_CAVEAT && <p className="cs-eval-note cs-eval-caveat"><strong>Poctivo:</strong> {EVAL_CAVEAT}</p>}
+      {EVAL_CAVEAT && <p className="cs-eval-note cs-eval-caveat"><strong>Poctivě:</strong> {EVAL_CAVEAT}</p>}
       {hallu && (
         <div className="cs-eval-hallu">
           <IcAlert size={15} />
@@ -173,7 +174,7 @@ export function EvalCard({ info, docsCount, manual = true }: { info: EvalInfo; d
       {info.traps.length > 0 && (
         <div className="cs-eval-traps">
           <button type="button" className="cs-eval-toggle" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
-            {open ? 'Skryť pasce' : `Ktoré pasce? (${info.traps.length})`}
+            {open ? 'Skrýt pasti' : `Které pasti? (${info.traps.length})`}
           </button>
           {open && (
             <ul>

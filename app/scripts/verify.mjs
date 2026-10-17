@@ -3,7 +3,8 @@
 // 1) načíta src/data/cases.ts aj jeho importy (pacient2.gen.ts, eval.gen.ts) – transpilácia cez devDependency
 //    `typescript` do dočasného priečinka, bez nových balíkov a bez závislosti od verzie Node,
 // 2) zapíše public/data/cases.json (export dát pre ďalšie nástroje, napr. meranie presnosti AI),
-// 3) overí citáty voči public/data/source.json (+ šablóna „MDT zaver“ ako 'MDT', EXTRA_DOCS, SourceDoc.text),
+// 3) overí citáty voči public/data/source.json (+ šablóna „MDT zaver“ ako 'MDT', SourceDoc.text),
+//    poznámky koordinátorky z telefonátu (CALL_NOTES) NIE sú citáty zo správ – neoverujú sa, len sa vypíšu ako jej vstup,
 // 4) overí, že ID správ sa medzi pacientmi neopakujú (inak by sa zobrazil text cudzej správy),
 // 5) overí, že generované dáta (Josef Novák, EVAL_SUMMARY) sedia s Maťovými súbormi extracted-*/eval-*.json,
 // 6) vypíše počty a zlyhania; pri chybe skončí s kódom 1.
@@ -58,22 +59,22 @@ async function loadCasesModule() {
 }
 
 const mod = await loadCasesModule();
-const { CASES, EXTRA_DOCS = {}, LATER_VALUES = {}, ALERTS = {}, EVAL_SUMMARY, CASE_AI = {} } = mod;
+const { CASES, LATER_VALUES = {}, ALERTS = {}, EVAL_SUMMARY, CASE_AI = {}, CALL_NOTES = {} } = mod;
 if (!Array.isArray(CASES)) {
   console.error('✗ src/data/cases.ts neexportuje CASES');
   process.exit(1);
 }
 
-writeFileSync(outPath, JSON.stringify({ cases: CASES, extraDocs: EXTRA_DOCS, laterValues: LATER_VALUES, alerts: ALERTS }, null, 1) + '\n');
+writeFileSync(outPath, JSON.stringify({ cases: CASES, laterValues: LATER_VALUES, alerts: ALERTS, callNotes: CALL_NOTES }, null, 1) + '\n');
 
 const source = JSON.parse(readFileSync(sourcePath, 'utf8'));
 const baseTexts = {};
 for (const d of source.documents) baseTexts[d.id] = d.text;
 if (source.templates?.['MDT zaver']) baseTexts.MDT = source.templates['MDT zaver'];
-Object.assign(baseTexts, EXTRA_DOCS);
 
 const errors = [];
 const warnings = [];
+const callNotes = []; // poznámky koordinátorky (telefonát) – vstup človeka, nie citát zo správy
 let quotesTotal = 0;
 let quotesOk = 0;
 const words = (s) => s.trim().split(/\s+/).filter(Boolean).length;
@@ -182,6 +183,22 @@ for (const c of CASES) {
   });
   if (c.demo === 'full' && c.fields.length !== 20) err(`plný prípad má mať 20 polí Handover_obsah, má ${c.fields.length}`);
 
+  // Poznámky koordinátorky („Zapsat telefonát“): predvyplnený návrh jej textu. NIE JE to správa ani citát –
+  // proti správam sa neoveruje. Kontroluje sa len, že patrí k chýbajúcemu poľu a že hodnota je v poznámke.
+  for (const [key, cn] of Object.entries(CALL_NOTES[c.id] ?? {})) {
+    const w = `CALL_NOTES.${key}`;
+    const f = c.fields.find((x) => x.key === key);
+    if (!f) { err(`${w}: neznáme pole`); continue; }
+    if (f.status !== 'missing') err(`${w}: telefonát dopĺňa len chýbajúce pole (stav je ${f.status})`);
+    if (f.resolvedBy) err(`${w}: pole má aj resolvedBy (vymyslená odpoveď) – telefonát ju nahrádza, resolvedBy vymaž`);
+    for (const k of ['date', 'with', 'note', 'value']) if (typeof cn[k] !== 'string' || !cn[k].trim()) err(`${w}: chýba ${k}`);
+    if (cn.note && cn.value && !cn.note.includes(cn.value)) warn(`${w}: hodnota „${cn.value}“ nie je v poznámke`);
+    if (cn.date && !/^\d{4}-\d{2}-\d{2}$/.test(cn.date)) err(`${w}: dátum musí byť ISO (YYYY-MM-DD)`);
+    callNotes.push(`[${c.id}] ${f?.label ?? key}: „${cn.note}“ → ${cn.value} · ${cn.date} · vstup koordinátorky, NEOVERUJE SA proti správam`);
+  }
+  // Žiadne pole nesmie mať vymyslenú „odpoveď“ (resolvedBy správa 14 bola zrušená).
+  c.fields.forEach((f, i) => { if (f.resolvedBy && !docIds.has(f.resolvedBy.docId)) err(`fields[${i}] ${f.key}: resolvedBy odkazuje na správu ${f.resolvedBy.docId}, ktorá v prípade nie je`); });
+
   // Neskoršie hodnoty
   (LATER_VALUES[c.id] ?? []).forEach((lv, i) => {
     if (!keys.has(lv.key)) err(`LATER_VALUES[${i}]: neznáme pole ${lv.key}`);
@@ -226,6 +243,10 @@ for (const c of CASES.filter((x) => x.fields.length)) {
   console.log(`  ${c.id}: ${by('confirmed')} potvrdených · ${by('proposed')} na kontrolu · ${by('missing')} chýba · ${by('conflict')} rozpory · ${c.fields.filter((f) => f.status !== 'missing' && !f.citations.length).length} polí bez citátu`);
 }
 console.log(`Citáty: ${quotesOk}/${quotesTotal} overené doslovne (${pct} %)`);
+if (callNotes.length) {
+  console.log(`Poznámky koordinátorky (telefonát): ${callNotes.length} – nie sú citáty zo správ, neoverujú sa:`);
+  for (const n of callNotes) console.log('  ~ ' + n);
+}
 if (EVAL_SUMMARY?.cases?.length) {
   console.log(`Meranie (EVAL_SUMMARY): ${EVAL_SUMMARY.cases.map((r) => `${r.caseId} ${r.fieldsCorrect}/${r.fieldsTotal} polí · ${r.trapsCaught}/${r.trapsTotal} pascí · ${r.inventedValues} vymyslených`).join(' | ')}`);
 }

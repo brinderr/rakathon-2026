@@ -9,14 +9,23 @@
 .intake-koc__check { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; background: var(--accent); opacity: 0; transform: scale(.6); transition: opacity .15s, transform .15s; }
 .intake-koc__opt--on .intake-koc__check { opacity: 1; transform: scale(1); }
 
-.intake-files { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
-.intake-excerpt { margin-top: 6px; font-size: 13px; color: var(--ink-2); font-style: italic; line-height: 1.45; }
+/* text of the referral (pasted or the sample) */
+.intake-text { display: block; width: 100%; box-sizing: border-box; min-height: 200px; resize: vertical; padding: 12px 14px; border-radius: var(--r-md); border: 1.5px solid var(--hair-2); background: var(--canvas); font: inherit; font-size: 13.5px; line-height: 1.5; color: var(--ink); transition: border-color .15s, box-shadow .15s; }
+.intake-text:focus { outline: 0; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-ring); background: var(--surface); }
+.intake-text__actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
 
+/* checklist along Handover_obsah */
 .intake-counts { margin-left: auto; display: flex; gap: 6px; }
-.intake-checking { display: flex; align-items: center; gap: 10px; }
 .intake-found { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
+.intake-check { display: flex; flex-direction: column; gap: 14px; }
+.intake-check__head { font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+.intake-check__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.intake-check__label { font-weight: 600; }
+.intake-check__miss { color: var(--coral-ink); font-weight: 600; }
+.intake-check__fyi { color: var(--sky-ink); font-weight: 600; }
+.intake-check__snip { font-size: 13px; color: var(--ink-2); font-style: italic; line-height: 1.45; overflow-wrap: anywhere; }
+.intake-check__note { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
 .intake-sent { margin-top: 28px; }
-
 
 @media (max-width: 760px) {
   .intake-koc { grid-template-columns: minmax(0, 1fr); gap: 8px; }

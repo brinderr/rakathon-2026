@@ -1,24 +1,35 @@
-// Helpers for the case / patient profile screen: Slovak labels, dates, "as of" logic,
+// Helpers for the case / patient profile screen: Czech labels, dates, "as of" logic,
 // tolerant normalizers for the data module (coded against CONTRACT.md + types.ts).
 import type {
-  Case, Citation, FieldStatus, HandoverField, ISODate, LogEntry, PathStep, SourceDoc, StepState,
+  Case, Citation, FieldGroup, FieldStatus, HandoverField, ISODate, LogEntry, PathStep, SourceDoc, StepState,
 } from '../../types';
 import { DEMO_TODAY } from '../../types';
 
-/* ---------- labels (Slovak, for laymen) ---------- */
+/* ---------- labels (Czech, for laymen) ---------- */
 export const SK_STATUS: Record<FieldStatus, string> = {
-  confirmed: 'potvrdené', proposed: 'návrh', missing: 'chýba', conflict: 'rozpor',
+  confirmed: 'potvrzeno', proposed: 'návrh', missing: 'chybí', conflict: 'rozpor',
 };
 export const SK_STEP: Record<StepState, string> = {
-  requested: 'vyžiadané', ordered: 'objednané', done: 'vykonané', delivered: 'výsledok',
+  requested: 'vyžádáno', ordered: 'objednáno', done: 'provedeno', delivered: 'výsledek',
 };
 export const STEP_ORDER: StepState[] = ['requested', 'ordered', 'done', 'delivered'];
 export const SK_CASE_STATUS: Record<Case['status'], string> = {
-  new: 'nový', active: 'aktívny', waiting: 'čaká', postponed: 'odložený', closed: 'uzavretý',
+  new: 'nový', active: 'aktivní', waiting: 'čeká', postponed: 'odložený', closed: 'uzavřený',
 };
 export const SK_KIND: Record<SourceDoc['kind'], string> = {
-  report: 'správa', result: 'výsledok', request: 'žiadosť',
+  report: 'zpráva', result: 'výsledek', request: 'žádost',
 };
+/** The group names of HandoverField are fixed by src/types.ts (Slovak union); the screen shows them in Czech. */
+export const GROUP_LABEL: Record<FieldGroup, string> = {
+  Pacient: 'Pacient', Kontakty: 'Kontakty', Diagnóza: 'Diagnóza', Anamnéza: 'Anamnéza', Stav: 'Stav',
+  Vyšetrenia: 'Vyšetření', Laboratórium: 'Laboratoř', Histológia: 'Histologie', Iné: 'Jiné',
+};
+export const groupLabel = (g: string): string => (GROUP_LABEL as Record<string, string>)[g] ?? g;
+
+/* ---------- the coordinator's own records (phone call) ---------- */
+/** Documents whose id starts with this prefix are the coordinator's own notes (a phone call), never a medical report. */
+export const CALL_DOC_PREFIX = 'T-';
+export const isCallDoc = (docId?: string): boolean => !!docId && docId.startsWith(CALL_DOC_PREFIX);
 
 /* ---------- dates ---------- */
 export function parseISO(iso: ISODate): Date {
@@ -46,10 +57,11 @@ export function addDays(iso: ISODate, n: number): ISODate {
   d.setUTCDate(d.getUTCDate() + n);
   return toISO(d);
 }
+/** Czech: 1 den, 2–4 dny, 5+ dní. */
 export function daysWord(n: number): string {
   const a = Math.abs(n);
-  if (a === 1) return 'deň';
-  if (a >= 2 && a <= 4) return 'dni';
+  if (a === 1) return 'den';
+  if (a >= 2 && a <= 4) return 'dny';
   return 'dní';
 }
 // Times of demo actions are deterministic (demoClock.ts), never the real clock of the computer.
@@ -59,7 +71,7 @@ export function initials(first: string, last: string): string {
   return `${(first || '?')[0]}${(last || '?')[0]}`.toUpperCase();
 }
 export function docLabel(id: string): string {
-  return `správa ${id}`;
+  return isCallDoc(id) ? 'záznam koordinátorky' : `zpráva ${id}`;
 }
 export function plural(n: number, one: string, few: string, many: string): string {
   if (n === 1) return one;
@@ -104,11 +116,11 @@ export function normalizeDocs(raw: unknown): SourceDoc[] {
   const list: SourceDoc[] = [];
   const push = (id: string, v: unknown) => {
     if (typeof v === 'string') {
-      list.push({ id, title: 'Doplnená správa', place: '', kind: 'report', examDate: DEMO_TODAY, receivedAt: DEMO_TODAY, channel: 'e-mail', text: v });
+      list.push({ id, title: 'Doplněná zpráva', place: '', kind: 'report', examDate: DEMO_TODAY, receivedAt: DEMO_TODAY, channel: 'e-mail', text: v });
     } else if (isObj(v)) {
       list.push({
         id: String(v.id ?? id),
-        title: String(v.title ?? 'Doplnená správa'),
+        title: String(v.title ?? 'Doplněná zpráva'),
         place: String(v.place ?? ''),
         kind: (v.kind as SourceDoc['kind']) ?? 'report',
         examDate: String(v.examDate ?? v.date ?? DEMO_TODAY),
@@ -167,12 +179,16 @@ export function fieldOrigin(f: HandoverField): FieldOrigin | undefined {
 /* ---------- "as of" logic ---------- */
 export type EffStatus = FieldStatus | 'pending' | 'future';
 
-/** Demo actions of the coordinator on a field. A decision/confirmation never changes the field's value or citations. */
+/** Demo actions of the coordinator on a field. A decision/confirmation never changes the field's value or citations.
+ *  'resolved' with via 'call' = the coordinator wrote down a phone call herself („Zapsat telefonát“): the citation is her
+ *  note (document id with CALL_DOC_PREFIX), clearly marked as her record, never as a medical report. */
 export type FieldOverride =
   | { kind: 'pending'; to: string; channel: string; sentAt: ISODate; reason: 'missing' | 'conflict' }
-  | { kind: 'resolved'; value: string; citation: Citation; docId: string; date: ISODate; note: string }
+  | { kind: 'resolved'; value: string; citation: Citation; docId: string; date: ISODate; note: string; via?: 'report' | 'call'; by?: string }
   | { kind: 'decided'; which: 'a' | 'b'; by: string; date: ISODate; note: string }   // conflict verified by a human
   | { kind: 'confirmed'; date: ISODate; note: string };                              // proposal checked against the source
+
+export const isCallOverride = (ov?: FieldOverride): boolean => ov?.kind === 'resolved' && (ov.via === 'call' || isCallDoc(ov.docId));
 
 export interface EffField {
   field: HandoverField;
@@ -216,7 +232,7 @@ export function effectiveField(
       const { c, d } = older[0];
       out = {
         ...base, status: f.status === 'missing' ? 'missing' : 'confirmed', value: quoteAsValue(c.quote), citations: [c],
-        sourceDate: docDate(d), asOfNote: `k ${fmtDate(asOf)} podľa správy ${c.docId} (${fmtShort(d.examDate)})`,
+        sourceDate: docDate(d), asOfNote: `k ${fmtDate(asOf)} podle zprávy ${c.docId} (${fmtShort(d.examDate)})`,
       };
     } else {
       out = { ...base, status: 'future', value: '', citations: [] };
@@ -249,17 +265,14 @@ export function visibleLog(log: LogEntry[], asOf: ISODate): LogEntry[] {
   return log.filter((e) => e.date <= asOf).sort((a, b) => (a.date === b.date ? (a.time || '').localeCompare(b.time || '') : a.date < b.date ? -1 : 1));
 }
 
-/* ---------- Danish pathway clock ---------- */
-export const DK_FIRST_VISIT_DAYS = 6;   // 6 days to first visit
-export const DK_DECISION_DAYS = 27;     // 27 days investigation → decision (Sundhedsdatastyrelsen 2023)
-
+/* ---------- days since the referral was received (no foreign target in the UI) ---------- */
 export function clockDay(c: Case, asOf: ISODate): number {
   return Math.max(0, daysBetween(c.receivedAt, asOf));
 }
 
 /* ---------- labels for effective statuses ---------- */
 export const STATUS_LABEL: Record<EffStatus, string> = {
-  confirmed: 'potvrdené', proposed: 'návrh', missing: 'chýba', conflict: 'rozpor', pending: 'čaká na odpoveď', future: 'ešte neznáme',
+  confirmed: 'potvrzeno', proposed: 'návrh', missing: 'chybí', conflict: 'rozpor', pending: 'čeká na odpověď', future: 'zatím neznámé',
 };
 
 /* ---------- counts for the metrics / legend ---------- */
@@ -273,4 +286,3 @@ export function countFields(fields: EffField[]): Counts {
   }
   return c;
 }
-

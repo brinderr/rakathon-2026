@@ -1,5 +1,5 @@
 // Shared UI primitives for the coordinator app. No dependencies; icons are inline SVG (2px stroke).
-// Also exports small Slovak date helpers and label maps so every screen speaks the same language.
+// Also exports small Czech date helpers and label maps so every screen speaks the same language.
 import type { ButtonHTMLAttributes, CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import type { CaseStatus, FieldStatus, ISODate, StepState } from '../types';
 import './ui.css';
@@ -8,7 +8,7 @@ export type Tone = 'neutral' | 'accent' | 'mint' | 'amber' | 'coral' | 'orange' 
 
 /* ------------------------------------------------------------------ dates */
 const DAY_MS = 86_400_000;
-const WEEKDAYS = ['nedeľa', 'pondelok', 'utorok', 'streda', 'štvrtok', 'piatok', 'sobota'];
+const WEEKDAYS = ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'];
 
 export function parseISO(iso: ISODate): Date {
   const [y, m, d] = iso.split('-').map(Number);
@@ -21,7 +21,7 @@ export function fmtDate(iso?: ISODate, withYear = false): string {
   const base = `${d.getUTCDate()}. ${d.getUTCMonth() + 1}.`;
   return withYear ? `${base} ${d.getUTCFullYear()}` : base;
 }
-/** "pondelok 19. 10. 2026" */
+/** "pondělí 19. 10. 2026" */
 export function fmtDateLong(iso: ISODate): string {
   return `${WEEKDAYS[parseISO(iso).getUTCDay()]} ${fmtDate(iso, true)}`;
 }
@@ -32,36 +32,36 @@ export function daysBetween(from: ISODate, to: ISODate): number {
 export function addDays(iso: ISODate, n: number): ISODate {
   return new Date(parseISO(iso).getTime() + n * DAY_MS).toISOString().slice(0, 10);
 }
-/** Slovak plural word: pluralWord(3, 'deň', 'dni', 'dní') → "dni" */
+/** Czech plural word: pluralWord(3, 'den', 'dny', 'dní') → "dny" */
 export function pluralWord(n: number, one: string, few: string, many: string): string {
   const a = Math.abs(n);
   return a === 1 ? one : a >= 2 && a <= 4 ? few : many;
 }
-/** Slovak plural with the number: plural(3, 'deň', 'dni', 'dní') → "3 dni" */
+/** Czech plural with the number: plural(3, 'den', 'dny', 'dní') → "3 dny" */
 export function plural(n: number, one: string, few: string, many: string): string {
   return `${n} ${pluralWord(n, one, few, many)}`;
 }
-/** "dnes" / "zajtra" / "včera" / "21. 10." relative to `today`. */
+/** "dnes" / "zítra" / "včera" / "21. 10." relative to `today`. */
 export function fmtDue(iso: ISODate, today: ISODate): string {
   const diff = daysBetween(today, iso);
   if (diff === 0) return 'dnes';
-  if (diff === 1) return 'zajtra';
+  if (diff === 1) return 'zítra';
   if (diff === -1) return 'včera';
   return fmtDate(iso);
 }
 
 /* ----------------------------------------------------------------- labels */
 export const CASE_STATUS_LABEL: Record<CaseStatus, string> = {
-  new: 'nový', active: 'aktívny', waiting: 'čaká', postponed: 'odložený', closed: 'uzavretý',
+  new: 'nový', active: 'aktivní', waiting: 'čeká', postponed: 'odložený', closed: 'uzavřený',
 };
 export const CASE_STATUS_TONE: Record<CaseStatus, Tone> = {
   new: 'sky', active: 'accent', waiting: 'amber', postponed: 'neutral', closed: 'mint',
 };
 export const STEP_STATE_LABEL: Record<StepState, string> = {
-  requested: 'vyžiadané', ordered: 'objednané', done: 'vykonané', delivered: 'výsledok doručený',
+  requested: 'vyžádáno', ordered: 'objednáno', done: 'provedeno', delivered: 'výsledek doručen',
 };
 export const FIELD_STATUS_LABEL: Record<FieldStatus, string> = {
-  confirmed: 'potvrdené', proposed: 'návrh', missing: 'chýba', conflict: 'rozpor',
+  confirmed: 'potvrzeno', proposed: 'návrh', missing: 'chybí', conflict: 'rozpor',
 };
 export const FIELD_STATUS_TONE: Record<FieldStatus, Tone> = {
   confirmed: 'mint', proposed: 'amber', missing: 'coral', conflict: 'orange',

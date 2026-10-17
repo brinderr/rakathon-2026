@@ -1,6 +1,6 @@
 // App frame: narrow icon rail on the left, top bar (brand, quick search, coordinator, guided demo), page content,
 // disclaimer footer. The GP side (#intake) gets its own sand-coloured frame without the coordinator's rail,
-// so it is clear whose screen it is. The guided demo ("Ukážka v 8 krokoch") is a small floating panel.
+// so it is clear whose screen it is. The guided demo („Ukázka v 8 krocích“) is a small floating panel. All UI text is Czech.
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { useNav, type Route } from '../nav';
 import { CASES } from '../data/cases';
@@ -21,14 +21,18 @@ export const COORDINATOR = {
   role: `koordinátorka ${FULL_CASE.koc.split(' · ')[0]}`,
 };
 
-/** The GP side (#intake) has no coordinator rail; the sand-coloured "Pohľad praktika" bar with the way back is drawn here
+/** The GP side (#intake) has no coordinator rail; the sand-coloured „Pohled praktika“ bar with the way back is drawn here
  *  (the Intake page itself is only the form and the confirmation). */
 const GP_BAR_IN_SHELL = true;
 
-type Section = 'queue' | 'intake' | 'mdt';
+type Section = 'queue' | 'live' | 'intake' | 'mdt';
+
+/** Patients that have reports for the live screen (Zpracování naživo). */
+const LIVE_CASES = new Set(['alena', 'novak']);
 
 function sectionOf(page: Route['page']): Section {
   if (page === 'intake') return 'intake';
+  if (page === 'live') return 'live';
   if (page === 'mdt' || page === 'gp') return 'mdt';
   return 'queue';
 }
@@ -64,14 +68,14 @@ function QuickSearch({ onOpen }: { onOpen: (c: Case) => void }) {
   };
 
   return (
-    <label className="search" aria-label="Vyhľadávanie" ref={wrapRef}>
+    <label className="search" aria-label="Vyhledávání" ref={wrapRef}>
       <Icon name="search" size={18} />
-      <input type="search" placeholder="Hľadať pacienta" autoComplete="off" value={q}
+      <input type="search" placeholder="Hledat pacienta" autoComplete="off" value={q}
         onChange={(e) => { setQ(e.target.value); setOpen(true); setCursor(0); }} onFocus={() => setOpen(true)} onKeyDown={onKey} />
       {open && q.trim() && (
         <div className="search__menu" role="listbox">
           {hits.length === 0 ? (
-            <div className="search__empty">Nikto taký vo fronte nie je.</div>
+            <div className="search__empty">Nikdo takový ve frontě není.</div>
           ) : hits.map((c, i) => {
             const status = get(c.id).closedAt ? 'closed' : c.status;
             return (
@@ -80,7 +84,7 @@ function QuickSearch({ onOpen }: { onOpen: (c: Case) => void }) {
                 <Avatar name={`${c.patient.firstName} ${c.patient.lastName}`} size={30} />
                 <span className="search__hit-text">
                   <span className="search__hit-name">{c.patient.firstName} {c.patient.lastName}</span>
-                  <span className="search__hit-sub">{c.patient.age} r. · {c.diagnosisShort}</span>
+                  <span className="search__hit-sub">{c.patient.age} let · {c.diagnosisShort}</span>
                 </span>
                 <Pill tone={CASE_STATUS_TONE[status]} size="sm">{CASE_STATUS_LABEL[status]}</Pill>
               </button>
@@ -95,28 +99,29 @@ function QuickSearch({ onOpen }: { onOpen: (c: Case) => void }) {
 /* ------------------------------------------------------------ Guided demo */
 interface TourStep { title: string; text: string; vzp: string; route: Route; asOf?: string }
 
-/** 8 steps of the demo (docs/IDEALNE-RIESENIE.md §7.1); each names the part of the VZP assignment it covers. */
+/** 8 steps of the demo. Each names the part of the VZP assignment it covers, and its text says only what the app really does
+ *  on that screen (button labels are the real ones). Steps 3–5 are the same screen (Zpracování naživo), so its state stays. */
 function tourSteps(c: Case): TourStep[] {
   const id = c.id;
-  const no = (key: string) => c.fields.findIndex((f) => f.key === key) + 1;
   const mdt = c.mdtDate ?? DEMO_TODAY;
+  const ecog = c.fields.find((f) => f.key === 'performance')?.label ?? 'Stav výkonnosti (ECOG)';
   return [
-    { title: 'Fronta: kto je na ťahu', vzp: 'Převzít', route: { page: 'queue' }, asOf: DEMO_TODAY,
-      text: 'Poradie len podľa termínov. Pri každom prípade je vidieť, kto je na ťahu a dokedy. Ranný prehľad povie, čo dnes urgovať.' },
-    { title: 'Pohľad praktika: kontrola žiadanky', vzp: 'Převzít', route: { page: 'intake' },
-      text: 'Kliknite „Vložiť ukážku“. Ešte pred odoslaním praktik vidí, čo v žiadanke chýba. Po odoslaní dostane potvrdenie prijatia.' },
-    { title: `Prípad ${c.patient.firstName} ${c.patient.lastName}: úplnosť podkladu`, vzp: 'Vytěžit', route: { page: 'case', caseId: id }, asOf: DEMO_TODAY,
-      text: 'Semafor 20 polí podľa šablóny VZP: potvrdené, návrh, chýba, rozpor. Čo chýba, sa označí, nikdy nedomýšľa.' },
-    { title: 'Klik na údaj = veta v origináli', vzp: 'Vytěžit', route: { page: 'case', caseId: id, tab: 'podklad' }, asOf: DEMO_TODAY,
-      text: `Kliknite na pole ${no('diagnosis')} (diagnóza). Otvorí sa pôvodná správa so zvýraznenou vetou. Každý citát overil program.` },
-    { title: 'Rozpor vedľa seba', vzp: 'Koordinovat', route: { page: 'case', caseId: id, tab: 'podklad' }, asOf: DEMO_TODAY,
-      text: `Pole ${no('medication')} (lieky): dva dátumy z tej istej správy vedľa seba. Rozhoduje človek, nie appka.` },
-    { title: 'Vyžiadať ECOG → odpoveď → zelená', vzp: 'Vyžádat', route: { page: 'case', caseId: id, tab: 'podklad' }, asOf: DEMO_TODAY,
-      text: `Pole ${no('performance')} (ECOG) → Vyžiadať → Odoslať → Simulovať odpoveď. Pole zozelenie a záznam o koordinovaní sa doplní.` },
-    { title: `Stav k ${fmtDate(mdt)}: deň konzília`, vzp: 'Koordinovat', route: { page: 'case', caseId: id, tab: 'dokumenty' }, asOf: mdt,
-      text: 'Posuvník „Stav k dátumu“ ukáže len to, čo bolo v deň konzília známe. Neskoršie správy zošednú.' },
-    { title: 'Podklad → záver praktikovi → uzavrieť', vzp: 'Připravit · Uzavřít', route: { page: 'mdt', caseId: id }, asOf: mdt,
-      text: 'Podklad podľa šablóny MDT_zapis, potom „Záver pre praktika“ s doručenkou a uzavretie prípadu: dni so zásahom = podklad pre výkon 51887.' },
+    { title: 'Fronta: kdo je na tahu', vzp: 'Převzít', route: { page: 'queue' }, asOf: DEMO_TODAY,
+      text: 'Pořadí jen podle termínů, žádné skóre. U každého případu je vidět, kdo je na tahu, dokdy a kolikátý je den od přijetí žádosti. Panel „Dnes“ ukáže, co je na mně.' },
+    { title: 'Praktik pošle žádanku: co chybí', vzp: 'Převzít', route: { page: 'intake' },
+      text: 'Klikněte „Vložit ukázku (zpráva 07)“. Kontrola hned v prohlížeči ukáže, co v žádance je (s doslovným úryvkem) a co chybí. „Odeslat“ → praktik dostane potvrzení přijetí s číslem případu.' },
+    { title: 'Zpracování naživo: zprávy přicházejí', vzp: 'Vytěžit', route: { page: 'live', caseId: id },
+      text: 'Na začátku je jen žádanka 07. Klikněte „Přehrát příchod zpráv“: po každé zprávě motor v prohlížeči znovu projde všechny zprávy a pole se plní. Klik na pole ukáže doslovnou větu a „Zobrazit ve zprávě“.' },
+    { title: 'Pasti a rozpory', vzp: 'Koordinovat', route: { page: 'live', caseId: id },
+      text: 'Panel „Pasti a rozpory“: po zprávě 09 nemožné datum apixabanu (poslední dávka 18. 10., výkon 12. 10.), po zprávě 11 histologie s odběrem 20. 10., vydaná 19. 10. Vždy s citátem, rozhoduje člověk.' },
+    { title: 'Zkuste to rozbít', vzp: 'Vytěžit', route: { page: 'live', caseId: id },
+      text: 'V panelu „Zkuste to rozbít“ klikněte „Jiné rodné číslo ve zprávě 10“: motor zprávu přečte znovu a přibude rozpor s oběma citáty. Nebo „Upravit“ u kterékoli zprávy → „Přepočítat“. „Vrátit původní zprávy“ vše vrátí.' },
+    { title: 'Chybí ECOG → zápis telefonátu', vzp: 'Vyžádat · Doplnit', route: { page: 'case', caseId: id, tab: 'podklad' }, asOf: DEMO_TODAY,
+      text: `ECOG v žádné zprávě není a aplikace si ho nedomyslí. U pole „${ecog}“ klikněte „Zapsat telefonát“ (návrh je předvyplněný) → „Uložit do podkladu“. Pole se doplní se zdrojem „telefonát · zapsala koordinátorka“.` },
+    { title: `Stav k ${fmtDate(mdt)} → podklad pro konzilium`, vzp: 'Připravit', route: { page: 'mdt', caseId: id }, asOf: mdt,
+      text: `Podklad podle šablony VZP „MDT_zapis“ jen z toho, co bylo známo k ${fmtDate(mdt)}: pozdější zprávy 12 a 13 se nepoužily. ECOG je označen jako záznam koordinátorky, rozpory zůstávají označené. Lékaři KOC jde až po kontrole návrhů. „Tisk / PDF“ nebo „Kopírovat celé“.` },
+    { title: 'Závěr pro praktika → doručenka → uzavřít', vzp: 'Předat · Uzavřít', route: { page: 'gp', caseId: id }, asOf: mdt,
+      text: 'Závěr podle vzoru VZP „MDT zaver“ s původní otázkou praktika. „Odeslat“ → doručenka (odesláno → doručeno → praktik potvrdil) a souhrn reviznímu lékaři pojišťovny. Pak „Uzavřít případ“ → záznam o koordinování.' },
   ];
 }
 
@@ -125,12 +130,12 @@ function Tour({ step, onStep, onClose, onRestart }: { step: number; onStep: (i: 
   const s = steps[step];
   const last = step === steps.length - 1;
   return (
-    <aside className="tour" aria-label="Ukážka v 8 krokoch">
+    <aside className="tour" aria-label="Ukázka v 8 krocích">
       <div className="tour__head">
-        <span className="kicker">Ukážka · krok {step + 1} z {steps.length}</span>
+        <span className="kicker">Ukázka · krok {step + 1} z {steps.length}</span>
         <span className="tour__head-r">
-          <button type="button" className="tour__restart" onClick={onRestart} title="Zabudne všetko, čo sa v deme urobilo, a začne krokom 1">Začať odznova</button>
-          <button type="button" className="tour__close" onClick={onClose} aria-label="Zavrieť ukážku"><Icon name="x" size={16} /></button>
+          <button type="button" className="tour__restart" onClick={onRestart} title="Zapomene vše, co se v ukázce udělalo, a začne krokem 1">Začít znovu</button>
+          <button type="button" className="tour__close" onClick={onClose} aria-label="Zavřít ukázku"><Icon name="x" size={16} /></button>
         </span>
       </div>
       <div className="tour__dots" role="tablist">
@@ -144,10 +149,10 @@ function Tour({ step, onStep, onClose, onRestart }: { step: number; onStep: (i: 
       <h3 className="tour__title">{s.title}</h3>
       <p className="tour__text">{s.text}</p>
       <div className="tour__foot">
-        <span className="tour__vzp" title="Časť zadania VZP, ktorú krok pokrýva">zadanie VZP: <b>{s.vzp}</b></span>
+        <span className="tour__vzp" title="Část zadání VZP, kterou krok pokrývá">zadání VZP: <b>{s.vzp}</b></span>
         <span className="tour__btns">
-          <Button variant="ghost" size="sm" icon="arrow-left" disabled={step === 0} onClick={() => onStep(step - 1)}>Späť</Button>
-          <Button size="sm" iconRight={last ? 'check' : 'arrow-right'} onClick={() => (last ? onClose() : onStep(step + 1))}>{last ? 'Hotovo' : 'Ďalej'}</Button>
+          <Button variant="ghost" size="sm" icon="arrow-left" disabled={step === 0} onClick={() => onStep(step - 1)}>Zpět</Button>
+          <Button size="sm" iconRight={last ? 'check' : 'arrow-right'} onClick={() => (last ? onClose() : onStep(step + 1))}>{last ? 'Hotovo' : 'Dále'}</Button>
         </span>
       </div>
     </aside>
@@ -164,7 +169,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   const [tour, setTour] = useState<number | null>(null);
   /** Something was done in the demo (request, answer, confirmation, closing…) – the next juror would see it. */
   const dirty = Object.keys(sessions).length > 0 || Object.keys(profiles).length > 0;
-  /** „Začať demo odznova“ (QA R5 #6): forget every demo action, the clock and the slider. */
+  /** „Začít znovu“ (QA R5 #6): forget every demo action, the clock and the slider. */
   const restart = () => { resetAll(); resetAllCaseSessions(); resetDemoClock(); setAsOf(DEMO_TODAY); };
 
   /** Case with the nearest upcoming MDT that is not closed (falls back to the full case). */
@@ -176,14 +181,17 @@ export default function Shell({ children }: { children: ReactNode }) {
   }, [get]);
 
   const nav: { id: Section; label: string; sub?: string; icon: IconName; title: string }[] = [
-    { id: 'queue', label: 'Prípady', icon: 'cases', title: 'Fronta prípadov' },
-    { id: 'intake', label: 'Praktik', icon: 'inbox', title: 'Pohľad praktika: poslať žiadanku do KOC' },
-    { id: 'mdt', label: 'Konzílium', sub: fmtDate(nextMdt.mdtDate), icon: 'users',
-      title: `Najbližšie konzílium ${fmtDate(nextMdt.mdtDate)} · ${nextMdt.patient.lastName} · otvoriť podklad` },
+    { id: 'queue', label: 'Případy', icon: 'cases', title: 'Fronta případů' },
+    { id: 'live', label: 'Zpracování', icon: 'activity', title: 'Zpracování naživo: motor čte zprávy přímo v prohlížeči' },
+    { id: 'intake', label: 'Praktik', icon: 'inbox', title: 'Pohled praktika: poslat žádanku do KOC' },
+    { id: 'mdt', label: 'Konzilium', sub: fmtDate(nextMdt.mdtDate), icon: 'users',
+      title: `Nejbližší konzilium ${fmtDate(nextMdt.mdtDate)} · ${nextMdt.patient.lastName} · otevřít podklad` },
   ];
 
   const open = (id: Section) => {
+    const cid = 'caseId' in route ? route.caseId : undefined;
     if (id === 'queue') go({ page: 'queue' });
+    else if (id === 'live') go({ page: 'live', caseId: cid && LIVE_CASES.has(cid) ? cid : FULL_CASE.id });
     else if (id === 'intake') go({ page: 'intake' });
     else go({ page: 'mdt', caseId: nextMdt.id });
   };
@@ -204,7 +212,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         /* rail-col carries the background for the full page height; the rail itself sticks to the viewport.
            On phones (≤ 760 px) the column becomes a bottom bar with icons (see Shell.css). */
         <div className="rail-col">
-          <aside className="rail" aria-label="Hlavná navigácia">
+          <aside className="rail" aria-label="Hlavní navigace">
             {nav.map((n) => (
               <button key={n.id} type="button" title={n.title} aria-current={active === n.id ? 'page' : undefined}
                 className={`rail__btn ${active === n.id ? 'rail__btn--active' : ''}`} onClick={() => open(n.id)}>
@@ -220,12 +228,12 @@ export default function Shell({ children }: { children: ReactNode }) {
       <div className="shell__main">
         {gpMode ? GP_BAR_IN_SHELL && (
           <header className="topbar topbar--gp">
-            <Button variant="ghost" size="sm" icon="arrow-left" onClick={() => go({ page: 'queue' })} title="Späť do appky koordinátora">
-              <span className="gpbar__back-long">Späť do appky koordinátora</span>
-              <span className="gpbar__back-short">Späť</span>
+            <Button variant="ghost" size="sm" icon="arrow-left" onClick={() => go({ page: 'queue' })} title="Zpět do aplikace koordinátorky">
+              <span className="gpbar__back-long">Zpět do aplikace koordinátorky</span>
+              <span className="gpbar__back-short">Zpět</span>
             </Button>
-            <span className="gpbar__who"><Icon name="user" size={16} /> Pohľad praktika · {FULL_CASE.referringGp.name}</span>
-            <Pill tone="amber" size="sm">ukážka · bez účtu, takto dnes posiela žiadanku</Pill>
+            <span className="gpbar__who"><Icon name="user" size={16} /> Pohled praktika · {FULL_CASE.referringGp.name}</span>
+            <Pill tone="amber" size="sm">bez účtu · žádanka jde e-mailem nebo eZprávou jako dnes</Pill>
           </header>
         ) : (
           <header className="topbar">
@@ -240,14 +248,14 @@ export default function Shell({ children }: { children: ReactNode }) {
             <div className="topbar__right">
               {dirty && (
                 <button type="button" className="topbar__restart" onClick={() => { restart(); go({ page: 'queue' }); }}
-                  title="Zabudne všetko, čo sa v deme urobilo (žiadosti, potvrdenia, uzavretie), a vráti stav k 19. 10." aria-label="Začať demo odznova">
-                  <Icon name="history" size={16} /><span className="topbar__restart-text">Začať odznova</span>
+                  title="Zapomene vše, co se v ukázce udělalo (žádosti, potvrzení, uzavření), a vrátí stav k 19. 10." aria-label="Začít ukázku znovu">
+                  <Icon name="history" size={16} /><span className="topbar__restart-text">Začít znovu</span>
                 </button>
               )}
               <Button variant="ghost" size="sm" icon="route" className="topbar__tour" aria-pressed={tour !== null}
-                aria-label="Ukážka v 8 krokoch" title="Ukážka v 8 krokoch (začne od čistého stavu)"
+                aria-label="Ukázka v 8 krocích" title="Ukázka v 8 krocích (začne od čistého stavu)"
                 onClick={() => (tour === null ? startTour() : setTour(null))}>
-                <span className="topbar__tour-text">Ukážka v 8 krokoch</span>
+                <span className="topbar__tour-text">Ukázka v 8 krocích</span>
               </Button>
               <div className="me" title={COORDINATOR.fullName}>
                 <div className="me__text">
@@ -262,7 +270,7 @@ export default function Shell({ children }: { children: ReactNode }) {
 
         <main className="content">{children}</main>
 
-        <footer className="foot">Prototyp · fiktívne dáta · nie je zdravotnícka pomôcka</footer>
+        <footer className="foot">Prototyp · fiktivní data · odesílání je v prototypu simulované · není zdravotnický prostředek</footer>
       </div>
 
       {tour !== null && <Tour step={tour} onStep={goStep} onClose={() => setTour(null)} onRestart={startTour} />}

@@ -1,11 +1,11 @@
 // GENEROVANÉ: node scripts/build-pacient2.mjs – NEUPRAVOVAŤ RUČNE. FIKTÍVNY PACIENT (testovacie dáta).
-// Zdroj: public/data/extracted-pacient-2.json (2026-10-17T00:03:41.238Z, rules+llm) + data-pacient-2/source-pacient-2.json.
+// Zdroj: public/data/extracted-pacient-2.json (2026-10-17T03:40:32.718Z, rules+llm) + data-pacient-2/source-pacient-2.json.
 // ID správ majú prefix N-. Názov nemocnice v Benešove je nahradený fiktívnym (Nemocnice Podhájí).
 import type { Case } from '../types';
 
 export type FieldOrigin = 'manual' | 'rules' | 'ai';
 export interface CaseAi {
-  label: 'ručne overené' | 'AI výstup (predpočítaný)';
+  label: 'ručně ověřeno' | 'AI výstup (předpočítaný)';
   mode: 'manual' | 'rules' | 'rules+llm';
   model?: string | null;
   generatedAt?: string;
@@ -16,10 +16,10 @@ export interface CaseAi {
 }
 
 export const NOVAK_AI: CaseAi = {
- "label": "AI výstup (predpočítaný)",
+ "label": "AI výstup (předpočítaný)",
  "mode": "rules+llm",
- "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
- "generatedAt": "2026-10-17T00:03:41.238Z",
+ "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
+ "generatedAt": "2026-10-17T03:40:32.718Z",
  "evalFile": "data/eval-pacient-2.json",
  "fieldOrigin": {
   "firstName": "rules",
@@ -64,18 +64,18 @@ export const NOVAK: Case = {
  },
  "referringGp": {
   "name": "MUDr. Karel Veselý",
-  "practice": "Pľúcna ambulancia, Nemocnica Podhájí",
+  "practice": "Plicní ambulance, Nemocnice Podhájí",
   "phone": "+420 317 000 450",
   "email": "plicni.ambulance@example.com"
  },
- "diagnosisShort": "adenokarcinóm pľúc (C34.1)",
- "koc": "KOC 2 · Nemocnica Lipová",
+ "diagnosisShort": "adenokarcinom plic (C34.1)",
+ "koc": "KOC 2 · Nemocnice Lipová",
  "mdtDate": "2026-10-22",
  "receivedAt": "2026-10-07",
  "status": "active",
  "nextStep": {
-  "text": "Skontrolovať návrh podkladu od AI: 3 rozpory, chýba dodatok k histológii (EGFR, ALK, ROS1, PD-L1)",
-  "owner": "ja (koordinátor)",
+  "text": "Zkontrolovat návrh podkladu od AI: 3 rozpory, chybí dodatek k histologii (EGFR, ALK, ROS1, PD-L1)",
+  "owner": "já (koordinátorka)",
   "due": "2026-10-21",
   "mine": true
  },
@@ -83,7 +83,7 @@ export const NOVAK: Case = {
  "fields": [
   {
    "key": "firstName",
-   "label": "Meno",
+   "label": "Jméno",
    "group": "Pacient",
    "value": "Josef",
    "status": "proposed",
@@ -96,7 +96,7 @@ export const NOVAK: Case = {
   },
   {
    "key": "lastName",
-   "label": "Priezvisko",
+   "label": "Příjmení",
    "group": "Pacient",
    "value": "Novák",
    "status": "proposed",
@@ -109,9 +109,9 @@ export const NOVAK: Case = {
   },
   {
    "key": "age",
-   "label": "Vek",
+   "label": "Věk",
    "group": "Pacient",
-   "value": "60 rokov (nar. 14. 3. 1966)",
+   "value": "60 let (nar. 14. 3. 1966)",
    "status": "proposed",
    "citations": [
     {
@@ -122,21 +122,21 @@ export const NOVAK: Case = {
   },
   {
    "key": "sex",
-   "label": "Pohlavie",
+   "label": "Pohlaví",
    "group": "Pacient",
    "value": "muž",
    "status": "proposed",
    "citations": [
     {
      "docId": "N-09",
-     "quote": "Pacient: Josef Novák"
+     "quote": "60letý kuřák"
     }
    ],
-   "note": "Podľa označenia „Pacient“ v správe."
+   "note": "Podle označení „60letý kuřák“ ve zprávě."
   },
   {
    "key": "insurer",
-   "label": "Zdravotná poisťovňa",
+   "label": "Zdravotní pojišťovna",
    "group": "Pacient",
    "value": "111",
    "status": "proposed",
@@ -167,7 +167,7 @@ export const NOVAK: Case = {
   },
   {
    "key": "contactPerson",
-   "label": "Kontaktná osoba",
+   "label": "Kontaktní osoba a telefon",
    "group": "Kontakty",
    "value": "Marie Nováková (manželka), tel. +420 603 000 119",
    "status": "proposed",
@@ -215,7 +215,7 @@ export const NOVAK: Case = {
   },
   {
    "key": "epicrisis",
-   "label": "Priebeh ochorenia v skratke",
+   "label": "Epikríza (stručný souhrn nemoci)",
    "group": "Diagnóza",
    "value": "60letý kuřák (40 balíčkoroků) s 6 týdnů trvajícím kašlem, hemoptýzou a úbytkem hmotnosti 3 kg. CT 10. 9. 2026: tumor pravého horního laloku 42 × 35 mm, suspektní uzliny 10R a 4R. EBUS-TBNA 17. 9. 2026: adenokarcinom plic s metastázami v uzlinách 4R a 10R. PET/CT 1. 10. 2026 bez vzdálených metastáz.",
    "status": "proposed",
@@ -241,7 +241,7 @@ export const NOVAK: Case = {
   },
   {
    "key": "mdtQuestion",
-   "label": "Otázka pre konzílium",
+   "label": "Požadavek / otázka na MDT",
    "group": "Diagnóza",
    "value": "Převzetí do péče KOC a projednání v MDT: posouzení resekability tumoru vs. konkomitantní chemoradioterapie vzhledem k postižení uzliny 4R.",
    "status": "proposed",
@@ -254,7 +254,7 @@ export const NOVAK: Case = {
   },
   {
    "key": "comorbidities",
-   "label": "Pridružené ochorenia",
+   "label": "Komorbidity (přidružené nemoci)",
    "group": "Anamnéza",
    "value": "diabetes mellitus 2. typu na PAD, arteriální hypertenze, dyslipidémie",
    "status": "proposed",
@@ -268,7 +268,7 @@ export const NOVAK: Case = {
   },
   {
    "key": "medication",
-   "label": "Lieky, ktoré užíva",
+   "label": "Léková anamnéza (užívané léky)",
    "group": "Anamnéza",
    "value": "metformin 1000 mg 1-0-1, amlodipin 5 mg 1-0-0, atorvastatin 20 mg 0-0-1",
    "status": "proposed",
@@ -312,12 +312,12 @@ export const NOVAK: Case = {
       "quote": "Doporučeno zapsat do dokumentace alergii na jodovou kontrastní látku"
      }
     },
-    "explain": "Správa 09 (7. 10. 2026) uvádza „AA: neguje“, ale správa 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Overiť pred ďalším vyšetrením alebo liečbou – novšia správa alergiu pravdepodobne neprevzala."
+    "explain": "Zpráva 09 (7. 10. 2026) uvádí „AA: neguje“, ale zpráva 05 z 10. 9. 2026 zaznamenala: alergie na jodovou kontrastní látku. Ověřit před dalším vyšetřením nebo léčbou – novější zpráva alergii nepřevzala."
    }
   },
   {
    "key": "performance",
-   "label": "Výkonnostný stav (ECOG)",
+   "label": "Stav výkonnosti (ECOG)",
    "group": "Stav",
    "value": "Výkonnostní stav ECOG 1.",
    "status": "proposed",
@@ -350,11 +350,11 @@ export const NOVAK: Case = {
     }
    ],
    "sourceDate": "2026-10-07",
-   "note": "Skôr: 78 kg (3. 9. 2026). Novšia hodnota 73 kg (správa 10, 27. 10. 2026) vznikla až po 22. 10. 2026, preto do podkladu nepatrí."
+   "note": "Dříve: 78 kg (3. 9. 2026). Novější hodnota 73 kg (zpráva 10, 27. 10. 2026) vznikla až po 22. 10. 2026, proto do podkladu nepatří."
   },
   {
    "key": "symptoms",
-   "label": "Príznaky a ich začiatok",
+   "label": "Příznaky nemoci a jejich počátek",
    "group": "Stav",
    "value": "Suchý dráždivý kašel asi 6 týdnů (vyšetřen praktickou lékařkou 24. 8. 2026), poslední týden 2× drobná příměs krve ve sputu, mírná námahová dušnost, bez teplot; za 2 měsíce zhubl asi 3 kg. Nyní kašel přetrvává, hemoptýza naposledy před týdnem, námahová dušnost do 2 pater, váha 76 kg, nadále ubývá.",
    "status": "proposed",
@@ -380,7 +380,7 @@ export const NOVAK: Case = {
   },
   {
    "key": "exams",
-   "label": "Vykonané vyšetrenia",
+   "label": "Provedená vyšetření",
    "group": "Vyšetrenia",
    "value": "26. 8. 2026 · RTG hrudníku PA · Nemocnice Podhájí – Radiologické oddělení – Opacita v pravém horním plicním poli suspektní z tumoru, rozšířený pravý hilus. Doporučeno CT hrudníku s k. l.\n3. 9. 2026 · vstupní vyšetření · Nemocnice Podhájí – Plicní ambulance – Suspektní tumor pravého horního laloku plíce u kuřáka 40 balíčkoroků. Výkonnostní stav ECOG 1.\n10. 9. 2026 · CT hrudníku a horního břicha s k. l. · Nemocnice Podhájí – Radiologické oddělení – Tumor pravého horního laloku 42 × 35 mm, suspektní metastatické uzliny 10R a 4R. Bez známek vzdálených metastáz v rozsahu vyšetření.\n17. 9. 2026 · bronchoskopie s EBUS-TBNA · KOC Nemocnice Lipová – Bronchologické pracoviště, Klinika pneumologie – Endobronchiální tumor v levém horním laloku, odebrány biopsie z tumoru a EBUS-TBNA uzlin 4R a 10R. Materiál odeslán k histologickému vyšetření. EBUS: uzlina 4R 13 × 10 mm a uzlina 10R 15 × 11 mm, z každé 3 vpichy jehlou 22G.\n1. 10. 2026 · PET/CT (18F-FDG) celotělové · KOC Nemocnice Severní – Oddělení nukleární medicíny – Metabolicky aktivní tumor pravého horního laloku s postižením uzlin 10R a 4R, bez známek vzdálených metastáz.",
    "status": "proposed",
@@ -411,13 +411,13 @@ export const NOVAK: Case = {
     }
    ],
    "sourceDate": "2026-10-01",
-   "note": "Plné znenie výsledku je v pôvodnej správe (klik na citát)."
+   "note": "Plné znění výsledku je v původní zprávě (klik na citaci)."
   },
   {
    "key": "labs",
-   "label": "Laboratórium a nádorové markery",
+   "label": "Laboratorní výsledky včetně onkomarkerů",
    "group": "Laboratórium",
-   "value": "8. 9. 2026 (Laboratoř LabPodhájí s.r.o.): nádorové markery: CEA 8,2 µg/l ↑, CYFRA 21-1 6,4 µg/l ↑, NSE 14,1 µg/l; mimo normy: Hemoglobin 128 g/l ↓, Glukóza 8,4 mmol/l ↑, CRP 12 mg/l ↑",
+   "value": "8. 9. 2026 (Laboratoř LabPodhájí s.r.o.): nádorové markery: CEA 8,2 µg/l ↑, CYFRA 21-1 6,4 µg/l ↑, NSE 14,1 µg/l; mimo normu: Hemoglobin 128 g/l ↓, Glukóza 8,4 mmol/l ↑, CRP 12 mg/l ↑",
    "status": "conflict",
    "citations": [
     {
@@ -446,7 +446,7 @@ export const NOVAK: Case = {
     }
    ],
    "sourceDate": "2026-09-08",
-   "note": "Uvedené všetky nádorové markery (CEA, CYFRA 21-1, NSE), nielen zvýšené.",
+   "note": "Uvedeny všechny nádorové markery (CEA, CYFRA 21-1, NSE), nejen zvýšené.",
    "conflict": {
     "a": {
      "value": "Rodné číslo: 660314/1243",
@@ -462,14 +462,14 @@ export const NOVAK: Case = {
       "quote": "RČ 660314/1234"
      }
     },
-    "explain": "Správa 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má iné rodné číslo (660314/1234) ako ostatné správy (660314/1243). Overiť, či patrí tomuto pacientovi – dovtedy jej údaje nepoužívať ako fakt."
+    "explain": "Zpráva 04 (Výsledky laboratorního vyšetření, 8. 9. 2026) má jiné rodné číslo (660314/1234) než ostatní zprávy (660314/1243). Ověřte, zda patří tomuto pacientovi – do té doby její údaje nepoužívat jako fakt."
    }
   },
   {
    "key": "histology",
-   "label": "Histológia (výsledok biopsie)",
+   "label": "Histologie",
    "group": "Histológia",
-   "value": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. · vydané 23. 9. 2026",
+   "value": "Adenokarcinom plic (TTF-1 pozitivní), metastázy v uzlinách 4R a 10R. · vydáno 23. 9. 2026",
    "status": "proposed",
    "citations": [
     {
@@ -482,16 +482,16 @@ export const NOVAK: Case = {
     }
    ],
    "sourceDate": "2026-09-23",
-   "note": "Chýba avizovaný dodatok (EGFR, ALK, ROS1, PD-L1).",
+   "note": "Chybí avizovaný dodatek (EGFR, ALK, ROS1, PD-L1).",
    "request": {
     "to": "KOC Nemocnice Lipová – Ústav patologie",
     "channel": "e-mail",
-    "draft": "Dobrý deň, pred konzíliom 22. 10. 2026 prosíme o zaslanie dodatku (EGFR, ALK, ROS1, PD-L1) k vyšetreniu B-2026/14388 – Josef Novák. Ďakujeme, koordinátor KOC."
+    "draft": "Dobrý den, před konziliem 22. 10. 2026 prosíme o zaslání dodatku (EGFR, ALK, ROS1, PD-L1) k vyšetření B-2026/14388 – Josef Novák. Děkujeme, koordinátor KOC."
    }
   },
   {
    "key": "other",
-   "label": "Iné dôležité a želania pacienta",
+   "label": "Jiná důležitá sdělení a přání pacienta",
    "group": "Iné",
    "value": "Pacient je o diagnóze informován a přeje si, aby informace o léčbě dostávala i manželka. Kontaktní osoba: Marie Nováková (manželka), tel. +420 603 000 119.",
    "status": "proposed",
@@ -511,9 +511,9 @@ export const NOVAK: Case = {
  "steps": [
   {
    "id": "rtg",
-   "title": "RTG hrudníka",
-   "place": "Nemocnica Podhájí – rádiológia",
-   "owner": "rádiológia Nemocnice Podhájí",
+   "title": "RTG hrudníku",
+   "place": "Nemocnice Podhájí – radiologie",
+   "owner": "radiologie Nemocnice Podhájí",
    "due": "2026-08-26",
    "state": "delivered",
    "history": [
@@ -530,9 +530,9 @@ export const NOVAK: Case = {
   },
   {
    "id": "ct",
-   "title": "CT hrudníka a horného brucha",
-   "place": "Nemocnica Podhájí – rádiológia",
-   "owner": "rádiológia Nemocnice Podhájí",
+   "title": "CT hrudníku a horního břicha",
+   "place": "Nemocnice Podhájí – radiologie",
+   "owner": "radiologie Nemocnice Podhájí",
    "due": "2026-09-10",
    "state": "delivered",
    "history": [
@@ -549,9 +549,9 @@ export const NOVAK: Case = {
   },
   {
    "id": "bronch",
-   "title": "Bronchoskopia s EBUS-TBNA",
-   "place": "KOC 2 · Nemocnica Lipová – bronchológia",
-   "owner": "bronchológia KOC 2",
+   "title": "Bronchoskopie s EBUS-TBNA",
+   "place": "KOC 2 · Nemocnice Lipová – bronchologie",
+   "owner": "bronchologie KOC 2",
    "due": "2026-09-17",
    "state": "delivered",
    "history": [
@@ -568,9 +568,9 @@ export const NOVAK: Case = {
   },
   {
    "id": "histology",
-   "title": "Histológia (výsledok biopsie)",
-   "place": "KOC 2 · Nemocnica Lipová – patológia",
-   "owner": "patológia KOC 2",
+   "title": "Histologie (výsledek biopsie)",
+   "place": "KOC 2 · Nemocnice Lipová – patologie",
+   "owner": "patologie KOC 2",
    "due": "2026-09-23",
    "state": "delivered",
    "history": [
@@ -587,9 +587,9 @@ export const NOVAK: Case = {
   },
   {
    "id": "pet",
-   "title": "PET/CT celotelové",
-   "place": "KOC 1 · Nemocnica Severní – nukleárna medicína",
-   "owner": "nukleárna medicína KOC 1",
+   "title": "PET/CT celotělové",
+   "place": "KOC 1 · Nemocnice Severní – nukleární medicína",
+   "owner": "nukleární medicína KOC 1",
    "due": "2026-10-01",
    "state": "delivered",
    "history": [
@@ -606,9 +606,9 @@ export const NOVAK: Case = {
   },
   {
    "id": "markers",
-   "title": "Dodatok k histológii: EGFR, ALK, ROS1, PD-L1",
-   "place": "KOC 2 · Nemocnica Lipová – patológia",
-   "owner": "patológia KOC 2",
+   "title": "Dodatek k histologii: EGFR, ALK, ROS1, PD-L1",
+   "place": "KOC 2 · Nemocnice Lipová – patologie",
+   "owner": "patologie KOC 2",
    "due": "2026-10-21",
    "state": "ordered",
    "history": [
@@ -620,9 +620,9 @@ export const NOVAK: Case = {
   },
   {
    "id": "mdt",
-   "title": "Konzílium (MDT)",
-   "place": "KOC 2 · Nemocnica Lipová",
-   "owner": "ja (koordinátor) – podklad",
+   "title": "MDT (multidisciplinární tým)",
+   "place": "KOC 2 · Nemocnice Lipová",
+   "owner": "já (koordinátorka) – podklad",
    "due": "2026-10-22",
    "state": "ordered",
    "history": [
@@ -814,8 +814,8 @@ export const NOVAK: Case = {
  "docs": [
   {
    "id": "N-01",
-   "title": "Praktická lekárka – žiadosť o vyšetrenie u pneumológa",
-   "place": "Ordinácia praktického lekára, Benešov",
+   "title": "Praktická lékařka – žádost o vyšetření u pneumologa",
+   "place": "Ordinace praktického lékaře, Benešov",
    "kind": "report",
    "examDate": "2026-08-24",
    "receivedAt": "2026-10-07",
@@ -824,8 +824,8 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-02",
-   "title": "RTG hrudníka",
-   "place": "Nemocnica Podhájí – rádiológia",
+   "title": "RTG hrudníku",
+   "place": "Nemocnice Podhájí – radiologie",
    "kind": "result",
    "examDate": "2026-08-26",
    "receivedAt": "2026-10-07",
@@ -834,8 +834,8 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-03",
-   "title": "Pneumológ – vstupné vyšetrenie",
-   "place": "Nemocnica Podhájí – pľúcna ambulancia",
+   "title": "Pneumolog – vstupní vyšetření",
+   "place": "Nemocnice Podhájí – plicní ambulance",
    "kind": "report",
    "examDate": "2026-09-03",
    "receivedAt": "2026-10-07",
@@ -844,7 +844,7 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-04",
-   "title": "Laboratórium a nádorové markery",
+   "title": "Laboratoř a nádorové markery",
    "place": "Laboratoř LabPodhájí s.r.o.",
    "kind": "result",
    "examDate": "2026-09-08",
@@ -854,8 +854,8 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-05",
-   "title": "CT hrudníka a horného brucha",
-   "place": "Nemocnica Podhájí – rádiológia",
+   "title": "CT hrudníku a horního břicha",
+   "place": "Nemocnice Podhájí – radiologie",
    "kind": "result",
    "examDate": "2026-09-10",
    "receivedAt": "2026-10-07",
@@ -864,8 +864,8 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-06",
-   "title": "Bronchoskopia s EBUS-TBNA – protokol",
-   "place": "KOC 2 · Nemocnica Lipová – bronchológia",
+   "title": "Bronchoskopie s EBUS-TBNA – protokol",
+   "place": "KOC 2 · Nemocnice Lipová – bronchologie",
    "kind": "report",
    "examDate": "2026-09-17",
    "receivedAt": "2026-10-07",
@@ -874,8 +874,8 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-07",
-   "title": "Histológia – bioptický nález",
-   "place": "KOC 2 · Nemocnica Lipová – patológia",
+   "title": "Histologie – bioptický nález",
+   "place": "KOC 2 · Nemocnice Lipová – patologie",
    "kind": "result",
    "examDate": "2026-09-23",
    "receivedAt": "2026-10-07",
@@ -884,8 +884,8 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-08",
-   "title": "PET/CT celotelové",
-   "place": "KOC 1 · Nemocnica Severní – nukleárna medicína",
+   "title": "PET/CT celotělové",
+   "place": "KOC 1 · Nemocnice Severní – nukleární medicína",
    "kind": "result",
    "examDate": "2026-10-01",
    "receivedAt": "2026-10-07",
@@ -894,8 +894,8 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-09",
-   "title": "Žiadosť pneumológa o prevzatie do KOC (epikríza)",
-   "place": "Nemocnica Podhájí – pľúcna ambulancia",
+   "title": "Žádost pneumologa o převzetí do KOC (epikríza)",
+   "place": "Nemocnice Podhájí – plicní ambulance",
    "kind": "request",
    "examDate": "2026-10-07",
    "receivedAt": "2026-10-07",
@@ -904,8 +904,8 @@ export const NOVAK: Case = {
   },
   {
    "id": "N-10",
-   "title": "Nutričná ambulancia – skríning",
-   "place": "KOC 2 · Nemocnica Lipová – nutričná ambulancia",
+   "title": "Nutriční ambulance – screening",
+   "place": "KOC 2 · Nemocnice Lipová – nutriční ambulance",
    "kind": "report",
    "examDate": "2026-10-27",
    "receivedAt": "2026-10-27",
@@ -916,21 +916,21 @@ export const NOVAK: Case = {
  "log": [
   {
    "date": "2026-10-07",
-   "action": "Prevzatá žiadosť pneumológa o prevzatie do KOC",
-   "detail": "Správa N-09 s výsledkami v prílohe (RTG, laboratórium, CT, bronchoskopia, histológia, PET/CT). Založený prípad, spustené hodiny cesty.",
+   "action": "Převzata žádost pneumologa o převzetí do KOC",
+   "detail": "Zpráva N-09 s výsledky v příloze (RTG, laboratoř, CT, bronchoskopie, histologie, PET/CT). Založen případ, počítají se dny od přijetí žádosti.",
    "billable": true
   },
   {
    "date": "2026-10-07",
-   "action": "Podklad predvyplnený strojovo",
-   "detail": "20 polí · 49/49 citátov doslova · 3 rozpory · v deme predpočítané, čaká na kontrolu človekom.",
+   "action": "Podklad předvyplněn strojově",
+   "detail": "20 polí · 49/49 citátů doslova · 3 rozpory · v demu předpočítáno, čeká na kontrolu člověkem.",
    "billable": false
   }
  ],
  "precheck": {
   "findings": [
    {
-    "text": "Žiadanka neuvádza výkonnostný stav – je v správe 03: „Výkonnostní stav ECOG 1.“.",
+    "text": "Žádanka neuvádí výkonnostní stav – je ve zprávě 03: „Výkonnostní stav ECOG 1.“.",
     "severity": "info"
    }
   ]
@@ -938,6 +938,6 @@ export const NOVAK: Case = {
  "reviewer": {
   "insurerCode": "111",
   "insurerName": "Všeobecná zdravotní pojišťovna ČR",
-  "note": "Pacient je poistencom VZP (111). Ak má súhrn dostať aj revízny lekár (chce to prezentácia VZP), išiel by revíznemu lekárovi VZP. Kanál v ČR nemáme overený, odoslanie je v prototype simulované."
+  "note": "Pacient je pojištěncem VZP (111). Pokud má souhrn dostat i revizní lékař (chce to prezentace VZP), šel by reviznímu lékaři VZP. Kanál v ČR nemáme ověřený, odeslání je v prototypu jen naznačeno."
  }
 };

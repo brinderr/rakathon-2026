@@ -2,7 +2,8 @@
 // screen does not depend on another agent's component API).
 import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
 import type { EffStatus } from './caseUtils';
-import { STATUS_LABEL } from './caseUtils';
+import { STATUS_LABEL, docLabel, isCallDoc } from './caseUtils';
+import { IcPhone } from './icons';
 
 export function Ring({ value, max, size = 64, stroke = 7, color = 'var(--mint)', track = 'rgba(17,24,39,.08)', children }:
   { value: number; max: number; size?: number; stroke?: number; color?: string; track?: string; children?: ReactNode }) {
@@ -61,11 +62,15 @@ export function Card({ title, aside, children, className = '', pad = true, id }:
   );
 }
 
+/** Link to the original: a report („zpráva 07“) or, for the coordinator's own phone note (id T-…), her record –
+ *  drawn differently so nobody mistakes it for a medical report. */
 export function SourceChip({ docId, onClick, active }: { docId: string; onClick?: () => void; active?: boolean }) {
+  const call = isCallDoc(docId);
   return (
-    <button type="button" className={`cs-src ${active ? 'is-active' : ''}`} onClick={(e) => { e.stopPropagation(); onClick?.(); }}
-      title={`Otvoriť originál správy ${docId}`}>
-      správa {docId}
+    <button type="button" className={`cs-src ${active ? 'is-active' : ''} ${call ? 'is-call' : ''}`} onClick={(e) => { e.stopPropagation(); onClick?.(); }}
+      title={call ? 'Otevřít záznam koordinátorky (telefonát) – není to lékařská zpráva' : `Otevřít originál zprávy ${docId}`}>
+      {call && <IcPhone size={12} />}
+      {docLabel(docId)}
     </button>
   );
 }

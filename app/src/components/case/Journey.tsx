@@ -14,9 +14,9 @@ function buildColumns(steps: PathStep[], mdtDate?: string): Col[] {
   const mdt = sorted.filter(isMdt);
   const after = sorted.filter((s) => !isMdt(s) && s.due > mdtDate);
   const cols: Col[] = [];
-  if (before.length) cols.push({ name: 'Diagnostika pred konzíliom', steps: before });
-  if (mdt.length) cols.push({ name: 'Konzílium', steps: mdt });
-  if (after.length) cols.push({ name: 'Po konzíliu', steps: after });
+  if (before.length) cols.push({ name: 'Diagnostika před MDT', steps: before });
+  if (mdt.length) cols.push({ name: 'MDT', steps: mdt });
+  if (after.length) cols.push({ name: 'Po MDT', steps: after });
   return cols;
 }
 
@@ -29,7 +29,7 @@ export function deliveryInfo(step: PathStep, asOf: string): { at?: string; late:
 function Segments({ state }: { state: StepState | null }) {
   const idx = state ? STEP_ORDER.indexOf(state) : -1;
   return (
-    <div className="cs-segs" aria-label={state ? `stav: ${SK_STEP[state]}` : 'ešte nevzniklo'}>
+    <div className="cs-segs" aria-label={state ? `stav: ${SK_STEP[state]}` : 'ještě nevzniklo'}>
       {STEP_ORDER.map((s, i) => (
         <span key={s} className={`cs-seg ${i <= idx ? 'is-on' : ''} ${i === idx ? 'is-cur' : ''}`} title={SK_STEP[s]}>
           <span className="cs-seg-bar" /><span className="cs-seg-l">{SK_STEP[s]}</span>
@@ -52,27 +52,27 @@ export function StepCard({ step, asOf, col, urgedAt, onOpenDoc, onUrge }:
       <div className="cs-step-top">
         <div className="cs-step-title">{step.title}</div>
         {done && !lateDone && <span className="cs-step-ok"><IcCheck size={14} /></span>}
-        {late > 0 && <span className="cs-step-late"><IcAlert size={13} /> mešká {late} {daysWord(late)}</span>}
-        {lateDone > 0 && <span className="cs-step-late is-after"><IcCheck size={13} /> {lateDone} {daysWord(lateDone)} po termíne</span>}
+        {late > 0 && <span className="cs-step-late"><IcAlert size={13} /> zpoždění {late} {daysWord(late)}</span>}
+        {lateDone > 0 && <span className="cs-step-late is-after"><IcCheck size={13} /> {lateDone} {daysWord(lateDone)} po termínu</span>}
       </div>
       <div className="cs-step-place"><IcPin size={13} /> {step.place}</div>
       <Segments state={state} />
       <div className="cs-step-foot">
-        <span className="cs-step-owner"><IcPerson size={13} /> {future ? 'ešte nevzniklo' : `na ťahu: ${step.owner}`}</span>
+        <span className="cs-step-owner"><IcPerson size={13} /> {future ? 'ještě nevzniklo' : `na tahu: ${step.owner}`}</span>
         <span className={`cs-step-due ${late ? 'is-late' : ''}`}>do {fmtShort(step.due)}</span>
       </div>
       {done && (
         <div className="cs-step-result">
-          výsledok {dl.at ? fmtShort(dl.at) : ''}
+          výsledek {dl.at ? fmtShort(dl.at) : ''}
           {step.resultDocId && <> · <SourceChip docId={step.resultDocId} onClick={() => onOpenDoc(step.resultDocId!)} /></>}
-          {lateDone > 0 && <span className="cs-step-after"> · {lateDone} {daysWord(lateDone)} po termíne{urgedAt ? ` · urgované ${fmtShort(urgedAt)}` : ''}</span>}
+          {lateDone > 0 && <span className="cs-step-after"> · {lateDone} {daysWord(lateDone)} po termínu{urgedAt ? ` · urgováno ${fmtShort(urgedAt)}` : ''}</span>}
         </div>
       )}
-      {!done && urgedAt && urgedAt <= asOf && <div className="cs-step-result cs-step-after">urgované {fmtShort(urgedAt)}</div>}
+      {!done && urgedAt && urgedAt <= asOf && <div className="cs-step-result cs-step-after">urgováno {fmtShort(urgedAt)}</div>}
       {late > 0 && onUrge && (
         <div className="cs-step-urge">
-          <Btn size="sm" variant="secondary" icon={<IcSend size={14} />} onClick={() => onUrge(step)} title={`Urgovať: ${step.place}`}>
-            {urgedAt && urgedAt <= asOf ? 'Urgovať znova' : 'Urgovať'}
+          <Btn size="sm" variant="secondary" icon={<IcSend size={14} />} onClick={() => onUrge(step)} title={`Urgovat: ${step.place}`}>
+            {urgedAt && urgedAt <= asOf ? 'Urgovat znovu' : 'Urgovat'}
           </Btn>
         </div>
       )}
@@ -117,7 +117,7 @@ export function Journey({ steps, asOf, mdtDate, urgedAt, onOpenDoc, onUrge }:
     return () => ro.disconnect();
   }, [cols, asOf]);
 
-  if (!steps.length) return <div className="cs-empty">Cesta zatiaľ nemá kroky.</div>;
+  if (!steps.length) return <div className="cs-empty">Cesta zatím nemá kroky.</div>;
   return (
     <div className="cs-journey" ref={wrapRef}>
       <svg className="cs-journey-lines" width={size.w} height={size.h} aria-hidden="true">
@@ -144,9 +144,9 @@ export function StepsStrip({ steps, asOf, onMore }: { steps: PathStep[]; asOf: s
         const st = stepStateAt(s, asOf);
         const late = stepLateDays(s, st, asOf);
         const lateDone = st === 'delivered' ? deliveryInfo(s, asOf).late : 0;
-        const label = late ? `mešká ${late} ${daysWord(late)}` : lateDone ? `výsledok · ${lateDone} ${daysWord(lateDone)} po termíne` : st ? SK_STEP[st] : 'ešte nie';
+        const label = late ? `zpoždění ${late} ${daysWord(late)}` : lateDone ? `výsledek · ${lateDone} ${daysWord(lateDone)} po termínu` : st ? SK_STEP[st] : 'ještě ne';
         return (
-          <button type="button" key={s.id} className={`cs-strip-item ${st === 'delivered' ? 'is-done' : ''} ${late ? 'is-late' : ''} ${lateDone ? 'is-latedone' : ''} ${st === null ? 'is-future' : ''}`} onClick={onMore} title={`${s.title} · ${st ? SK_STEP[st] : 'ešte nevzniklo'} · do ${fmtShort(s.due)}`}>
+          <button type="button" key={s.id} className={`cs-strip-item ${st === 'delivered' ? 'is-done' : ''} ${late ? 'is-late' : ''} ${lateDone ? 'is-latedone' : ''} ${st === null ? 'is-future' : ''}`} onClick={onMore} title={`${s.title} · ${st ? SK_STEP[st] : 'ještě nevzniklo'} · do ${fmtShort(s.due)}`}>
             <span className="cs-strip-n">{i + 1}</span>
             <span className="cs-strip-t">{s.title}</span>
             <span className="cs-strip-s">{label}</span>

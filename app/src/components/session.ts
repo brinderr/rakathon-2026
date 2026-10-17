@@ -14,8 +14,8 @@ export interface CaseSession {
   arrived: SourceDoc[];                      // documents that "arrived" in this session (e.g. report 14)
   sessionLog: LogEntry[];                    // log entries added in this session
   mdtConfirmedAt?: ISODate;                  // handover confirmed by the KOC doctor (simulation)
-  mdtConfirmedBy?: string;                   // who confirmed it (presenter from the MDT record, or „lekár KOC“)
-  acceptedAt?: ISODate;                      // a new referral taken over („Prevziať žiadosť“)
+  mdtConfirmedBy?: string;                   // who confirmed it (presenter from the MDT record, or „lékař KOC“)
+  acceptedAt?: ISODate;                      // a new referral taken over („Převzít žádost“)
   closedAt?: ISODate;                        // conclusion delivered to the GP and the case closed
 }
 
@@ -28,7 +28,7 @@ export interface SessionStore {
   get: (caseId: string) => CaseSession;
   update: (caseId: string, patch: SessionPatch) => void;
   reset: (caseId: string) => void;
-  /** Forgets the demo actions of every case („Začať demo odznova“). */
+  /** Forgets the demo actions of every case („Začít znovu“). */
   resetAll: () => void;
 }
 

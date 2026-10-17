@@ -127,3 +127,66 @@ _So 17. 10. 2026 ráno. Spojil som prácu troch agentov (mobil, doladenie dema, 
 **Desktop – nové:** 36b-kucera-prevzata · 41-vyziadane-spravy · 42-urgovat · 43-urgencia-koncept · 44-urgovane · 45-po-uzavreti-upozornenie · 46-upozornenie-koncept · 47-upozornenie-poslane · 48-lieky-po-26-10.
 **Mobil 390 × 844 @2x (prepísané):** m-00 … m-37 ako doteraz.
 **Mobil – nové:** m-33-novak-mdt · m-41-vyziadane-spravy · m-42-urgovat · m-45-upozornenie-hlavicka · m-45b-upozornenie-karta · m-46-upozornenie-koncept.
+
+---
+
+# 3. kolo – motor naživo, čeština, upratanie, telefonát ECOG
+
+_So 17. 10. 2026 okolo 06:00. Spojil som prácu troch agentov (A: obrazovka „Zpracování naživo“, B1: čeština rámu a dokumentov, B2: čeština prípadu a dát) a Maťove commity z noci (motor česky, mutácie „Zkuste to rozbít“, slepý test pacienta 3 a zovšeobecnené pravidlá po ňom, commit 97e5f92). Všetko nižšie je overené na jeho najnovšom motore._
+
+## 1. Príkazy
+
+| Príkaz | Výsledok |
+|---|---|
+| `npx tsc -b`, `npm run build` | **OK** (0 chýb) |
+| `npm run verify` | **OK, 100 %**: citáty **158/158** doslovne v správach, `✓ Všetko overené` (6 upozornení na 2-slovné citáty pri Josefovi, neblokujú). Zápis telefonátu (ECOG) sa vypíše zvlášť ako „vstup koordinátorky, neoveruje sa proti správam“. |
+| `npm run eval` (Alena) | **OK**: 20/20 polí · 17/17 pascí · 0 vymyslených · 73/73 citátov |
+| `npm run eval -- --case pacient-2` | **OK**: 20/20 polí · 13/13 pascí · 0 vymyslených · 49/49 citátov |
+| `npm run eval:mutations` (Maťov) | **OK**: 14/14 úprav bez chyby, 0 vymyslených hodnôt |
+| `node scripts/build-pacient2.mjs` | pregenerované `pacient2.gen.ts` a `eval.gen.ts` z Maťových nových výstupov |
+| `npm run lint` | 0 chýb, 27 upozornení (react-refresh, neškodné) |
+| Headless Chrome, produkčný build | 1440, 1280 aj 390 × 844: **žiadna chyba ani varovanie v konzole**, **žiadny vodorovný scroll**, kontrola slovenských slov na každej obrazovke: **0 nálezov** |
+| „Ukázka v 8 krocích“ | prejdená celá na 1440 (so všetkými úkonmi v krokoch) aj na 390, bez chyby |
+
+Eval prepíše v `public/data/eval-*.json` a `eval/vysledok-mutace.json` len čas behu – vrátil som ich na Maťovu verziu, jeho súbory (`src/ai`, `scripts/extract*`, `scripts/eval*`, `eval/`, `data-pacient-*`) som nemenil.
+
+## 2. Namerané čísla motora (`extractHandover`, beží v prehliadači, bez servera)
+
+| Situácia (Alena) | Vyplnené | Rozpory | Citáty doslova | Čas jedného prepočtu |
+|---|---|---|---|---|
+| len žiadanka 07 (2. 10.) | 15/20 | 0 | 24/24 | 6 ms |
+| po príchode všetkých 13 správ | 19/20 (chýba ECOG) | 2 (apixaban 18. 10. × výkon 12. 10.; histológia odber 20. 10. × vydaná 19. 10.) | 66/66 | 16–28 ms na každú správu |
+| prepínač „Stav k datu konzilia 21. 10.“ | 19/20, váha **65 kg** (nie 63 kg), správy 12 a 13 „po konziliu – mimo podklad“ | 2 | 64/64 | 17 ms |
+| + „Zapsat telefonát“ (ECOG 1) | **20/20** | 2 | 67/67 | 15 ms |
+| Zkuste to rozbít: iné RČ v správe 10 | 19/20 | **3** (nový: iné rodné číslo, obe citácie) | 68/68 | 30 ms |
+| Zkuste to rozbít: „kaudy“ namiesto „hlavy“ v CT 08 | 19/20 | **3** (nový: umiestnenie nálezu) | – | 27 ms |
+| oprava dátumu apixabanu / ECOG v 07 / zmazaná 11 | 19/20 · 20/20 · 18/20 | 1 · 2 · 1 | 64 · 67 · 61 | 15–16 ms (Node) |
+| Josef Novák, 10 správ | 20/20 | 3 (strana, alergia, cudzie RČ) + chýba dodatok EGFR/ALK | 46/46 | 7–8 ms |
+
+Čísla sú z headless Chrome na tomto Macu (produkčný build), na Maťovom najnovšom motore. Na inom notebooku sa ms môžu líšiť, poradie zostáva desiatky milisekúnd.
+
+## 3. Čo je hotové v tomto kole
+
+1. **Obrazovka „Zpracování naživo“ je zapojená do appky.** Odkazy `/#live`, `/#live/alena`, `/#live/novak`. V bočnom paneli (a v spodnej lište na mobile) je nová položka **„Zpracování“**. V hlavičke prípadu Aleny a Josefa je tlačidlo **„Zpracovat naživo“**, na obrazovke motora je **„Otevřít případ“**. Prepnutie pacienta je v adrese, takže tlačidlo „Späť“ v prehliadači funguje.
+2. **„Ukázka v 8 krocích“ je nanovo, podľa nového príbehu.** 1 Fronta → 2 Praktik pošle žádanku (Vložit ukázku → kontrola → Odeslat) → 3 Zpracování naživo (Přehrát příchod zpráv) → 4 Pasti a rozpory (apixaban, histologie) → 5 Zkuste to rozbít (Jiné rodné číslo ve zprávě 10) → 6 Chybí ECOG → Zapsat telefonát → Uložit do podkladu → 7 Stav k 21. 10. → Podklad pro konzilium (MDT_zapis) → 8 Závěr pro praktika → Odeslat → doručenka → Uzavřít případ. Texty krokov používajú skutočné názvy tlačidiel. Kroky 3–5 sú na tej istej obrazovke a jej stav medzi krokmi ostáva.
+3. **Čeština všade.** Maťov motor už píše česky, prevodník `components/live/cesky.ts` nechávam ako poistku (český text prejde bez zmeny). Josefove poznámky z motora boli v `pacient2.gen.ts` ešte po slovensky („Podľa označenia…“, „60 rokov“, „Chýba avizovaný dodatok“, tooltip modelu) – `build-pacient2.mjs` ich teraz prevedie cez ten istý prevodník, citáty nemení. Kontrola textu každej obrazovky (vrátane `title`, `aria-label`, `placeholder`) v prehliadači nenašla ani jedno slovenské slovo.
+4. **Drobné opravy:** zápis telefonátu na obrazovke motora má nadpis „Doslovně ze zápisu koordinátorky“ (nie „ze zprávy“) a odkaz „Zobrazit zápis“; nový nález motora `location-conflict` má český nadpis „Nesouhlasí umístění nálezu“; v závere pre praktika zmizla dvojitá bodka („27. 10..“); na mobile sa dlhé tlačidlo „Připravit zprávu pro psychiatrii a praktického lékaře“ zalomí.
+5. **Piata pripravená úprava v „Zkuste to rozbít“:** „Jiné umístění nádoru ve zprávě 08 (CT)“ (z Maťovho `public/data/mutace.json`, otestované `npm run eval:mutations`). Zmena strany/umiestnenia nádoru u Aleny teraz funguje.
+6. **README:** odkaz `/#live/…`, príkaz `eval:mutations`, priečinok `components/live`.
+7. Overené z kola B1/B2: vo fronte nie je „Moje bilance“ ani karta 20/20, len „den X od přijetí žádosti“ (bez 33-dňového cieľa a zahraničných lehôt); v Žiadanke nie je falošná 0,9 s kontrola súboru; štítok „ručně ověřeno“ sa nikde nezobrazuje; jediná poznámka je v pätičke „Prototyp · fiktivní data · odesílání je v prototypu simulované · není zdravotnický prostředek“; ECOG sa dopĺňa len „Zapsat telefonát“ s predvyplneným textom kapitána a zdrojom „telefonát · zapsala koordinátorka“, správa 14 neexistuje.
+
+## 4. Čo zostáva
+
+1. **Prípad Aleny (`#case/alena`) stále ukazuje ručne pripravené dáta** (`cases.ts`, `mode: 'manual'`), nie výstup motora. Motor beží naživo len na obrazovke „Zpracování naživo“. Telefonát zapísaný tam sa do prípadu neprenesie (prípad má vlastné „Zapsat telefonát“, ktoré sa prenesie do podkladu MDT aj záveru). Prepnúť prípad na motor + hromadné „Potvrdit ověřené“ je ďalší krok (tech lead: 1,5–2 h).
+2. **„Vyžádat 01–06“ jedným klikom a objednanie CT s meniteľným termínom** (bod E4 z kritického hodnotenia) nie sú urobené.
+3. **Slepý test (pacient 3)** – Maťove čísla (10/20 polí, 1/4 pascí pred úpravou pravidiel; po zovšeobecnení 20/20) v appke nie sú, sú v jeho `eval/` a v pitchu. Pacient 3 nie je v appke ako prípad.
+4. Podklad MDT u Aleny: „3 návrhy čekají na kontrolu“ – lekárovi KOC sa dá poslať až po ich potvrdení v prípade (krok 7 ukážky to hovorí).
+5. Na 1440 × 900 panel ukážky prekryje spodok stĺpca „Pasti a rozpory“, treba posunúť stránku. Rieši sa pri redizajne.
+6. V kóde zostali nepoužité komponenty `EvalCard` (karta presnosti už nie je na obrazovkách) a slovenské komentáre (nie sú v UI). `CONTRACT.md` stále hovorí o slovenčine a dánskych lehotách – je zastaraný, appka sa ním v týchto bodoch už neriadi.
+
+## 5. Screenshoty (`design/shots/`, 96 súborov)
+
+**Desktop 1440 (prepísané a nové):** 00-hledani · 01-fronta · 02 až 06 prípad Aleny · 07-podklad-mdt (stav k 21. 10., ECOG z telefonátu) · 08-zaver-praktik · 09/10/16 žiadanka · 11-zaver-odoslany · 12-pripad-pole-panel · 12b-pole-ecog-chyba · 13-ziadost-koncept · 13b-ziadost-odoslana · **13-telefonat-okno** · 14-pole-doplnene · 15-stav-k-konziliu · 17-rozpor-panel · 20-pripad-uzavrety · 27-fronta-uzavrety · 28 až 35 Josef · 36-kucera · 37-ukazka-8-krokov · 41 až 46 · 39/40 a live-1280-start (1280 px).
+**Motor naživo 1440:** live-1440-start · -all · -all-full · -field · -viewer · -pasti · -preset-rc · **-preset-kauda** · -edit · -mdt · -phone-okno · -phone · -novak.
+**Mobil 390 × 844 @2x:** m-00 až m-46 (rovnaké obrazovky) + **m-50 až m-57** (motor naživo: štart, po prehratí, polia, pasce, rozbiť, telefonát, Josef) + m-37b-ukazka-krok-3.
+**Zmazané (zastarané, slovenské UI alebo odstránené funkcie):** 02b/28b meranie, 18, 19, 21–26, 31, 36b, 38, 44, 45, 47, 48, d-01/d-02/d-12, live-390-*, m-00-hladanie, m-01b-fronta-bilancia, m-02b, m-03b, m-07b, m-08b. Sú v histórii gitu.

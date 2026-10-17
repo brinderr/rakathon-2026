@@ -6,7 +6,8 @@ export type Route =
   | { page: 'case'; caseId: string; tab?: 'prehlad' | 'podklad' | 'kroky' | 'dokumenty' | 'zaznam' }
   | { page: 'intake' }                 // GP side: referral pre-check before sending
   | { page: 'mdt'; caseId: string }     // printable MDT handover (VZP template MDT_zapis)
-  | { page: 'gp'; caseId: string };     // MDT conclusion for the GP + delivery receipt + revízny lekár
+  | { page: 'gp'; caseId: string }      // MDT conclusion for the GP + delivery receipt + revízny lekár
+  | { page: 'live'; caseId?: string };  // „Zpracování naživo“: the extractor runs in the browser on the reports
 
 export interface Nav { route: Route; go: (r: Route) => void; asOf: string; setAsOf: (d: string) => void }
 export const NavContext = createContext<Nav | null>(null);

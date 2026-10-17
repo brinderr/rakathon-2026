@@ -1,6 +1,6 @@
-// Root: owns the route, the "stav k dátumu" (asOf) and the per-case demo session (what the coordinator
+// Root: owns the route, the „stav k datu“ (asOf) and the per-case demo session (what the coordinator
 // did in this session), and renders Shell with the page for the route.
-// The route is mirrored in the URL hash (#case/alena, #case/alena/podklad, #mdt/alena, #gp/alena, #intake)
+// The route is mirrored in the URL hash (#case/alena, #case/alena/podklad, #mdt/alena, #gp/alena, #intake, #live/alena)
 // so a screen can be opened directly and the browser back button works.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NavContext, type Nav, type Route } from './nav';
@@ -12,6 +12,7 @@ import CaseView from './pages/CaseView';
 import Intake from './pages/Intake';
 import MdtDoc from './pages/MdtDoc';
 import GpReport from './pages/GpReport';
+import Live from './pages/Live';
 
 type CaseTab = NonNullable<Extract<Route, { page: 'case' }>['tab']>;
 const TABS: CaseTab[] = ['prehlad', 'podklad', 'kroky', 'dokumenty', 'zaznam'];
@@ -28,12 +29,15 @@ function routeToHash(r: Route): string {
       return `#mdt/${r.caseId}`;
     case 'gp':
       return `#gp/${r.caseId}`;
+    case 'live':
+      return r.caseId ? `#live/${r.caseId}` : '#live';
   }
 }
 
 function hashToRoute(hash: string): Route {
   const [page, caseId, tab] = hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
   if (page === 'intake') return { page: 'intake' };
+  if (page === 'live') return caseId ? { page: 'live', caseId } : { page: 'live' };
   if (caseId && (page === 'mdt' || page === 'gp')) return { page, caseId };
   if (caseId && page === 'case') {
     return TABS.includes(tab as CaseTab) ? { page: 'case', caseId, tab: tab as CaseTab } : { page: 'case', caseId };
@@ -55,6 +59,8 @@ function Page({ route }: { route: Route }) {
       return <MdtDoc key={route.caseId} />;
     case 'gp':
       return <GpReport key={route.caseId} />;
+    case 'live':
+      return <Live key={route.caseId ?? 'alena'} />;
   }
 }
 
@@ -69,7 +75,7 @@ export default function App() {
   const [sessions, setSessions] = useState<Record<string, CaseSession>>({});
   const routeRef = useRef(route);
 
-  /** Applies a route; the "stav k dátumu" slider is per patient, so it returns to today when the patient changes (R3 B11). */
+  /** Applies a route; the „stav k datu“ slider is per patient, so it returns to today when the patient changes (R3 B11). */
   const apply = useCallback((r: Route) => {
     if (caseIdOf(routeRef.current) !== caseIdOf(r)) setAsOf(DEMO_TODAY);
     routeRef.current = r;

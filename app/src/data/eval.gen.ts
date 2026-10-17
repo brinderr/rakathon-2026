@@ -56,11 +56,11 @@ export const EVAL_SUMMARY: EvalSummary = {
    "patient": "Alena P.",
    "topic": "pankreas",
    "file": "data/eval-alena.json",
-   "measuredAt": "2026-10-17T01:52:16.257Z",
+   "measuredAt": "2026-10-17T03:40:32.470Z",
    "extraction": {
     "mode": "rules+llm",
-    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
-    "generatedAt": "2026-10-17T00:06:56.877Z",
+    "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
+    "generatedAt": "2026-10-17T03:40:32.289Z",
     "promptVersion": "handover-v1"
    },
    "appShows": "manual",
@@ -71,10 +71,10 @@ export const EVAL_SUMMARY: EvalSummary = {
    "trapsTotal": 17,
    "inventedValues": 0,
    "fieldsWithoutVerifiedCitation": 0,
-   "citationsVerified": 72,
-   "citationsTotal": 72,
+   "citationsVerified": 73,
+   "citationsTotal": 73,
    "goldIntegrity": true,
-   "headline": "Na kontrolnej sade: 20/20 polí správne · 17/17 pascí zachytených · 0 vymyslených hodnôt · 72/72 citátov doslova v správach",
+   "headline": "Kontrolní sada: 20/20 položek správně · 17/17 pastí zachyceno · 0 vymyšlených hodnot · 73/73 citací doslova ve zprávách",
    "traps": [
     {
      "id": "ecog-missing",
@@ -167,13 +167,13 @@ export const EVAL_SUMMARY: EvalSummary = {
    "caseId": "novak",
    "evalCaseId": "pacient-2",
    "patient": "Josef N.",
-   "topic": "pľúca",
+   "topic": "plíce",
    "file": "data/eval-pacient-2.json",
-   "measuredAt": "2026-10-17T01:52:30.597Z",
+   "measuredAt": "2026-10-17T03:40:32.873Z",
    "extraction": {
     "mode": "rules+llm",
-    "model": "náhrada bez Azure kľúča – odpoveď z Claude Code na presne tento prompt (ostrý režim: Azure OpenAI EU)",
-    "generatedAt": "2026-10-17T00:03:41.238Z",
+    "model": "náhradní model bez Azure klíče – odpověď z Claude Code na přesně tento prompt (cílově Azure OpenAI v EU)",
+    "generatedAt": "2026-10-17T03:40:32.718Z",
     "promptVersion": "handover-v1"
    },
    "appShows": "this-extraction",
@@ -187,7 +187,7 @@ export const EVAL_SUMMARY: EvalSummary = {
    "citationsVerified": 49,
    "citationsTotal": 49,
    "goldIntegrity": true,
-   "headline": "Na kontrolnej sade: 20/20 polí správne · 13/13 pascí zachytených · 0 vymyslených hodnôt · 49/49 citátov doslova v správach",
+   "headline": "Kontrolní sada: 20/20 položek správně · 13/13 pastí zachyceno · 0 vymyšlených hodnot · 49/49 citací doslova ve zprávách",
    "traps": [
     {
      "id": "side-conflict",
@@ -265,8 +265,8 @@ export const EVAL_SUMMARY: EvalSummary = {
   "trapsTotal": 30,
   "inventedValues": 0,
   "fieldsWithoutVerifiedCitation": 0,
-  "citationsVerified": 121,
-  "citationsTotal": 121,
+  "citationsVerified": 122,
+  "citationsTotal": 122,
   "allGoldIntact": true,
   "allInSync": true
  },
@@ -292,28 +292,28 @@ export const EVAL_SUMMARY: EvalSummary = {
    },
    {
     "field": "epicrisis",
-    "label": "Priebeh ochorenia v skratke",
+    "label": "Průběh onemocnění ve zkratce",
     "aiValue": "63letá pacientka se 3 měsíce trvajícími bolestmi břicha a úbytkem hmotnosti 8 kg.",
     "accepted": false,
     "reason": "AI návrh zamietnutý: čísla bez opory v citáte: 3, 8 – použitý text priamo zo správy"
    },
    {
     "field": "mdtQuestion",
-    "label": "Otázka pre konzílium",
+    "label": "Otázka pro konzilium",
     "aiValue": "Převzetí do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT.",
     "accepted": true,
     "reason": "prijaté – citát aj čísla overené"
    },
    {
     "field": "symptoms",
-    "label": "Príznaky a ich začiatok",
+    "label": "Příznaky a jejich začátek",
     "aiValue": "Klidová bolest NRS 6/10, průlomová bolest po jídle a v noci NRS 8/10.",
     "accepted": false,
     "reason": "AI návrh zamietnutý: žiadny overený citát – použitý text priamo zo správy"
    },
    {
     "field": "other",
-    "label": "Iné dôležité a želania pacientky",
+    "label": "Jiná důležitá sdělení a přání pacientky",
     "aiValue": "Pacientka si nepřeje chemoterapii a žádá paliativní péči.",
     "accepted": false,
     "reason": "AI návrh zamietnutý: žiadny overený citát – použitý text priamo zo správy"
@@ -325,10 +325,10 @@ export const EVAL_SUMMARY: EvalSummary = {
   "Bez kľúča k Azure OpenAI v pracovnom prostredí odpovedal na presne tú istú pseudonymizovanú požiadavku náhradný model (vidno v poli model); s kľúčom v app/.env stačí spustiť npm run extract a odpoveď sa nahrá nanovo."
  ],
  "sources": {
-  "public/data/extracted-pacient-2.json": "2026-10-17T00:03:41.238Z",
-  "public/data/eval-alena.json": "2026-10-17T01:52:16.257Z",
-  "public/data/extracted-alena.json": "2026-10-17T00:06:56.877Z",
-  "public/data/eval-pacient-2.json": "2026-10-17T01:52:30.597Z",
+  "public/data/extracted-pacient-2.json": "2026-10-17T03:40:32.718Z",
+  "public/data/eval-alena.json": "2026-10-17T03:40:32.470Z",
+  "public/data/extracted-alena.json": "2026-10-17T03:40:32.289Z",
+  "public/data/eval-pacient-2.json": "2026-10-17T03:40:32.873Z",
   "public/data/vysledok-test-halucinacii.json": "2026-10-17T00:01:38+00:00"
  }
 };

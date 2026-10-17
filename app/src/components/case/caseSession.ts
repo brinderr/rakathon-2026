@@ -8,7 +8,7 @@ import { effectiveField } from './caseUtils';
 
 export interface CaseSession {
   overrides: Record<string, FieldOverride>;
-  arrived: SourceDoc[];      // documents that "arrived" during the demo (simulated answers)
+  arrived: SourceDoc[];      // the coordinator's own records written during the demo (phone notes, id T-…) – never medical reports
   log: LogEntry[];           // coordinator actions done in this session
   closedAt?: ISODate;        // set by the screen that closes the case (optional)
   acceptedAt?: ISODate;      // a new referral taken over by the coordinator („Prevziať žiadosť“)

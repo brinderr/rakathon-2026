@@ -16,6 +16,15 @@
 .gpr-a__text { margin: 8px 0 0; font-size: 15.5px; line-height: 1.6; }
 .gpr-a__src { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
 
+/* the sample „MDT zaver“ word for word: headings as in the record, one paragraph per line */
+.gpr-zaver { margin-top: 10px; border: 1px solid var(--hair-2); border-radius: var(--r-md); padding: 16px 18px; background: var(--surface); }
+.gpr-zaver__title { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; margin-bottom: 6px; }
+.gpr-zaver__block { margin-top: 12px; }
+.gpr-zaver__block--plain:first-child { margin-top: 0; }
+.gpr-zaver__block--plain .gpr-zaver__line { color: var(--muted); font-size: 12.5px; }
+.gpr-zaver__h { font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+.gpr-zaver__line { margin: 0 0 4px; font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
+
 .gpr-foryou { margin-top: 24px; background: var(--pastel-2); border-radius: var(--r-lg); padding: 20px 22px; }
 .gpr-aside { display: block; margin-top: 6px; font-size: 12.5px; line-height: 1.45; color: var(--muted); }
 .gpr-running { margin: 0 0 14px; padding: 8px 12px; border-radius: 12px; background: var(--sky-soft); color: var(--sky-ink); line-height: 1.45; }

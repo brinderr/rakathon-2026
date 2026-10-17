@@ -1,7 +1,7 @@
-// „Podklad pre konzílium“ – printable document strictly along the VZP template MDT_zapis (7 sections).
-// Only data known by the chosen date (never later than the MDT date); every value has a footnote
-// (report, date, verbatim quote, grouped by report); missing values are shown in red as „nie je v dokumentácii“.
-// Copy per section, print/PDF, send to the KOC physician for confirmation (simulated).
+// „Podklad pro konzilium“ – printable document strictly along the VZP template MDT_zapis (7 sections).
+// Only data known by the chosen date (never later than the MDT date); every value is the verbatim sentence
+// of the report with a footnote (report, date), grouped by report; missing values are red „není v dokumentaci“.
+// Copy per section, print/PDF, send to the KOC physician for confirmation.
 import { useMemo, useState } from 'react';
 import { useNav } from '../nav';
 import { DEMO_TODAY } from '../types';
@@ -47,13 +47,13 @@ function ValueView({ v, sep }: { v: Val; sep?: boolean }) {
     <>
       {sep && <span className="paper-line__sep">·</span>}
       {v.prefix && <span className="doc-muted">{v.prefix} </span>}
-      <span className={v.missing ? 'doc-missing' : v.proposed ? 'doc-proposed' : undefined}>{v.text}</span>
+      <span className={v.missing ? 'doc-missing' : v.proposed ? 'doc-proposed' : undefined}>{v.verbatim ? `„${v.text}“` : v.text}</span>
       {v.n && <sup className="doc-sup">{v.n}</sup>}
-      {v.proposed && <span className="paper-proposed" title="Hodnotu ešte neskontroloval človek so zdrojom">návrh – nepotvrdený{v.ai ? ' · AI' : ''}</span>}
+      {v.proposed && <span className="paper-proposed" title="Hodnotu ještě nezkontroloval člověk se zdrojem">návrh – nepotvrzeno{v.ai ? ' · AI' : ''}</span>}
       {v.note && <span className="doc-faint doc-small"> ({v.note})</span>}
       {v.conflict && (
         <div className="paper-conflict">
-          Rozpor v dokumentácii – rozhodne konzílium: {v.conflict.a.value} (správa {v.conflict.a.citation.docId}) vs. {v.conflict.b.value} (správa {v.conflict.b.citation.docId}) · {v.conflict.explain}
+          Rozpor v dokumentaci – rozhodne konzilium: „{v.conflict.a.citation.quote}“ (zpráva {v.conflict.a.citation.docId}) vs. „{v.conflict.b.citation.quote}“ (zpráva {v.conflict.b.citation.docId}) · {v.conflict.explain}
         </div>
       )}
     </>
@@ -66,14 +66,14 @@ function SectionView({ s, copied, onCopy }: { s: Section; copied: boolean; onCop
       <div className="paper-sec__head">
         <h3 className="paper-sec__title"><span className="paper-sec__no">{s.no}</span>{s.title}</h3>
         <button type="button" className="doc-btn doc-btn--sm no-print" onClick={() => onCopy(s)}>
-          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />} {copied ? 'Skopírované' : 'Kopírovať'}
+          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />} {copied ? 'Zkopírováno' : 'Kopírovat'}
         </button>
       </div>
       {s.table && (
         <table className="paper-table">
           <thead><tr>{s.table.head.map(h => <th key={h}>{h}</th>)}</tr></thead>
           <tbody>
-            {s.table.rows.length === 0 && <tr><td colSpan={3} className="doc-missing">nie je v dokumentácii</td></tr>}
+            {s.table.rows.length === 0 && <tr><td colSpan={3} className="doc-missing">není v dokumentaci</td></tr>}
             {s.table.rows.map((r, ri) => (
               <tr key={ri}>{r.map((v, ci) => <td key={ci}><ValueView v={v} /></td>)}</tr>
             ))}
@@ -130,36 +130,36 @@ export default function MdtDoc() {
   function copyAll() { if (model) copyText(documentText(model)).then(() => flash('all')).catch(() => flash('all')); }
   function confirm() {
     if (!c || !model) return;
-    const who = presenter ?? 'lekár KOC';
-    // The confirmation is dated with the state it confirms („údaje známe k …“, never later than the MDT day).
+    const who = presenter ?? 'lékař KOC';
+    // The confirmation is dated with the state it confirms („údaje známé k …“, never later than the MDT day).
     // Demo time: on the MDT day in the morning, before the meeting; otherwise after the day's existing entries.
     const when = model.asOf;
     const time = nextDemoTime(when, when === c.mdtDate ? undefined : lastTimeOn(c.log, when));
     if (model.stats.proposed > 0) return; // a human checks every proposal first (QA R5 #3)
     act.confirmMdt(when, who);
     act.addLog({
-      date: when, time, action: 'Podklad pre konzílium potvrdený lekárom KOC',
-      detail: `${who} · ${cnt(model.stats.missing, 'údaj chýba', 'údaje chýbajú', 'údajov chýba')} · ${cnt(model.stats.conflicts, 'rozpor ponechaný', 'rozpory ponechané', 'rozporov ponechaných')} konzíliu (simulácia)`, billable: true,
+      date: when, time, action: 'Podklad pro konzilium potvrzen lékařem KOC',
+      detail: `${who} · ${cnt(model.stats.missing, 'údaj chybí', 'údaje chybějí', 'údajů chybí')} · ${cnt(model.stats.conflicts, 'rozpor ponechán', 'rozpory ponechány', 'rozporů ponecháno')} konziliu`, billable: true,
     });
   }
 
   if (!c || !model) {
     return (
       <div className="doc-page">
-        <DocHeader eyebrow="Podklad pre konzílium" title="Podklad pre konzílium" back={{ label: 'Späť na frontu', onClick: () => nav.go({ page: 'queue' }) }} />
-        <div className="doc-card doc-muted">{c ? 'Načítavam šablónu VZP…' : 'Prípad sa nenašiel.'}</div>
+        <DocHeader eyebrow="Podklad pro konzilium" title="Podklad pro konzilium" back={{ label: 'Zpět na frontu', onClick: () => nav.go({ page: 'queue' }) }} />
+        <div className="doc-card doc-muted">{c ? 'Načítám šablonu VZP…' : 'Případ se nenašel.'}</div>
       </div>
     );
   }
 
   const patient = `${c.patient.firstName} ${c.patient.lastName}`;
-  const mdtLabel = model.mdtDate ? fmtDate(model.mdtDate) : 'termín ešte nie je určený';
-  const presenterLabel = presenter ? `${presenter} (prezentuje prípad)` : 'lekár KOC';
+  const mdtLabel = model.mdtDate ? fmtDate(model.mdtDate) : 'termín ještě není určen';
+  const presenterLabel = presenter ? `${presenter} (prezentuje případ)` : 'lékař KOC';
   const { conflicts, missingLabels, proposed } = model.stats;
   const preConfirm = [
-    proposed > 0 ? cnt(proposed, 'návrh nie je potvrdený', 'návrhy nie sú potvrdené', 'návrhov nie je potvrdených') : '',
-    conflicts > 0 ? `${conflicts} ${conflicts === 1 ? 'rozpor označený' : conflicts < 5 ? 'rozpory označené' : 'rozporov označených'} pre konzílium` : '',
-    missingLabels.length ? `chýba: ${missingLabels.join(' · ')}` : '',
+    proposed > 0 ? cnt(proposed, 'návrh není potvrzen', 'návrhy nejsou potvrzeny', 'návrhů není potvrzeno') : '',
+    conflicts > 0 ? `${conflicts} ${conflicts === 1 ? 'rozpor označen' : conflicts < 5 ? 'rozpory označeny' : 'rozporů označeno'} pro konzilium` : '',
+    missingLabels.length ? `chybí: ${missingLabels.join(' · ')}` : '',
   ].filter(Boolean).join(' · ');
   const noteGroups = groupNotes(model.notes);
 
@@ -167,78 +167,78 @@ export default function MdtDoc() {
     <div className="doc-page mdt">
       <div className="no-print">
         <DocHeader
-          eyebrow="Podklad pre konzílium"
+          eyebrow="Podklad pro konzilium"
           title={patient}
           subtitle={<>
-            <span>{c.koc} · konzílium {mdtLabel}</span>
-            <span className="doc-pill doc-pill--sky">údaje známe k {fmtDate(model.asOf)}</span>
+            <span>{c.koc} · konzilium {mdtLabel}</span>
+            <span className="doc-pill doc-pill--sky">údaje známé k {fmtDate(model.asOf)}</span>
             {model.omittedDocs.length > 0 && (
-              <span className="doc-pill doc-pill--outline">správy po konzíliu sa nepoužili: {model.omittedDocs.map(d => d.id).join(', ')}</span>
+              <span className="doc-pill doc-pill--outline">zprávy po konziliu se nepoužily: {model.omittedDocs.map(d => d.id).join(', ')}</span>
             )}
           </>}
-          back={{ label: 'Späť na prípad', onClick: () => nav.go({ page: 'case', caseId: c.id, tab: 'podklad' }) }}
+          back={{ label: 'Zpět na případ', onClick: () => nav.go({ page: 'case', caseId: c.id, tab: 'podklad' }) }}
           actions={<>
             <button type="button" className="doc-btn" onClick={copyAll}>
-              {copied === 'all' ? <IconCheck size={15} /> : <IconCopy size={15} />} {copied === 'all' ? 'Skopírované' : 'Kopírovať celé'}
+              {copied === 'all' ? <IconCheck size={15} /> : <IconCopy size={15} />} {copied === 'all' ? 'Zkopírováno' : 'Kopírovat celé'}
             </button>
             {/* In the shared online demo (VITE_EMBED=1) the host frame blocks the print dialog, so the button is hidden there. */}
-            {import.meta.env.VITE_EMBED !== '1' && <button type="button" className="doc-btn" onClick={() => window.print()}><IconPrint size={15} /> Tlačiť / PDF</button>}
-            <button type="button" className="doc-btn" onClick={() => nav.go({ page: 'gp', caseId: c.id })} title="Záver konzília pre praktika s doručenkou (ďalší krok po konzíliu)">
-              Záver pre praktika <IconArrowRight size={15} />
+            {import.meta.env.VITE_EMBED !== '1' && <button type="button" className="doc-btn" onClick={() => window.print()}><IconPrint size={15} /> Tisk / PDF</button>}
+            <button type="button" className="doc-btn" onClick={() => nav.go({ page: 'gp', caseId: c.id })} title="Závěr konzilia pro praktika s doručenkou (další krok po konziliu)">
+              Závěr pro praktika <IconArrowRight size={15} />
             </button>
           </>}
         />
 
         <div className="mdt-bar">
           <div className="mdt-bar__stats">
-            <span className="doc-pill doc-pill--mint" title="Poznámky pod čiarou: doslovná veta zo správy, alebo odkaz na celú správu (napr. zhrnutie vyšetrenia)">
-              <IconCheck size={13} /> {cnt(model.stats.quoted, 'doslovný citát', 'doslovné citáty', 'doslovných citátov')} · {cnt(model.stats.refs, 'odkaz', 'odkazy', 'odkazov')} na celú správu
+            <span className="doc-pill doc-pill--mint" title="Poznámky pod čarou: doslovná věta ze zprávy, nebo odkaz na celou zprávu (např. shrnutí vyšetření)">
+              <IconCheck size={13} /> {cnt(model.stats.quoted, 'doslovný citát', 'doslovné citáty', 'doslovných citátů')} · {cnt(model.stats.refs, 'odkaz', 'odkazy', 'odkazů')} na celou zprávu
             </span>
-            <span className={`doc-pill ${model.stats.missing ? 'doc-pill--coral' : 'doc-pill--mint'}`}>chýba v dokumentácii: {model.stats.missing}</span>
-            {conflicts > 0 && <span className="doc-pill doc-pill--amber">{conflicts} {conflicts === 1 ? 'rozpor' : conflicts < 5 ? 'rozpory' : 'rozporov'}</span>}
-            {proposed > 0 && <span className="doc-pill doc-pill--amber">{cnt(proposed, 'návrh čaká', 'návrhy čakajú', 'návrhov čaká')} na kontrolu</span>}
-            <span className="doc-pill">{model.sections.length} častí podľa šablóny VZP „MDT_zapis“</span>
+            <span className={`doc-pill ${model.stats.missing ? 'doc-pill--coral' : 'doc-pill--mint'}`}>chybí v dokumentaci: {model.stats.missing}</span>
+            {conflicts > 0 && <span className="doc-pill doc-pill--amber">{conflicts} {conflicts === 1 ? 'rozpor' : conflicts < 5 ? 'rozpory' : 'rozporů'}</span>}
+            {proposed > 0 && <span className="doc-pill doc-pill--amber">{cnt(proposed, 'návrh čeká', 'návrhy čekají', 'návrhů čeká')} na kontrolu</span>}
+            <span className="doc-pill">{model.sections.length} částí podle šablony VZP „MDT_zapis“</span>
           </div>
           <div className="mdt-bar__confirm">
             {confirmed ? (
-              <span className="doc-pill doc-pill--mint"><IconCheck size={13} /> Potvrdil {presenterLabel} · {fmtDate(session.mdtConfirmedAt)} · simulácia</span>
+              <span className="doc-pill doc-pill--mint"><IconCheck size={13} /> Potvrdil {presenterLabel} · {fmtDate(session.mdtConfirmedAt)}</span>
             ) : proposed > 0 ? (
               // the doctor confirms only what a human has checked (QA R5 #3) – the way to the proposals is one click
               <>
-                <span className="doc-pill doc-pill--amber"><IconClock size={13} /> Poslať lekárovi: až po kontrole návrhov</span>
+                <span className="doc-pill doc-pill--amber"><IconClock size={13} /> Poslat lékaři: až po kontrole návrhů</span>
                 <button type="button" className="doc-btn doc-btn--primary" onClick={() => nav.go({ page: 'case', caseId: c.id })}>
-                  Najprv skontrolovať návrhy ({proposed}) <IconArrowRight size={15} />
+                  Nejprve zkontrolovat návrhy ({proposed}) <IconArrowRight size={15} />
                 </button>
               </>
             ) : (
               <>
-                <span className="doc-pill doc-pill--amber"><IconClock size={13} /> Potvrdenie lekárom KOC: čaká</span>
+                <span className="doc-pill doc-pill--amber"><IconClock size={13} /> Potvrzení lékařem KOC: čeká</span>
                 <button type="button" className="doc-btn doc-btn--primary" onClick={confirm}>
-                  <IconSend size={15} /> Poslať lekárovi KOC na potvrdenie (simulácia)
+                  <IconSend size={15} /> Poslat lékaři KOC k potvrzení
                 </button>
               </>
             )}
           </div>
         </div>
         {!confirmed && preConfirm && (
-          <p className="mdt-pre">Pred potvrdením: {preConfirm}. {proposed > 0 ? 'Návrhy sú v podklade označené „návrh – nepotvrdený“. ' : ''}Rozpory a chýbajúce údaje zostávajú v podklade označené – nič nedomýšľame.</p>
+          <p className="mdt-pre">Před potvrzením: {preConfirm}. {proposed > 0 ? 'Návrhy jsou v podkladu označeny „návrh – nepotvrzeno“. ' : ''}Rozpory a chybějící údaje zůstávají v podkladu označené – nic nedomýšlíme.</p>
         )}
         {confirmed && conflicts > 0 && (
-          <p className="mdt-pre">Rozpory ponechané na rozhodnutie konzília. Podklad je uzamknutý v tomto znení (simulácia).</p>
+          <p className="mdt-pre">Rozpory ponechány na rozhodnutí konzilia. Podklad je uzamčen v tomto znění.</p>
         )}
-        <p className="mdt-pre mdt-lang">Šablóna VZP je v češtine, hodnoty sú po slovensky, pôvodné vety zo správ sú v poznámkach pod čiarou.</p>
+        <p className="mdt-pre mdt-lang">Hodnoty jsou doslovné věty ze zpráv lékařů (v uvozovkách), číslo u hodnoty odkazuje na zprávu v poznámkách pod čarou. Nic není přeformulováno.</p>
       </div>
 
       <article className="paper mdt-print">
         <div className="paper__head">
           <div>
-            <div className="paper__org">{c.koc} · Komplexné onkologické centrum</div>
+            <div className="paper__org">{c.koc} · Komplexní onkologické centrum</div>
             <h2 className="paper__title">{model.title}</h2>
-            <div className="doc-small doc-muted" style={{ marginTop: 4 }}>Podklad pre konzílium {mdtLabel} · údaje známe k {fmtDate(model.asOf)} · šablóna VZP „MDT_zapis“</div>
+            <div className="doc-small doc-muted" style={{ marginTop: 4 }}>Podklad pro konzilium {mdtLabel} · údaje známé k {fmtDate(model.asOf)} · šablona VZP „MDT_zapis“</div>
           </div>
           <div className="paper__meta">
             <strong>{patient}</strong>
-            {c.patient.age} r. · {c.patient.sex} · ZP {c.patient.insurerCode}<br />
+            {c.patient.age} let · {c.patient.sex} · ZP {c.patient.insurerCode}<br />
             MDT {mdtLabel}
           </div>
         </div>
@@ -246,9 +246,9 @@ export default function MdtDoc() {
         {model.sections.map(s => <SectionView key={s.no} s={s} copied={copied === s.no} onCopy={copySection} />)}
 
         <div className="paper-notes">
-          <div className="paper-notes__title">Zdroje (poznámky pod čiarou, zoskupené po správach)</div>
+          <div className="paper-notes__title">Zdroje (poznámky pod čarou, seskupené podle zpráv)</div>
           {model.notes.length === 0 ? (
-            <div className="doc-faint doc-small">Žiadny údaj nemá zdroj.</div>
+            <div className="doc-faint doc-small">Žádný údaj nemá zdroj.</div>
           ) : (
             noteGroups.map(g => (
               <div className="paper-notes__group" key={g.key}>
@@ -258,7 +258,9 @@ export default function MdtDoc() {
                 <ol>
                   {g.notes.map(n => (
                     <li key={n.n} value={n.n}>
-                      {n.quote ? <q>{n.quote}</q> : <span className="doc-faint">{n.docId ? 'zhrnutie správy (bez doslovného citátu; plné znenie v prípade po kliknutí)' : 'prevzaté zo vzoru, nie zo správ pacienta'}</span>}
+                      {n.quote
+                        ? (n.verbatim ? <span className="doc-faint">doslovná věta ze zprávy (uvedena v podkladu v uvozovkách)</span> : <q>{n.quote}</q>)
+                        : <span className="doc-faint">{n.docId ? 'shrnutí zprávy (bez doslovného citátu; plné znění v případu po kliknutí)' : 'převzato ze vzoru, ne ze zpráv pacienta'}</span>}
                     </li>
                   ))}
                 </ol>
@@ -269,7 +271,7 @@ export default function MdtDoc() {
 
         <div className="paper__foot">
           <span>{PROTO_NOTE}</span>
-          <span>Stav údajov k {fmtDate(model.asOf)} · {confirmed ? `potvrdil ${presenterLabel} (simulácia)` : 'čaká na potvrdenie lekárom KOC'}</span>
+          <span>Stav údajů k {fmtDate(model.asOf)} · {confirmed ? `potvrdil ${presenterLabel}` : 'čeká na potvrzení lékařem KOC'}</span>
         </div>
       </article>
     </div>

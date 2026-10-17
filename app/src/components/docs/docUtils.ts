@@ -68,7 +68,7 @@ export function billableDays(c: Case): ISODate[] {
   return Array.from(new Set(c.log.filter(l => l.billable).map(l => l.date))).sort();
 }
 
-export const PROTO_NOTE = 'Prototyp · fiktívne dáta · nie je zdravotnícka pomôcka';
+export const PROTO_NOTE = 'Prototyp · fiktivní data · odesílání je v prototypu simulované · není zdravotnický prostředek';
 
 /** A value ready for display in a document, with its verbatim source. */
 export interface Resolved {
@@ -82,9 +82,11 @@ export interface Resolved {
   proposed?: boolean;
   /** …and it was written by the language model. */
   ai?: boolean;
+  /** The displayed text IS the verbatim quote of the report (the document never paraphrases). */
+  verbatim?: boolean;
 }
 
-export const MISSING = 'nie je v dokumentácii';
+export const MISSING = 'není v dokumentaci';
 
 /**
  * Resolves a handover field to the value known at `asOf`.

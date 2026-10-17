@@ -1,11 +1,11 @@
-// Laboratórium, Lieky, Vyšetrenia, Dokumenty, Záznam o koordinovaní – all filtered by the as-of date.
+// Laboratoř, Léky, Vyšetření, Dokumenty, Záznam o koordinaci – all filtered by the as-of date.
 import { useState, type ReactNode } from 'react';
 import type { Exam, LabRow, LogEntry, Medication, SourceDoc } from '../../types';
-import { SK_KIND, docDate, fmtDate, fmtShort, visibleLog } from './caseUtils';
+import { SK_KIND, docDate, fmtDate, fmtShort, isCallDoc, visibleLog } from './caseUtils';
 import { Card, Empty, Pill, SourceChip } from './ui';
-import { IcChevron, IcCheck, IcClock, IcDoc, IcSend } from './icons';
+import { IcChevron, IcCheck, IcClock, IcDoc, IcPhone, IcSend } from './icons';
 
-/* ---------- Laboratórium (one table, a column per sample; by default only out-of-range values and tumour markers) ---------- */
+/* ---------- Laboratoř (one table, a column per sample; by default only out-of-range values and tumour markers) ---------- */
 const isMarker = (test: string) => /CA ?19-9|CA ?125|CA ?15-3|CA ?72-4|\bCEA\b|\bAFP\b|\bPSA\b|\bNSE\b|HE4|marker/i.test(test);
 
 export function LabsCard({ labs, asOf, onOpenDoc }: { labs: LabRow[]; asOf: string; onOpenDoc: (docId: string, quote?: string) => void }) {
@@ -27,28 +27,28 @@ export function LabsCard({ labs, asOf, onOpenDoc }: { labs: LabRow[]; asOf: stri
   const shown = all || key.length === 0 ? tests : key;
   const byDate = (d: string) => rows.find((r) => r.date === d);
   return (
-    <Card title="Laboratórium" aside={
+    <Card title="Laboratoř" aside={
       <span className="cs-lab-dates">
-        {dates.map((d) => { const r = byDate(d); return r ? <span key={d} className="cs-lab-date">odber {fmtShort(d)} <SourceChip docId={r.docId} onClick={() => onOpenDoc(r.docId)} /></span> : null; })}
-        {hiddenDates > 0 && <span className="cs-hint">{hiddenDates} {hiddenDates === 1 ? 'odber' : 'odbery'} k dátumu skryté</span>}
+        {dates.map((d) => { const r = byDate(d); return r ? <span key={d} className="cs-lab-date">odběr {fmtShort(d)} <SourceChip docId={r.docId} onClick={() => onOpenDoc(r.docId)} /></span> : null; })}
+        {hiddenDates > 0 && <span className="cs-hint">{hiddenDates} {hiddenDates === 1 ? 'odběr' : 'odběry'} k datu skryté</span>}
       </span>
     }>
-      {!rows.length ? <Empty>K zvolenému dátumu nie sú laboratórne výsledky.</Empty> : (
+      {!rows.length ? <Empty>K zvolenému datu nejsou laboratorní výsledky.</Empty> : (
         <div className="cs-labs">
           <table className="cs-table cs-table-labs">
             <thead>
               <tr>
-                <th>Vyšetrenie</th>
+                <th>Vyšetření</th>
                 {dates.map((d) => <th key={d} className="r">{fmtShort(d)}</th>)}
                 <th>Jednotky</th>
-                <th>Ref. medze</th>
+                <th>Ref. meze</th>
               </tr>
             </thead>
             <tbody>
               {shown.map((t) => {
                 const newest = [...dates].reverse().map((d) => t.cells[d]).find(Boolean)!;
                 return (
-                  <tr key={t.test} className={isMarker(t.test) ? 'is-marker' : ''} onClick={() => onOpenDoc(newest.docId, `${t.test}\n${newest.value}`)} title="Otvoriť v origináli">
+                  <tr key={t.test} className={isMarker(t.test) ? 'is-marker' : ''} onClick={() => onOpenDoc(newest.docId, `${t.test}\n${newest.value}`)} title="Otevřít v originálu">
                     <td>{t.test}</td>
                     {dates.map((d) => {
                       const r = t.cells[d];
@@ -67,24 +67,24 @@ export function LabsCard({ labs, asOf, onOpenDoc }: { labs: LabRow[]; asOf: stri
           </table>
           {key.length > 0 && key.length < tests.length && (
             <button type="button" className="cs-more" onClick={() => setAll((v) => !v)}>
-              {all ? `Len mimo normy a onkomarkery (${key.length})` : `Zobraziť všetkých ${tests.length} vyšetrení`}
+              {all ? `Jen mimo normu a onkomarkery (${key.length})` : `Zobrazit všech ${tests.length} vyšetření`}
             </button>
           )}
-          <p className="cs-hint">H = nad medzou, L = pod medzou (ako ich označilo laboratórium). Hodnoty sú prepísané presne, názvy vyšetrení sú preložené. Je to výber – celé znenie nájdete v origináli (klik).</p>
+          <p className="cs-hint">H = nad mezí, L = pod mezí (jak je označila laboratoř). Hodnoty jsou přepsány přesně. Je to výběr – celé znění najdete v originálu (klik).</p>
         </div>
       )}
     </Card>
   );
 }
 
-/* ---------- Lieky ---------- */
+/* ---------- Léky ---------- */
 export function MedsCard({ meds, asOf, docsById, onOpenDoc }:
   { meds: Medication[]; asOf: string; docsById: Record<string, SourceDoc>; onOpenDoc: (docId: string, quote?: string) => void }) {
   const vis = meds.filter((m) => { const d = docsById[m.citation.docId]; return !d || docDate(d) <= asOf; });
   const hidden = meds.length - vis.length;
   return (
-    <Card title="Lieky" aside={<span className="cs-hint">ako v správe, s citátom{hidden ? ` · ${hidden} k dátumu skrytých` : ''}</span>}>
-      {!vis.length ? <Empty>K zvolenému dátumu nie je známa medikácia.</Empty> : (
+    <Card title="Léky" aside={<span className="cs-hint">jako ve zprávě, s citátem{hidden ? ` · ${hidden} k datu skrytých` : ''}</span>}>
+      {!vis.length ? <Empty>K zvolenému datu není známa medikace.</Empty> : (
         <ul className="cs-meds">
           {vis.map((m, i) => {
             const d = docsById[m.citation.docId];
@@ -105,17 +105,17 @@ export function MedsCard({ meds, asOf, docsById, onOpenDoc }:
           })}
         </ul>
       )}
-      <p className="cs-hint">Bez „dokedy“ – správy to neuvádzajú a nič nedomýšľame.</p>
+      <p className="cs-hint">Bez „dokdy“ – zprávy to neuvádějí a nic nedomýšlíme.</p>
     </Card>
   );
 }
 
-/* ---------- Vyšetrenia (časová os) ---------- */
+/* ---------- Vyšetření (časová osa) ---------- */
 export function ExamsCard({ exams, asOf, onOpenDoc }: { exams: Exam[]; asOf: string; onOpenDoc: (docId: string, quote?: string) => void }) {
   const vis = [...exams].sort((a, b) => (a.date < b.date ? -1 : 1));
-  if (!vis.length) return <Card title="Vyšetrenia"><Empty>Zatiaľ žiadne vyšetrenia.</Empty></Card>;
+  if (!vis.length) return <Card title="Vyšetření"><Empty>Zatím žádná vyšetření.</Empty></Card>;
   return (
-    <Card title="Vyšetrenia" aside={<span className="cs-hint">časová os · klik otvorí originál</span>}>
+    <Card title="Vyšetření" aside={<span className="cs-hint">časová osa · klik otevře originál</span>}>
       <ol className="cs-timeline">
         {vis.map((e, i) => {
           const future = e.date > asOf;
@@ -126,7 +126,7 @@ export function ExamsCard({ exams, asOf, onOpenDoc }: { exams: Exam[]; asOf: str
               <div className="cs-tl-date">{fmtShort(e.date)}</div>
               <div className="cs-tl-main">
                 <div className="cs-tl-type">{e.type}<span className="cs-tl-place"> · {e.place}</span></div>
-                <div className="cs-tl-sum">{future ? 'k zvolenému dátumu ešte neprebehlo' : e.summary}</div>
+                <div className="cs-tl-sum">{future ? 'k zvolenému datu ještě neproběhlo' : e.summary}</div>
               </div>
               <div className="cs-tl-side">{!future && <SourceChip docId={e.docId} onClick={() => onOpenDoc(e.docId, e.summary)} />}</div>
             </li>
@@ -138,11 +138,12 @@ export function ExamsCard({ exams, asOf, onOpenDoc }: { exams: Exam[]; asOf: str
 }
 
 /* ---------- Dokumenty ---------- */
-/** todo = nobody has been asked yet (goes to „Treba vyžiadať“, not to „Čakáme na“ – QA R5 #15). */
+/** todo = nobody has been asked yet (goes to „Je třeba vyžádat“, not to „Čekáme na“ – QA R5 #15). */
 export interface WaitingItem { label: string; detail: string; todo?: boolean }
 
-/** `after` = a card rendered between „Prijaté dokumenty“ and „Čakáme na“ (e.g. „Vyžiadané správy“).
- *  Reports received after the chosen date stay in the list but greyed out (README: „tie, ktoré prídu neskôr“). */
+/** `after` = a card rendered between „Přijaté dokumenty“ and „Čekáme na“ (e.g. „Vyžádané zprávy“).
+ *  Reports received after the chosen date stay in the list but greyed out. The coordinator's own phone notes
+ *  (id T-…) are listed too, marked as her records. */
 export function DocsList({ docs, asOf, waiting, onOpenDoc, after }:
   { docs: SourceDoc[]; asOf: string; waiting: WaitingItem[]; onOpenDoc: (docId: string) => void; after?: ReactNode }) {
   const sorted = [...docs].sort((a, b) => (docDate(a) < docDate(b) ? -1 : docDate(a) > docDate(b) ? 1 : a.id.localeCompare(b.id)));
@@ -150,46 +151,48 @@ export function DocsList({ docs, asOf, waiting, onOpenDoc, after }:
   const later = sorted.filter((d) => docDate(d) > asOf);
   const toAsk = waiting.filter((w) => w.todo);
   const waitingFor = waiting.filter((w) => !w.todo);
+  const meta = (d: SourceDoc) => isCallDoc(d.id)
+    ? `zapsala koordinátorka · telefonát ${fmtDate(d.examDate)} · není to lékařská zpráva`
+    : `${d.place} · ${SK_KIND[d.kind]} · vyšetření ${fmtDate(d.examDate)}`;
   return (
     <div className="cs-docs">
-      <Card title="Prijaté dokumenty" aside={<span className="cs-hint">{received.length} prijatých · {waitingFor.length} očakávame · k {fmtShort(asOf)}</span>}>
+      <Card title="Přijaté dokumenty" aside={<span className="cs-hint">{received.length} přijatých · {waitingFor.length} očekáváme · k {fmtShort(asOf)}</span>}>
         {received.length ? received.map((d) => (
           <div key={d.id} className="cs-docrow" role="button" tabIndex={0} onClick={() => onOpenDoc(d.id)}
             onKeyDown={(e) => { if (e.key === 'Enter') onOpenDoc(d.id); }}>
-            <span className="cs-docrow-ic"><IcDoc size={18} /></span>
-            <span className="cs-docrow-id">{d.id}</span>
+            <span className="cs-docrow-ic">{isCallDoc(d.id) ? <IcPhone size={18} /> : <IcDoc size={18} />}</span>
+            <span className="cs-docrow-id">{isCallDoc(d.id) ? 'tel.' : d.id}</span>
             <div className="cs-docrow-main">
               <div className="cs-docrow-title">{d.title}</div>
-              <div className="cs-docrow-meta">{d.place} · {SK_KIND[d.kind]} · vyšetrenie {fmtDate(d.examDate)}</div>
+              <div className="cs-docrow-meta">{meta(d)}</div>
             </div>
             <div className="cs-docrow-side">
-              <Pill tone="sky">{d.channel}</Pill>
-              <span className="cs-docrow-recv">prijaté {fmtShort(d.receivedAt)}</span>
+              <Pill tone={isCallDoc(d.id) ? 'amber' : 'sky'}>{isCallDoc(d.id) ? 'záznam koordinátorky' : d.channel}</Pill>
+              <span className="cs-docrow-recv">{isCallDoc(d.id) ? 'zapsáno' : 'přijato'} {fmtShort(d.receivedAt)}</span>
               <span className="cs-row-chev"><IcChevron size={16} /></span>
             </div>
           </div>
-        )) : <Empty>K zvolenému dátumu ešte nič neprišlo.</Empty>}
+        )) : <Empty>K zvolenému datu ještě nic nepřišlo.</Empty>}
         {later.length > 0 && (
           <>
-            <div className="cs-docs-later-head">Neskoršie správy · k {fmtShort(asOf)} ešte neprišli</div>
+            <div className="cs-docs-later-head">Pozdější zprávy · k {fmtShort(asOf)} ještě nepřišly</div>
             {later.map((d) => (
               <div key={d.id} className="cs-docrow is-future" aria-disabled="true">
-                <span className="cs-docrow-ic"><IcDoc size={18} /></span>
-                <span className="cs-docrow-id">{d.id}</span>
+                <span className="cs-docrow-ic">{isCallDoc(d.id) ? <IcPhone size={18} /> : <IcDoc size={18} />}</span>
+                <span className="cs-docrow-id">{isCallDoc(d.id) ? 'tel.' : d.id}</span>
                 <div className="cs-docrow-main">
                   <div className="cs-docrow-title">{d.title}</div>
-                  <div className="cs-docrow-meta">{d.place} · {SK_KIND[d.kind]} · vyšetrenie {fmtDate(d.examDate)}</div>
+                  <div className="cs-docrow-meta">{meta(d)}</div>
                 </div>
-                <div className="cs-docrow-side"><Pill tone="neutral">ešte neprišlo</Pill></div>
+                <div className="cs-docrow-side"><Pill tone="neutral">ještě nepřišlo</Pill></div>
               </div>
             ))}
           </>
         )}
-        <p className="cs-hint">Kanály a dátumy prijatia sú v deme simulované – zadanie ich neuvádza.</p>
       </Card>
       {after}
       {toAsk.length > 0 && (
-        <Card title="Treba vyžiadať" aside={<span className="cs-hint">chýba v správach, zatiaľ nikto nebol požiadaný</span>}>
+        <Card title="Je třeba vyžádat" aside={<span className="cs-hint">chybí ve zprávách, zatím nikdo nebyl požádán</span>}>
           <ul className="cs-wait">
             {toAsk.map((w, i) => (
               <li key={i} className="is-todo">
@@ -201,7 +204,7 @@ export function DocsList({ docs, asOf, waiting, onOpenDoc, after }:
         </Card>
       )}
       {waitingFor.length > 0 && (
-        <Card title="Čakáme na" aside={<span className="cs-hint">vyžiadané alebo objednané, ešte neprišlo</span>}>
+        <Card title="Čekáme na" aside={<span className="cs-hint">vyžádáno nebo objednáno, ještě nepřišlo</span>}>
           <ul className="cs-wait">
             {waitingFor.map((w, i) => (
               <li key={i}>
@@ -216,10 +219,8 @@ export function DocsList({ docs, asOf, waiting, onOpenDoc, after }:
   );
 }
 
-/* ---------- Záznam o koordinovaní ---------- */
-const CZK_PER_DAY = 250; // výkon 51887, najviac 1× denne na pacienta
-const czk = (n: number) => `${n.toLocaleString('sk-SK')} Kč`;
-
+/* ---------- Záznam o koordinaci ---------- */
+// Den se zásahem koordinátorky = podklad pro výkon 51887 (vykazuje nemocnice, uznává pojišťovna). Žádná bilance.
 export function LogCard({ log, asOf, onShowAll }: { log: LogEntry[]; asOf: string; onShowAll?: () => void }) {
   const vis = visibleLog(log, asOf);
   const days = Array.from(new Set(vis.map((e) => e.date))).sort();
@@ -227,19 +228,19 @@ export function LogCard({ log, asOf, onShowAll }: { log: LogEntry[]; asOf: strin
   const hidden = log.length - vis.length;
   const n = billableDays.length;
   return (
-    <Card title="Záznam o koordinovaní" aside={
+    <Card title="Záznam o koordinaci" aside={
       <span className="cs-log-sum">
-        <Pill tone="accent"><IcCheck size={13} /> {n} {n === 1 ? 'deň' : n <= 4 ? 'dni' : 'dní'} so zásahom = {czk(n * CZK_PER_DAY)}</Pill>
-        <span className="cs-hint">podklad pre vykázanie výkonu 51887 · vykazuje nemocnica, uznáva poisťovňa</span>
+        <Pill tone="accent"><IcCheck size={13} /> {n} {n === 1 ? 'den' : n <= 4 ? 'dny' : 'dní'} se zásahem</Pill>
+        <span className="cs-hint">podklad pro vykázání výkonu 51887 · vykazuje nemocnice, uznává pojišťovna</span>
       </span>
     }>
       {hidden > 0 && (
         <div className="cs-log-hidden">
-          {hidden} {hidden === 1 ? 'neskorší záznam' : hidden <= 4 ? 'neskoršie záznamy' : 'neskorších záznamov'} (po {fmtShort(asOf)}) {hidden === 1 ? 'je skrytý' : hidden <= 4 ? 'sú skryté' : 'je skrytých'} – posuňte „Stav k dátumu“.
-          {onShowAll && <button type="button" className="cs-link" onClick={onShowAll}>zobraziť všetko</button>}
+          {hidden} {hidden === 1 ? 'pozdější záznam' : hidden <= 4 ? 'pozdější záznamy' : 'pozdějších záznamů'} (po {fmtShort(asOf)}) {hidden === 1 ? 'je skrytý' : hidden <= 4 ? 'jsou skryté' : 'je skrytých'} – posuňte „Stav k datu“.
+          {onShowAll && <button type="button" className="cs-link" onClick={onShowAll}>zobrazit vše</button>}
         </div>
       )}
-      {!vis.length ? <Empty>Zatiaľ bez úkonov.</Empty> : (
+      {!vis.length ? <Empty>Zatím bez úkonů.</Empty> : (
         <div className="cs-log">
           {days.map((d) => {
             const items = vis.filter((e) => e.date === d);
@@ -248,7 +249,7 @@ export function LogCard({ log, asOf, onShowAll }: { log: LogEntry[]; asOf: strin
               <div key={d} className={`cs-log-day ${billable ? 'is-billable' : ''}`}>
                 <div className="cs-log-dayhead">
                   <strong>{fmtDate(d)}</strong>
-                  {billable ? <span className="cs-log-bill"><IcCheck size={12} /> deň so zásahom · {czk(CZK_PER_DAY)}</span> : <span className="cs-hint">bez zásahu koordinátora</span>}
+                  {billable ? <span className="cs-log-bill"><IcCheck size={12} /> den se zásahem</span> : <span className="cs-hint">bez zásahu koordinátorky</span>}
                 </div>
                 {items.map((e, i) => (
                   <div key={i} className="cs-log-item">
@@ -260,7 +261,7 @@ export function LogCard({ log, asOf, onShowAll }: { log: LogEntry[]; asOf: strin
               </div>
             );
           })}
-          <p className="cs-hint">Každý úkon sa zapíše sám. Deň so zásahom = podklad pre výkon 51887 ({czk(CZK_PER_DAY)} za intervenciu, ktorú uzná poisťovňa, najviac 1× denne). Časy a kanály úkonov sú v deme simulované.</p>
+          <p className="cs-hint">Každý úkon se zapíše sám. Den se zásahem = podklad pro výkon 51887 (intervence koordinátora, nejvýše 1× denně; uznává pojišťovna).</p>
         </div>
       )}
     </Card>
