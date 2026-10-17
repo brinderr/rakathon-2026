@@ -3,18 +3,15 @@
 // can build two sections at once without touching each other's files.
 import { useEffect, useMemo, useState } from 'react';
 import { DEFAULT_SECTION, SECTIONS } from './sections';
-import { liveCase } from './sections/pacient/live';
+import { useLiveCases } from './sections/pacient/live';
 import { Search } from './sections/pacient/Search';
-import { useCase } from './state/caseStore';
-import { DEMO_ID, demoCase } from './state/patients';
 import { Icon } from './ui/Icon';
 import { Mark } from './ui/Mark';
 
 const SOON = 'Připravujeme';
-/** The bell: open to-dos of the demo case, without those the coordinator already dealt with (system alerts come later). */
+/** The bell: open to-dos of all patients, without those the coordinator already dealt with; opens the overview. */
 function useOpenTasks(): number {
-  const st = useCase(DEMO_ID);
-  return liveCase(demoCase, st).steps.find((s) => s.status === 'now')?.todo?.length ?? 0;
+  return useLiveCases().reduce((n, x) => n + (x.data?.steps.find((s) => s.status === 'now')?.todo?.length ?? 0), 0);
 }
 
 function readRoute(): string[] {
@@ -61,7 +58,7 @@ export function App() {
         <header className="topbar">
           <Search />
           <div className="top-actions">
-            <a className="icon-btn" href="#/pacienti/alena/ukoly" aria-label={`Co je potřeba udělat (${openTasks})`}>
+            <a className="icon-btn" href="#/prehled" aria-label={`Co je potřeba udělat (${openTasks})`}>
               <Icon name="bell" />{openTasks > 0 && <span className="badge">{openTasks}</span>}
             </a>
           </div>
