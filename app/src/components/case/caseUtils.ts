@@ -154,13 +154,28 @@ export function quoteAsValue(q: string): string {
   return q.trim().replace(/[.;]$/, '');
 }
 
+/* ---------- grammar helpers ---------- */
+/** "pacientka / pacientku / pacientky" vs "pacient / pacienta / pacienta" – so no screen hard-codes the female form. */
+export function patientWords(sex: Case['patient']['sex']): { nom: string; acc: string; gen: string } {
+  return sex === 'muž' ? { nom: 'pacient', acc: 'pacienta', gen: 'pacienta' } : { nom: 'pacientka', acc: 'pacientku', gen: 'pacientky' };
+}
+
+/** Who produced the field's text (optional `origin` on HandoverField, added by the data/AI side; tolerant read). */
+export type FieldOrigin = 'manual' | 'rules' | 'ai';
+export function fieldOrigin(f: HandoverField): FieldOrigin | undefined {
+  const o = (f as HandoverField & { origin?: unknown }).origin;
+  return o === 'manual' || o === 'rules' || o === 'ai' ? o : undefined;
+}
+
 /* ---------- "as of" logic ---------- */
 export type EffStatus = FieldStatus | 'pending' | 'future';
 
+/** Demo actions of the coordinator on a field. A decision/confirmation never changes the field's value or citations. */
 export type FieldOverride =
   | { kind: 'pending'; to: string; channel: string; sentAt: ISODate; reason: 'missing' | 'conflict' }
   | { kind: 'resolved'; value: string; citation: Citation; docId: string; date: ISODate; note: string }
-  | { kind: 'decided'; value: string; citation: Citation; date: ISODate; note: string };
+  | { kind: 'decided'; which: 'a' | 'b'; by: string; date: ISODate; note: string }   // conflict verified by a human
+  | { kind: 'confirmed'; date: ISODate; note: string };                              // proposal checked against the source
 
 export interface EffField {
   field: HandoverField;
@@ -184,11 +199,16 @@ export function effectiveField(
   const base: EffField = {
     field: f, index, status: f.status, value: f.value, citations: f.citations, sourceDate: f.sourceDate, note: f.note, override: ov,
   };
-  if (ov?.kind === 'pending') return { ...base, status: 'pending', value: '', citations: [] };
-  if (ov?.kind === 'resolved' || ov?.kind === 'decided') {
+  if (ov?.kind === 'pending') {
+    // a conflict stays visible (both versions) while the clarification is on its way; the panel shows the pending box
+    if (ov.reason === 'conflict') return base;
+    return { ...base, status: 'pending', value: '', citations: [] };
+  }
+  if (ov?.kind === 'resolved') {
     if (ov.date > asOf) return { ...base, status: 'future', value: '', citations: [], sourceDate: ov.date };
     return { ...base, status: 'confirmed', value: ov.value, citations: [ov.citation], sourceDate: ov.date, note: ov.note };
   }
+  let out = base;
   if (f.sourceDate && f.sourceDate > asOf) {
     // newest citation whose document was already received by asOf
     const older = f.citations
@@ -197,14 +217,19 @@ export function effectiveField(
       .sort((a, b) => (docDate(b.d) > docDate(a.d) ? 1 : -1));
     if (older.length) {
       const { c, d } = older[0];
-      return {
+      out = {
         ...base, status: f.status === 'missing' ? 'missing' : 'confirmed', value: quoteAsValue(c.quote), citations: [c],
         sourceDate: docDate(d), asOfNote: `k ${fmtDate(asOf)} podľa správy ${c.docId} (${fmtShort(d.examDate)})`,
       };
+    } else {
+      out = { ...base, status: 'future', value: '', citations: [] };
     }
-    return { ...base, status: 'future', value: '', citations: [] };
   }
-  return base;
+  // a human verified the conflict / confirmed the proposal: value and citations stay, only the status and the note change
+  if ((ov?.kind === 'decided' || ov?.kind === 'confirmed') && ov.date <= asOf && (out.status === 'conflict' || out.status === 'proposed')) {
+    return { ...out, status: 'confirmed', note: out.note ? `${ov.note} · ${out.note}` : ov.note };
+  }
+  return out;
 }
 
 export function stepStateAt(step: PathStep, asOf: ISODate): StepState | null {

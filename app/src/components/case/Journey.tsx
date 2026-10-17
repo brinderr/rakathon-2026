@@ -1,6 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { PathStep, StepState } from '../../types';
-import { SK_STEP, STEP_ORDER, daysWord, fmtShort, stepLateDays, stepStateAt } from './caseUtils';
+import { SK_STEP, STEP_ORDER, daysBetween, daysWord, fmtShort, stepLateDays, stepStateAt } from './caseUtils';
 import { SourceChip } from './ui';
 import { IcAlert, IcCheck, IcPerson, IcPin } from './icons';
 
@@ -20,6 +20,12 @@ function buildColumns(steps: PathStep[], mdtDate?: string): Col[] {
   return cols;
 }
 
+/** When the result was delivered (by asOf) and how many days after the promised date. */
+export function deliveryInfo(step: PathStep, asOf: string): { at?: string; late: number } {
+  const at = step.history.find((h) => h.state === 'delivered' && h.date <= asOf)?.date;
+  return { at, late: at ? Math.max(0, daysBetween(step.due, at)) : 0 };
+}
+
 function Segments({ state }: { state: StepState | null }) {
   const idx = state ? STEP_ORDER.indexOf(state) : -1;
   return (
@@ -33,17 +39,21 @@ function Segments({ state }: { state: StepState | null }) {
   );
 }
 
-export function StepCard({ step, asOf, col, onOpenDoc }: { step: PathStep; asOf: string; col: number; onOpenDoc: (docId: string) => void }) {
+export function StepCard({ step, asOf, col, urgedAt, onOpenDoc }:
+  { step: PathStep; asOf: string; col: number; urgedAt?: string; onOpenDoc: (docId: string) => void }) {
   const state = stepStateAt(step, asOf);
   const late = stepLateDays(step, state, asOf);
   const future = state === null;
   const done = state === 'delivered';
+  const dl = deliveryInfo(step, asOf);
+  const lateDone = done ? dl.late : 0;
   return (
-    <div className={`cs-step ${late ? 'is-late' : ''} ${future ? 'is-future' : ''} ${done ? 'is-done' : ''}`} data-col={col}>
+    <div className={`cs-step ${late ? 'is-late' : ''} ${future ? 'is-future' : ''} ${done ? 'is-done' : ''} ${lateDone ? 'is-latedone' : ''}`} data-col={col}>
       <div className="cs-step-top">
         <div className="cs-step-title">{step.title}</div>
-        {done && <span className="cs-step-ok"><IcCheck size={14} /></span>}
+        {done && !lateDone && <span className="cs-step-ok"><IcCheck size={14} /></span>}
         {late > 0 && <span className="cs-step-late"><IcAlert size={13} /> mešká {late} {daysWord(late)}</span>}
+        {lateDone > 0 && <span className="cs-step-late is-after"><IcCheck size={13} /> {lateDone} {daysWord(lateDone)} po termíne</span>}
       </div>
       <div className="cs-step-place"><IcPin size={13} /> {step.place}</div>
       <Segments state={state} />
@@ -51,14 +61,20 @@ export function StepCard({ step, asOf, col, onOpenDoc }: { step: PathStep; asOf:
         <span className="cs-step-owner"><IcPerson size={13} /> {future ? 'ešte nevzniklo' : `na ťahu: ${step.owner}`}</span>
         <span className={`cs-step-due ${late ? 'is-late' : ''}`}>do {fmtShort(step.due)}</span>
       </div>
-      {step.resultDocId && done && (
-        <div className="cs-step-result">výsledok: <SourceChip docId={step.resultDocId} onClick={() => onOpenDoc(step.resultDocId!)} /></div>
+      {done && (
+        <div className="cs-step-result">
+          výsledok {dl.at ? fmtShort(dl.at) : ''}
+          {step.resultDocId && <> · <SourceChip docId={step.resultDocId} onClick={() => onOpenDoc(step.resultDocId!)} /></>}
+          {lateDone > 0 && <span className="cs-step-after"> · {lateDone} {daysWord(lateDone)} po termíne{urgedAt ? ` · urgované ${fmtShort(urgedAt)}` : ''}</span>}
+        </div>
       )}
+      {!done && urgedAt && urgedAt <= asOf && <div className="cs-step-result cs-step-after">urgované {fmtShort(urgedAt)}</div>}
     </div>
   );
 }
 
-export function Journey({ steps, asOf, mdtDate, onOpenDoc }: { steps: PathStep[]; asOf: string; mdtDate?: string; onOpenDoc: (docId: string) => void }) {
+export function Journey({ steps, asOf, mdtDate, urgedAt, onOpenDoc }:
+  { steps: PathStep[]; asOf: string; mdtDate?: string; urgedAt?: Record<string, string>; onOpenDoc: (docId: string) => void }) {
   const cols = useMemo(() => buildColumns(steps, mdtDate), [steps, mdtDate]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [paths, setPaths] = useState<string[]>([]);
@@ -104,7 +120,7 @@ export function Journey({ steps, asOf, mdtDate, onOpenDoc }: { steps: PathStep[]
         <div className="cs-col" key={col.name}>
           <div className="cs-col-name">{col.name}<span>{col.steps.length}</span></div>
           <div className="cs-col-cards">
-            {col.steps.map((s) => <StepCard key={s.id} step={s} asOf={asOf} col={ci} onOpenDoc={onOpenDoc} />)}
+            {col.steps.map((s) => <StepCard key={s.id} step={s} asOf={asOf} col={ci} urgedAt={urgedAt?.[s.id]} onOpenDoc={onOpenDoc} />)}
           </div>
         </div>
       ))}
@@ -120,11 +136,13 @@ export function StepsStrip({ steps, asOf, onMore }: { steps: PathStep[]; asOf: s
       {sorted.map((s, i) => {
         const st = stepStateAt(s, asOf);
         const late = stepLateDays(s, st, asOf);
+        const lateDone = st === 'delivered' ? deliveryInfo(s, asOf).late : 0;
+        const label = late ? `mešká ${late} ${daysWord(late)}` : lateDone ? `výsledok · ${lateDone} ${daysWord(lateDone)} po termíne` : st ? SK_STEP[st] : 'ešte nie';
         return (
-          <button type="button" key={s.id} className={`cs-strip-item ${st === 'delivered' ? 'is-done' : ''} ${late ? 'is-late' : ''} ${st === null ? 'is-future' : ''}`} onClick={onMore} title={`${s.title} · ${st ? SK_STEP[st] : 'ešte nevzniklo'} · do ${fmtShort(s.due)}`}>
+          <button type="button" key={s.id} className={`cs-strip-item ${st === 'delivered' ? 'is-done' : ''} ${late ? 'is-late' : ''} ${lateDone ? 'is-latedone' : ''} ${st === null ? 'is-future' : ''}`} onClick={onMore} title={`${s.title} · ${st ? SK_STEP[st] : 'ešte nevzniklo'} · do ${fmtShort(s.due)}`}>
             <span className="cs-strip-n">{i + 1}</span>
             <span className="cs-strip-t">{s.title}</span>
-            <span className="cs-strip-s">{late ? `mešká ${late} ${daysWord(late)}` : st ? SK_STEP[st] : 'ešte nie'}</span>
+            <span className="cs-strip-s">{label}</span>
           </button>
         );
       })}

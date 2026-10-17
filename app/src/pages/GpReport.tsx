@@ -1,10 +1,14 @@
 // „Záver pre praktika“: pôvodná otázka praktika → odpoveď konzília → „Čo to znamená pre vás, pán doktor“,
 // podpis/pečať nemocnice (§55a), odoslanie s doručenkou (simulované), smerovanie reviznému lekárovi ZP 211,
 // uzavretie prípadu so záznamom o koordinovaní (dni so zásahom = podklad pre výkon 51887).
+// Stránka ukazuje stav PO konzíliu – pri „dnes“ 19. 10. je to ukážka a hovorí to nahlas.
 import { useEffect, useMemo, useState } from 'react';
 import { useNav } from '../nav';
+import { DEMO_TODAY } from '../types';
+import type { LogEntry } from '../types';
 import { DocHeader } from '../components/docs/DocHeader';
 import { DeliveryTimeline } from '../components/docs/DeliveryTimeline';
+import { useCaseSessionSafe } from '../components/docs/useCaseSessionSafe';
 import type { DeliveryStep } from '../components/docs/DeliveryTimeline';
 import { addBusinessDays, addDays, billableDays, docById, findCase, fmtDate, PROTO_NOTE } from '../components/docs/docUtils';
 import { IconArrowDown, IconArrowRight, IconCheck, IconClock, IconFlag, IconList, IconQuote, IconSend, IconShield, IconStamp } from '../components/docs/DocIcons';
@@ -13,13 +17,25 @@ import './GpReport.css';
 
 type Stage = 'draft' | 'sending' | 'sent' | 'delivered' | 'confirmed' | 'closed';
 const CHANNEL = 'eZpráva';
-const FEE_PER_DAY = 250; // Kč, výkon 51887, vykazuje nemocnica
+const FEE_PER_DAY = 250; // Kč, výkon 51887 – za intervenciu uznanú poisťovňou, najviac 1× denne; vykazuje nemocnica
+const NL_BUSINESS_DAYS = 2; // holandský vzor (norma SONCOS): záver praktikovi do 2 pracovných dní; ČR lehotu neurčuje
+
+/** "16:40" + 1 minute → "16:41" */
+function plusMinute(t: string): string {
+  const m = t.match(/^(\d{1,2}):(\d{2})$/);
+  if (!m) return t;
+  const total = (Number(m[1]) * 60 + Number(m[2]) + 1) % (24 * 60);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+}
+const findLog = (log: LogEntry[], re: RegExp) => log.find(l => re.test(l.action));
 
 export default function GpReport() {
   const nav = useNav();
   const caseId = nav.route.page === 'gp' ? nav.route.caseId : undefined;
   const c = findCase(caseId);
-  const [stage, setStage] = useState<Stage>('draft');
+  // Shared demo session: a closed case stays closed in the queue and in the case header (R3 B6).
+  const [session, act] = useCaseSessionSafe(c?.id);
+  const [stage, setStage] = useState<Stage>(() => (session.closedAt ? 'closed' : 'draft'));
 
   // Simulated delivery receipt: odoslané → doručené → potvrdené
   useEffect(() => {
@@ -31,11 +47,28 @@ export default function GpReport() {
   }, [stage]);
 
   const mdt = c?.mdtDate ?? c?.receivedAt ?? '2026-10-21';
+  const rep = c?.gpReport;
+  const afterMdt = !!rep && mdt > DEMO_TODAY;
+
+  // The page shows the state after the MDT: move "stav k dátumu" to the MDT day so the case screens agree.
+  const { asOf, setAsOf } = nav;
+  useEffect(() => {
+    if (afterMdt && asOf < mdt) setAsOf(mdt);
+  }, [afterMdt, mdt, asOf, setAsOf]);
+
+  // Times come from the coordination record (one source of truth); fallbacks only when the record has no such entry.
+  const log = c?.log ?? [];
+  const sentEntry = findLog(log, /z[áa]ver odoslan/i);
+  const confirmEntry = findLog(log, /praktik potvrdil/i);
+  const reviewerEntry = findLog(log, /revízn|revizn/i);
+  const sentDate = sentEntry?.date ?? mdt;
+  const sentTime = sentEntry?.time ?? '16:40';
+  const lastLogDate = log.length ? [...log].map(l => l.date).sort()[log.length - 1] : mdt;
   const steps: DeliveryStep[] = useMemo(() => [
-    { label: 'Odoslané', detail: `${CHANNEL} · zapečatené nemocnicou`, time: `${fmtDate(mdt)} 16:40` },
-    { label: 'Doručené', detail: 'schránka ordinácie praktika', time: `${fmtDate(mdt)} 16:41` },
-    { label: 'Potvrdené', detail: 'praktik otvoril a potvrdil', time: `${fmtDate(addDays(mdt, 1))} 8:15` },
-  ], [mdt]);
+    { label: 'Odoslané', detail: `${CHANNEL} · zapečatené nemocnicou`, time: `${fmtDate(sentDate)} ${sentTime}` },
+    { label: 'Doručené', detail: 'schránka ordinácie praktika', time: `${fmtDate(sentDate)} ${plusMinute(sentTime)}` },
+    { label: 'Potvrdené', detail: 'praktik otvoril a potvrdil', time: confirmEntry ? `${fmtDate(confirmEntry.date)} ${confirmEntry.time ?? ''}`.trim() : `${fmtDate(addDays(sentDate, 1))} 8:15` },
+  ], [sentDate, sentTime, confirmEntry]);
   const reached = stage === 'sent' ? 0 : stage === 'delivered' ? 1 : stage === 'confirmed' || stage === 'closed' ? 2 : -1;
 
   if (!c) {
@@ -47,18 +80,34 @@ export default function GpReport() {
   }
 
   const gp = c.referringGp;
-  const rep = c.gpReport;
   const patient = `${c.patient.firstName} ${c.patient.lastName}`;
+  const female = c.patient.sex === 'žena';
+  const gpFemale = /á$/.test(gp.name.trim().split(/\s+/).pop() ?? ''); // „Šťastná“ → pani doktorka
   const reviewer = c.reviewer ?? { insurerCode: c.patient.insurerCode, insurerName: c.patient.insurerName, note: '' };
   const isVzp = reviewer.insurerCode === '111';
+  const insurerShort = reviewer.insurerName.replace(/^Zdravotní pojišťovna ministerstva vnitra ČR$/i, 'ZP MV ČR').replace(/^Všeobecná zdravotní pojišťovna ČR$/i, 'VZP ČR');
   const questionCite = rep?.citations.find(ci => docById(c, ci.docId)?.kind === 'request') ?? rep?.citations[0];
   const questionDoc = docById(c, questionCite?.docId);
   const answerDocs = Array.from(new Set((rep?.citations ?? []).map(ci => ci.docId)))
     .filter(id => id !== questionCite?.docId).map(id => docById(c, id)).filter((d): d is NonNullable<typeof d> => !!d);
-  const deadline = addBusinessDays(mdt, 2);
+  const deadline = addBusinessDays(mdt, NL_BUSINESS_DAYS);
   const days = billableDays(c);
   const sent = stage !== 'draft';
   const sealed = stage !== 'draft' && stage !== 'sending';
+  const done = stage === 'confirmed' || stage === 'closed';
+
+  // The record is complete only when the whole timeline is visible: move the slider to its last entry.
+  const openRecord = () => { setAsOf(lastLogDate); nav.go({ page: 'case', caseId: c.id, tab: 'zaznam' }); };
+  // The loop closes when the GP confirmed the delivery (from the record); the slider shows the whole record.
+  const closeDate = confirmEntry?.date ?? addDays(sentDate, 1);
+  const closeCase = () => {
+    setAsOf(lastLogDate);
+    setStage('closed');
+    if (!session.closedAt) {
+      act.addLog({ date: closeDate, time: confirmEntry?.time ? plusMinute(confirmEntry.time) : undefined, action: 'Prípad uzavretý', detail: `Záver doručený praktikovi, súhrn reviznému lekárovi ZP ${reviewer.insurerCode}. Záznam o koordinovaní: ${days.length} dní so zásahom (simulácia).`, billable: false });
+    }
+    act.close(closeDate);
+  };
 
   return (
     <div className="doc-page gpr">
@@ -73,6 +122,13 @@ export default function GpReport() {
         </>}
         back={{ label: 'Späť na prípad', onClick: () => nav.go({ page: 'case', caseId: c.id }) }}
       />
+
+      {afterMdt && (
+        <div className="doc-notice">
+          <IconClock size={15} />
+          <span>Ukážka stavu <strong>po konzíliu {fmtDate(mdt)}</strong> (dnes je {fmtDate(DEMO_TODAY)}). Zápis konzília je fiktívny podklad VZP „MDT zaver“.</span>
+        </div>
+      )}
 
       <div className="doc-grid">
         {/* ---------- The document ---------- */}
@@ -120,13 +176,13 @@ export default function GpReport() {
               </section>
 
               <section className="gpr-foryou">
-                <div className="gpr-foryou__title">Čo to znamená pre vás, pán doktor</div>
+                <div className="gpr-foryou__title">Čo to znamená pre vás, {gpFemale ? 'pani doktorka' : 'pán doktor'}</div>
                 <ul className="doc-list">
                   {rep.forYou.map((t, i) => (
                     <li key={i}><span className="doc-list__ico doc-list__ico--mint"><IconCheck size={15} /></span><span>{t}</span></li>
                   ))}
                 </ul>
-                <p className="doc-small doc-muted" style={{ margin: '12px 0 0' }}>Len to, čo je v zázname konzília a v správach. Nič domyslené.</p>
+                <p className="doc-small doc-muted" style={{ margin: '12px 0 0' }}>Len to, čo je v zázname konzília a v správach. Nič domyslené, žiadne vlastné odporúčanie liečby.</p>
               </section>
             </>
           )}
@@ -137,14 +193,14 @@ export default function GpReport() {
               <div className="gpr-sign__t">Podpis / pečať nemocnice</div>
               <div className="doc-small doc-muted">
                 {sealed
-                  ? <>Zapečatené v nemocničnom systéme · {fmtDate(mdt)} · <strong>simulované</strong></>
-                  : <>(§55a ods. 4 zák. 372/2011 Sb. – podpíše alebo zapečatí nemocnica, nie náš e-mail)</>}
+                  ? <>Zapečatené v nemocničnom systéme · {fmtDate(sentDate)} · <strong>simulované</strong></>
+                  : <>(§55a ods. 4 zák. 372/2011 Sb.: časové razítko a pečať nemocnice alebo uznávaný podpis zdravotníka – nie náš e-mail)</>}
               </div>
             </div>
             {sealed && <span className="doc-pill doc-pill--mint gpr-sign__pill"><IconCheck size={13} /> podpísané</span>}
           </section>
 
-          <div className="paper__foot"><span>{PROTO_NOTE}</span><span>Kópia: {gp.name}</span></div>
+          <div className="paper__foot"><span>{PROTO_NOTE}</span><span>Zdroj: zápis konzília {fmtDate(mdt)} · adresát {gp.name}</span></div>
         </article>
 
         {/* ---------- Rail ---------- */}
@@ -157,20 +213,21 @@ export default function GpReport() {
             {!sent ? (
               <>
                 <ul className="doc-list doc-small">
-                  <li><span className="doc-list__ico doc-list__ico--sky"><IconClock size={14} /></span><span>Lehota 2 pracovné dni od konzília: odoslať do <strong>{fmtDate(deadline)}</strong>.</span></li>
+                  <li><span className="doc-list__ico doc-list__ico--sky"><IconClock size={14} /></span><span>Cieľ podľa <strong>holandského vzoru</strong> (norma SONCOS): záver praktikovi do {NL_BUSINESS_DAYS} pracovných dní, teda do <strong>{fmtDate(deadline)}</strong>. V ČR takú lehotu predpis neurčuje.</span></li>
                   <li><span className="doc-list__ico doc-list__ico--accent"><IconSend size={14} /></span><span>Kanál {CHANNEL}, do schránky ordinácie. Praktik nepotrebuje žiadny účet.</span></li>
                 </ul>
                 <hr className="doc-hr" />
                 <button type="button" className="doc-btn doc-btn--primary doc-btn--lg doc-btn--block" onClick={() => setStage('sending')} disabled={!rep}>
                   <IconSend size={16} /> Odoslať
                 </button>
+                {!rep && <p className="doc-small doc-faint" style={{ margin: '10px 0 0', textAlign: 'center' }}>Odoslať bude možné po zápise z konzília.</p>}
               </>
             ) : (
               <>
-                <DeliveryTimeline steps={steps} reached={reached} inFlight={stage !== 'confirmed' && stage !== 'closed'} />
+                <DeliveryTimeline steps={steps} reached={reached} inFlight={!done} />
                 <p className="doc-small doc-muted" style={{ margin: '14px 0 0' }}>
-                  {stage === 'confirmed' || stage === 'closed'
-                    ? <>Odoslané v deň konzília, v lehote 2 pracovných dní (do {fmtDate(deadline)}). Doručenie doložené.</>
+                  {done
+                    ? <>Odoslané {fmtDate(sentDate)}, v cieli {NL_BUSINESS_DAYS} pracovných dní podľa holandského vzoru (do {fmtDate(deadline)}). Doručenie doložené (simulované).</>
                     : 'Čakám na doručenie…'}
                 </p>
               </>
@@ -180,10 +237,8 @@ export default function GpReport() {
           <div className="doc-card gpr-reviewer">
             <div className="doc-card__title"><IconShield size={16} /> Revízny lekár</div>
             <p className="gpr-reviewer__text">
-              Pacientka je poistená v <strong>{reviewer.insurerCode} – {reviewer.insurerName}</strong>{!isVzp && ' (nie VZP)'}
-              {' '}→ súhrn ide <strong>jej</strong> reviznému lekárovi <span className="doc-muted">(simulované)</span>.
+              ZP <strong>{reviewer.insurerCode}</strong> ({insurerShort}){isVzp ? '' : ', nie VZP'} → súhrn ide revíznemu lekárovi ZP {reviewer.insurerCode}.
             </p>
-            {reviewer.note && <p className="doc-small doc-muted" style={{ margin: '0 0 10px' }}>{reviewer.note}</p>}
             <div className="gpr-reviewer__items">
               <span className="doc-pill">diagnóza s kódom MKN-10</span>
               <span className="doc-pill">záver konzília</span>
@@ -191,18 +246,20 @@ export default function GpReport() {
             </div>
             <div className="gpr-reviewer__status">
               {sealed
-                ? <span className="doc-pill doc-pill--mint"><IconCheck size={13} /> súhrn odoslaný · {fmtDate(mdt)} · simulované</span>
-                : <span className="doc-pill doc-pill--outline"><IconClock size={13} /> odošle sa spolu so záverom</span>}
+                ? <span className="doc-pill doc-pill--mint"><IconCheck size={13} /> súhrn odoslaný · {fmtDate(reviewerEntry?.date ?? sentDate)} · simulované</span>
+                : <span className="doc-pill doc-pill--outline"><IconClock size={13} /> odošle sa spolu so záverom · simulované, kanál v ČR nie je overený</span>}
             </div>
           </div>
 
-          {(stage === 'confirmed' || stage === 'closed') && (
+          {done && (
             <div className={`doc-card doc-reveal ${stage === 'closed' ? 'doc-card--pastel' : ''}`}>
               {stage === 'confirmed' ? (
                 <>
-                  <div className="doc-card__title"><IconFlag size={16} /> Slučka uzavretá</div>
-                  <p className="doc-small doc-muted" style={{ margin: '0 0 14px' }}>Praktik potvrdil doručenie, revízny lekár má súhrn. Prípad môžete uzavrieť; vznikne záznam o koordinovaní.</p>
-                  <button type="button" className="doc-btn doc-btn--primary doc-btn--lg doc-btn--block" onClick={() => setStage('closed')}>
+                  <div className="doc-card__title"><IconFlag size={16} /> Záver doručený</div>
+                  <p className="doc-small doc-muted" style={{ margin: '0 0 14px' }}>
+                    Praktik potvrdil doručenie, revízny lekár má súhrn. {female ? 'Pacientka' : 'Pacient'} má termín na ďalší krok. Prípad môžete uzavrieť; vznikne záznam o koordinovaní.
+                  </p>
+                  <button type="button" className="doc-btn doc-btn--primary doc-btn--lg doc-btn--block" onClick={closeCase}>
                     <IconCheck size={16} /> Uzavrieť prípad
                   </button>
                 </>
@@ -212,13 +269,13 @@ export default function GpReport() {
                   <div className="doc-stats gpr-stats">
                     <div className="doc-stat doc-stat--1"><div className="doc-stat__v">{days.length}</div><div className="doc-stat__l">dní so zásahom koordinátora</div></div>
                     <div className="doc-stat"><div className="doc-stat__v">{c.log.length}</div><div className="doc-stat__l">úkonov v zázname</div></div>
-                    <div className="doc-stat doc-stat--3"><div className="doc-stat__v">{(days.length * FEE_PER_DAY).toLocaleString('sk-SK')} Kč</div><div className="doc-stat__l">podklad pre výkon 51887</div></div>
+                    <div className="doc-stat doc-stat--3"><div className="doc-stat__v">{(days.length * FEE_PER_DAY).toLocaleString('sk-SK')} Kč</div><div className="doc-stat__l">podklad pre výkon 51887 (ak ho poisťovňa uzná)</div></div>
                   </div>
                   <p className="doc-small" style={{ margin: '14px 0 0', color: 'var(--ink-2)' }}>
-                    Výkon 51887 = {FEE_PER_DAY} Kč za deň so zásahom, najviac 1× denne; vykazuje nemocnica v NIS.
+                    Výkon 51887 = {FEE_PER_DAY} Kč za jednu intervenciu koordinátora, ktorú uzná poisťovňa, najviac 1× denne na pacienta; vykazuje nemocnica.
                     {days.length > 0 && <> Záznam od {fmtDate(days[0])} do {fmtDate(days[days.length - 1])}.</>}
                   </p>
-                  <button type="button" className="doc-btn doc-btn--block" style={{ marginTop: 14 }} onClick={() => nav.go({ page: 'case', caseId: c.id, tab: 'zaznam' })}>
+                  <button type="button" className="doc-btn doc-btn--block" style={{ marginTop: 14 }} onClick={openRecord}>
                     Otvoriť záznam o koordinovaní <IconArrowRight size={15} />
                   </button>
                   <button type="button" className="doc-btn doc-btn--text doc-btn--block" style={{ marginTop: 6 }} onClick={() => nav.go({ page: 'queue' })}>

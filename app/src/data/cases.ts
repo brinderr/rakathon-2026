@@ -11,6 +11,9 @@
 // - Case.fields = podklad k 21. 10. 2026 (deň konzília). Neskoršie hodnoty (váha 63 kg zo správy 12)
 //   sú v LATER_VALUES a fieldsAsOf ich použije až od dátumu ich doručenia.
 // - Žiadne skóre naliehavosti ani odporúčanie liečby. Fronta sa radí len podľa termínov.
+// - Druhý plný prípad Josef Novák (pľúca) je Maťovo strojové vyťaženie: src/data/pacient2.gen.ts.
+//   Namerané čísla presnosti: src/data/eval.gen.ts (EVAL_SUMMARY). Obe generuje
+//   `node scripts/build-pacient2.mjs` z public/data/extracted-*.json a eval-*.json – ručne neupravovať.
 
 import type {
   Case,
@@ -25,6 +28,12 @@ import type {
   SourceDoc,
   StepState,
 } from '../types';
+import { NOVAK, NOVAK_AI } from './pacient2.gen.ts';
+import type { CaseAi, FieldOrigin } from './pacient2.gen.ts';
+
+export { EVAL_SUMMARY } from './eval.gen.ts';
+export type { EvalCaseResult, EvalSummary, EvalTrap } from './eval.gen.ts';
+export type { CaseAi, FieldOrigin };
 
 const cite = (docId: string, quote: string): Citation => ({ docId, quote });
 
@@ -40,10 +49,10 @@ export const EXTRA_DOCS: Record<string, string> = {
     'Nemocniční 15, 140 00 Praha 4',
     'Doplnění údaje na žádost koordinátorky KOC',
     'Pacientka: Alena Procházková, RČ 635722/1013, ZP 211',
-    'Datum: 20. 10. 2026',
+    'Datum: 19. 10. 2026',
     'STAV VÝKONNOSTI',
     'Stav výkonnosti: ECOG 1 (omezena při fyzicky náročné činnosti, chodící, schopna lehké práce).',
-    'V Praze dne 20. 10. 2026',
+    'V Praze dne 19. 10. 2026',
     'MUDr. Lenka Marková',
     'onkologická ambulance KOC',
   ].join('\n'),
@@ -60,15 +69,16 @@ const ALENA_DOCS: SourceDoc[] = [
   { id: '04', title: 'Praktický lekár – epikríza', place: 'Ordinácia praktického lekára, Dolní Břežany', kind: 'report', examDate: '2026-09-04', receivedAt: '2026-10-05', channel: 'e-mail' },
   { id: '05', title: 'Gastroenterológia – vstupné vyšetrenie', place: 'Poliklinika Jižní – gastroenterológia', kind: 'report', examDate: '2026-09-15', receivedAt: '2026-10-05', channel: 'eZpráva' },
   { id: '06', title: 'Ultrazvuk brucha', place: 'Poliklinika Jižní – rádiológia', kind: 'result', examDate: '2026-09-29', receivedAt: '2026-10-05', channel: 'eZpráva' },
-  { id: '07', title: 'Žiadosť praktika o prevzatie do KOC', place: 'Ordinácia praktického lekára, Dolní Břežany', kind: 'request', examDate: '2026-10-02', receivedAt: '2026-10-02', channel: 'e-mail' },
+  { id: '07', title: 'Žiadosť praktika o prevzatie do KOC', place: 'Ordinácia praktického lekára, Dolní Břežany', kind: 'request', examDate: '2026-10-02', receivedAt: '2026-10-02', channel: 'eZpráva' },
   { id: '08', title: 'CT brucha a hrudníka', place: 'KOC 1 · Nemocnica Severní – rádiológia', kind: 'result', examDate: '2026-10-08', receivedAt: '2026-10-08', channel: 'ePACS' },
   { id: '09', title: 'Biopsia EUS-FNB – protokol', place: 'KOC 2 · Nemocnica Lipová – endoskopia', kind: 'report', examDate: '2026-10-12', receivedAt: '2026-10-12', channel: 'NIS' },
   { id: '10', title: 'Laboratórium – kontrolné odbery', place: 'KOC 2 · Nemocnica Lipová – laboratórium', kind: 'result', examDate: '2026-10-15', receivedAt: '2026-10-15', channel: 'NIS' },
   { id: '11', title: 'Histológia – výsledok biopsie', place: 'KOC 2 · Nemocnica Lipová – patológia', kind: 'result', examDate: '2026-10-19', receivedAt: '2026-10-19', channel: 'NIS' },
   { id: '12', title: 'Algeziológia – liečba bolesti', place: 'KOC 1 · Nemocnica Severní – centrum liečby bolesti', kind: 'report', examDate: '2026-10-26', receivedAt: '2026-10-26', channel: 'eZpráva' },
   { id: '13', title: 'Klinický psychológ', place: 'KOC 2 · Nemocnica Lipová – psychoonkológia', kind: 'report', examDate: '2026-10-27', receivedAt: '2026-10-27', channel: 'NIS' },
-  // Fiktívna odpoveď na žiadosť o ECOG (len pre demo, text v EXTRA_DOCS).
-  { id: '14', title: 'Doplnenie ECOG (fiktívna správa pre demo)', place: 'KOC 2 · Nemocnica Lipová – onkologická ambulancia', kind: 'report', examDate: '2026-10-20', receivedAt: '2026-10-20', channel: 'NIS', text: EXTRA_DOCS['14'] },
+  // Fiktívna odpoveď na žiadosť o ECOG (len pre demo, text v EXTRA_DOCS). Príde až po „Vyžiadať“ → „Simulovať odpoveď“
+  // (UI ju do toho skrýva: je to resolvedBy poľa performance). Dátum = DEMO_TODAY, rovnako ako v texte správy.
+  { id: '14', title: 'Doplnenie ECOG (fiktívna správa pre demo)', place: 'KOC 2 · Nemocnica Lipová – onkologická ambulancia', kind: 'report', examDate: '2026-10-19', receivedAt: '2026-10-19', channel: 'NIS', text: EXTRA_DOCS['14'] },
   // Zápis z konzília (vzor „MDT zaver“ zo zadania) – zdroj pre záver praktikovi.
   { id: 'MDT', title: 'Zápis z konzília (MDT)', place: 'KOC 2 · Nemocnica Lipová – MDT pre nádory GIT', kind: 'report', examDate: '2026-10-21', receivedAt: '2026-10-21', channel: 'NIS' },
 ];
@@ -98,7 +108,7 @@ const ALENA_FIELDS: HandoverField[] = [
     key: 'insurer', label: 'Zdravotná poisťovňa', group: 'Pacient',
     value: '211 · Zdravotní pojišťovna ministerstva vnitra ČR', status: 'confirmed',
     citations: [cite('07', 'Zdravotní pojišťovna: 211')], sourceDate: '2026-10-02',
-    note: 'Pozor: nie je to VZP. Súhrn pre revízneho lekára patrí poisťovni 211.',
+    note: 'Pozor: nie je to VZP, ale ZP MV ČR (211). Ak má súhrn dostať aj revízny lekár (chce to prezentácia VZP), išiel by poisťovni 211.',
   },
   // --- Kontakty ---
   {
@@ -183,7 +193,7 @@ const ALENA_FIELDS: HandoverField[] = [
     },
   },
   {
-    key: 'allergies', label: 'Alergie', group: 'Anamnéza', value: 'Bez známych alergií', status: 'confirmed',
+    key: 'allergies', label: 'Alergie', group: 'Anamnéza', value: 'Alergie neguje', status: 'confirmed',
     citations: [cite('07', 'AA: neguje\nAbusus: nekuřačka, alkohol abstinentka')], sourceDate: '2026-10-02',
     note: 'Nefajčiarka, alkohol nepije.',
   },
@@ -212,7 +222,7 @@ const ALENA_FIELDS: HandoverField[] = [
   },
   {
     key: 'symptoms', label: 'Príznaky a ich začiatok', group: 'Stav',
-    value: 'Od polovice augusta bolesť v nadbrušku, ktorá ide do chrbta (horšia po jedle a v noci). Nechutenstvo, chudnutie, tmavý moč, žltkasté bielka očí. Teploty od septembra nemala.',
+    value: 'Od polovice augusta bolesti v nadbrušku a pod pravým rebrom; teraz bolesť vystreľuje do chrbta, horšia po jedle a v noci. Nechutenstvo, chudnutie, tmavý moč, 1. 9. žltkasté bielka očí. Teploty od septembra nemala.',
     status: 'confirmed',
     citations: [
       cite('07', 'Od poloviny srpna 2026 bolesti břicha v epigastriu a pravém podžebří'),
@@ -237,7 +247,7 @@ const ALENA_FIELDS: HandoverField[] = [
       cite('09', 'Výkon: endosonografie s biopsií ložiska hlavy pankreatu (EUS-FNB)'),
     ],
     sourceDate: '2026-10-12',
-    note: 'Dátum, miesto, typ a plné znenie každého vyšetrenia sú v časti Vyšetrenia. Veľkosť ložiska sa líši podľa metódy (UZ 34 × 30 mm, CT 35 × 31 mm, EUS 33 × 29 mm).',
+    note: 'Dátum, miesto a typ každého vyšetrenia sú v časti Vyšetrenia, plné znenie po kliknutí v origináli správy. Veľkosť ložiska sa líši podľa metódy (UZ 34 × 30 mm, CT 35 × 31 mm, EUS 33 × 29 mm).',
   },
   // --- Laboratórium ---
   {
@@ -309,13 +319,23 @@ export const LATER_VALUES: Record<string, LaterValue[]> = {
     },
     {
       key: 'other', from: '2026-10-27',
-      value: 'Pacientka si želá, aby informácie o liečbe dostávala aj dcéra a aby sa mohla zúčastniť dôležitých rozhovorov. Je veľmi úzkostná – psychológ odporúča psychoterapiu.',
+      value: 'Pacientka si želá, aby informácie o liečbe dostávala aj dcéra a aby sa mohla zúčastniť dôležitých rozhovorov. Výrazná úzkosť a depresívna nálada – psychológ odporúča pokračovať v podpornej psychoterapii 1× týždenne.',
       citations: [
         cite('13', 'Pacientka si přeje, aby informace o léčbě byly sdělovány i dceři a aby se dcera mohla účastnit důležitých rozhovorů.'),
         cite('07', 'Souhlasí se sdílením informací s dcerou.'),
+        cite('13', 'Nálada depresivní, výrazná anxieta, afekt labilní.'),
         cite('13', 'Pokračování podpůrné psychoterapie 1× týdně v psychoonkologické ambulanci.'),
       ],
       sourceDate: '2026-10-27',
+    },
+  ],
+  novak: [
+    {
+      key: 'weightHeight', from: '2026-10-27',
+      value: '73 kg (27. 10. 2026) · výška 176 cm',
+      citations: [cite('N-10', 'Výška 176 cm, hmotnost 73 kg, BMI 23,6.')],
+      sourceDate: '2026-10-27',
+      note: 'Váha 73 kg je zo správy nutričnej ambulancie z 27. 10. – po konzíliu. K 22. 10. platilo 76 kg (7. 10.).',
     },
   ],
 };
@@ -427,7 +447,10 @@ const ALENA_LABS: LabRow[] = [
   r02('Lipáza', '0,85', 'µkat/l', '0,22–1,00'),
   r02('CRP', '86', 'mg/l', '0–5', 'H'),
   r02('Moč – bilirubín', '++', '', 'neg.', 'H'),
+  r02('Moč – bielkovina', '+', '', 'neg.', 'H'),
+  r02('Moč – krv', '+', '', 'neg.', 'H'),
   r02('Moč – leukocyty', '++', '', 'neg.', 'H'),
+  r02('Sediment – leukocyty', '65', '/µl', '0–10', 'H'),
   r02('Moč – kultivácia', 'Escherichia coli 10⁴ CFU/ml', '', 'hraničný nález'),
 ];
 
@@ -461,7 +484,7 @@ const ALENA_EXAMS: Exam[] = [
 ];
 
 const ALENA_LOG: LogEntry[] = [
-  { date: '2026-10-02', time: '08:40', action: 'Prevzatá žiadosť praktika', detail: 'E-mailom prišla epikríza MUDr. Řezníčka (správa 07). Založený prípad, spustené hodiny cesty.', billable: true },
+  { date: '2026-10-02', time: '08:40', action: 'Prevzatá žiadosť praktika', detail: 'Cez eZprávu prišla epikríza MUDr. Řezníčka (správa 07). Založený prípad, spustené hodiny cesty.', billable: true },
   { date: '2026-10-02', time: '08:55', action: 'Potvrdenie prijatia praktikovi', detail: 'Potvrdenie so zoznamom toho, čo chýba: výsledky vyšetrení, ECOG, váha, e-mail.', billable: true },
   { date: '2026-10-02', time: '09:30', action: 'Vyžiadané správy 01–06', detail: 'Kardiológia Jesenice, LabJih, RC Modřany, praktik (epikríza zo 4. 9.), Poliklinika Jižní (gastroenterológia, ultrazvuk).', billable: true },
   { date: '2026-10-02', time: '10:10', action: 'Vyžiadané CT v KOC 1', detail: 'V KOC 2 nebol voľný termín. Žiadosť o CT brucha a hrudníka podľa pankreatického protokolu do Nemocnice Severní.', billable: true },
@@ -482,8 +505,9 @@ const ALENA_LOG: LogEntry[] = [
   { date: '2026-10-16', time: '09:00', action: 'Urgencia: histológia po termíne', detail: 'Výsledok mal prísť do 15. 10. Telefonát na Ústav patológie KOC 2.', billable: true },
   { date: '2026-10-19', time: '12:40', action: 'Doručená histológia (11) – 4 dni po termíne', detail: 'Rozpor v dátumoch: vydané 19. 10., odber uvedený 20. 10. Poslané patológii na overenie.', billable: true },
   { date: '2026-10-21', time: '14:00', action: 'Konzílium prebehlo', detail: 'Zápis z konzília uložený do prípadu.', billable: true },
-  { date: '2026-10-22', time: '09:00', action: 'Záver odoslaný praktikovi', detail: 'Doručenie potvrdené (v prototype simulované).', billable: true },
-  { date: '2026-10-22', time: '09:10', action: 'Súhrn pre revízneho lekára ZP MV ČR (211)', detail: 'Diagnóza, rozhodnutie konzília, plánovaná liečba (v prototype simulované).', billable: true },
+  { date: '2026-10-21', time: '16:40', action: 'Záver odoslaný praktikovi', detail: 'eZpráva, zapečatené nemocnicou; doručené 16:41 (v prototype simulované).', billable: true },
+  { date: '2026-10-21', time: '16:45', action: 'Súhrn pre revízneho lekára ZP MV ČR (211)', detail: 'Diagnóza, rozhodnutie konzília, plánovaná liečba (v prototype simulované).', billable: true },
+  { date: '2026-10-22', time: '08:15', action: 'Praktik potvrdil doručenie záveru', detail: 'Doručenka (v prototype simulované).', billable: false },
   { date: '2026-10-26', action: 'Doručené: algeziológ (12)', detail: 'Prišlo cez eZprávu.', billable: false },
   { date: '2026-10-27', action: 'Doručené: klinický psychológ (13)', detail: 'Zápis v NIS.', billable: false },
 ];
@@ -532,9 +556,9 @@ const ALENA: Case = {
   },
   gpReport: {
     question: 'Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT.',
-    answer: 'Biopsia potvrdila nádor hlavy pankreasu (duktálny adenokarcinóm, G2–G3). Na CT nádor zasahuje do ciev, vzdialené metastázy nie sú. Konzílium ho hodnotí ako hranične operovateľný a odporúča najprv chemoterapiu pred operáciou, potom nové CT a opätovné posúdenie operácie.',
+    answer: 'Biopsia potvrdila nádor hlavy pankreasu (duktálny adenokarcinóm, G2–G3). Na CT nádor zasahuje do ciev, je podozrivá regionálna uzlina, bez známok vzdialených metastáz. Konzílium ho hodnotí ako hranične resekabilný (hranične operovateľný) a odporúča najprv chemoterapiu, potom nové CT a opätovné posúdenie operácie.',
     forYou: [
-      'Ďalší krok: chemoterapia pred operáciou. Onkologické konzílium 4. 11. 2026 o 10:30 (MUDr. Kalous). Termín a ďalšie vyšetrenia zariadi koordinátorka KOC, Bc. Lucie Dvořáková.',
+      'Konzílium odporúča najprv chemoterapiu (neoadjuvantnú). Ďalší krok: termín na onkologickom konzíliu 4. 11. 2026 o 10:30 (MUDr. Kalous). Pred začiatkom liečby konzílium žiada určiť ECOG, doplniť krvné testy a CA 19-9 a posúdiť žlčové cesty. Termíny zariadi koordinátorka KOC, Bc. Lucie Dvořáková.',
       'Apixaban: pacientka ho nemá vysadzovať sama. Postup pred každým výkonom určí lekár, ktorý výkon robí.',
       'Čo sledovať: horúčka, zimnica, pribúdajúca žltačka alebo zhoršenie celkového stavu – vtedy neodkladné vyšetrenie. Drenáž žlčových ciest zatiaľ v správach nie je.',
       'Bolesť, výživa, psychika: konzílium odporúča nutričnú podporu, úpravu liečby bolesti a psychoonkologickú podporu. Vašu prosbu o psychológa sme vybavili – termín 27. 10.',
@@ -542,9 +566,11 @@ const ALENA: Case = {
     citations: [
       cite('07', 'Žádám o převzetí pacientky do péče KOC k dokončení diagnostiky (CT břicha, histologická verifikace) a stanovení dalšího postupu v rámci MDT.'),
       cite('MDT', '63letá pacientka s histologicky potvrzeným duktálním adenokarcinomem hlavy pankreatu G2–G3.'),
+      cite('MDT', 'přítomna suspektní regionální uzlina, bez známek vzdálených metastáz'),
       cite('MDT', 'Nález je hodnocen jako hraničně resekabilní.'),
       cite('MDT', 'S ohledem na cévní postižení MDT doporučuje neoadjuvantní systémovou chemoterapii a následné restagingové vyšetření se znovuposouzením možnosti chirurgické resekce.'),
       cite('MDT', '1. Neoadjuvantní chemoterapie: termín na onkologické konzilium 4.11.2026 10:30, MUDr. Kalous'),
+      cite('MDT', '2. Před zahájením léčby: stanovit ECOG, doplnit aktuální krevní obraz, jaterní a renální parametry, ionty a CA 19-9'),
       cite('MDT', 'Bc. Lucie Dvořáková – koordinátorka KOC'),
       cite('MDT', 'postup s apixabanem před invazivními výkony určit individuálně s provádějícím lékařem'),
       cite('MDT', 'Léčbu samostatně nevysazovat.'),
@@ -558,7 +584,7 @@ const ALENA: Case = {
   reviewer: {
     insurerCode: '211',
     insurerName: 'Zdravotní pojišťovna ministerstva vnitra ČR',
-    note: 'Pacientka nie je poistenkyňa VZP. Súhrn konzília (diagnóza C25.0, rozhodnutie, plánovaná liečba) patrí reviznému lekárovi ZP MV ČR (211). Odoslanie je v prototype simulované.',
+    note: 'Pacientka nie je poistenkyňa VZP. Prezentácia VZP chce, aby informáciu dostal aj revízny lekár; pri tejto pacientke by to bol revízny lekár ZP MV ČR (211). Kanál v ČR nemáme overený, odoslanie je v prototype simulované.',
   },
 };
 
@@ -573,22 +599,16 @@ const KUCERA: Case = {
     firstName: 'Jaroslav', lastName: 'Kučera', age: 67, sex: 'muž',
     insurerCode: '111', insurerName: 'Všeobecná zdravotní pojišťovna ČR', phone: '+420 777 000 611',
   },
-  referringGp: { name: 'MUDr. Hana Benešová', practice: 'Praktický lekár pre dospelých, Říčany', phone: '+420 311 000 611' },
+  referringGp: { name: 'MUDr. Jana Sedláčková', practice: 'Praktický lekár pre dospelých, Říčany', phone: '+420 311 000 611' },
   diagnosisShort: 'podozrenie na nádor pľúc',
   koc: 'KOC 2 · Nemocnica Lipová',
-  mdtDate: '2026-10-28',
+  // Žiadosť ešte nie je prevzatá: bez termínu konzília a bez vyžiadaných krokov.
   receivedAt: '2026-10-19',
   status: 'new',
   nextStep: { text: 'Prevziať žiadosť praktika a vyžiadať CT hrudníka a brucha', owner: 'ja (koordinátor)', due: '2026-10-19', mine: true },
   clockTargetDays: 33, // predvolená lehota (dánsky vzor); v praxi sa nastaví podľa diagnózy
   fields: [],
-  steps: [
-    {
-      id: 'ct', title: 'CT hrudníka a brucha', place: 'KOC 2 · Nemocnica Lipová – rádiológia',
-      owner: 'ja (koordinátor)', due: '2026-10-22', state: 'requested',
-      history: [h('requested', '2026-10-19')],
-    },
-  ],
+  steps: [],
   labs: [],
   meds: [],
   exams: [],
@@ -599,7 +619,7 @@ const KUCERA: Case = {
       text: [
         'FIKTIVNÍ PACIENT – ukázková data pro frontu, Rakathon 2026',
         'Ordinace praktického lékaře, Říčany (fiktivní)',
-        'MUDr. Hana Benešová',
+        'MUDr. Jana Sedláčková',
         'Žádost o převzetí do péče KOC',
         'Pacient: Jaroslav Kučera, 67 let',
         'Zdravotní pojišťovna: 111',
@@ -627,21 +647,27 @@ const POSPISILOVA: Case = {
   diagnosisShort: 'podozrenie na nádor hrubého čreva',
   koc: 'KOC 2 · Nemocnica Lipová',
   receivedAt: '2026-10-09',
-  status: 'waiting',
-  nextStep: { text: 'CT hrudníka a brucha v KOC 1', owner: 'rádiológia KOC 1', due: '2026-10-23', mine: false },
+  status: 'active',
+  // Ilustračná eskalácia vo fronte (QA R1 #8): histológia sľúbená do 2 pracovných dní (16. 10.) k 19. 10. neprišla.
+  nextStep: { text: 'Urgovať histológiu z kolonoskopie (mala prísť do 16. 10.)', owner: 'ja (koordinátor)', due: '2026-10-19', mine: true },
   clockTargetDays: 33, // predvolená lehota (dánsky vzor); v praxi sa nastaví podľa diagnózy
   fields: [],
   steps: [
     {
       id: 'colonoscopy', title: 'Kolonoskopia s biopsiou', place: 'KOC 2 · Nemocnica Lipová – endoskopia',
-      owner: 'endoskopia KOC 2', due: '2026-10-16', state: 'delivered',
-      history: [h('requested', '2026-10-09'), h('ordered', '2026-10-12'), h('done', '2026-10-16'), h('delivered', '2026-10-16')],
+      owner: 'endoskopia KOC 2', due: '2026-10-14', state: 'delivered',
+      history: [h('requested', '2026-10-09'), h('ordered', '2026-10-12'), h('done', '2026-10-14'), h('delivered', '2026-10-14')],
       resultDocId: 'P-02',
+    },
+    {
+      id: 'histology', title: 'Histológia z kolonoskopie', place: 'KOC 2 · Nemocnica Lipová – patológia',
+      owner: 'patológia KOC 2', due: '2026-10-16', state: 'ordered',
+      history: [h('requested', '2026-10-14'), h('ordered', '2026-10-14')],
     },
     {
       id: 'ct', title: 'CT hrudníka a brucha', place: 'KOC 1 · Nemocnica Severní',
       owner: 'rádiológia KOC 1', due: '2026-10-23', state: 'ordered',
-      history: [h('requested', '2026-10-16'), h('ordered', '2026-10-17')],
+      history: [h('requested', '2026-10-14'), h('ordered', '2026-10-15')],
     },
   ],
   labs: [],
@@ -667,21 +693,23 @@ const POSPISILOVA: Case = {
     },
     {
       id: 'P-02', title: 'Kolonoskopia s biopsiou', place: 'KOC 2 · Nemocnica Lipová – endoskopia', kind: 'report',
-      examDate: '2026-10-16', receivedAt: '2026-10-16', channel: 'NIS',
+      examDate: '2026-10-14', receivedAt: '2026-10-14', channel: 'NIS',
       text: [
         'FIKTIVNÍ PACIENTKA – ukázková data pro frontu, Rakathon 2026',
         'KOC Nemocnice Lipová (fiktivní), endoskopické pracoviště',
-        'Kolonoskopie s biopsií, 16. 10. 2026',
+        'Kolonoskopie s biopsií, 14. 10. 2026',
         'Pacientka: Zdeňka Pospíšilová',
         'V sigmoideu exofytický útvar zužující lumen, odebrány vzorky k histologii.',
+        'Výsledek histologie do 2 pracovních dnů.',
         'Závěr: suspektní karcinom sigmoidea. Doporučeno CT hrudníku a břicha.',
       ].join('\n'),
     },
   ],
   log: [
     { date: '2026-10-09', time: '10:20', action: 'Prevzatá žiadosť praktika', detail: 'Prišla cez eZprávu. Potvrdenie prijatia odoslané.', billable: true },
-    { date: '2026-10-12', time: '08:30', action: 'Objednaná kolonoskopia na 16. 10.', detail: 'Endoskopia KOC 2.', billable: true },
-    { date: '2026-10-17', time: '09:00', action: 'Objednané CT v KOC 1 na 23. 10.', detail: 'V KOC 2 nebol skorší termín.', billable: true },
+    { date: '2026-10-12', time: '08:30', action: 'Objednaná kolonoskopia na 14. 10.', detail: 'Endoskopia KOC 2.', billable: true },
+    { date: '2026-10-14', action: 'Doručené: kolonoskopia (P-02)', detail: 'Histológia sľúbená do 2 pracovných dní, teda do 16. 10.', billable: false },
+    { date: '2026-10-15', time: '09:00', action: 'Objednané CT v KOC 1 na 23. 10.', detail: 'V KOC 2 nebol skorší termín.', billable: true },
   ],
 };
 
@@ -737,7 +765,30 @@ const KRALOVA: Case = {
   ],
 };
 
-export const CASES: Case[] = [ALENA, KUCERA, POSPISILOVA, KRALOVA];
+// Alena musí ostať PRVÁ (fullCase()/findCase() berú prvý prípad s demo 'full').
+export const CASES: Case[] = [ALENA, NOVAK, KUCERA, POSPISILOVA, KRALOVA];
+
+/**
+ * Pôvod údajov prípadu: Alena = ručne pripravené a overené tímom; Josef Novák = strojové vyťaženie
+ * (pravidlá + jazykový model, predpočítané), každé pole len navrhnuté – potvrdzuje človek.
+ * fieldOrigin hovorí, kto navrhol hodnotu poľa ('rules' | 'ai' | 'manual').
+ */
+export const CASE_AI: Record<string, CaseAi> = {
+  alena: {
+    label: 'ručne overené', mode: 'manual', evalFile: 'data/eval-alena.json',
+    fieldOrigin: Object.fromEntries(ALENA_FIELDS.map((f) => [f.key, 'manual' as FieldOrigin])),
+  },
+  novak: NOVAK_AI,
+};
+
+// Dopredná kompatibilita s QA R4 (b1): ak types.ts dostane Case.ai a HandoverField.origin, hodnoty už sú v dátach.
+for (const c of CASES) {
+  const ai = CASE_AI[c.id];
+  if (!ai) continue;
+  const { fieldOrigin, ...meta } = ai;
+  Object.assign(c, { ai: meta });
+  for (const f of c.fields) if (fieldOrigin?.[f.key]) Object.assign(f, { origin: fieldOrigin[f.key] });
+}
 
 // ---------------------------------------------------------------------------------------------
 // Pomôcky pre „stav k dátumu“ (čisté funkcie, bez Reactu)

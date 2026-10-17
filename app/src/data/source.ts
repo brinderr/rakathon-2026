@@ -1,6 +1,7 @@
 // Načítanie textov správ (fiktívne dáta) a hľadanie citátov v nich.
-// Mapa id → text: správy 01–13 z public/data/source.json, zápis z konzília ('MDT' = šablóna „MDT zaver“),
-// fiktívna doplnková správa 14 (EXTRA_DOCS) a texty ľahkých prípadov (SourceDoc.text v CASES).
+// Mapa id → text: správy Aleny 01–13 z public/data/source.json, zápis z konzília ('MDT' = šablóna „MDT zaver“),
+// fiktívna doplnková správa 14 (EXTRA_DOCS) a texty ostatných prípadov zo SourceDoc.text v CASES
+// (Josef Novák N-01…N-10, ľahké prípady K-/P-/R-). ID správ sú naprieč prípadmi jedinečné – stráži npm run verify.
 
 import { useEffect, useState } from 'react';
 import type { SourceDoc } from '../types';

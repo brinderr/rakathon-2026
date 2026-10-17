@@ -21,6 +21,8 @@ npm run dev        # http://localhost:5173
 | `npm run preview` | spustí hotový build (po `npm run build`) |
 | `npm run verify` | overí, že každý citát sa **doslovne** nachádza v texte správy; zapíše `public/data/cases.json` |
 | `npm run lint` | ESLint |
+| `npm run eval` | presnosť strojového vyťaženia na kontrolnej sade (Alena; `-- --case pacient-2` pre Josefa) → `public/data/eval-*.json` |
+| `node scripts/build-pacient2.mjs` | po novom `extract`/`eval` pregeneruje `src/data/pacient2.gen.ts` a `src/data/eval.gen.ts` (potom `npm run verify`) |
 
 Demo „dnes“ je pevne **19. 10. 2026**, konzílium Aleny **21. 10. 2026** (`DEMO_TODAY` v `src/types.ts`).
 
@@ -37,6 +39,8 @@ Demo „dnes“ je pevne **19. 10. 2026**, konzílium Aleny **21. 10. 2026** (`D
 | `/#mdt/alena` | **Podklad pre konzílium** podľa vzoru VZP `MDT_zapis` (tlač / kopírovanie) |
 | `/#gp/alena` | **Záver pre praktika** + „Čo to znamená pre vás“, doručenka, revízny lekár ZP 211 |
 | `/#intake` | **Žiadanka** (strana praktika) – kontrola ešte pred odoslaním |
+| `/#case/novak` | **Josef Novák** (pľúca) – druhý fiktívny pacient, podklad zo strojového vyťaženia (AI, predpočítané), každé pole „návrh“ → potvrdí človek |
+| `/#case/kucera` atď. | ilustračné prípady do fronty (čip „ukážka“) |
 
 ## Čo kde je
 

@@ -43,7 +43,9 @@
 .empty__s { color: var(--muted); font-size: 14px; margin-bottom: 10px; }
 
 .pcard { padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; text-align: left; }
-.pcard__top { display: flex; justify-content: space-between; align-items: center; min-height: 22px; }
+.pcard__top { display: flex; justify-content: space-between; align-items: center; min-height: 22px; gap: 8px; }
+.pcard__tags { display: inline-flex; align-items: center; gap: 6px; }
+.pcard__demo { color: var(--faint); background: transparent; border: 1px dashed var(--hair-2); }
 .pcard__who { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding: 4px 0 2px; }
 .pcard__name { font-weight: 700; font-size: 17px; letter-spacing: -.01em; line-height: 1.2; }
 .pcard__dx { color: var(--muted); font-size: 13px; line-height: 1.35; margin-top: 3px; max-width: 28ch; }
@@ -72,21 +74,15 @@
 .col__v--mine { color: var(--accent); }
 .col__v--late { color: var(--coral-ink); }
 
-/* Pravý panel: gamifikácia */
-.side { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 86px; }
+/* Pravý panel: bilancia z dát + kontrola presnosti AI */
+.side { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 86px; }
 .side__title { padding: 12px 4px 0; }
 .side h3 { font-size: 15px; font-weight: 650; }
 
-.goal { display: flex; gap: 18px; align-items: center; }
-.goal__num { font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
-.goal__num small { font-size: 13px; color: var(--muted); font-weight: 600; }
-.goal__text { min-width: 0; }
-.goal__row { display: flex; align-items: center; gap: 8px; }
-.goal__text p { margin: 4px 0 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
-
-.wk { display: flex; flex-direction: column; gap: 12px; }
-.wk__head { display: flex; align-items: center; justify-content: space-between; }
+.wk { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; }
+.wk .stat--pastel { margin-bottom: 2px; }
 .wk__row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 4px 0; border-top: 1px solid var(--hair); }
+.wk__row:first-child { border-top: 0; padding-top: 0; }
 .wk__row span { color: var(--ink-2); font-size: 13.5px; line-height: 1.35; }
 .wk__row strong { font-size: 22px; letter-spacing: -.02em; font-weight: 700; }
 

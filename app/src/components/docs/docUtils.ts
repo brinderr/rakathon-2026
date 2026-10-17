@@ -10,6 +10,12 @@ export function fmtDate(iso?: string): string {
   return `${d}. ${m}. ${y}`;
 }
 
+/** Current clock time "HH:MM" (log entries added during the demo). */
+export function nowTime(): string {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
 export function addDays(iso: ISODate, days: number): ISODate {
   const d = new Date(`${iso}T12:00:00`);
   d.setDate(d.getDate() + days);

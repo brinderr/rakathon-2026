@@ -16,3 +16,4 @@
 .intake-checking { display: flex; align-items: center; gap: 10px; }
 .intake-found { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
 .intake-sent { margin-top: 28px; }
+

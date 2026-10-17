@@ -5,8 +5,13 @@
 /* With the side panel open the page is ~800px wide: stack the two-column blocks so nothing gets squeezed. */
 @media (min-width: 1400px) {
   .cv-page.has-panel .cv-two { grid-template-columns: minmax(0, 1fr); }
+  .cv-page.has-panel .cv-next-in { grid-template-columns: minmax(0, 1fr); }
   .cv-page.has-panel .cs-metrics { grid-template-columns: repeat(2, 1fr); }
   .cv-page.has-panel .cs-sem:not(.is-compact) .cs-sem-grid { grid-template-columns: repeat(5, 1fr); }
+  .cv-page.has-panel .cs-group-compact .cs-group-rows { grid-template-columns: 1fr; }
+  .cv-page.has-panel .cs-group-compact .cs-row:nth-child(2n) { border-left: 0; }
+  .cv-page.has-panel .cs-asof-row { grid-template-columns: auto minmax(160px, 1fr); }
+  .cv-page.has-panel .cs-asof-chips { grid-column: 1 / -1; justify-content: flex-start; }
 }
 
 .cv-tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface-glass); border: 1px solid var(--hair); border-radius: 999px; align-self: flex-start; backdrop-filter: blur(10px); }
@@ -14,22 +19,28 @@
 .cv-tab:hover { color: var(--ink); }
 .cv-tab.is-on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); }
 .cv-tab-badge { font-size: 11px; font-weight: 700; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--coral-soft); color: var(--coral-ink); display: inline-flex; align-items: center; justify-content: center; }
+/* the as-of strip sits right under the tabs, a little closer than the card rhythm */
+.cv-tabs + .cs-asof { margin-top: calc(-1 * var(--gap) + 10px); }
 
 .cv-stack { display: flex; flex-direction: column; gap: var(--gap); }
 .cv-two { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--gap); align-items: start; }
 .cv-two-wide { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .cv-fields-card { overflow: hidden; }
 .cv-fields-card .cs-fields { padding-bottom: 8px; }
+.cv-empty-pad { margin: 0 24px 24px; }
 
-.cv-next-text { font-size: 17px; font-weight: 650; letter-spacing: -0.01em; line-height: 1.35; }
-.cv-next-meta { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 13px; color: var(--muted); }
+.cv-next-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 24px; align-items: start; }
+.cv-next-text { font-size: 18px; font-weight: 650; letter-spacing: -0.01em; line-height: 1.35; }
+.cv-next-meta { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
 .cv-next-due.is-late { color: var(--coral-ink); font-weight: 700; }
+.cv-next-steps .cs-strip { margin: 0 0 8px; }
 .cv-done { background: var(--mint-soft); border-color: rgba(47,179,138,.25); }
 .cv-done-in { display: flex; align-items: center; gap: 10px; color: var(--mint-ink); font-weight: 650; font-size: 15px; }
 
 .cv-journey-legend { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
 .cv-journey-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
 .cv-journey-legend i.is-done { background: var(--mint); }
+.cv-journey-legend i.is-latedone { background: var(--orange); }
 .cv-journey-legend i.is-late { background: var(--coral); }
 .cv-journey-legend i.is-future { background: var(--faint); opacity: .6; }
 

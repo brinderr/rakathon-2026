@@ -69,7 +69,7 @@ p.cs-hint { margin: 12px 0 0; }
 .cs-header { display: flex; align-items: flex-start; gap: 22px; background: var(--surface); border: 1px solid var(--hair); border-radius: var(--r-xl); box-shadow: var(--shadow-1); padding: 26px 28px; }
 .cs-avatar { width: 68px; height: 68px; border-radius: 50%; background: var(--accent-grad); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 650; letter-spacing: 0.02em; flex: none; box-shadow: 0 8px 22px rgba(109,91,208,.28), inset 0 0 0 3px rgba(255,255,255,.35); }
 .cs-header-main { flex: 1; min-width: 0; overflow: hidden; }
-.cs-header-top { display: flex; align-items: center; gap: 12px; }
+.cs-header-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; row-gap: 6px; }
 .cs-name { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; }
 /* Meta rows: a dot precedes every item; dots at the start of a wrapped line are clipped by the container. */
 .cs-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; margin-left: -17px; font-size: 13.5px; color: var(--muted); margin-top: 7px; }
@@ -105,29 +105,37 @@ p.cs-hint { margin: 12px 0 0; }
 .cs-steps-mini span { flex: 1; height: 7px; border-radius: 999px; background: rgba(255,255,255,.8); transition: background .4s ease; }
 .cs-steps-mini span.is-done { background: var(--mint); }
 
-/* ---------- as-of slider ---------- */
-.cs-asof { background: var(--surface); border: 1px solid var(--hair); border-radius: var(--r-lg); box-shadow: var(--shadow-1); padding: 20px 24px 16px; }
-.cs-asof-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-.cs-asof-head > div:first-child { flex: none; }
-.cs-asof-label { font-size: 12.5px; color: var(--muted); font-weight: 600; display: flex; align-items: center; gap: 6px; }
-.cs-asof-date { font-size: 23px; font-weight: 700; letter-spacing: -0.02em; margin-top: 2px; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
-.cs-asof-now { font-size: 11.5px; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 4px 9px; border-radius: 999px; letter-spacing: .02em; }
-.cs-asof-mdt { color: var(--sky-ink); background: var(--sky-soft); }
+/* ---------- as-of strip (one thin bar under the tabs, same on every tab) ---------- */
+.cs-asof { background: var(--surface); border: 1px solid var(--hair); border-radius: 20px; box-shadow: var(--shadow-1); padding: 10px 18px; transition: background .25s ease, border-color .25s ease; }
+.cs-asof.is-off { background: var(--sky-soft); border-color: rgba(59,130,246,.28); }
+.cs-asof-row { display: grid; grid-template-columns: auto minmax(220px, 1fr) auto; gap: 20px; align-items: center; }
+.cs-asof-lead { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.cs-asof-label { font-size: 12.5px; color: var(--muted); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.cs-asof-date { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+.cs-asof-now { font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 3px 8px; border-radius: 999px; letter-spacing: .02em; }
+.cs-asof-mdt { color: var(--sky-ink); background: #fff; }
 .cs-asof-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-.cs-asof-track { position: relative; margin-top: 16px; height: 34px; }
-.cs-asof-ticks { position: absolute; left: 11px; right: 11px; top: 50%; height: 6px; transform: translateY(-50%); border-radius: 999px; background: var(--canvas-2); }
+.cs-asof-chips .cs-chip { height: 30px; padding: 0 11px; font-size: 12px; }
+.cs-asof.is-off .cs-chip { background: rgba(255,255,255,.7); }
+.cs-asof.is-off .cs-chip.is-on { background: var(--ink); }
+.cs-asof-track { display: flex; align-items: center; gap: 10px; }
+.cs-asof-end { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.cs-asof-rail { position: relative; flex: 1; height: 30px; }
+.cs-asof-ticks { position: absolute; left: 10px; right: 10px; top: 50%; height: 6px; transform: translateY(-50%); border-radius: 999px; background: var(--canvas-2); }
+.cs-asof.is-off .cs-asof-ticks { background: rgba(255,255,255,.9); }
 .cs-asof-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: var(--accent-grad); opacity: .85; transition: width .2s ease; }
-.cs-asof-tick { position: absolute; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; transform: translate(-50%, -50%); z-index: 1; box-shadow: 0 1px 3px rgba(0,0,0,.15); transition: background .2s ease; }
+.cs-asof-tick { position: absolute; top: 50%; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; transform: translate(-50%, -50%); z-index: 1; box-shadow: 0 1px 3px rgba(0,0,0,.15); transition: background .2s ease; }
 .cs-asof-tick.is-future { background: var(--faint); }
-.cs-asof-tick-mdt { width: 12px; height: 12px; background: var(--sky); border-radius: 3px; transform: translate(-50%, -50%) rotate(45deg); }
-.cs-asof input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 34px; background: transparent; margin: 0; position: relative; z-index: 2; cursor: pointer; }
+.cs-asof-tick-mdt { width: 11px; height: 11px; background: var(--sky); border-radius: 3px; transform: translate(-50%, -50%) rotate(45deg); }
+.cs-asof input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 30px; background: transparent; margin: 0; position: relative; z-index: 2; cursor: pointer; }
 .cs-asof input[type="range"]::-webkit-slider-runnable-track { height: 6px; background: transparent; }
-.cs-asof input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); box-shadow: 0 3px 10px rgba(76,61,170,.3); margin-top: -8px; transition: transform .15s var(--ease); }
+.cs-asof input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); box-shadow: 0 3px 10px rgba(76,61,170,.3); margin-top: -7px; transition: transform .15s var(--ease); }
 .cs-asof input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.08); }
 .cs-asof input[type="range"]::-moz-range-track { height: 6px; background: transparent; }
-.cs-asof input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); box-shadow: 0 3px 10px rgba(76,61,170,.3); }
-.cs-asof-ends { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); padding: 0 2px; }
-.cs-asof-note { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
+.cs-asof input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); box-shadow: 0 3px 10px rgba(76,61,170,.3); }
+.cs-asof-off { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(59,130,246,.18); font-size: 12.5px; color: var(--sky-ink); font-weight: 500; }
+.cs-asof-back { border: 0; background: var(--sky-ink); color: #fff; font: inherit; font-size: 12.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+.cs-asof-back:hover { filter: brightness(1.08); }
 
 /* ---------- semaphore ---------- */
 .cs-sem { display: flex; flex-direction: column; gap: 14px; }
@@ -335,6 +343,70 @@ p.cs-hint { margin: 12px 0 0; }
 .cs-log-action { font-weight: 650; }
 .cs-log-detail { color: var(--ink-2); }
 
+/* ---------- additions: header badge, AI origin, verification, late delivery, compact groups, eval, waiting, labs ---------- */
+.cs-ai-badge { display: inline-flex; cursor: help; }
+.cs-dx-sub { color: var(--muted); font-weight: 400; }
+.cs-origin { display: inline-flex; align-items: center; margin-left: 7px; padding: 1px 6px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: .06em; color: var(--accent); background: var(--accent-soft); vertical-align: 1px; cursor: help; }
+.cs-origin-line { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.cs-row-pend { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--amber-ink); font-weight: 600; }
+.cs-input { flex: 1; min-width: 180px; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--surface); font: inherit; font-size: 13px; color: var(--ink); transition: border-color .15s ease, box-shadow .15s ease; }
+.cs-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-ring); }
+.cs-verify { border: 1px dashed var(--hair-2); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.cs-verify-title { font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
+.cs-verify-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cs-verify-l { font-size: 13px; color: var(--muted); }
+.cs-verify .cs-chip { height: 30px; padding: 0 13px; }
+
+.cs-step.is-latedone { border-left: 3px solid var(--orange); }
+.cs-step-late.is-after { color: var(--orange-ink); background: var(--orange-soft); }
+.cs-step-after { color: var(--orange-ink); font-weight: 600; }
+.cs-strip-item.is-latedone .cs-strip-n { background: var(--orange-soft); color: var(--orange-ink); }
+.cs-strip-item.is-latedone .cs-strip-s { color: var(--orange-ink); font-weight: 600; }
+
+.cs-group-compact .cs-group-rows { display: grid; grid-template-columns: 1fr 1fr; }
+.cs-group-compact .cs-row { padding-right: 16px; }
+.cs-group-compact .cs-row:nth-child(2n) { border-left: 1px solid var(--hair); }
+.cs-more { margin: 6px 24px 12px; height: 32px; padding: 0 14px; border-radius: 999px; border: 1px dashed var(--hair-2); background: transparent; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer; transition: border-color .15s ease, color .15s ease; }
+.cs-more:hover { border-color: var(--accent); color: var(--accent); }
+.cs-labs .cs-more { margin: 10px 0 0; }
+.cs-link { border: 0; background: transparent; padding: 0; margin-left: 8px; font: inherit; font-size: inherit; font-weight: 700; color: var(--accent); cursor: pointer; }
+.cs-link:hover { text-decoration: underline; }
+
+.cs-metric-4.is-eval { background: linear-gradient(135deg, #D9F3EA 0%, #E6F0FF 100%); text-align: left; cursor: pointer; font-family: inherit; color: inherit; }
+.cs-metric-4.is-eval:hover { box-shadow: var(--shadow-2); }
+.cs-metric-4.is-eval.is-open { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--mint); }
+.cs-metric-sub { font-size: 11.5px; color: var(--ink-2); line-height: 1.4; margin-top: 2px; }
+.cs-metric-more { display: inline-flex; align-items: center; gap: 4px; color: var(--mint-ink); font-weight: 700; }
+.cs-eval-aside { display: inline-flex; align-items: center; gap: 10px; }
+.cs-eval-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.cs-eval-stat { background: var(--canvas); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; }
+.cs-eval-stat strong { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+.cs-eval-stat strong span { font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+.cs-eval-stat em { font-style: normal; font-size: 12.5px; color: var(--muted); }
+.cs-eval-note { margin: 12px 0 0; font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.cs-eval-hallu { display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; padding: 10px 14px; border-radius: 14px; background: var(--amber-soft); color: var(--amber-ink); font-size: 13px; line-height: 1.45; }
+.cs-eval-hallu svg { flex: none; margin-top: 2px; }
+.cs-eval-traps { margin-top: 12px; }
+.cs-eval-toggle { border: 1px solid var(--hair-2); background: var(--surface); font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink-2); height: 32px; padding: 0 14px; border-radius: 999px; cursor: pointer; }
+.cs-eval-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.cs-eval-traps ul { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 18px; }
+.cs-eval-traps li { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 5px 0; border-top: 1px solid var(--hair); }
+.cs-eval-traps li.is-ok svg { color: var(--mint-ink); }
+.cs-eval-traps li.is-bad { color: var(--coral-ink); }
+
+.cs-wait { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.cs-wait li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 4px; border-top: 1px solid var(--hair); }
+.cs-wait li:first-child { border-top: 0; }
+.cs-wait-ic { width: 30px; height: 30px; border-radius: 50%; background: var(--amber-soft); color: var(--amber-ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.cs-wait-label { font-size: 14.5px; font-weight: 650; }
+.cs-wait-detail { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+.cs-log-hidden { font-size: 12.5px; color: var(--sky-ink); background: var(--sky-soft); border-radius: 12px; padding: 8px 12px; margin-bottom: 12px; }
+
+.cs-lab-dates { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.cs-lab-date { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ink-2); font-weight: 600; }
+.cs-table-labs td.r .cs-flag { margin-left: 6px; vertical-align: middle; }
+.cs-table-labs tr.is-marker td:first-child { font-weight: 650; }
+
 /* ---------- animations ---------- */
 @keyframes cs-slide { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes cs-fade { from { opacity: 0; } to { opacity: 1; } }
@@ -343,3 +415,6 @@ p.cs-hint { margin: 12px 0 0; }
 @keyframes cs-rowflash { 0% { background: rgba(47,179,138,.28); } 100% { background: transparent; } }
 @keyframes cs-glow { 0% { box-shadow: 0 0 0 0 rgba(47,179,138,.55); } 60% { box-shadow: 0 0 0 14px rgba(47,179,138,0); } 100% { box-shadow: var(--shadow-1); } }
 @keyframes cs-markin { 0% { background: #FFD966; box-shadow: 0 0 0 6px #FFD966; } 100% { background: #FFF1A8; box-shadow: 0 0 0 3px #FFF1A8; } }
+
+/* very long machine-extracted values (e.g. all exams in one field): 4 lines in the row, full text in the panel */
+.cs-row-value.is-long { display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }

@@ -1,9 +1,11 @@
-// Root: owns the route + "stav k dátumu" (asOf) and renders Shell with the page for the route.
+// Root: owns the route, the "stav k dátumu" (asOf) and the per-case demo session (what the coordinator
+// did in this session), and renders Shell with the page for the route.
 // The route is mirrored in the URL hash (#case/alena, #case/alena/podklad, #mdt/alena, #gp/alena, #intake)
 // so a screen can be opened directly and the browser back button works.
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NavContext, type Nav, type Route } from './nav';
 import { DEMO_TODAY } from './types';
+import { EMPTY_SESSION, SessionContext, type CaseSession, type SessionPatch, type SessionStore } from './components/session';
 import Shell from './components/Shell';
 import Queue from './pages/Queue';
 import CaseView from './pages/CaseView';
@@ -39,6 +41,8 @@ function hashToRoute(hash: string): Route {
   return { page: 'queue' };
 }
 
+const caseIdOf = (r: Route): string | undefined => ('caseId' in r ? r.caseId : undefined);
+
 function Page({ route }: { route: Route }) {
   switch (route.page) {
     case 'queue':
@@ -62,19 +66,28 @@ function screenKey(r: Route): string {
 export default function App() {
   const [route, setRoute] = useState<Route>(() => hashToRoute(window.location.hash));
   const [asOf, setAsOf] = useState<string>(DEMO_TODAY);
+  const [sessions, setSessions] = useState<Record<string, CaseSession>>({});
+  const routeRef = useRef(route);
+
+  /** Applies a route; the "stav k dátumu" slider is per patient, so it returns to today when the patient changes (R3 B11). */
+  const apply = useCallback((r: Route) => {
+    if (caseIdOf(routeRef.current) !== caseIdOf(r)) setAsOf(DEMO_TODAY);
+    routeRef.current = r;
+    setRoute(r);
+  }, []);
 
   useEffect(() => {
-    const sync = () => setRoute(hashToRoute(window.location.hash));
+    const sync = () => apply(hashToRoute(window.location.hash));
     window.addEventListener('popstate', sync);
     window.addEventListener('hashchange', sync);
     return () => {
       window.removeEventListener('popstate', sync);
       window.removeEventListener('hashchange', sync);
     };
-  }, []);
+  }, [apply]);
 
   const go = useCallback((r: Route) => {
-    setRoute(r);
+    apply(r);
     const hash = routeToHash(r);
     const current = window.location.hash || '#';
     if (hash !== current) {
@@ -82,17 +95,35 @@ export default function App() {
       window.history.pushState(null, '', url);
     }
     window.scrollTo({ top: 0 });
-  }, []);
+  }, [apply]);
 
   const nav = useMemo<Nav>(() => ({ route, go, asOf, setAsOf }), [route, go, asOf]);
 
+  const store = useMemo<SessionStore>(() => ({
+    sessions,
+    get: (id) => sessions[id] ?? EMPTY_SESSION,
+    update: (id, patch: SessionPatch) => setSessions((all) => {
+      const cur = all[id] ?? EMPTY_SESSION;
+      const p = typeof patch === 'function' ? patch(cur) : patch;
+      return { ...all, [id]: { ...cur, ...p } };
+    }),
+    reset: (id) => setSessions((all) => {
+      if (!(id in all)) return all;
+      const next = { ...all };
+      delete next[id];
+      return next;
+    }),
+  }), [sessions]);
+
   return (
     <NavContext.Provider value={nav}>
-      <Shell>
-        <div className="page-enter" key={screenKey(route)}>
-          <Page route={route} />
-        </div>
-      </Shell>
+      <SessionContext.Provider value={store}>
+        <Shell>
+          <div className="page-enter" key={screenKey(route)}>
+            <Page route={route} />
+          </div>
+        </Shell>
+      </SessionContext.Provider>
     </NavContext.Provider>
   );
 }

@@ -1,5 +1,6 @@
 // Strana praktika: „Odoslať pacienta do KOC“. Žiadny účet – ide e-mailom / eZprávou.
 // Kontrola žiadanky prebehne ešte pred odoslaním; po odoslaní odíde automatické potvrdenie prijatia.
+// Rám „Pohľad praktika“ (pieskový pruh, bez lišty koordinátora) kreslí Shell; táto stránka je len formulár a potvrdenie.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { DragEvent } from 'react';
 import { CASES } from '../data/cases';
@@ -19,13 +20,15 @@ type Phase = 'edit' | 'checking' | 'checked' | 'sent';
 
 const KOC_FALLBACK = ['KOC 1 · Nemocnica Severní', 'KOC 2 · Nemocnica Lipová'];
 const SAMPLE_DOC_ID = '07';
+const OWN_FILE_NOTE = 'vlastný súbor · prototyp ho nečíta (kontrola beží len na ukážke, správa 07)';
 
-function slug(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
 function hospitalOf(koc: string): string {
   const parts = koc.split('·').map(s => s.trim());
   return parts[parts.length - 1] || koc;
+}
+/** Referral stage: the diagnosis is a suspicion until the MDT confirms it. */
+function suspected(d: string): string {
+  return /podozren|suspekt/i.test(d) ? d : `podozrenie na ${d}`;
 }
 
 export default function Intake() {
@@ -40,6 +43,7 @@ export default function Intake() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const hasSample = files.some(f => f.sample);
+  const ownOnly = files.length > 0 && !hasSample;
   const findings = useMemo(() => {
     if (!c) return [];
     if (c.precheck?.findings?.length) return c.precheck.findings;
@@ -47,6 +51,8 @@ export default function Intake() {
   }, [c]);
   const missingCount = findings.filter(f => f.severity === 'missing').length;
   const infoCount = findings.length - missingCount;
+  const checked = phase === 'checked' && hasSample;
+  const canSend = files.length > 0 && phase !== 'checking';
 
   // The check runs once the sample referral (správa 07) is attached.
   useEffect(() => {
@@ -74,10 +80,7 @@ export default function Intake() {
 
   function addOwn(list: FileList | null) {
     if (!list) return;
-    const added: Attached[] = Array.from(list).map((f, i) => ({
-      id: `own-${Date.now()}-${i}`, name: f.name,
-      meta: 'vlastný súbor · obsah sa v prototype nespracúva',
-    }));
+    const added: Attached[] = Array.from(list).map((f, i) => ({ id: `own-${Date.now()}-${i}`, name: f.name, meta: OWN_FILE_NOTE }));
     if (added.length) setFiles(fs => [...fs, ...added]);
   }
   function onDrop(e: DragEvent<HTMLDivElement>) {
@@ -107,8 +110,12 @@ export default function Intake() {
   const channel = requestDoc?.channel ?? 'e-mail';
   const caseNo = caseNumber(c);
   const hospital = hospitalOf(koc);
-  const coordinator = { name: 'Bc. Lucie Dvořáková', role: 'koordinátorka KOC', email: `koordinator@${slug(hospital)}.cz`, phone: '+420 261 000 150' };
+  // Fiktívny kontakt (rezervovaná doména example.cz, nie skutočná nemocnica).
+  const coordinator = { name: 'Bc. Lucie Dvořáková', role: 'koordinátorka KOC', email: 'koordinator.koc2@example.cz', phone: '+420 261 000 150' };
   const patientName = `${c.patient.firstName} ${c.patient.lastName}`;
+  const patientWord = c.patient.sex === 'žena' ? 'pacientka' : 'pacient';
+  // Without an e-mail address in the referral, the confirmation goes back the way the referral came (reply).
+  const recipient = gp.email ? `${gp.name} <${gp.email}>` : `${gp.name} · ${gp.practice} · odpoveď na žiadosť (${channel})`;
 
   if (phase === 'sent') {
     return (
@@ -122,25 +129,28 @@ export default function Intake() {
         <div className="doc-grid intake-sent">
           <EmailPreview
             from={`${coordinator.name} · ${hospital} <${coordinator.email}>`}
-            to={gp.email ? `${gp.name} <${gp.email}>` : `${gp.name} · ${gp.practice} (${channel})`}
+            to={recipient}
             subject={`Potvrdenie prijatia žiadosti · ${patientName} · prípad ${caseNo}`}
             channel={channel}
             sentAt={fmtDate(c.receivedAt)}
             footer="automatické potvrdenie · simulované"
           >
-            <p>Dobrý deň, pán doktor,</p>
+            <p>Dobrý deň, {/á$/.test(gp.name) ? 'pani doktorka' : 'pán doktor'},</p>
             <p>
-              potvrdzujeme prijatie Vašej žiadosti o prevzatie pacientky <strong>{patientName}</strong> ({c.patient.age} r., ZP {c.patient.insurerCode})
-              do starostlivosti {koc}. Prípad sme založili pod číslom <strong>{caseNo}</strong> a koordinátorka ho prevzala.
+              potvrdzujeme prijatie Vašej žiadosti o prevzatie do starostlivosti {koc} – {patientWord} <strong>{patientName}</strong> ({c.patient.age} r., ZP {c.patient.insurerCode}).
+              Prípad sme založili pod číslom <strong>{caseNo}</strong> a koordinátorka ho prevzala.
             </p>
             <h4>Čo sme dostali</h4>
             <ul>{files.map(f => <li key={f.id}>{f.sample ? f.meta : f.name}</li>)}</ul>
-            {missingCount > 0 && (
+            {hasSample && missingCount > 0 && (
               <>
                 <h4>Čo chýba</h4>
                 <ul>{findings.filter(f => f.severity === 'missing').map((f, i) => <li key={i}>{f.text}</li>)}</ul>
                 <p>Chýbajúce správy si vyžiadame priamo z pracovísk uvedených v žiadosti. Ak ich máte poruke, stačí odpovedať na túto správu a priložiť ich.</p>
               </>
+            )}
+            {!hasSample && (
+              <p className="doc-muted">Žiadosť prejde kontrolou úplnosti po prevzatí koordinátorkou. (V prototype sa vlastné súbory nečítajú – kontrola beží len na ukážke, správa 07.)</p>
             )}
             <h4>Kontakt koordinátora</h4>
             <p>{coordinator.name} · {coordinator.role}<br />{coordinator.email} · {coordinator.phone} <span className="doc-faint">(fiktívne)</span></p>
@@ -152,12 +162,12 @@ export default function Intake() {
               <div className="doc-card__title">Čo sa stalo</div>
               <ul className="doc-list">
                 <li><span className="doc-list__ico doc-list__ico--mint"><IconCheck size={15} /></span><span>Prípad {caseNo} založený vo fronte koordinátora, hodiny cesty bežia od {fmtDate(c.receivedAt)}.</span></li>
-                <li><span className="doc-list__ico doc-list__ico--mint"><IconCheck size={15} /></span><span>Praktik dostal potvrdenie a zoznam chýbajúceho tým istým kanálom ({channel}). Žiadny nový účet.</span></li>
+                <li><span className="doc-list__ico doc-list__ico--mint"><IconCheck size={15} /></span><span>Praktik dostal potvrdenie {hasSample ? 'a zoznam chýbajúceho ' : ''}tým istým kanálom ({channel}). Žiadny nový účet.</span></li>
                 <li><span className="doc-list__ico doc-list__ico--accent"><IconArrowRight size={15} /></span><span>Na ťahu: koordinátorka · vyžiadať chýbajúce správy z pracovísk.</span></li>
               </ul>
               <hr className="doc-hr" />
               <button type="button" className="doc-btn doc-btn--primary doc-btn--lg doc-btn--block" onClick={() => nav.go({ page: 'case', caseId: c.id })}>
-                Otvoriť prípad <IconArrowRight size={16} />
+                Otvoriť prípad v appke koordinátora <IconArrowRight size={16} />
               </button>
               <button type="button" className="doc-btn doc-btn--text doc-btn--block" style={{ marginTop: 8 }} onClick={reset}>
                 Odoslať ďalšieho pacienta
@@ -239,7 +249,7 @@ export default function Intake() {
           <section className="doc-card">
             <div className="doc-card__title">
               <span className="doc-stepno">3</span> Kontrola žiadanky
-              {phase === 'checked' && (
+              {checked && (
                 <span className="intake-counts">
                   {missingCount > 0 && <span className="doc-pill doc-pill--coral">{missingCount} chýba</span>}
                   {infoCount > 0 && <span className="doc-pill doc-pill--sky">{infoCount} na vedomie</span>}
@@ -247,19 +257,25 @@ export default function Intake() {
               )}
             </div>
 
-            {phase === 'edit' && !hasSample && (
+            {files.length === 0 && (
               <p className="doc-muted" style={{ margin: 0 }}>Po vložení žiadosti hneď uvidíte, čo v nej chýba. Doplníte to teraz, nie o týždeň po telefonáte.</p>
+            )}
+            {ownOnly && (
+              <p className="doc-muted" style={{ margin: 0 }}>
+                <IconInfo size={14} style={{ verticalAlign: '-2px', marginRight: 6 }} />
+                Vlastné súbory prototyp nečíta – kontrola úplnosti beží len na ukážke (správa 07). Odoslať môžete aj tak; žiadosť skontroluje koordinátorka po prevzatí.
+              </p>
             )}
             {phase === 'checking' && (
               <p className="doc-muted intake-checking" style={{ margin: 0 }}><span className="doc-spin" /> Čítam žiadosť a porovnávam so zoznamom podkladov pre konzílium…</p>
             )}
-            {phase === 'checked' && (
+            {checked && (
               <div className="doc-reveal">
                 <div className="intake-found">
                   <span className="doc-faint doc-small">Zo žiadosti sme prečítali</span>
                   <span className="doc-pill">{patientName}, {c.patient.age} r.</span>
                   <span className="doc-pill">ZP {c.patient.insurerCode}</span>
-                  <span className="doc-pill">{c.diagnosisShort}</span>
+                  <span className="doc-pill">{suspected(c.diagnosisShort)}</span>
                 </div>
                 <ul className="doc-list">
                   {findings.map((f, i) => (
@@ -272,7 +288,7 @@ export default function Intake() {
                   ))}
                 </ul>
                 <p className="doc-small doc-muted" style={{ margin: '14px 0 0' }}>
-                  Odoslať môžete aj tak. Čo máte poruke, pridajte teraz; zvyšok si vyžiada koordinátorka.
+                  Odoslať môžete aj tak. Čo máte poruke, pridajte teraz; zvyšok si vyžiada koordinátorka. Diagnózu potvrdí až konzílium.
                 </p>
               </div>
             )}
@@ -289,17 +305,19 @@ export default function Intake() {
               <dt>Súbory</dt><dd>{files.length === 0 ? <span className="doc-faint">zatiaľ žiadne</span> : files.length}</dd>
               <dt>Kontrola</dt>
               <dd>
-                {phase === 'checked'
+                {checked
                   ? (missingCount ? <span className="doc-missing">{missingCount}× chýba</span> : <span style={{ color: 'var(--mint)' }}>v poriadku</span>)
-                  : <span className="doc-faint">čaká na žiadosť</span>}
+                  : ownOnly
+                    ? <span className="doc-faint">len pri ukážke</span>
+                    : <span className="doc-faint">čaká na žiadosť</span>}
               </dd>
             </dl>
             <hr className="doc-hr" />
-            <button type="button" className="doc-btn doc-btn--primary doc-btn--lg doc-btn--block" onClick={send} disabled={phase !== 'checked'}>
+            <button type="button" className="doc-btn doc-btn--primary doc-btn--lg doc-btn--block" onClick={send} disabled={!canSend}>
               <IconSend size={16} /> Odoslať
             </button>
             <p className="doc-small doc-faint" style={{ margin: '10px 0 0', textAlign: 'center' }}>
-              Praktik hneď dostane potvrdenie prijatia s číslom prípadu.
+              {files.length === 0 ? 'Najprv vložte žiadosť (ukážku alebo vlastný súbor).' : 'Praktik hneď dostane potvrdenie prijatia s číslom prípadu.'}
             </p>
           </div>
         </aside>

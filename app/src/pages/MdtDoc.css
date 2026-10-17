@@ -17,3 +17,9 @@
   .doc-sup { color: #000; }
   .doc-missing { color: #B8373B; }
 }
+
+/* line under the action bar: what the physician is asked to confirm */
+.mdt-pre { max-width: 860px; margin: -6px auto 18px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.paper-notes__group + .paper-notes__group { margin-top: 10px; }
+.paper-notes__src { font-size: 12.5px; color: var(--ink-2); margin-bottom: 3px; }
+.paper-notes__src strong { font-weight: 650; color: var(--ink); }

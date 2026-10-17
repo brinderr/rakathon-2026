@@ -1,15 +1,17 @@
 // „Podklad pre konzílium“ – printable document strictly along the VZP template MDT_zapis (7 sections).
-// Only data known by the MDT date; every value has a footnote (report, date, verbatim quote);
-// missing values are shown in red as „nie je v dokumentácii“. Copy per section, print/PDF, confirm (simulated).
+// Only data known by the chosen date (never later than the MDT date); every value has a footnote
+// (report, date, verbatim quote, grouped by report); missing values are shown in red as „nie je v dokumentácii“.
+// Copy per section, print/PDF, send to the KOC physician for confirmation (simulated).
 import { useMemo, useState } from 'react';
 import { useNav } from '../nav';
 import { DEMO_TODAY } from '../types';
 import { DocHeader } from '../components/docs/DocHeader';
 import { useSource } from '../components/docs/useSource';
-import { copyText, findCase, fmtDate, PROTO_NOTE } from '../components/docs/docUtils';
-import { buildMdtModel, documentText, parseMembers, parsePresenter, parseTemplate, sectionText } from '../components/docs/mdtModel';
+import { useCaseSessionSafe } from '../components/docs/useCaseSessionSafe';
+import { copyText, findCase, fmtDate, nowTime, PROTO_NOTE } from '../components/docs/docUtils';
+import { buildMdtModel, documentText, groupNotes, parseMembers, parsePresenter, parseTemplate, sectionText } from '../components/docs/mdtModel';
 import type { Section, Val } from '../components/docs/mdtModel';
-import { IconCheck, IconClock, IconCopy, IconPrint } from '../components/docs/DocIcons';
+import { IconCheck, IconClock, IconCopy, IconPrint, IconSend } from '../components/docs/DocIcons';
 import '../components/docs/docs.css';
 import './MdtDoc.css';
 
@@ -49,7 +51,7 @@ function ValueView({ v, sep }: { v: Val; sep?: boolean }) {
       {v.note && <span className="doc-faint doc-small"> ({v.note})</span>}
       {v.conflict && (
         <div className="paper-conflict">
-          Rozpor v dokumentácii: {v.conflict.a.value} (správa {v.conflict.a.citation.docId}) vs. {v.conflict.b.value} (správa {v.conflict.b.citation.docId}) · {v.conflict.explain}
+          Rozpor v dokumentácii – rozhodne konzílium: {v.conflict.a.value} (správa {v.conflict.a.citation.docId}) vs. {v.conflict.b.value} (správa {v.conflict.b.citation.docId}) · {v.conflict.explain}
         </div>
       )}
     </>
@@ -95,24 +97,44 @@ function SectionView({ s, copied, onCopy }: { s: Section; copied: boolean; onCop
   );
 }
 
+const cnt = (n: number, one: string, few: string, many: string) => `${n} ${n === 1 ? one : n >= 2 && n <= 4 ? few : many}`;
+
 export default function MdtDoc() {
   const nav = useNav();
   const caseId = nav.route.page === 'mdt' ? nav.route.caseId : undefined;
   const c = findCase(caseId);
   const src = useSource();
-  const [confirmed, setConfirmed] = useState(false);
+  // Demo session shared with the case screen (ECOG answer, decided conflicts) – the handover reflects it (R3 B4).
+  const [session, act] = useCaseSessionSafe(c?.id);
+  const confirmed = !!session.mdtConfirmedAt;
   const [copied, setCopied] = useState<string | null>(null);
 
   const tplText = src?.templates?.MDT_zapis ?? MDT_ZAPIS_FALLBACK;
   const zaver = src?.templates?.['MDT zaver'] ?? '';
-  const members = useMemo(() => parseMembers(zaver), [zaver]);
-  const presenter = useMemo(() => parsePresenter(zaver) ?? 'lekár KOC', [zaver]);
+  // Team and presenter come from the sample MDT record of THIS case only (Alena has docId 'MDT'); never reused for another patient.
+  const hasOwnMdt = !!c?.docs.some(d => d.id === 'MDT');
+  const members = useMemo(() => (hasOwnMdt ? parseMembers(zaver) : []), [zaver, hasOwnMdt]);
+  const presenter = useMemo(() => (hasOwnMdt ? parsePresenter(zaver) : undefined), [zaver, hasOwnMdt]);
   const texts = useMemo(() => Object.fromEntries((src?.documents ?? []).map(d => [d.id, d.text])), [src]);
-  const model = useMemo(() => (c ? buildMdtModel(c, parseTemplate(tplText), members, texts) : null), [c, tplText, members, texts]);
+  const navAsOf = /^\d{4}-\d{2}-\d{2}$/.test(nav.asOf) ? nav.asOf : DEMO_TODAY;
+  const overrides = session.overrides;
+  const model = useMemo(
+    () => (c ? buildMdtModel(c, parseTemplate(tplText), members, texts, { asOf: navAsOf, overrides }) : null),
+    [c, tplText, members, texts, navAsOf, overrides],
+  );
 
   function flash(key: string) { setCopied(key); window.setTimeout(() => setCopied(k => (k === key ? null : k)), 1600); }
   function copySection(s: Section) { copyText(sectionText(s)).then(() => flash(s.no)).catch(() => flash(s.no)); }
   function copyAll() { if (model) copyText(documentText(model)).then(() => flash('all')).catch(() => flash('all')); }
+  function confirm() {
+    if (!c || !model) return;
+    const who = presenter ?? 'lekár KOC';
+    act.confirmMdt(DEMO_TODAY);
+    act.addLog({
+      date: DEMO_TODAY, time: nowTime(), action: 'Podklad pre konzílium potvrdený lekárom KOC',
+      detail: `${who} · ${cnt(model.stats.missing, 'údaj chýba', 'údaje chýbajú', 'údajov chýba')} · ${cnt(model.stats.conflicts, 'rozpor ponechaný', 'rozpory ponechané', 'rozporov ponechaných')} konzíliu (simulácia)`, billable: true,
+    });
+  }
 
   if (!c || !model) {
     return (
@@ -124,6 +146,14 @@ export default function MdtDoc() {
   }
 
   const patient = `${c.patient.firstName} ${c.patient.lastName}`;
+  const mdtLabel = model.mdtDate ? fmtDate(model.mdtDate) : 'termín ešte nie je určený';
+  const presenterLabel = presenter ? `${presenter} (prezentuje prípad)` : 'lekár KOC';
+  const { conflicts, missingLabels } = model.stats;
+  const preConfirm = [
+    conflicts > 0 ? `${conflicts} ${conflicts === 1 ? 'rozpor označený' : conflicts < 5 ? 'rozpory označené' : 'rozporov označených'} pre konzílium` : '',
+    missingLabels.length ? `chýba: ${missingLabels.join(' · ')}` : '',
+  ].filter(Boolean).join(' · ');
+  const noteGroups = groupNotes(model.notes);
 
   return (
     <div className="doc-page mdt">
@@ -132,10 +162,10 @@ export default function MdtDoc() {
           eyebrow="Podklad pre konzílium"
           title={patient}
           subtitle={<>
-            <span>{c.koc} · konzílium {fmtDate(model.asOf)}</span>
+            <span>{c.koc} · konzílium {mdtLabel}</span>
             <span className="doc-pill doc-pill--sky">údaje známe k {fmtDate(model.asOf)}</span>
             {model.omittedDocs.length > 0 && (
-              <span className="doc-pill doc-pill--outline">vynechané správy po tomto dátume: {model.omittedDocs.map(d => d.id).join(', ')}</span>
+              <span className="doc-pill doc-pill--outline">správy po konzíliu sa nepoužili: {model.omittedDocs.map(d => d.id).join(', ')}</span>
             )}
           </>}
           back={{ label: 'Späť na prípad', onClick: () => nav.go({ page: 'case', caseId: c.id, tab: 'podklad' }) }}
@@ -149,21 +179,30 @@ export default function MdtDoc() {
 
         <div className="mdt-bar">
           <div className="mdt-bar__stats">
-            <span className="doc-pill doc-pill--mint"><IconCheck size={13} /> {model.stats.cited} údajov s citátom</span>
+            <span className="doc-pill doc-pill--mint"><IconCheck size={13} /> {model.stats.cited} údajov so zdrojom</span>
             <span className={`doc-pill ${model.stats.missing ? 'doc-pill--coral' : 'doc-pill--mint'}`}>{model.stats.missing} nie je v dokumentácii</span>
+            {conflicts > 0 && <span className="doc-pill doc-pill--amber">{conflicts} {conflicts === 1 ? 'rozpor' : conflicts < 5 ? 'rozpory' : 'rozporov'}</span>}
             <span className="doc-pill">{model.sections.length} častí podľa šablóny VZP „MDT_zapis“</span>
           </div>
           <div className="mdt-bar__confirm">
             {confirmed ? (
-              <span className="doc-pill doc-pill--mint"><IconCheck size={13} /> Potvrdil lekár KOC: {presenter} · {fmtDate(DEMO_TODAY)} · simulácia</span>
+              <span className="doc-pill doc-pill--mint"><IconCheck size={13} /> Potvrdil {presenterLabel} · {fmtDate(session.mdtConfirmedAt)} · simulácia</span>
             ) : (
               <>
-                <span className="doc-pill doc-pill--amber"><IconClock size={13} /> Potvrdil lekár KOC: čaká</span>
-                <button type="button" className="doc-btn doc-btn--primary" onClick={() => setConfirmed(true)}>Potvrdiť (simulácia)</button>
+                <span className="doc-pill doc-pill--amber"><IconClock size={13} /> Potvrdenie lekárom KOC: čaká</span>
+                <button type="button" className="doc-btn doc-btn--primary" onClick={confirm}>
+                  <IconSend size={15} /> Poslať lekárovi KOC na potvrdenie (simulácia)
+                </button>
               </>
             )}
           </div>
         </div>
+        {!confirmed && preConfirm && (
+          <p className="mdt-pre">Pred potvrdením: {preConfirm}. Rozpory a chýbajúce údaje zostávajú v podklade označené – nič nedomýšľame.</p>
+        )}
+        {confirmed && conflicts > 0 && (
+          <p className="mdt-pre">Rozpory ponechané na rozhodnutie konzília. Podklad je uzamknutý v tomto znení (simulácia).</p>
+        )}
       </div>
 
       <article className="paper mdt-print">
@@ -171,36 +210,42 @@ export default function MdtDoc() {
           <div>
             <div className="paper__org">{c.koc} · Komplexné onkologické centrum</div>
             <h2 className="paper__title">{model.title}</h2>
-            <div className="doc-small doc-muted" style={{ marginTop: 4 }}>Podklad pre konzílium · údaje známe k {fmtDate(model.asOf)} · šablóna VZP „MDT_zapis“</div>
+            <div className="doc-small doc-muted" style={{ marginTop: 4 }}>Podklad pre konzílium {mdtLabel} · údaje známe k {fmtDate(model.asOf)} · šablóna VZP „MDT_zapis“</div>
           </div>
           <div className="paper__meta">
             <strong>{patient}</strong>
             {c.patient.age} r. · {c.patient.sex} · ZP {c.patient.insurerCode}<br />
-            MDT {fmtDate(model.asOf)}
+            MDT {mdtLabel}
           </div>
         </div>
 
         {model.sections.map(s => <SectionView key={s.no} s={s} copied={copied === s.no} onCopy={copySection} />)}
 
         <div className="paper-notes">
-          <div className="paper-notes__title">Zdroje (poznámky pod čiarou)</div>
+          <div className="paper-notes__title">Zdroje (poznámky pod čiarou, zoskupené po správach)</div>
           {model.notes.length === 0 ? (
             <div className="doc-faint doc-small">Žiadny údaj nemá zdroj.</div>
           ) : (
-            <ol>
-              {model.notes.map(n => (
-                <li key={n.n}>
-                  {n.title}{n.place ? ` · ${n.place}` : ''}{n.date ? ` · ${n.date}` : ''}
-                  {n.quote && <> · <q>{n.quote}</q></>}
-                </li>
-              ))}
-            </ol>
+            noteGroups.map(g => (
+              <div className="paper-notes__group" key={g.key}>
+                <div className="paper-notes__src">
+                  <strong>{g.title}</strong>{g.place ? ` · ${g.place}` : ''}{g.date ? ` · ${g.date}` : ''}
+                </div>
+                <ol>
+                  {g.notes.map(n => (
+                    <li key={n.n} value={n.n}>
+                      {n.quote ? <q>{n.quote}</q> : <span className="doc-faint">{n.docId ? 'zhrnutie správy (bez doslovného citátu; plné znenie v prípade po kliknutí)' : 'prevzaté zo vzoru, nie zo správ pacienta'}</span>}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))
           )}
         </div>
 
         <div className="paper__foot">
           <span>{PROTO_NOTE}</span>
-          <span>Vytvorené {fmtDate(DEMO_TODAY)} · {confirmed ? `potvrdil ${presenter} (simulácia)` : 'čaká na potvrdenie lekárom KOC'}</span>
+          <span>Stav údajov k {fmtDate(model.asOf)} · {confirmed ? `potvrdil ${presenterLabel} (simulácia)` : 'čaká na potvrdenie lekárom KOC'}</span>
         </div>
       </article>
     </div>

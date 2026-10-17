@@ -30,6 +30,8 @@
 .gpr-reviewer__text { margin: 0 0 10px; font-size: 14.5px; line-height: 1.5; }
 .gpr-reviewer__items { display: flex; flex-wrap: wrap; gap: 6px; }
 .gpr-reviewer__status { margin-top: 12px; }
+.gpr-reviewer__status .doc-pill { white-space: normal; height: auto; min-height: 26px; padding: 5px 10px; line-height: 1.35; align-items: flex-start; }
+.gpr-reviewer__status .doc-pill svg { flex: none; margin-top: 1px; }
 
 .gpr-stats { grid-template-columns: 1fr; gap: 8px; }
 .gpr-stats .doc-stat { display: flex; align-items: baseline; gap: 10px; padding: 10px 14px; }

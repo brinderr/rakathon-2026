@@ -1,0 +1,36 @@
+/* Karta „Kontrola presnosti“ (čísla z eval-*.json) */
+.ev-card { display: flex; flex-direction: column; gap: 12px; padding: 18px 20px; }
+.ev-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ev-head h3 { font-size: 15px; font-weight: 650; }
+
+.ev-row { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid var(--hair); }
+.ev-row:first-of-type { border-top: 0; padding-top: 0; }
+.ev-who { font-size: 13.5px; font-weight: 650; color: var(--ink); }
+.ev-sub { font-weight: 500; color: var(--muted); }
+.ev-nums { display: flex; flex-wrap: wrap; gap: 3px 0; font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
+.ev-nums span { white-space: nowrap; }
+.ev-nums span + span::before { content: '·'; color: var(--faint); margin: 0 7px; }
+.ev-nums b { font-size: 14px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); margin-right: 1px; }
+.ev-card--full .ev-nums { gap: 6px 0; font-size: 13.5px; }
+.ev-card--full .ev-nums b { font-size: 17px; }
+.ev-stale { font-size: 12.5px; color: var(--amber-ink); }
+
+.ev-traps summary { cursor: pointer; font-size: 12.5px; color: var(--accent); font-weight: 600; list-style: none; }
+.ev-traps summary::-webkit-details-marker { display: none; }
+.ev-traps summary::after { content: ' ›'; }
+.ev-traps[open] summary::after { content: ' ˅'; }
+.ev-traps ul { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.ev-traps li { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; line-height: 1.4; color: var(--ink-2); }
+.ev-traps li .icon { margin-top: 2px; }
+.ev-traps li.is-ok .icon { color: var(--mint-ink); }
+.ev-traps li.is-bad .icon { color: var(--coral-ink); }
+.ev-traps li small { color: var(--muted); font-size: 12px; }
+.ev-strike { text-decoration: line-through; color: var(--muted); }
+
+.ev-guard { font-size: 12.5px; color: var(--ink-2); padding-top: 10px; border-top: 1px solid var(--hair); line-height: 1.4; }
+.ev-guard b { color: var(--ink); }
+.ev-guard summary { color: var(--ink-2); font-weight: 500; }
+.ev-guard summary b { color: var(--ink); }
+
+.ev-note { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.45; }
+.ev-foot { margin: 0; padding-top: 10px; border-top: 1px solid var(--hair); font-size: 11.5px; color: var(--faint); line-height: 1.45; }

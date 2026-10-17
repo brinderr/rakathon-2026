@@ -1,7 +1,8 @@
 // Builds the printable "Podklad pre konzílium" strictly along the VZP template MDT_zapis.
 // Every value carries its verbatim source (footnote); anything unknown by the MDT date is MISSING.
-import type { Case, ISODate, SourceDoc } from '../../types';
+import type { Case, HandoverField, ISODate, SourceDoc } from '../../types';
 import { DEMO_TODAY } from '../../types';
+import type { FieldOverride } from '../case/caseUtils';
 import { docById, docKnownAt, findField, fmtDate, MISSING, plain, resolveField } from './docUtils';
 import type { Resolved } from './docUtils';
 
@@ -43,7 +44,7 @@ export function parsePresenter(zaver: string): string | undefined {
 
 /* ---------- Document model ---------- */
 
-export interface Footnote { n: number; key: string; title: string; place?: string; date?: string; quote?: string }
+export interface Footnote { n: number; key: string; docId?: string; title: string; place?: string; date?: string; quote?: string }
 export interface Val extends Resolved { n?: number; prefix?: string }
 export interface Line { label: string; values: Val[] }
 export interface Group { heading?: string; lines: Line[] }
@@ -56,22 +57,52 @@ export interface Section {
 }
 export interface MdtModel {
   title: string;
+  mdtDate?: ISODate;
   asOf: ISODate;
   sections: Section[];
   notes: Footnote[];
   omittedDocs: SourceDoc[];
-  stats: { values: number; cited: number; missing: number };
+  stats: { values: number; cited: number; missing: number; conflicts: number; missingLabels: string[] };
 }
 
 const TEMPLATE_SOURCE = 'Vzor VZP „MDT zaver“';
+
+/** Demo state of the case screen (request sent / answer arrived / conflict verified / proposal confirmed). */
+export type DemoOverride = FieldOverride;
+export interface MdtOptions {
+  /** Date the document is built for; defaults to the MDT date (never later than it). */
+  asOf?: ISODate;
+  /** Overrides from the case screen, by field key. Applied only when dated on or before `asOf`. */
+  overrides?: Record<string, DemoOverride>;
+}
+
+/** Applies the demo overrides to the fields: answer arrived → value + citation; conflict verified / proposal
+ *  confirmed by a human → value and citations stay, the conflict closes and the note says who decided. */
+export function applyOverrides(fields: HandoverField[], overrides: Record<string, DemoOverride> | undefined, asOf: ISODate): HandoverField[] {
+  if (!overrides) return fields;
+  return fields.map(f => {
+    const ov = overrides[f.key];
+    if (!ov || ov.kind === 'pending' || ov.date > asOf) return f;
+    if (ov.kind === 'resolved') return { ...f, status: 'confirmed', value: ov.value, citations: [ov.citation], sourceDate: ov.date, note: ov.note, conflict: undefined };
+    if (ov.kind === 'decided') {
+      const chosen = f.conflict?.[ov.which];
+      const note = chosen ? `${ov.note} · platí ${ov.which.toUpperCase()}: ${chosen.value} (správa ${chosen.citation.docId})` : ov.note;
+      return { ...f, status: f.status === 'conflict' ? 'confirmed' : f.status, conflict: undefined, note };
+    }
+    if (f.status !== 'proposed') return f;
+    return { ...f, status: 'confirmed', note: f.note ? `${ov.note} · ${f.note}` : ov.note };
+  });
+}
 
 /**
  * @param texts raw report texts by docId (from public/data/source.json) – used only to quote
  *              administrative lines (address, phone) verbatim from the referral.
  */
-export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: Record<string, string> = {}): MdtModel {
-  const asOf: ISODate = c.mdtDate ?? DEMO_TODAY;
-  const fields = c.fields;
+export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: Record<string, string> = {}, opts: MdtOptions = {}): MdtModel {
+  const mdt: ISODate | undefined = c.mdtDate;
+  const wanted = opts.asOf ?? mdt ?? DEMO_TODAY;
+  const asOf: ISODate = mdt && wanted > mdt ? mdt : wanted;
+  const fields = applyOverrides(c.fields, opts.overrides, asOf);
   const notes: Footnote[] = [];
 
   const note = (key: string, make: () => Omit<Footnote, 'n' | 'key'>): number => {
@@ -92,7 +123,7 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
     if (r.docId) {
       const d = docById(c, r.docId);
       v.n = note(`${r.docId}|${r.quote ?? ''}`, () => ({
-        title: docTitle(r.docId!), place: d?.place, date: fmtDate(d?.examDate), quote: r.quote,
+        docId: r.docId, title: docTitle(r.docId!), place: d?.place, date: fmtDate(d?.examDate), quote: r.quote,
       }));
     } else if (extra?.source) {
       v.n = note(`src|${extra.source}`, () => ({ title: extra.source! }));
@@ -122,9 +153,14 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
   const patientPhone = (): Val[] => {
     const ph = res(/telef|phone|kontakt na pac|^contact$/i);
     const phone = ph.missing ? (quoteFrom(/^Telefon:\s*(.+)$/m) ?? (c.patient.phone ? plain(c.patient.phone) : ph)) : ph;
+    // one field "tel. … · e-mail …" (machine extraction): split it, never print the e-mail twice
+    if (!phone.missing && /e-?mail/i.test(phone.text)) {
+      const [p, e = ''] = phone.text.split(/\s*·?\s*e-?mail:?\s*/i);
+      return [val({ ...phone, text: p.replace(/^tel\.?:?\s*/i, '').trim() }, { prefix: 'tel.' }), val({ ...phone, text: e.trim() }, { prefix: 'e-mail' })];
+    }
     const em = res(/e-?mail/i);
     const email = em.missing ? (quoteFrom(/^E-?mail:\s*(.+)$/mi) ?? em) : em;
-    return [val(phone, { prefix: 'tel.' }), val(email, { prefix: 'e-mail' })];
+    return [val({ ...phone, text: phone.text.replace(/^tel\.?:?\s*/i, '') }, { prefix: 'tel.' }), val(email, { prefix: 'e-mail' })];
   };
   const address = (): Val[] => {
     const r = res(/adres|bydl/i);
@@ -157,7 +193,7 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
     const l = label.toLowerCase();
     const g = (group ?? '').toLowerCase();
     const isGp = /refer|l[ée]ka[řr]/.test(g);
-    if (l.startsWith('datum')) return [{ ...plain(fmtDate(asOf)), note: 'termín konzília' }];
+    if (l.startsWith('datum')) return [mdt ? { ...plain(fmtDate(mdt)), note: 'termín konzília' } : { text: MISSING, missing: true }];
     if (l.startsWith('jm') || l.startsWith('meno')) return [isGp ? gpName() : nameVal()];
     if (l.startsWith('poji') || l.startsWith('pois')) return [insurerVal()];
     if (l.startsWith('telefon')) return isGp ? gpContact() : patientPhone();
@@ -178,43 +214,43 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
     return [val({ text: MISSING, missing: true })];
   };
 
-  /* --- section 5: table of exams, labs, histology (built lazily so footnotes follow document order) --- */
+  /* --- section 5: table of exams, labs, histology (footnotes are numbered after sorting, so they follow reading order) --- */
   const known = (docId?: string, fallback?: ISODate) => { const d = docKnownAt(c, docId) ?? fallback ?? ''; return d <= asOf; };
-  type Row = { iso: ISODate; cells: Val[] };
-  const buildRows = (): Row[] => {
-  const rows: Row[] = [];
-  for (const e of c.exams) {
-    if (!known(e.docId, e.date)) continue;
-    rows.push({ iso: e.date, cells: [plain(fmtDate(e.date)), plain(`${e.type} · ${e.place}`), val({ text: e.summary, docId: e.docId, missing: false })] });
-  }
-  const labGroups = new Map<string, typeof c.labs>();
-  for (const r of c.labs) {
-    const k = `${r.date}|${r.lab}|${r.docId}`;
-    if (!labGroups.has(k)) labGroups.set(k, []);
-    labGroups.get(k)!.push(r);
-  }
-  for (const [, g] of labGroups) {
-    const first = g[0];
-    if (!known(first.docId, first.date)) continue;
-    const already = rows.some(r => r.cells[2].docId === first.docId && /labor/i.test(r.cells[1].text));
-    if (already) continue;
-    const show = g.filter(r => r.flag || /\bCA\s?\d|CEA|marker/i.test(r.test));
-    const rest = g.length - show.length;
-    const text = show.map(r => `${r.test} ${r.value}${r.unit ? ` ${r.unit}` : ''}${r.flag ? ` (${r.flag})` : ''}`).join(', ')
-      + (rest > 0 ? `${show.length ? '; ' : ''}ďalších ${rest} hodnôt v referenčných medziach` : '');
-    rows.push({ iso: first.date, cells: [plain(fmtDate(first.date)), plain(`Laboratórium · ${first.lab}`), val({ text, docId: first.docId, missing: false })] });
-  }
-  const histo = res(/histol/i);
-  if (!histo.missing) {
-    const row = rows.find(r => r.cells[2].docId === histo.docId);
-    if (row) { if (histo.conflict) row.cells[2].conflict = histo.conflict; }
-    else {
-      const d = docById(c, histo.docId);
-      rows.push({ iso: d?.examDate ?? asOf, cells: [plain(fmtDate(d?.examDate)), plain(`Histológia · ${d?.place ?? ''}`), val(histo)] });
+  type Row = { iso: ISODate; cells: [string, string, Resolved] };
+  const buildRows = (): Val[][] => {
+    const rows: Row[] = [];
+    for (const e of c.exams) {
+      if (!known(e.docId, e.date)) continue;
+      rows.push({ iso: e.date, cells: [fmtDate(e.date), `${e.type} · ${e.place}`, { text: e.summary, docId: e.docId, missing: false }] });
     }
-  }
-  rows.sort((a, b) => a.iso.localeCompare(b.iso));
-  return rows;
+    const labGroups = new Map<string, typeof c.labs>();
+    for (const r of c.labs) {
+      const k = `${r.date}|${r.lab}|${r.docId}`;
+      if (!labGroups.has(k)) labGroups.set(k, []);
+      labGroups.get(k)!.push(r);
+    }
+    for (const [, g] of labGroups) {
+      const first = g[0];
+      if (!known(first.docId, first.date)) continue;
+      const already = rows.some(r => r.cells[2].docId === first.docId && /labor/i.test(r.cells[1]));
+      if (already) continue;
+      const show = g.filter(r => r.flag || /\bCA\s?\d|CEA|marker/i.test(r.test));
+      const rest = g.length - show.length;
+      const text = show.map(r => `${r.test} ${r.value}${r.unit ? ` ${r.unit}` : ''}${r.flag ? ` (${r.flag})` : ''}`).join(', ')
+        + (rest > 0 ? `${show.length ? '; ' : ''}ďalších ${rest} hodnôt bez označenia H/L (celá tabuľka v prípade)` : '');
+      rows.push({ iso: first.date, cells: [fmtDate(first.date), `Laboratórium · ${first.lab}`, { text, docId: first.docId, missing: false }] });
+    }
+    const histo = res(/histol/i);
+    if (!histo.missing) {
+      const row = rows.find(r => r.cells[2].docId === histo.docId);
+      if (row) { if (histo.conflict) row.cells[2] = { ...row.cells[2], conflict: histo.conflict }; }
+      else {
+        const d = docById(c, histo.docId);
+        rows.push({ iso: d?.examDate ?? asOf, cells: [fmtDate(d?.examDate), `Histológia · ${d?.place ?? ''}`, histo] });
+      }
+    }
+    rows.sort((a, b) => a.iso.localeCompare(b.iso));
+    return rows.map(r => [plain(r.cells[0]), plain(r.cells[1]), val(r.cells[2])]);
   };
 
   /* --- assemble sections exactly in template order --- */
@@ -240,7 +276,7 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
       return sec;
     }
     if (/výsledk|vysledk/.test(t)) {
-      sec.table = { head: ts.items.map(i => i.label), rows: buildRows().map(r => r.cells) };
+      sec.table = { head: ts.items.map(i => i.label), rows: buildRows() };
       sec.groups.push({ lines: [
         { label: 'Celkový stav', values: [val(res(/sympt|pr[íi]zn/i))] },
         { label: 'Stav výkonnosti (ECOG)', values: [val(res(/ecog|v[ýy]konn|karnof|performance/i))] },
@@ -248,7 +284,7 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
       return sec;
     }
     if (/závěr|zaver|doporuč|doporuc/.test(t)) {
-      sec.placeholder = `Doplní konzílium na jednaní ${fmtDate(asOf)}.`;
+      sec.placeholder = mdt ? `Doplní konzílium na jednaní ${fmtDate(mdt)}.` : 'Doplní konzílium na jednaní (termín ešte nie je určený).';
       return sec;
     }
     // generic: items with optional groups (section 1 + 3)
@@ -261,15 +297,22 @@ export function buildMdtModel(c: Case, tpl: Template, members: string[], texts: 
   });
 
   /* --- stats --- */
-  let values = 0, cited = 0, missing = 0;
-  const count = (v: Val) => { values++; if (v.n) cited++; if (v.missing) missing++; };
+  let values = 0, cited = 0, missing = 0, conflicts = 0;
+  const missingLabels: string[] = [];
+  const count = (v: Val, label?: string) => {
+    values++;
+    if (v.n) cited++;
+    if (v.conflict) conflicts++;
+    if (v.missing) { missing++; if (label) missingLabels.push(label); }
+  };
   for (const s of sections) {
-    s.groups.forEach(g => g.lines.forEach(l => l.values.forEach(count)));
+    s.groups.forEach(g => g.lines.forEach(l => l.values.forEach(v => count(v, `${v.prefix ?? l.label}${g.heading ? ` (${g.heading.toLowerCase()})` : ''}`))));
     s.table?.rows.forEach(r => count(r[2]));
   }
-  const omittedDocs = c.docs.filter(d => (d.receivedAt ?? d.examDate) > asOf);
+  // Reports received after the MDT date are never part of the handover (no foretelling of what will arrive).
+  const omittedDocs = c.docs.filter(d => (d.receivedAt ?? d.examDate) > (mdt ?? asOf));
 
-  return { title: tpl.title, asOf, sections, notes, omittedDocs, stats: { values, cited, missing } };
+  return { title: tpl.title, mdtDate: mdt, asOf, sections, notes, omittedDocs, stats: { values, cited, missing, conflicts, missingLabels } };
 }
 
 /* ---------- plain text (for "Kopírovať sekciu" and the clipboard) ---------- */
@@ -291,10 +334,28 @@ export function sectionText(s: Section): string {
   return out.join('\n');
 }
 
+/** Footnotes grouped by report (one header per source, the numbered quotes under it). */
+export interface NoteGroup { key: string; title: string; place?: string; date?: string; notes: Footnote[] }
+export function groupNotes(notes: Footnote[]): NoteGroup[] {
+  const groups: NoteGroup[] = [];
+  for (const n of notes) {
+    const key = n.docId ?? `src|${n.title}`;
+    let g = groups.find(x => x.key === key);
+    if (!g) { g = { key, title: n.title, place: n.place, date: n.date, notes: [] }; groups.push(g); }
+    g.notes.push(n);
+  }
+  return groups;
+}
+
 export function notesText(notes: Footnote[]): string {
-  return ['Zdroje', ...notes.map(n => `[${n.n}] ${n.title}${n.place ? ` · ${n.place}` : ''}${n.date ? ` · ${n.date}` : ''}${n.quote ? ` · „${n.quote}“` : ''}`)].join('\n');
+  const out = ['Zdroje'];
+  for (const g of groupNotes(notes)) {
+    out.push(`${g.title}${g.place ? ` · ${g.place}` : ''}${g.date ? ` · ${g.date}` : ''}`);
+    for (const n of g.notes) out.push(`  [${n.n}] ${n.quote ? `„${n.quote}“` : n.docId ? 'zhrnutie správy (bez doslovného citátu)' : 'prevzaté zo vzoru'}`);
+  }
+  return out.join('\n');
 }
 
 export function documentText(m: MdtModel): string {
-  return [m.title, `Údaje známe k ${fmtDate(m.asOf)}`, '', ...m.sections.map(sectionText).flatMap(s => [s, '']), notesText(m.notes)].join('\n');
+  return [m.title, `${m.mdtDate ? `Konzílium ${fmtDate(m.mdtDate)} · ` : ''}údaje známe k ${fmtDate(m.asOf)}`, '', ...m.sections.map(sectionText).flatMap(s => [s, '']), notesText(m.notes)].join('\n');
 }
