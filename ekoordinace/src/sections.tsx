@@ -3,6 +3,7 @@
 // Owners (see README): pacienti – Matej; prehled, zadanka, konzilia – Bruno. The address picks the section: #/pacienti, …
 import type { ReactNode } from 'react';
 import { PatientPage } from './sections/pacient/PatientPage';
+import { Zadanka } from './sections/zadanka/Zadanka';
 
 export interface Section {
   id: string;
@@ -20,5 +21,5 @@ export const SECTIONS: Section[] = [
   { id: 'prehled', label: 'Přehled', icon: 'grid' }, // Bruno: render: () => <Fronta /> (src/sections/prehled)
   { id: 'pacienti', label: 'Pacienti', icon: 'user', render: (path) => <PatientPage path={path} /> },
   { id: 'konzilia', label: 'Konzilia', icon: 'calendar' }, // Bruno, optional: render: () => <Konzilia />
-  { id: 'zadanka', label: 'Žádanka od praktika', icon: 'note', hidden: true }, // Bruno: render: () => <Zadanka />
+  { id: 'zadanka', label: 'Žádanka od praktika', icon: 'note', hidden: true, render: () => <Zadanka /> }, // Bruno
 ];
