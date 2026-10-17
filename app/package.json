@@ -12,7 +12,8 @@
     "extract": "node --experimental-strip-types scripts/extract.mjs",
     "eval": "node --experimental-strip-types scripts/eval.mjs",
     "eval:mutations": "node --experimental-strip-types scripts/eval-mutations.mjs",
-    "eval:guard": "node --experimental-strip-types --no-warnings scripts/eval-guard.mjs"
+    "eval:guard": "node --experimental-strip-types --no-warnings scripts/eval-guard.mjs",
+    "eval:plain": "node --experimental-strip-types --no-warnings scripts/eval-plain.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",
