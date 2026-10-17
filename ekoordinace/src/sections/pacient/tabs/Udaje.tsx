@@ -5,15 +5,11 @@ import { useState } from 'react';
 import { copyText } from '../../../ui/clipboard';
 import { Icon } from '../../../ui/Icon';
 import { nb } from '../../../ui/format';
-import { caseData } from '../caseData';
+import { useCaseData } from '../caseContext';
 import type { OpenDoc } from '../Journey';
-import type { Quote } from '../types';
+import type { Field } from '../types';
 import '../udaje.css';
 
-interface Field { key: string; label: string; group: string; value: string; status: string; issue: string; quotes: Quote[] }
-
-const fields = caseData.fields as Field[];
-const groups = [...new Set(fields.map((f) => f.group))];
 const STATUS: Record<string, { label: string; cls: string }> = {
   nalezeno: { label: 'Nalezeno', cls: 'ok' },
   'neúplné': { label: 'Neúplné', cls: 'miss' },
@@ -76,6 +72,9 @@ const KINDS = [
 ] as const;
 
 export function Udaje({ openDoc }: { openDoc: OpenDoc }) {
+  const { data: caseData } = useCaseData();
+  const fields = caseData.fields;
+  const groups = [...new Set(fields.map((f) => f.group))];
   const [show, setShow] = useState<(typeof KINDS)[number]['id']>('vse');
   const n = Object.fromEntries(KINDS.map((k) => [k.id, fields.filter(k.match).length])) as Record<string, number>;
   const kind = KINDS.find((k) => k.id === show) ?? KINDS[0];
@@ -87,7 +86,7 @@ export function Udaje({ openDoc }: { openDoc: OpenDoc }) {
       <section className="card udaje-head">
         <div className="udaje-title">
           <div>
-            <h2>Údaje pro konzilium {nb(caseData.mdtDate.split('-').reverse().map(Number).slice(0, 2).join('. '))}.</h2>
+            <h2>Údaje pro konzilium{caseData.mdtDate && ` ${nb(caseData.mdtDate.split('-').reverse().map(Number).slice(0, 2).join('. '))}.`}</h2>
             <p className="muted">Co lékaři na konziliu potřebují o pacientce vědět: 20 údajů podle šablony VZP, každý s větou ze zprávy, odkud je.</p>
           </div>
           <CopyButton text={all} label="všechny údaje" caption="Kopírovat vše" />

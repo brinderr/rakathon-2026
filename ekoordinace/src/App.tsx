@@ -3,11 +3,13 @@
 // can build two sections at once without touching each other's files.
 import { useEffect, useMemo, useState } from 'react';
 import { DEFAULT_SECTION, SECTIONS } from './sections';
-import { openTasks } from './sections/pacient/PatientPage';
+import { demoCase } from './state/patients';
 import { Icon } from './ui/Icon';
 import { Mark } from './ui/Mark';
 
 const SOON = 'Připravujeme';
+// the bell: open to-dos of the demo case (system alerts come later)
+const openTasks = demoCase.steps.find((s) => s.status === 'now')?.todo?.length ?? 0;
 
 function readRoute(): string[] {
   return window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
@@ -56,7 +58,7 @@ export function App() {
           </label>
           <div className="top-actions">
             <button type="button" className="icon-btn" disabled title={SOON} aria-label="Komunikace"><Icon name="mail" /></button>
-            <a className="icon-btn" href="#/pacienti/ukoly" aria-label={`Co je potřeba udělat (${openTasks})`}>
+            <a className="icon-btn" href="#/pacienti/alena/ukoly" aria-label={`Co je potřeba udělat (${openTasks})`}>
               <Icon name="bell" />{openTasks > 0 && <span className="badge">{openTasks}</span>}
             </a>
           </div>

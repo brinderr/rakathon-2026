@@ -673,7 +673,6 @@
       "id": "prevzit",
       "label": "Žádost od praktika",
       "title": "Praktický lékař požádal o převzetí do péče KOC",
-      "status": "done",
       "date": "2026-10-02",
       "short": "2. 10.",
       "request": {
@@ -690,13 +689,13 @@
           "code": "ŽÁD",
           "ref": "žádanka praktika 2. 10."
         }
-      ]
+      ],
+      "status": "done"
     },
     {
       "id": "shromazdit",
       "label": "Předchozí zprávy",
       "title": "Předchozí zprávy shromážděny",
-      "status": "done",
       "short": "6 zpráv",
       "docs": [
         {
@@ -747,13 +746,13 @@
           "code": "UZ",
           "ref": "UZ břicha 29. 9."
         }
-      ]
+      ],
+      "status": "done"
     },
     {
       "id": "koordinovat",
       "label": "Vyšetření",
       "title": "Vyšetření proběhla",
-      "status": "done",
       "date": "2026-10-19",
       "short": "8.–19. 10.",
       "docs": [
@@ -794,13 +793,13 @@
           "isNew": true,
           "what": "Histologie"
         }
-      ]
+      ],
+      "status": "done"
     },
     {
       "id": "podklad",
       "label": "Podklad pro konzilium",
       "title": "Připravit podklad pro konzilium 21. 10. 2026",
-      "status": "now",
       "due": "2026-10-20",
       "short": "do 20. 10.",
       "todo": [
@@ -886,15 +885,16 @@
             }
           ]
         }
-      ]
+      ],
+      "status": "now"
     },
     {
       "id": "uzavrit",
       "label": "Závěr praktikovi",
       "title": "Poslat závěr praktikovi a doložit doručení",
-      "status": "waiting",
       "short": "po 21. 10.",
-      "summary": "Po konziliu 21. 10. 2026 dostane závěr MUDr. Tomáš Řezníček."
+      "summary": "Po konziliu 21. 10. 2026 dostane závěr MUDr. Tomáš Řezníček.",
+      "status": "waiting"
     }
   ]
 }
