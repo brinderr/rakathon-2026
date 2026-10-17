@@ -19,11 +19,11 @@ Claude stavia, Matej po každej sekcii otvorí appku, preklikne ju a povie „ď
     mení priamo v hlavičke pacienta (dátumové pole), prípad sa prepočíta.
   - Skontroluj: zapíš ECOG ako koordinátorka (napr. „ECOG 1, od praktika“). V Prehľade zmizne úloha a počty
     klesnú (K vyřešení 4 → 3).
-- [ ] **3. Potvrdenie lekárom**
+- [x] **3. Potvrdenie lekárom**
   - „Potvrdit lékařem“ (MUDr. Marková). Krok „Podklad pro konzilium“ v ceste sa označí ako hotový.
-- [ ] **4. Podklad pro konzilium podľa `MDT_zapis`** (`#/pacienti/podklad`)
+- [x] **4. Podklad pro konzilium podľa `MDT_zapis`** (`#/pacienti/podklad`)
   - Skontroluj vedľa Word šablóny `MDT_zapis`: 7 častí, len to, čo bolo známe k 21. 10., chýbajúce vyznačené.
-- [ ] **5. Podklad ako PDF**
+- [x] **5. Podklad ako PDF**
   - Skontroluj: „Stáhnout PDF“, súbor otvor a pozri.
 - [ ] **6. Závěr – obsah** (`#/pacienti/zaver`)
   - Skontroluj vedľa vzoru `MDT zaver`: čo sa praktik pýtal, čo rozhodlo konzílium, čo má sledovať on.

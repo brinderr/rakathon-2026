@@ -1,0 +1,69 @@
+/* Tab "Podklad" (owner: Matej): the MDT_zapis document – on screen as a sheet, in print the sheet only. */
+.podklad { display: grid; gap: 1rem; }
+.pk-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1.25rem; padding: .9rem 1.25rem; }
+.pk-state { display: grid; gap: .2rem; font-weight: 600; }
+.pk-state p { display: inline-flex; align-items: center; gap: .4rem; }
+.pk-ok { color: var(--ok); }
+.pk-open { color: var(--conf); font-weight: 500; font-size: .875rem; }
+.pk-open a { color: var(--red); font-weight: 600; }
+
+.pk-paper { width: 100%; max-width: 62rem; padding: 2rem 2.25rem 2.25rem; display: grid; gap: 1.4rem; }
+.pk-head h2 { margin: 0 0 .3rem; font-size: 1.3rem; }
+.pk-head p { color: var(--muted); font-size: .85rem; }
+.pk-issues { padding: .8rem 1rem; border-radius: var(--r-ctl); background: var(--conf-bg); }
+.pk-issues h3 { margin: 0 0 .35rem; font-size: .9rem; color: var(--conf); }
+.pk-issues ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .15rem; font-size: .875rem; }
+.pk-sec h3 { display: flex; align-items: baseline; gap: .6rem; margin: 0 0 .5rem; padding-bottom: .35rem; border-bottom: 2px solid var(--ink); font-size: 1.02rem; }
+.pk-sec h3 span { font: 600 .85rem var(--mono); color: var(--red); }
+.pk-sec h4 { margin: .7rem 0 .2rem; font: 600 .72rem var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.pk-sec dl { margin: 0; }
+.pk-row { display: grid; grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr); gap: .2rem 1.25rem; padding: .45rem 0; border-bottom: 1px solid var(--line); }
+.pk-row:last-child { border-bottom: 0; }
+.pk-row dt { color: var(--ink-2); font-size: .875rem; }
+.pk-row dd { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .6rem; min-width: 0; }
+.pk-value { white-space: pre-line; line-height: 1.5; font-weight: 500; flex-basis: 100%; }
+.pk-soft { font-weight: 400; color: var(--muted); }
+.pk-empty { color: var(--miss); font-weight: 600; font-size: .9rem; }
+.pk-flag { padding: .05rem .45rem; border-radius: var(--r-chip); font-size: .72rem; font-weight: 700; }
+.pk-flag.conf { background: var(--conf-bg); color: var(--conf); }
+.pk-flag.miss { background: var(--miss-bg); color: var(--miss); }
+.pk-flag.ok { background: var(--ok-bg); color: var(--ok); }
+.pk-note { font-size: .8rem; color: var(--ink-2); }
+.pk-src { display: inline-flex; flex-wrap: wrap; gap: .1rem .6rem; }
+.pk-src button { padding: 0; border: 0; background: none; color: var(--red); font-size: .75rem; font-weight: 600; cursor: pointer; }
+.pk-src button:hover { text-decoration: underline; }
+.pk-fill { color: var(--muted); font-size: .85rem; }
+.pk-lines { display: none; }
+.pk-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.pk-table th { text-align: left; font: 600 .72rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: .35rem .5rem .35rem 0; border-bottom: 1px solid var(--line); }
+.pk-table td { vertical-align: top; padding: .55rem .75rem .55rem 0; border-bottom: 1px solid var(--line); line-height: 1.45; }
+.pk-table td small { display: block; color: var(--muted); font-size: .75rem; }
+.pk-table td .pk-flag { display: inline-block; margin-top: .2rem; }
+.pk-table td .pk-src { margin-left: .4rem; }
+.pk-date { white-space: nowrap; font-family: var(--mono); font-size: .8rem; }
+
+@media (max-width: 700px) {
+  .pk-paper { padding: 1.25rem 1rem; }
+  .pk-row { grid-template-columns: minmax(0, 1fr); }
+  .pk-table thead { display: none; }
+  .pk-table tr { display: grid; padding: .5rem 0; border-bottom: 1px solid var(--line); }
+  .pk-table td { padding: .1rem 0; border: 0; }
+}
+
+/* print / PDF: the sheet only, as a document */
+@media print {
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  body:has(.pk-paper) { background: #fff; }
+  body:has(.pk-paper) .side, body:has(.pk-paper) .topbar, body:has(.pk-paper) .crumbs, body:has(.pk-paper) .patient-head,
+  body:has(.pk-paper) .tabs-row, body:has(.pk-paper) .pk-actions, body:has(.pk-paper) .foot { display: none !important; }
+  body:has(.pk-paper) .frame, body:has(.pk-paper) .content { display: block; }
+  body:has(.pk-paper) .page { padding: 0; max-width: none; }
+  .pk-paper { max-width: none; padding: 0; border: 0; box-shadow: none; gap: 1rem; }
+  .pk-src button { color: #555; font-weight: 400; }
+  .pk-table .pk-src { display: none; }
+  .pk-fill { display: none; }
+  .pk-lines { display: grid; gap: 1.6rem; padding-top: 1.2rem; }
+  .pk-lines i { display: block; border-bottom: 1px solid #999; }
+  .pk-sec h3, .pk-sec h4 { break-after: avoid; }
+  .pk-row, .pk-table tr, .pk-issues { break-inside: avoid; }
+}
