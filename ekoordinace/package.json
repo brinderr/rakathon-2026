@@ -1,5 +1,5 @@
 {
-  "name": "cordin",
+  "name": "ekoordinace",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
+    "check": "tsc --noEmit && vite build --logLevel warn",
     "preview": "vite preview",
     "data": "node --experimental-strip-types --no-warnings scripts/build-case.mjs",
     "preview:pack": "node scripts/pack-preview.mjs"

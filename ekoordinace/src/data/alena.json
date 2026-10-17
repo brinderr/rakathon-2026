@@ -1,0 +1,243 @@
+{
+  "generatedFrom": "app/src/ai (pravidla) · app/public/data/source.json · npm run data",
+  "today": "2026-10-19",
+  "mdtDate": "2026-10-21",
+  "patient": {
+    "name": "Alena Procházková",
+    "initials": "AP",
+    "sex": "žena",
+    "born": "22. 7. 1963",
+    "age": "63 let",
+    "insurer": {
+      "code": "211",
+      "short": "ZPMV ČR",
+      "name": "Zdravotní pojišťovna ministerstva vnitra ČR"
+    },
+    "diagnosis": {
+      "code": "C25.0",
+      "text": "Duktální adenokarcinom pankreatu",
+      "source": "histologie 19. 10.",
+      "docId": "11"
+    },
+    "phone": "+420 777 000 541",
+    "contactPerson": {
+      "role": "Dcera",
+      "name": "Petra Horká",
+      "phone": "+420 777 000 542",
+      "note": "souhlas se sdílením informací (zpráva 07)"
+    }
+  },
+  "stats": {
+    "fields": 20,
+    "ready": 16,
+    "missing": 2,
+    "conflicts": 2
+  },
+  "news": [
+    {
+      "id": "11",
+      "what": "Histologie",
+      "dept": "Ústav patologie"
+    }
+  ],
+  "steps": [
+    {
+      "id": "prevzit",
+      "label": "Žádost od praktika",
+      "title": "Převzít žádost od praktika",
+      "status": "done",
+      "date": "2026-10-02",
+      "short": "2. 10.",
+      "summary": "Žádanka přišla 2. 10. 2026 · MUDr. Tomáš Řezníček, praktický lékař.",
+      "docs": [
+        {
+          "id": "07",
+          "date": "2026-10-02",
+          "title": "Epikríza a žádost o převzetí do péče KOC",
+          "place": "Ordinace praktického lékaře pro dospělé"
+        }
+      ]
+    },
+    {
+      "id": "shromazdit",
+      "label": "Předchozí zprávy",
+      "title": "Vyžádat a shromáždit předchozí zprávy",
+      "status": "done",
+      "short": "6 zpráv",
+      "summary": "6 zpráv z 5 pracovišť je na jednom místě.",
+      "docs": [
+        {
+          "id": "01",
+          "date": "2026-07-20",
+          "title": "kontrolní vyšetření",
+          "place": "Kardiologická ambulance Jesenice"
+        },
+        {
+          "id": "02",
+          "date": "2026-09-01",
+          "title": "Výsledky laboratorního vyšetření",
+          "place": "Laboratoř LabJih s.r.o."
+        },
+        {
+          "id": "03",
+          "date": "2026-09-03",
+          "title": "RTG hrudníku PA",
+          "place": "Radiologické centrum Modřany"
+        },
+        {
+          "id": "04",
+          "date": "2026-09-04",
+          "title": "Epikríza a žádost o vyšetření gastroenterologem",
+          "place": "Ordinace praktického lékaře pro dospělé"
+        },
+        {
+          "id": "05",
+          "date": "2026-09-15",
+          "title": "vstupní vyšetření",
+          "place": "Poliklinika Jižní – Gastroenterologická ambulance"
+        },
+        {
+          "id": "06",
+          "date": "2026-09-29",
+          "title": "UZ břicha",
+          "place": "Poliklinika Jižní – Radiodiagnostické pracoviště"
+        }
+      ]
+    },
+    {
+      "id": "koordinovat",
+      "label": "Vyšetření",
+      "title": "Koordinovat vyšetření",
+      "status": "done",
+      "date": "2026-10-19",
+      "short": "8.–19. 10.",
+      "docs": [
+        {
+          "id": "08",
+          "date": "2026-10-08",
+          "title": "CT břicha a hrudníku s k. l., pankreatický protokol",
+          "place": "KOC Nemocnice Severní – Radiologická klinika",
+          "what": "CT"
+        },
+        {
+          "id": "09",
+          "date": "2026-10-12",
+          "title": "EUS-FNB",
+          "place": "KOC Nemocnice Lipová – Endoskopické pracoviště, Interní gastroenterologická klinika",
+          "what": "Biopsie"
+        },
+        {
+          "id": "10",
+          "date": "2026-10-15",
+          "title": "Výsledky laboratorního vyšetření",
+          "place": "KOC Nemocnice Lipová – Oddělení klinické biochemie a hematologie",
+          "what": "Kontrolní odběry"
+        },
+        {
+          "id": "11",
+          "date": "2026-10-19",
+          "title": "Bioptický nález",
+          "place": "KOC Nemocnice Lipová – Ústav patologie",
+          "isNew": true,
+          "what": "Histologie"
+        }
+      ]
+    },
+    {
+      "id": "podklad",
+      "label": "Podklad pro konzilium",
+      "title": "Připravit podklad pro konzilium 21. 10. 2026",
+      "status": "now",
+      "due": "2026-10-20",
+      "short": "do 20. 10.",
+      "todo": [
+        {
+          "field": "performance",
+          "kind": "chybí",
+          "title": "Doplnit výkonnostní stav (ECOG)",
+          "why": "Skóre ECOG ani Karnofsky není v žádné zprávě. Zpráva 07 uvádí jen slovní popis „Soběstačná“ – to není skóre.",
+          "quotes": [],
+          "contacts": [
+            {
+              "role": "Praktický lékař",
+              "name": "MUDr. Tomáš Řezníček",
+              "phone": "+420 311 000 287"
+            }
+          ]
+        },
+        {
+          "field": "medication",
+          "kind": "rozpor",
+          "title": "Ověřit, kdy byl vysazen apixaban",
+          "why": "Poslední dávka je zapsána na 18. 10. 2026, tedy po datu výkonu 12. 10. 2026.",
+          "quotes": [
+            {
+              "docId": "09",
+              "quote": "Nalačno od půlnoci. Apixaban vysazen 48 h před výkonem (poslední dávka 18. 10. 2026 večer). Informovaný souhlas podepsán."
+            },
+            {
+              "docId": "09",
+              "quote": "Datum výkonu: 12. 10. 2026"
+            }
+          ],
+          "contacts": [
+            {
+              "role": "Endoskopické pracoviště",
+              "name": "MUDr. Martin Svoboda"
+            }
+          ]
+        },
+        {
+          "field": "histology",
+          "kind": "rozpor",
+          "title": "Ověřit datum odběru vzorku na histologii",
+          "why": "Materiál má datum odběru 20. 10. 2026, ale zpráva byla vydána 19. 10. 2026 a biopsie proběhla 12. 10. 2026 (zpráva 09).",
+          "quotes": [
+            {
+              "docId": "11",
+              "quote": "Materiál: ložisko hlavy pankreatu, EUS-FNB 22G (odběr 20. 10. 2026)"
+            },
+            {
+              "docId": "11",
+              "quote": "Datum vydání: 19. 10. 2026"
+            }
+          ],
+          "contacts": [
+            {
+              "role": "Ústav patologie",
+              "name": "MUDr. Radek Pokorný, Ph.D."
+            }
+          ]
+        },
+        {
+          "field": "patientContact",
+          "kind": "chybí",
+          "title": "Zjistit e-mail pacientky",
+          "why": "Chybí e-mail pacientky – zápis pro konzilium vyžaduje telefon i e-mail.",
+          "quotes": [],
+          "contacts": [
+            {
+              "role": "Pacientka",
+              "name": "Alena Procházková",
+              "phone": "+420 777 000 541"
+            },
+            {
+              "role": "Dcera",
+              "name": "Petra Horká",
+              "phone": "+420 777 000 542",
+              "note": "souhlas se sdílením informací (zpráva 07)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "uzavrit",
+      "label": "Závěr praktikovi",
+      "title": "Poslat závěr praktikovi a doložit doručení",
+      "status": "waiting",
+      "short": "po 21. 10.",
+      "summary": "Po konziliu 21. 10. 2026 dostane závěr MUDr. Tomáš Řezníček."
+    }
+  ]
+}

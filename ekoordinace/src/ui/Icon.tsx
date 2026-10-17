@@ -1,4 +1,4 @@
-// Line icons (24 × 24, 1.75 stroke), drawn here so the app needs no icon library.
+// Line icons (24 × 24, 1.75 stroke), drawn here so the app needs no icon library. Shared by all sections.
 const PATHS: Record<string, string> = {
   grid: 'M4.5 3.5h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Zm10 0h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Zm-10 10h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Zm10 0h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Z',
   user: 'M5.5 3.5h13a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2ZM12 7.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6ZM7.2 20c.9-2.4 2.7-3.6 4.8-3.6s3.9 1.2 4.8 3.6',
@@ -17,6 +17,7 @@ const PATHS: Record<string, string> = {
   fields: 'M4 6h16M4 12h16M4 18h10',
   right: 'm9.5 6 6 6-6 6',
   up: 'm6.5 14.5 5.5-5.5 5.5 5.5',
+  down: 'm6.5 9.5 5.5 5.5 5.5-5.5',
 };
 
 export function Icon({ name, size = 20 }: { name: keyof typeof PATHS | string; size?: number }) {

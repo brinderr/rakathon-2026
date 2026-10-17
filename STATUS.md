@@ -19,9 +19,11 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | Vlna 1 kritikov: upozornenia na lieky len ako citát lekára + poctivé vety v SUBMISSION/PITCH | matej | ✅ | nález `doctor-warning-<zpráva>`; „0 čísel bez opory, význam potvrzuje člověk“ |
 | Poistka proti opačnému významu (NegEx) | matej | ✅ | `npm run eval:guard`: 5/5 viet kritika 06 (bez nej 0/5), ďalšie 3/5, falošné poplachy 0/18 → public/data/pojistka.json |
 | Text bez nadpisov (vzory vnútri viet + poctivý pruh) | matej | ✅ | src/ai/plain.ts, `meta.plainText.notice`; `npm run eval:plain`: sada 1 naslepo 41/80 → po úprave 66/80; **sada 2 naslepo 53/80**; 0 vymyslených |
-| **CORDIN – nová appka od základu** (`cordin/`) | matej | 🔵 | kroky 0 a 1 hotové (rozloženie, farby VZP, cesta v 6 krokoch z motora); nasadenie na Vercel čaká na prepojenie repa; ďalšie kroky po jednom |
+| **eKoordinace – nová appka** (`ekoordinace/`) | matej | 🔵 | krok 1 hotový: hlavička s diagnózou z histológie, cesta v 5 krokoch (hotové kroky malé), úlohy s kontaktmi, „Dnes nové“; appka rozdelená na sekcie (pravidlá v ekoordinace/README.md); ďalej záložka Zprávy |
+| Sekcia Konzilia (`ekoordinace/src/sections/konzilia/`) | bruno | ⚪ | kostra pripravená, zapína sa v `src/sections.tsx` |
+| Nasadenie eKoordinace na Vercel | bruno / matej | ⛔ | import repa na vercel.com s Root Directory `ekoordinace` (Matejov konektor: 403) |
 | Ostrý AI beh cez Azure OpenAI EU | kapitán | ⚪ | kľúč z portálu do app/.env (AZURE_OPENAI_ENDPOINT/API_KEY/DEPLOYMENT) → `npm run extract` |
 | Titulný obrázok 16:9 | ⚪ | ⚪ | prompt v docs/pitch/COVER-PROMPT.md |
 
 ## Blokery
-- (žiadne)
+- Vercel: Matejov konektor nemá právo zakladať projekty (403) a repo je na Brunovom GitHube → import cez vercel.com (Root Directory `ekoordinace`).

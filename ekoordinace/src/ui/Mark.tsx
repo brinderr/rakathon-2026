@@ -1,4 +1,4 @@
-// CORDIN mark (A1 "kruh"): a loop from the GP through the centre and the MDT back to the GP; the chevron = whose turn it is.
+// eKoordinace mark until the final logo arrives (A1 "kruh"): a loop from the GP through the centre and the MDT back to the GP; the chevron = whose turn it is.
 export function Mark({ size = 28, title }: { size?: number; title?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 200 200" role={title ? 'img' : undefined} aria-label={title} aria-hidden={title ? undefined : true}>
