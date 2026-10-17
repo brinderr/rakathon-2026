@@ -47,6 +47,16 @@ function Row({ id, removable }: { id: string; removable: boolean }) {
   );
 }
 
+/** Back to the start of the demo: forget everything written in this browser (cases, added patients, MDT dates). */
+function resetDemo() {
+  if (!window.confirm('Obnovit demo? Smaže se vše, co jste v tomto prohlížeči zapsala, i přidaní pacienti.')) return;
+  try {
+    Object.keys(window.localStorage).filter((k) => k.startsWith('ekoordinace:')).forEach((k) => window.localStorage.removeItem(k));
+  } catch { /* nothing stored */ }
+  window.location.hash = '#/pacienti';
+  window.location.reload();
+}
+
 function NewPatient({ onDone }: { onDone: () => void }) {
   const [name, setName] = useState('');
   const [mdt, setMdt] = useState('');
@@ -83,7 +93,10 @@ export function PatientsList() {
           <h1>Pacienti</h1>
           <p className="muted">{n} {n === 1 ? 'pacient' : n < 5 ? 'pacienti' : 'pacientů'} · kliknutím otevřete</p>
         </div>
-        {!adding && <button type="button" className="btn-primary" onClick={() => setAdding(true)}><Icon name="plus" size={18} />Nový pacient</button>}
+        <div className="form-actions">
+          <button type="button" className="btn-ghost" onClick={resetDemo} title="Vrátit demo do výchozího stavu">Obnovit demo</button>
+          {!adding && <button type="button" className="btn-primary" onClick={() => setAdding(true)}><Icon name="plus" size={18} />Nový pacient</button>}
+        </div>
       </div>
       {adding && <NewPatient onDone={() => setAdding(false)} />}
       <section className="card pt-card" aria-label="Seznam pacientů">

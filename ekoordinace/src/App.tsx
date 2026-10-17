@@ -61,7 +61,6 @@ export function App() {
         <header className="topbar">
           <Search />
           <div className="top-actions">
-            <button type="button" className="icon-btn" disabled title={SOON} aria-label="Komunikace"><Icon name="mail" /></button>
             <a className="icon-btn" href="#/pacienti/alena/ukoly" aria-label={`Co je potřeba udělat (${openTasks})`}>
               <Icon name="bell" />{openTasks > 0 && <span className="badge">{openTasks}</span>}
             </a>
