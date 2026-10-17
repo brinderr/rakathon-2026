@@ -1,0 +1,110 @@
+{
+  "author": "slepý agent bez přístupu k pravidlům",
+  "written": "2026-10-17T05:17:24Z",
+  "letters": [
+    {
+      "file": "zadanka-1.txt",
+      "date": "2026-10-05",
+      "expected": {
+        "firstName": { "present": true, "mustContain": ["Bohumil"] },
+        "lastName": { "present": true, "mustContain": ["Kratochvíl"] },
+        "age": { "present": true, "mustContain": ["72"] },
+        "sex": { "present": true, "mustContain": ["muž"] },
+        "insurance": { "present": true, "mustContain": ["111"] },
+        "patientContact": { "present": true, "mustContain": ["603 482 715"] },
+        "contactPerson": { "present": false, "mustContain": [] },
+        "diagnosis": { "present": true, "mustContain": ["pankreatu"] },
+        "epicrisis": { "present": true, "mustContain": ["stent"] },
+        "mdtQuestion": { "present": true, "mustContain": ["resekabilní"] },
+        "comorbidities": { "present": true, "mustContain": ["hypertenz"] },
+        "medication": { "present": true, "mustContain": ["Glucophage"] },
+        "allergies": { "present": true, "mustContain": ["penicilin"] },
+        "performance": { "present": false, "mustContain": [] },
+        "bodyMeasures": { "present": false, "mustContain": [] },
+        "symptoms": { "present": true, "mustContain": ["žlutý"] },
+        "exams": { "present": true, "mustContain": ["CT břicha 24. 9. 2026"] },
+        "labs": { "present": true, "mustContain": ["CA 19-9"] },
+        "histology": { "present": false, "mustContain": [] },
+        "other": { "present": true, "mustContain": ["o podezření ví"] }
+      }
+    },
+    {
+      "file": "zadanka-2.txt",
+      "date": "2026-10-06",
+      "expected": {
+        "firstName": { "present": true, "mustContain": ["Jiřina"] },
+        "lastName": { "present": true, "mustContain": ["Pospíšilová"] },
+        "age": { "present": true, "mustContain": ["1961"] },
+        "sex": { "present": true, "mustContain": ["žena"] },
+        "insurance": { "present": true, "mustContain": ["211"] },
+        "patientContact": { "present": false, "mustContain": [] },
+        "contactPerson": { "present": true, "mustContain": ["737 204 615"] },
+        "diagnosis": { "present": true, "mustContain": ["rekta"] },
+        "epicrisis": { "present": true, "mustContain": ["TOKS"] },
+        "mdtQuestion": { "present": true, "mustContain": ["neoadjuvance"] },
+        "comorbidities": { "present": true, "mustContain": ["ICHS"] },
+        "medication": { "present": true, "mustContain": ["Atoris"] },
+        "allergies": { "present": true, "mustContain": ["AA neguje"] },
+        "performance": { "present": true, "mustContain": ["ECOG 1"] },
+        "bodyMeasures": { "present": true, "mustContain": ["82 kg"] },
+        "symptoms": { "present": true, "mustContain": ["enteroragie"] },
+        "exams": { "present": true, "mustContain": ["MR pánve 29. 9."] },
+        "labs": { "present": true, "mustContain": ["CEA"] },
+        "histology": { "present": true, "mustContain": ["adenokarcinom"] },
+        "other": { "present": false, "mustContain": [] }
+      }
+    },
+    {
+      "file": "zadanka-3.txt",
+      "date": "2026-10-07",
+      "expected": {
+        "firstName": { "present": true, "mustContain": ["Vladimír"] },
+        "lastName": { "present": true, "mustContain": ["Šindelář"] },
+        "age": { "present": true, "mustContain": ["67"] },
+        "sex": { "present": true, "mustContain": ["muž"] },
+        "insurance": { "present": false, "mustContain": [] },
+        "patientContact": { "present": true, "mustContain": ["728 115 064"] },
+        "contactPerson": { "present": true, "mustContain": ["776 902 341"] },
+        "diagnosis": { "present": true, "mustContain": ["karcinom", "plic"] },
+        "epicrisis": { "present": true, "mustContain": ["zastínění"] },
+        "mdtQuestion": { "present": true, "mustContain": ["operabilní"] },
+        "comorbidities": { "present": true, "mustContain": ["CHOPN"] },
+        "medication": { "present": true, "mustContain": ["Eliquis"] },
+        "allergies": { "present": false, "mustContain": [] },
+        "performance": { "present": true, "mustContain": ["soběstačný"] },
+        "bodyMeasures": { "present": true, "mustContain": ["71 kg"] },
+        "symptoms": { "present": true, "mustContain": ["kašle"] },
+        "exams": { "present": true, "mustContain": ["PET/CT 30. 9. 2026"] },
+        "labs": { "present": false, "mustContain": [] },
+        "histology": { "present": true, "mustContain": ["dlaždicobuněčný"] },
+        "other": { "present": true, "mustContain": ["ambulantní léčbu"] }
+      }
+    },
+    {
+      "file": "zadanka-4.txt",
+      "date": "2026-10-08",
+      "expected": {
+        "firstName": { "present": true, "mustContain": ["Dagmar"] },
+        "lastName": { "present": true, "mustContain": ["Křížov"] },
+        "age": { "present": false, "mustContain": [] },
+        "sex": { "present": true, "mustContain": ["žena"] },
+        "insurance": { "present": true, "mustContain": ["213"] },
+        "patientContact": { "present": true, "mustContain": ["721 640 593"] },
+        "contactPerson": { "present": true, "mustContain": ["605 377 120"] },
+        "diagnosis": { "present": true, "mustContain": ["vaječníku"] },
+        "epicrisis": { "present": true, "mustContain": ["k nám přišla"] },
+        "mdtQuestion": { "present": true, "mustContain": ["laparoskopie"] },
+        "comorbidities": { "present": true, "mustContain": ["vysokým tlakem"] },
+        "medication": { "present": false, "mustContain": [] },
+        "allergies": { "present": true, "mustContain": ["bez alergií"] },
+        "performance": { "present": true, "mustContain": ["dobré kondici"] },
+        "bodyMeasures": { "present": true, "mustContain": ["74 kg"] },
+        "symptoms": { "present": true, "mustContain": ["roste břicho"] },
+        "exams": { "present": true, "mustContain": ["UZ malé pánve 22. 9. 2026"] },
+        "labs": { "present": true, "mustContain": ["CA-125"] },
+        "histology": { "present": false, "mustContain": [] },
+        "other": { "present": true, "mustContain": ["vystrašená"] }
+      }
+    }
+  ]
+}
