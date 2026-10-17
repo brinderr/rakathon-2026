@@ -37,6 +37,8 @@ npm run preview:pack -- /cesta/preview.html   # jeden súbor na dočasný náhľ
 
 ## Nasadenie
 
+**Adresa: https://ekoordinace.vercel.app**
+
 Automaticky cez GitHub Actions (`.github/workflows/ekoordinace-vercel.yml`): každý push do `main`, ktorý mení
 `ekoordinace/`, spustí `npm run check` a výsledok nasadí na Vercel (projekt `ekoordinace` v tíme „Matej Salat's
 projects“). Funguje so súkromným repom aj s commitmi od hocikoho. Potrebuje jeden secret v repe: **`VERCEL_TOKEN`**
