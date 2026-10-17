@@ -73,7 +73,7 @@ Texty nižšie: **česky + anglicky** (formulár chce CZ aj EN). `[…]` = dopln
 | Titulní obrázek (povinný, 16:9, do 8 MB) | `docs/odovzdanie/cover.png` (Bruno, 1920 × 1080, 0,5 MB) | Texty na obrázku majú byť česky a so sloganom „Aby se nic neztratilo a bylo jasné, kdo je na tahu.“ (Bruno) |
 | GitHub | […] | Repo `brinderr/rakathon-2026` je zvonku **404 (súkromné)**. Buď ho zverejniť (pred tým skontrolovať, že v histórii nie je `.env` ani kľúč), alebo pole nechať prázdne. |
 | Demo | https://claude.ai/artifact/5JEhKBgT3g6mhAQ44PrHH4 | Brunova appka; po prerobení na „Zpracování naživo“ znovu nahrať a **overiť v anonymnom okne**. |
-| Video | […] | podľa VIDEO.md (~2:20, česky, hlas ElevenLabs) – YouTube neverejné alebo Google Drive |
+| Video | […] | podľa VIDEO.md (max 1:30, česky, hlas ElevenLabs) – YouTube neverejné alebo Google Drive |
 
 ## Kontrola pred odoslaním
 - [ ] `[SLEPÝ TEST]` / `[BLIND TEST]` nahradené číslom z `app/public/data/eval-pacient-3.json` (pole `headline`).

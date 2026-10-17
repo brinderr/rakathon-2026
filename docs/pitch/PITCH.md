@@ -4,7 +4,7 @@
 > Neříkáme „AI vytěží dokumenty“. Říkáme: **pravidla + ověřené citace, AI navrhuje volný text.**
 
 **Kde a jak dlouho (ověřit u organizátorů):** v sobotu 14:00–16:00 chodí zadavatelé VZP k jednotlivým stolům (žádné pódium) →
-krátký úvod, video (~2:20, VIDEO.md) a **živé demo na notebooku, kde si porotce může sám něco změnit**.
+video (max 1:30, VIDEO.md: problém Aleny + řešení ve zkratce) a pak **~2 minuty živé demo na notebooku, kde si porotce může sám něco změnit**.
 Délka nedělního finálového pitche není zveřejněná (odhad 5–6 min včetně otázek) – níže je 3minutová verze, kterou lze natáhnout.
 Rozdělení (návrh): Bruno úvod + demo, Maťo čísla, cesta k realitě a prosba. Záloha: video.
 
