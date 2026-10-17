@@ -47,7 +47,7 @@ export function AskAi() {
       });
       const body = await r.json().catch(() => null) as { answer?: string; error?: string } | null;
       if (!r.ok || !body?.answer) {
-        const why = r.status === 404 ? 'AI běží jen na webu ekoordinace.vercel.app.' : body?.error ?? `AI neodpověděla (${r.status}).`;
+        const why = r.status === 404 ? 'AI běží jen na webu ekoordinace.vercel.app.' : body?.error ?? (r.ok ? 'AI nevrátila odpověď – zkuste otázku zúžit.' : `AI neodpověděla (${r.status}).`);
         setMsgs((m) => [...m, { role: 'assistant', content: why, error: true }]);
       } else {
         setMsgs((m) => [...m, { role: 'assistant', content: snap.restore(body.answer!) }]);

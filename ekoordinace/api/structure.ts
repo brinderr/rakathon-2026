@@ -75,7 +75,7 @@ export default async function handler(req: Req, res: Res) {
       schema: Schema,
       system: SYSTEM,
       prompt: docs.map((d) => `### Dokument ${d.id}\n${d.text}`).join('\n\n'),
-      maxTokens: 8000,
+      maxTokens: 12000,
     });
     return send(res, 200, { model: MODEL, documents: object.documents, usage });
   } catch (e) {
