@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>eKoordinace – obrazovky k prezentaci</title>
+<style>
+  :root {
+    --ink: #1c1917; --ink-2: #44403c; --muted: #78716c; --line: #e7e5e4; --soft: #fafaf9;
+    --red: #d22d0f; --red-50: #fdf1ee; --ok: #166534; --ok-bg: #ecfdf3; --warn: #92400e; --warn-bg: #fef3c7;
+    --bg: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #f5f5f4; --ink-2: #d6d3d1; --muted: #a8a29e; --line: #3a3532; --soft: #1f1c1a; --red-50: #2a1714; --ok-bg: #12261a; --ok: #86efac; --warn-bg: #2b2210; --warn: #fcd34d; --bg: #151311; }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1240px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1 { font-size: 2rem; line-height: 1.15; margin: 0 0 .4rem; letter-spacing: -.01em; }
+  h2 { font-size: 1.45rem; line-height: 1.2; margin: 0; }
+  h3 { font-size: 1.05rem; margin: 1.1rem 0 .4rem; }
+  a { color: var(--red); }
+  .lead { color: var(--ink-2); max-width: 75ch; margin: 0 0 1rem; }
+  .muted { color: var(--muted); }
+  .box { background: var(--soft); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin: 18px 0; }
+  .box p { margin: .3rem 0; }
+  .box ul { margin: .3rem 0 .2rem; padding-left: 1.2rem; }
+  .toc { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 4px 24px; margin: 8px 0 0; padding: 0; list-style: none; }
+  .toc a { text-decoration: none; color: var(--ink); }
+  .toc a:hover { color: var(--red); }
+  .toc b { display: inline-block; min-width: 2.2em; color: var(--red); font-variant-numeric: tabular-nums; }
+  section.shot { margin: 56px 0 0; padding-top: 24px; border-top: 1px solid var(--line); }
+  .shot-head { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; margin-bottom: 10px; }
+  .num { font: 700 1rem ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--red); }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 12px; }
+  .tag { font-size: .8rem; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--red-50); color: var(--red); border: 1px solid rgba(210,45,15,.25); }
+  .tag.gray { background: var(--soft); color: var(--ink-2); border-color: var(--line); }
+  figure { margin: 0; }
+  figure a { display: block; }
+  figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,.08); background: #fff; }
+  figcaption { font-size: .85rem; color: var(--muted); margin-top: 6px; }
+  .say { margin: .3rem 0 0; padding-left: 1.25rem; }
+  .say li { margin: .35rem 0; }
+  .say li::marker { color: var(--red); }
+  .meets { margin: .7rem 0 0; padding: 9px 13px; border-left: 4px solid var(--red); background: var(--red-50); border-radius: 6px; font-size: .95rem; }
+  .table-wrap { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: .95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  thead th { background: var(--soft); font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  tr.group td { background: var(--soft); font-weight: 700; color: var(--ink); }
+  td.where a { white-space: nowrap; }
+  .no { color: var(--warn); font-weight: 700; }
+  .part { color: var(--warn); font-weight: 600; }
+  .gaps li { margin: .35rem 0; }
+  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
+  @media (max-width: 640px) { h1 { font-size: 1.6rem; } h2 { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="num">Rakathon 2026 · výzva VZP „Cesta pacienta bez ztráty informací“</p>
+  <h1>eKoordinace – obrazovky k prezentaci</h1>
+  <p class="lead">17 anotovaných snímků živé aplikace <a href="https://ekoordinace.vercel.app">ekoordinace.vercel.app</a> v pořadí, v jakém jde demo. Červená čísla na snímku odpovídají vysvětlivkám v pravém panelu; v panelu je i to, který slide zadání obrazovka splňuje. Pod každým snímkem je, co říct. Na konci je tabulka <a href="#pozadavky">požadavek ze zadání → kde to v aplikaci je</a> a <a href="#nemame">co nemáme</a>.</p>
+</header>
+
+<div class="box">
+  <p><b>Jak s tím pracovat:</b></p>
+  <ul>
+    <li>Projděte snímky jednou celé – je to příběh jednoho dne koordinátorky Bc. Lucie Dvořákové (simulovaný den <b>pondělí 19. 10. 2026</b>, konzilium Aleny 21. 10.).</li>
+    <li>Klik na snímek ho otevře v plné velikosti (1920 × 1080).</li>
+    <li>Scénář klikání u stolu je v <a href="../TAHAK-PRI-STOLE.md">TAHAK-PRI-STOLE.md</a> – tady je k němu „mapa“ s vysvětlivkami.</li>
+    <li>Všechna data jsou fiktivní (pacientka Alena Procházková ze zadání VZP, David Sipos a Josef Novák jsou naši testovací pacienti).</li>
+  </ul>
+</div>
+
+<nav aria-label="Obsah">
+  <h3>Obsah</h3>
+  <ol class="toc">
+    <li><a href="#s01"><b>1</b>Přehled – ráno koordinátorky</a></li>
+    <li><a href="#s02"><b>2</b>Žádanka od praktika</a></li>
+    <li><a href="#s03"><b>3</b>Nový pacient – zprávy</a></li>
+    <li><a href="#s04"><b>4</b>Pacienti a hledání</a></li>
+    <li><a href="#s05"><b>5</b>Pacientka – Souhrn</a></li>
+    <li><a href="#s06"><b>6</b>Údaje pro konzilium</a></li>
+    <li><a href="#s07"><b>7</b>Každý údaj má zdroj</a></li>
+    <li><a href="#s08"><b>8</b>Vyžádat doplnění</a></li>
+    <li><a href="#s09"><b>9</b>Zprávy</a></li>
+    <li><a href="#s10"><b>10</b>Plán cesty – pořadí a stav</a></li>
+    <li><a href="#s11"><b>11</b>Plán cesty – návaznost, SMS</a></li>
+    <li><a href="#s12"><b>12</b>Podklad – zamčeno</a></li>
+    <li><a href="#s13"><b>13</b>Podklad potvrzen → PDF</a></li>
+    <li><a href="#s14"><b>14</b>Na konziliu: části 6 a 7</a></li>
+    <li><a href="#s15"><b>15</b>Závěr praktikovi s doručenkou</a></li>
+    <li><a href="#s16"><b>16</b>Konzilia</a></li>
+    <li><a href="#s17"><b>17</b>Zeptat se AI (Claude)</a></li>
+    <li><a href="#pozadavky"><b>✓</b>Požadavky → kde v aplikaci</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<section class="shot" id="s01">
+  <div class="shot-head"><span class="num">1 / 17</span><h2>Přehled – ráno koordinátorky</h2></div>
+  <div class="tags"><span class="tag">Slide 9 · 03 Koordinovat</span><span class="tag">Slide 12 c) d)</span><span class="tag gray">Slide 5 · uvnitř KOC</span></div>
+  <figure><a href="01-prehled.png"><img src="01-prehled.png" alt="Přehled: Na tahu jste vy 3, Čeká na ostatní 1, nejbližší konzilium 21. 10. 2026; seznam úkolů s termíny." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>„Ráno koordinátorka otevře Přehled: co je teď na ní, co čeká na ostatní a kdy je nejbližší konzilium.“</li>
+    <li>Úkoly jsou seřazené podle termínu (Alena: vyřešit 4 body do 20. 10. – zítra), bez umělého skóre naléhavosti. Klik otevře přesně místo, kde se úkol řeší.</li>
+    <li>„Čeká na ostatní“: v 8:55 odešla pacientce SMS s prosbou o e-mail – je vidět, kdo je na tahu, i když to není koordinátorka.</li>
+    <li>„Dnes nové zprávy“: ráno přišla histologie. Zvonek nahoře ukazuje stejné číslo na každé obrazovce.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 9 – „u každého pacienta je vidět stav, termín a kdo je na tahu“; slide 12 c) přehled případů se stavem a termínem, d) vlastník každého dalšího kroku.</p>
+</section>
+
+<!-- 2 -->
+<section class="shot" id="s02">
+  <div class="shot-head"><span class="num">2 / 17</span><h2>Žádanka od praktika – bez formuláře</h2></div>
+  <div class="tags"><span class="tag">Slide 7 · 01 Převzít</span><span class="tag">Slide 12 a)</span><span class="tag gray">Slide 5 · na vstupu</span></div>
+  <figure><a href="02-zadanka.png"><img src="02-zadanka.png" alt="Žádanka do KOC: tři kroky, výběr KOC, údaje vyplněné z dopisu, zprávy z ambulance a tlačítko Odeslat do KOC 2." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>„Takhle to vidí praktik: vybere KOC a přetáhne dopis a zprávy, které už má ve svém softwaru. Žádný velký formulář.“</li>
+    <li>Údaje o lékaři, pacientovi a žádosti se vyplní z dopisu – u každého pole je „z dopisu“. Praktik jen opraví, co nesedí, a doplní, co aplikace označila jako „chybí“ (tady e-mail).</li>
+    <li>Zprávy z ambulance: Word, PDF, text; typ a datum se rozpoznají samy. Vše se čte v prohlížeči.</li>
+    <li>„Odeslat do KOC 2“ – koordinátorka dostane všechno v jednom kroku (v prototypu je odeslání simulované).</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 7 – „Hotovo, když koordinátor dostane všechny potřebné informace o pacientovi v jednom kroku“; slide 12 a) referování bez dalšího formuláře; zadání „Převzít“.</p>
+</section>
+
+<!-- 3 -->
+<section class="shot" id="s03">
+  <div class="shot-head"><span class="num">3 / 17</span><h2>Nový pacient – zprávy v jakékoli podobě</h2></div>
+  <div class="tags"><span class="tag">Zadání · Vyžádat a shromáždit</span><span class="tag">Slide 7</span><span class="tag gray">Slide 5 · na vstupu</span></div>
+  <figure><a href="03-novy-pacient-zpravy.png"><img src="03-novy-pacient-zpravy.png" alt="Zprávy pacienta (10): pole pro přetažení, seznam zpráv s datem, fotka přečtená OCR se značkou, PDF a RTF." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Druhá cesta dovnitř: když praktik žádanku neposlal přes aplikaci, koordinátorka v Pacienti klikne „Nový pacient“ (jméno a termín jsou nepovinné) a přetáhne zprávy – nebo Ctrl+V.</li>
+    <li>Tady 10 zpráv Davida Siposa naráz: Word, PDF, RTF i fotka nálezu. Fotka se přečte OCR a dostane značku „z obrázku – zkontrolujte text“; text jde jedním klikem opravit.</li>
+    <li>Datum zprávy se najde v textu (odběr, vydání, „dne …“). Případ se po každé zprávě přepočítá – údaje, úkoly i plán.</li>
+    <li>Zprávy se čtou v prohlížeči, nikam neodcházejí.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> zadání „Vyžádat a shromáždit – vše na jednom místě“; slide 7 nahrání zpráv ze softwaru lékaře (Word, PDF, sken, fotka, screenshot).</p>
+</section>
+
+<!-- 4 -->
+<section class="shot" id="s04">
+  <div class="shot-head"><span class="num">4 / 17</span><h2>Pacienti a hledání</h2></div>
+  <div class="tags"><span class="tag">Slide 9 · 03 Koordinovat</span><span class="tag">Slide 12 c)</span><span class="tag gray">Zadání · vše na jednom místě</span></div>
+  <figure><a href="04-pacienti-hledani.png"><img src="04-pacienti-hledani.png" alt="Seznam pacientů se stavem a termínem; hledání „histologie“ najde zprávy tří pacientů." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Jeden řádek = jeden pacient: diagnóza, co je teď na řadě a do kdy, termín konzilia a počet bodů k vyřešení.</li>
+    <li>David ze snímku 3 je zpracovaný: C16.3 adenokarcinom žaludku, podklad do 21. 10., konzilium 22. 10., 6 bodů k vyřešení.</li>
+    <li>Stav případu: „nový“ (bez zpráv), „N k vyřešení“, „bez úkolů“ – stejné číslo je v Přehledu, na kartě pacienta i u konzilia.</li>
+    <li>Hledání nahoře na každé obrazovce: „histologie“ najde zprávy napříč pacienty; klik otevře rovnou tu zprávu.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 9 fronta pacientů (nový / aktivní) se stavem a termínem; slide 12 c); zadání „vše na jednom místě“.</p>
+</section>
+
+<!-- 5 -->
+<section class="shot" id="s05">
+  <div class="shot-head"><span class="num">5 / 17</span><h2>Pacientka – Souhrn</h2></div>
+  <div class="tags"><span class="tag">Slide 9–10 · 03 Koordinovat</span><span class="tag">Slide 12 d)</span></div>
+  <figure><a href="05-souhrn.png"><img src="05-souhrn.png" alt="Karta Aleny Procházkové: hlavička, cesta pacientky v pěti krocích, úkol pro vás do 20. 10. a úkoly s kontakty." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>„Tady je Alena ze zadání: 16 z 20 údajů připraveno, 4 body k vyřešení – 2 chybí, 2 si odporují.“</li>
+    <li>Cesta pacientky v 5 krocích: žádost od praktika → předchozí zprávy → vyšetření → podklad pro konzilium → závěr praktikovi. Teď je na řadě podklad – „Úkol pro vás do 20. 10.“</li>
+    <li>Každý úkol říká, co chybí, proč (věta ze zprávy) a komu zavolat – telefon je převzatý ze zpráv.</li>
+    <li>U e-mailu svítí „Vyžádáno 08:55 · čeká na odpověď“ – nikdo se nemusí ptát, v jakém je to stavu.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 9–10 – „je jasné, kde je případ a do kdy je třeba udělat další krok“; slide 12 d) vlastník každého dalšího kroku.</p>
+</section>
+
+<!-- 6 -->
+<section class="shot" id="s06">
+  <div class="shot-head"><span class="num">6 / 17</span><h2>Údaje pro konzilium (handover)</h2></div>
+  <div class="tags"><span class="tag">Slide 8 · 02 Vytěžit</span><span class="tag">Slide 12 b)</span><span class="tag gray">Zadání · Vytěžit</span></div>
+  <figure><a href="06-udaje.png"><img src="06-udaje.png" alt="Údaje pro konzilium: filtr Vše 20, Hotovo 16, Chybí 2, Rozpor 2; rozpor u léků s doslovnými větami a tlačítky Zapsat ověření, Napsat dotaz, Ponechat." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>20 položek přesně podle šablony Handover_obsah. Filtr „Vše 20 · Hotovo 16 · Chybí 2 · Rozpor 2“ je kontrola úplnosti.</li>
+    <li>Rozpor u léků: poslední dávka apixabanu zapsaná 18. 10., ale výkon byl 12. 10. Aplikace nehádá – ukáže obě věty doslova a „Ukázat ve zprávě“.</li>
+    <li>„Co udělat“ a komu zavolat. Výsledek telefonátu se zapíše přes „Zapsat ověření“ (kdo, kdy, s kým); když není čas, „Ponechat“ s důvodem.</li>
+    <li>„Kopírovat“ u každé položky a „Kopírovat vše“ – výstup v kopírovatelných částech do nemocničního systému.</li>
+    <li>Kdo vytěžuje: v nasazené verzi motor – pravidla s doslovnou citací a OCR v prohlížeči, aby zprávy neodcházely ven. Vrstva s jazykovým modelem je v motoru hotová, zapneme ji, až bude model v EU nebo v nemocnici (tahák, otázka 1).</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 8 – pevná struktura, označí, co chybí, výstup v kopírovatelných částech; zadání „upozornění na chybějící nebo nesouhlasící údaje“; slide 12 b) vytěžení s kontrolou úplnosti.</p>
+</section>
+
+<!-- 7 -->
+<section class="shot" id="s07">
+  <div class="shot-head"><span class="num">7 / 17</span><h2>Každý údaj má zdroj</h2></div>
+  <div class="tags"><span class="tag">Zadání · bez domýšlení</span><span class="tag">Slide 8</span></div>
+  <figure><a href="07-citace.png"><img src="07-citace.png" alt="Otevřený bioptický nález se zvýrazněnou větou závěru a zvýrazněným datem vydání 19. 10. 2026." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Klik na zdroj u údaje otevře původní zprávu – celý dokument tak, jak přišel.</li>
+    <li>Zvýrazněná je přesně ta věta, ze které hodnota pochází – tady závěr histologie.</li>
+    <li>Zvýrazněné „Datum vydání: 19. 10. 2026“ vysvětluje rozpor: materiál má datum odběru 20. 10. Aplikace to označí, nerozhoduje.</li>
+    <li>Co oporu ve zprávě nemá, se jako fakt neukáže – zůstane „chybí“ nebo „rozpor“.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> zadání – „údaje přebírat bez domýšlení, co chybí, označit“; slide 8 – „AI připraví návrh, člověk ho ověří“.</p>
+</section>
+
+<!-- 8 -->
+<section class="shot" id="s08">
+  <div class="shot-head"><span class="num">8 / 17</span><h2>Vyžádat doplnění od lékaře</h2></div>
+  <div class="tags"><span class="tag">Slide 8 · 02 Vytěžit</span><span class="tag gray">Zadání · Vyžádat a shromáždit</span></div>
+  <figure><a href="08-vyzadat.png"><img src="08-vyzadat.png" alt="Dialog Vyžádat doplnění: týká se ECOG, komu praktik, jak zabezpečená zpráva, předvyplněný text a tlačítko Odeslat." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>U chybějícího ECOG „Vyžádat“ → předvyplněná žádost: týká se, komu (praktik, pracoviště z úkolů, pacientka, kontaktní osoba), jak (zabezpečená zpráva, e-mail, SMS).</li>
+    <li>Text je hotový: co chybí, jméno, datum narození, termín konzilia, podpis – stačí odeslat.</li>
+    <li>Po odeslání u úkolu svítí „Vyžádáno … čeká na odpověď“ a v Přehledu „Čeká na ostatní“; vše se zapíše do záznamu koordinace.</li>
+    <li>Odeslání je v prototypu simulované.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 8 – „koordinátor může přes software požádat lékaře o doplnění“; zadání „Vyžádat a shromáždit“.</p>
+</section>
+
+<!-- 9 -->
+<section class="shot" id="s09">
+  <div class="shot-head"><span class="num">9 / 17</span><h2>Zprávy – vše na jednom místě</h2></div>
+  <div class="tags"><span class="tag">Zadání · Vyžádat a shromáždit</span><span class="tag">Upozornění zadavatele · po MDT</span><span class="tag gray">Slide 9 · kontext z referování</span></div>
+  <figure><a href="09-zpravy.png"><img src="09-zpravy.png" alt="Záložka Zprávy: 11 zpráv do konzilia, filtr podle typu, souhrn bioptického nálezu a zvlášť dvě zprávy po konziliu." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>11 zpráv do konzilia 21. 10. na jednom místě, nejnovější nahoře, filtr podle typu (na snímku vybraná histologie).</li>
+    <li>Vpravo souhrn vybrané zprávy: hlavní body doslovně, co z ní aplikace převzala a které rozpory se jí týkají; „Otevřít originál“.</li>
+    <li>Dole zvlášť „Po konziliu – nepatří do podkladu“: algeziologie 26. 10. a psycholog 27. 10. (zprávy 12 a 13 ze zadání). Do podkladu se nezapočítají.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> zadání „vše na jednom místě“ a upozornění „do zprávy pro MDT patří jen to, co bylo známo k 21. 10. 2026“; slide 9 kontext z referování (strukturovaná zpráva + originál).</p>
+</section>
+
+<!-- 10 -->
+<section class="shot" id="s10">
+  <div class="shot-head"><span class="num">10 / 17</span><h2>Plán cesty – pořadí a stav</h2></div>
+  <div class="tags"><span class="tag">Slide 10 · 03 Koordinovat</span><span class="tag">Slide 9</span><span class="tag">Slide 12 d)</span><span class="tag gray">Zadání · Koordinovat</span></div>
+  <figure><a href="10-plan.png"><img src="10-plan.png" alt="Plán cesty: kde případ je, na tahu Vy do 20. 10., hlídání termínů 1 zpoždění, sada kroků pro karcinom slinivky, pořadí kroků a krok CT." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Nahoře: kde případ je (podklad, hotovo 4 ze 7 kroků), na tahu „Vy, do 20. 10. – zítra“, další termín konzilium 21. 10.</li>
+    <li>Hlídání termínů: histologie přišla o 2 pracovní dny později, než pracoviště slíbilo – zpoždění se počítá v pracovních dnech.</li>
+    <li>„Spustit sadu kroků: karcinom slinivky“ – sada podle diagnózy doplní kroky, které případu chybí.</li>
+    <li>Pořadí kroků a stav každého vyšetření: vyžádáno → objednáno → provedeno → výsledek doručen. CT bylo v KOC 1 – „jiné centrum“.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 10 digitální plán – sady úloh podle diagnózy, pořadí kroků; slide 9 stav a termín; zadání „CT v KOC 1, biopsie, kontrolní odběry – každý krok s termínem, místem a stavem“.</p>
+</section>
+
+<!-- 11 -->
+<section class="shot" id="s11">
+  <div class="shot-head"><span class="num">11 / 17</span><h2>Plán cesty – návaznost, SMS a e-mail</h2></div>
+  <div class="tags"><span class="tag">Slide 10 · 03 Koordinovat</span><span class="tag">Slide 12 d)</span><span class="tag gray">Zadání · algeziolog, psycholog</span></div>
+  <figure><a href="11-plan-navaznost.png"><img src="11-plan-navaznost.png" alt="Druhá část plánu: podklad, konzilium, závěr praktikovi, algeziologie v KOC Nemocnice Severní se stavem a tlačítky SMS pacientce a E-mail pracovišti, záznam koordinace." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>U každého kroku sloupec „Na tahu“: u podkladu koordinátorka, u algeziologie KOC Nemocnice Severní.</li>
+    <li>Návaznost: u konzilia „Pozor, nejdřív musí být hotovo – Podklad pro konzilium (do 20. 10.)“; závěr praktikovi až po konziliu.</li>
+    <li>Podpůrná péče ze zadání: algeziolog v KOC 1 (26. 10.) a psycholog (27. 10.) – proběhnou po konziliu, jejich zprávy nepatří do podkladu.</li>
+    <li>„SMS pacientce“ a „E-mail pracovišti“ (simulované) – a všechno se zapíše do „Záznamu koordinace“: kdo, kdy, komu.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 10 – e-mail/SMS, kdo je na tahu; zadání „algeziolog, psycholog – každý krok s termínem, místem a stavem“; slide 12 d).</p>
+</section>
+
+<!-- 12 -->
+<section class="shot" id="s12">
+  <div class="shot-head"><span class="num">12 / 17</span><h2>Podklad pro konzilium – zamčeno</h2></div>
+  <div class="tags"><span class="tag">Slide 8 · lékař potvrdí</span><span class="tag">Odevzdávka č. 2</span></div>
+  <figure><a href="12-podklad-zamceno.png"><img src="12-podklad-zamceno.png" alt="Podklad: Nejdřív vyřešte 4 body s tlačítky Vyřešit a Ponechat, zamčené tlačítko Potvrdit a vygenerovat PDF a zápis k jednání MDT jako návrh." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Podklad je „Zápis k jednání multidisciplinárního týmu (MDT)“ přesně v 7 částech šablony MDT_zapis – zatím jako návrh.</li>
+    <li>„Nejdřív vyřešte 4 body“: každý jde „Vyřešit“ (otevře formulář), nebo „Ponechat“ s důvodem – v podkladu bude označený jako neověřený.</li>
+    <li>„Potvrdit a vygenerovat PDF“ je zamčené – je vidět, co bude, a proč zatím ne.</li>
+    <li>U každého údaje je zdroj a příznak (např. „neúplné“ u kontaktu).</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 8 – „AI připraví návrh, lékař potvrdí“; odevzdávka č. 2 – zpráva k jednání MDT podle MDT_zapis.</p>
+</section>
+
+<!-- 13 -->
+<section class="shot" id="s13">
+  <div class="shot-head"><span class="num">13 / 17</span><h2>Podklad potvrzen → PDF</h2></div>
+  <div class="tags"><span class="tag">Slide 8 · Hotovo, když</span><span class="tag">Slide 12 e)</span><span class="tag">Odevzdávka č. 2</span></div>
+  <figure><a href="13-podklad-pdf.png"><img src="13-podklad-pdf.png" alt="Potvrzený podklad: soubor PDF, tlačítka Stáhnout PDF a Kopírovat do NIS, zdroj u údajů a příznak doplněno u ECOG." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Po vyřešení bodů lékařka KOC (MUDr. Lenka Marková) potvrdí → vznikne „Podklad MDT – Alena Procházková – 21. 10. 2026.pdf“.</li>
+    <li>„Stáhnout PDF“ pro členy MDT a na promítání; „Kopírovat do NIS“ – text do nemocničního systému, kde vzniká oficiální zápis.</li>
+    <li>U doplněných údajů je vidět, odkud jsou: ECOG z telefonátu s praktikem v 10:12, e-mail od pacientky v 9:20.</li>
+    <li>Každá hodnota má zdroj i v PDF. Když se data po potvrzení změní, potvrzení se zruší.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 8 – „Hotovo, když koordinátor vidí lékařem potvrzený strukturovaný handover“; slide 12 e) strukturovaný výstup; odevzdávka č. 2.</p>
+</section>
+
+<!-- 14 -->
+<section class="shot" id="s14">
+  <div class="shot-head"><span class="num">14 / 17</span><h2>Na konziliu: části 6 a 7</h2></div>
+  <div class="tags"><span class="tag">Odevzdávka č. 2</span><span class="tag">Slide 12 e)</span><span class="tag gray">Zadání · jen data k 21. 10.</span></div>
+  <figure><a href="14-podklad-mdt.png"><img src="14-podklad-mdt.png" alt="Konec podkladu: výsledky vyšetření končí histologií 19. 10., pod nimi pole Závěr MDT a Doporučení MDT." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Část 5 – výsledky vyšetření chronologicky, doslova, s pracovištěm. Poslední je histologie 19. 10.; zprávy z 26. a 27. 10. tu nejsou.</li>
+    <li>Části 6 „Závěr MDT“ a 7 „Doporučení MDT“ se píšou přímo na konziliu – lékař nebo zapisovatel nad promítnutým podkladem.</li>
+    <li>Doporučení se samo přenese do závěru pro praktika – nic se nepřepisuje.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> odevzdávka č. 2 (všech 7 částí MDT_zapis); zadání „podklad pro MDT jen z údajů dostupných k 21. 10.“; slide 12 e) strukturovaný závěr MDT.</p>
+</section>
+
+<!-- 15 -->
+<section class="shot" id="s15">
+  <div class="shot-head"><span class="num">15 / 17</span><h2>Závěr praktikovi s doručenkou</h2></div>
+  <div class="tags"><span class="tag">Slide 11 · 04 Zpětná vazba</span><span class="tag">Slide 12 e) f)</span><span class="tag">Odevzdávka č. 3</span><span class="tag gray">Slide 5 · na výstupu</span></div>
+  <figure><a href="15-zaver.png"><img src="15-zaver.png" alt="Závěr konzilia pro praktického lékaře s doručenkou Odesláno, Doručeno, Přečteno a s adresátem, pacientkou, diagnózou a závěrem MDT." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Závěr konzilia pro praktika: adresát, pacientka, diagnóza se zdrojem a datum konzilia, pak závěr, doporučení a další postup slovy lékařů (u Aleny podle vzoru MDT_zaver ze zadání).</li>
+    <li>„Odeslat praktikovi“ jde až po potvrzení podkladu. Pak doručenka: Odesláno → Doručeno → Přečteno s časem; dokud praktik nečte, jde „Urgovat“.</li>
+    <li>Po doručení se krok „Závěr praktikovi“ v cestě pacientky uzavře – smyčka je zavřená.</li>
+    <li>„Ukázka“: konzilium je až 21. 10. – v demu je vidět, co pak praktik dostane.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 11 – „Hotovo, když referující lékař má výsledek i s kontextem a předání je potvrzené“; slide 12 e), f); odevzdávka č. 3 – ukázka odeslání závěru MDT praktikovi. Revizní lékař automaticky zatím ne – viz <a href="#nemame">co nemáme</a>.</p>
+</section>
+
+<!-- 16 -->
+<section class="shot" id="s16">
+  <div class="shot-head"><span class="num">16 / 17</span><h2>Konzilia – program a připravenost</h2></div>
+  <div class="tags"><span class="tag">Slide 9 · 03 Koordinovat</span><span class="tag">Slide 12 c) e)</span></div>
+  <figure><a href="16-konzilia.png"><img src="16-konzilia.png" alt="Konzilia 21. a 22. 10. 2026: u Aleny Potvrzeno – PDF, u dalších pacientů body k vyřešení, tlačítko Program konzilia." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Konzilia podle data: den, za kolik dní, počet pacientů a „1 z 1 podkladu potvrzeno“.</li>
+    <li>U každého pacienta otázka pro MDT doslova ze žádanky a stav podkladu: „Potvrzeno – PDF“ (kdo a kdy), nebo „N bodů k vyřešení“.</li>
+    <li>„Program konzilia“ – PDF programu pro členy MDT.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> slide 9 – stav a termín u každého případu; slide 12 c) přehled případů, e) podklad pro MDT.</p>
+</section>
+
+<!-- 17 -->
+<section class="shot" id="s17">
+  <div class="shot-head"><span class="num">17 / 17</span><h2>Zeptat se AI (Claude)</h2></div>
+  <div class="tags"><span class="tag">Kritérium · AI technologie a provedení</span><span class="tag gray">Slide 9 · přehled</span></div>
+  <figure><a href="17-ai.png"><img src="17-ai.png" alt="Panel Zeptat se AI s otázkou Co mám dnes udělat jako první a odpovědí se jmény pacientů a zdroji." loading="lazy" width="1920" height="1080"></a></figure>
+  <h3>Co říct</h3>
+  <ul class="say">
+    <li>Ikona AI je na každé obrazovce: otázka běžnou řečí, např. „Co mám dnes udělat jako první?“ nebo „Kdy přišla histologie?“.</li>
+    <li>Claude odpovídá jen z dat v aplikaci – pacienti, zprávy a kdy přišly, úkoly, konzilia, záznam koordinace – a u každého bodu uvádí zdroj (šedě).</li>
+    <li>Před odesláním se rodná čísla, telefony, e-maily, adresy a jména nahradí značkami; skutečné hodnoty se do odpovědi vrátí až v prohlížeči.</li>
+    <li>Odpověď se při každém dotazu generuje znovu – na živém demu bude znít jinak než na snímku.</li>
+  </ul>
+  <p class="meets"><b>Splňuje:</b> hodnoticí kritérium „AI technologie a provedení“; slide 9 – přehled, co je na tahu.</p>
+</section>
+
+<!-- requirements -->
+<section class="shot" id="pozadavky">
+  <h2>Požadavek ze zadání → kde to v aplikaci je</h2>
+  <p class="lead">Zdroj: deck výzvy (slidy 5–12), Zadani_ulohy.docx a odevzdávky. Čísla odkazují na snímky výše. Co zatím chybí, je označené <span class="no">ne</span> nebo <span class="part">zatím není</span>.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th style="width:38%">Požadavek</th><th>Kde to v aplikaci je</th><th style="width:11%">Snímek</th></tr></thead>
+    <tbody>
+      <tr class="group"><td colspan="3">Slide 5 – tři místa, kde se ztrácí informace</td></tr>
+      <tr><td>Na vstupu: dokumentace roztříštěná a neúplná, lékaři přepisují údaje</td><td>Žádanka od praktika bez formuláře; Nový pacient – zprávy v jakékoli podobě</td><td class="where"><a href="#s02">2</a>, <a href="#s03">3</a></td></tr>
+      <tr><td>Uvnitř KOC: dohledávání, chybí přehled stavu, termínů a odpovědnosti</td><td>Přehled, Pacienti, Souhrn, Údaje, Zprávy, Plán cesty, Konzilia</td><td class="where"><a href="#s01">1</a>, <a href="#s04">4</a>–<a href="#s11">11</a>, <a href="#s16">16</a></td></tr>
+      <tr><td>Na výstupu: praktik neví, jak MDT rozhodlo</td><td>Závěr praktikovi s doručenkou</td><td class="where"><a href="#s15">15</a></td></tr>
+
+      <tr class="group"><td colspan="3">Slide 7 – 01 Převzít</td></tr>
+      <tr><td>Jedno digitální místo pro vstup do KOC, výběr KOC</td><td>Žádanka od praktika → „Komu posíláte“</td><td class="where"><a href="#s02">2</a></td></tr>
+      <tr><td>Bez dalšího velkého formuláře, zbytek z nahrané zprávy</td><td>„Údaje z dopisu“ – každé pole „z dopisu“, praktik jen doplní „chybí“</td><td class="where"><a href="#s02">2</a></td></tr>
+      <tr><td>Nahrát zprávy ze svého softwaru</td><td>Zprávy z ambulance; Nový pacient – Word, PDF, RTF, sken, fotka (OCR), Ctrl+V</td><td class="where"><a href="#s02">2</a>, <a href="#s03">3</a></td></tr>
+      <tr><td><b>Hotovo, když</b> koordinátor dostane vše v jednom kroku</td><td>„Odeslat do KOC“ jedním klikem → pacient v seznamu koordinátorky (odeslání simulované)</td><td class="where"><a href="#s02">2</a>, <a href="#s04">4</a></td></tr>
+
+      <tr class="group"><td colspan="3">Slide 8 – 02 Vytěžit</td></tr>
+      <tr><td>Klíčové údaje do pevné struktury</td><td>Údaje pro konzilium – 20 položek Handover_obsah, každá s doslovnou citací</td><td class="where"><a href="#s06">6</a>, <a href="#s07">7</a></td></tr>
+      <tr><td>Označí, co chybí (a co nesedí)</td><td>Filtr Chybí / Rozpor, úkoly s důvodem a kontaktem</td><td class="where"><a href="#s05">5</a>, <a href="#s06">6</a></td></tr>
+      <tr><td>Výstup v kopírovatelných částech</td><td>„Kopírovat“ u položky, „Kopírovat vše“, „Kopírovat do NIS“</td><td class="where"><a href="#s06">6</a>, <a href="#s13">13</a></td></tr>
+      <tr><td>AI připraví návrh, lékař potvrdí</td><td>Podklad zamčený, dokud nejsou body vyřešené → „Potvrdit a vygenerovat PDF“ (MUDr. Marková). Návrh v nasazené verzi dělá motor s ověřenými citacemi, ne jazykový model</td><td class="where"><a href="#s12">12</a>, <a href="#s13">13</a></td></tr>
+      <tr><td>Požádat lékaře o doplnění přes software</td><td>„Vyžádat“ – předvyplněná žádost, komu, jak</td><td class="where"><a href="#s08">8</a></td></tr>
+      <tr><td><b>Hotovo, když</b> koordinátor vidí lékařem potvrzený handover a seznam chybějících údajů</td><td>Potvrzený podklad + filtr Chybí</td><td class="where"><a href="#s13">13</a>, <a href="#s06">6</a></td></tr>
+
+      <tr class="group"><td colspan="3">Slide 9 – 03 Koordinovat (dashboard)</td></tr>
+      <tr><td>Fronta pacientů: nový / aktivní / odložený</td><td>Pacienti: „nový“, „N k vyřešení“, „bez úkolů“. Stav „odložený“ <span class="part">zatím není</span></td><td class="where"><a href="#s04">4</a></td></tr>
+      <tr><td>Detail s kontextem z referování</td><td>Souhrn (cesta, úkoly), Zprávy (souhrn zprávy + originál), otázka pro MDT ze žádanky</td><td class="where"><a href="#s05">5</a>, <a href="#s09">9</a>, <a href="#s16">16</a></td></tr>
+      <tr><td>Úkoly s termínem a prioritou</td><td>Přehled „Na tahu jste vy“ – řazeno podle termínu (záměrně bez skóre naléhavosti)</td><td class="where"><a href="#s01">1</a></td></tr>
+      <tr><td><b>Hotovo, když</b> je u každého pacienta vidět stav, termín a kdo je na tahu</td><td>Přehled, Pacienti, Souhrn, Plán „Na tahu“, Konzilia</td><td class="where"><a href="#s01">1</a>, <a href="#s04">4</a>, <a href="#s05">5</a>, <a href="#s11">11</a></td></tr>
+
+      <tr class="group"><td colspan="3">Slide 10 – 03 Koordinovat (digitální plán)</td></tr>
+      <tr><td>Sady úloh podle diagnózy (karcinom pankreatu)</td><td>„Spustit sadu kroků: karcinom slinivky“</td><td class="where"><a href="#s10">10</a></td></tr>
+      <tr><td>Pořadí kroků a návaznost</td><td>Pořadí CT → … → závěr; „Pozor, nejdřív musí být hotovo“</td><td class="where"><a href="#s10">10</a>, <a href="#s11">11</a></td></tr>
+      <tr><td>E-mail / SMS / chat, notifikace</td><td>SMS pacientce, E-mail pracovišti, Vyžádat (simulované); zvonek; Zeptat se AI. Chat mezi lidmi <span class="part">není</span></td><td class="where"><a href="#s11">11</a>, <a href="#s08">8</a>, <a href="#s01">1</a>, <a href="#s17">17</a></td></tr>
+      <tr><td><b>Hotovo, když</b> je jasné, kde je případ a do kdy další krok</td><td>Plán: „Kde případ je“, „Na tahu“, „Hlídání termínů“</td><td class="where"><a href="#s10">10</a></td></tr>
+
+      <tr class="group"><td colspan="3">Slide 11 – 04 Zpětná vazba</td></tr>
+      <tr><td>Strukturovaný výsledek s původním kontextem praktikovi</td><td>Závěr pro praktika: adresát, pacientka, diagnóza se zdrojem, konzilium, závěr a doporučení MDT</td><td class="where"><a href="#s15">15</a></td></tr>
+      <tr><td>Revizní lékař automaticky</td><td><span class="no">ne</span> – zatím nedostává</td><td class="where">–</td></tr>
+      <tr><td>Potvrdit předání a uzavřít případ</td><td>Doručenka Odesláno → Doručeno → Přečteno, Urgovat; krok cesty se uzavře</td><td class="where"><a href="#s15">15</a></td></tr>
+
+      <tr class="group"><td colspan="3">Slide 12 – demo musí ukázat</td></tr>
+      <tr><td>a) Referování do KOC bez dalšího formuláře</td><td>Žádanka od praktika</td><td class="where"><a href="#s02">2</a></td></tr>
+      <tr><td>b) AI vytěžení s kontrolou úplnosti</td><td>Údaje pro konzilium (20 položek, chybí/rozpor, citace); Claude v „Zeptat se AI“</td><td class="where"><a href="#s06">6</a>, <a href="#s07">7</a>, <a href="#s17">17</a></td></tr>
+      <tr><td>c) Přehled případů se stavem a termínem</td><td>Přehled, Pacienti, Konzilia</td><td class="where"><a href="#s01">1</a>, <a href="#s04">4</a>, <a href="#s16">16</a></td></tr>
+      <tr><td>d) Vlastník každého dalšího kroku</td><td>„Na tahu jste vy“ / „Čeká na ostatní“, „Úkol pro vás“, sloupec „Na tahu“</td><td class="where"><a href="#s01">1</a>, <a href="#s05">5</a>, <a href="#s10">10</a>, <a href="#s11">11</a></td></tr>
+      <tr><td>e) Strukturovaný závěr KOC / MDT</td><td>Podklad podle MDT_zapis (PDF), části 6 a 7, závěr pro praktika</td><td class="where"><a href="#s13">13</a>, <a href="#s14">14</a>, <a href="#s15">15</a></td></tr>
+      <tr><td>f) Zpětná vazba a potvrzené předání</td><td>Odeslat praktikovi + doručenka</td><td class="where"><a href="#s15">15</a></td></tr>
+
+      <tr class="group"><td colspan="3">Zadani_ulohy.docx – co má aplikace umět</td></tr>
+      <tr><td>Převzít – žádost praktika o převzetí do KOC 2</td><td>Žádanka od praktika (KOC 2 – Nemocnice Lipová)</td><td class="where"><a href="#s02">2</a></td></tr>
+      <tr><td>Vyžádat a shromáždit – chybějící zprávy z jiných pracovišť, vše na jednom místě</td><td>Vyžádat, Nový pacient + zprávy, Zprávy, Hledání</td><td class="where"><a href="#s03">3</a>, <a href="#s04">4</a>, <a href="#s08">8</a>, <a href="#s09">9</a></td></tr>
+      <tr><td>Vytěžit – upozornit na chybějící nebo nesouhlasící údaje</td><td>Údaje pro konzilium (Chybí 2, Rozpor 2), citace</td><td class="where"><a href="#s06">6</a>, <a href="#s07">7</a></td></tr>
+      <tr><td>Koordinovat – CT v KOC 1, biopsie, kontrolní odběry, algeziolog, psycholog; termín, místo, stav</td><td>Plán cesty</td><td class="where"><a href="#s10">10</a>, <a href="#s11">11</a></td></tr>
+      <tr><td>Podklad pro MDT jen z údajů dostupných k 21. 10.</td><td>„Po konziliu – nepatří do podkladu“; výsledky v podkladu končí 19. 10.</td><td class="where"><a href="#s09">9</a>, <a href="#s14">14</a></td></tr>
+      <tr><td>Uzavřít smyčku – závěr praktikovi a doložit doručení</td><td>Závěr praktikovi s doručenkou</td><td class="where"><a href="#s15">15</a></td></tr>
+      <tr><td>Údaje přebírat bez domýšlení, co chybí, označit</td><td>Doslovné citace, „chybí“ / „rozpor“ místo odhadu</td><td class="where"><a href="#s06">6</a>, <a href="#s07">7</a></td></tr>
+
+      <tr class="group"><td colspan="3">Co odevzdat</td></tr>
+      <tr><td>1. Funkční demo celého průchodu pacientky</td><td><a href="https://ekoordinace.vercel.app">ekoordinace.vercel.app</a> – snímky 1–17 v pořadí dema</td><td class="where"><a href="#s01">1</a>–<a href="#s17">17</a></td></tr>
+      <tr><td>2. Zpráva k jednání MDT podle MDT_zapis</td><td>Podklad → „Stáhnout PDF“ (7 částí)</td><td class="where"><a href="#s12">12</a>–<a href="#s14">14</a></td></tr>
+      <tr><td>3. Ukázka odeslání závěru MDT praktikovi</td><td>Závěr → „Odeslat praktikovi“ + doručenka</td><td class="where"><a href="#s15">15</a></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="shot" id="nemame">
+  <h2>Co nemáme – říct na rovinu, když se zeptají</h2>
+  <ul class="gaps">
+    <li><b>Revizní lékař</b> (slide 11) zatím informaci automaticky nedostává.</li>
+    <li><b>Skutečné odesílání</b> – žádanka, e-mail, SMS i zabezpečená zpráva jsou simulované; zapíšou se do záznamu koordinace.</li>
+    <li><b>Chat mezi lidmi</b> (slide 10) – komunikace jde přes simulované zprávy, e-mail a SMS; chat je jen s AI.</li>
+    <li><b>Napojení na NIS a eŽádanku</b> patří podle slidu 12 do další fáze – dnes „Kopírovat do NIS“ a PDF.</li>
+    <li><b>FHIR export</b> – datový model jde namapovat (DocumentReference, Provenance, Task, Composition), export zatím není.</li>
+    <li><b>Stav „odložený“</b> ve frontě (slide 9) zatím není; priorita = pořadí podle termínu, záměrně bez skóre naléhavosti.</li>
+    <li><b>Vytěžení</b> v nasazené verzi dělá motor s pravidly a ověřenou citací (a OCR v prohlížeči); jazykový model běží jen v „Zeptat se AI“ nad pseudonymizovanými daty.</li>
+    <li><b>Data žijí v prohlížeči</b> (localStorage) – „obnovit demo“ v seznamu Pacienti je smaže.</li>
+  </ul>
+</section>
+
+<footer>
+  <p><b>Jak snímky vznikly:</b> živá aplikace 17. 10. 2026, Chromium přes Playwright, okno 1920 × 1080 (aplikace v levých 1520 px, vpravo panel s vysvětlivkami). Před snímky se demo vrátilo do výchozího stavu. Předem nastaveno přes úložiště prohlížeče (jako by to koordinátorka naklikala): SMS pacientce v 8:55 (snímky 1–12) a od snímku 13 stav po práci koordinátorky – 4 body vyřešené a podklad potvrzený MUDr. Lenkou Markovou. David Sipos (snímky 3–4) byl založen a jeho zprávy nahrány přes rozhraní. Časy v doručence jsou skutečný čas pořízení snímku. Generátor: <code>screenshoty.cjs</code> v této složce.</p>
+</footer>
+
+</main>
+</body>
+</html>
