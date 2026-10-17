@@ -50,6 +50,12 @@ projects“). Funguje so súkromným repom aj s commitmi od hocikoho. Potrebuje 
 (GitHub → Settings → Secrets and variables → Actions; pridať ho môže len vlastník repa). Bez neho sa krok nasadenia
 preskočí. Ručne: GitHub → Actions → „eKoordinace → Vercel“ → Run workflow. Adresa je v súhrne behu.
 
+Nasadí sa appka (`dist/`) aj backend – Vercel Functions v `api/`: **`api/ask.ts`** (asistent „Zeptat se AI“ vpravo hore)
+a **`api/structure.ts`** (štruktúra správ). Volajú Claude cez Vercel AI SDK (`ai`, `@ai-sdk/anthropic`), model
+`CLAUDE_MODEL` (predvolene `claude-sonnet-5-5`). Kľúč **`ANTHROPIC_API_KEY`** je len v nastaveniach projektu na Vercelu
+(typ Secret, Production) – nikdy v kóde ani v gite. Po jeho zmene treba nové nasadenie. Prehliadač posiela dáta už
+pseudonymizované (rodné čísla, telefóny, e-maily, adresy, mená → značky) a značky v odpovedi vracia späť.
+
 ## Kroky
 
 | Krok | Čo | Stav |
