@@ -1,5 +1,5 @@
 // Reports of a patient added in the app (owner: Matej): drop Word (.docx) or text files, or paste the text; the case is
-// rebuilt from them in the browser right away. Also the date of the MDT. Nothing leaves this browser.
+// rebuilt from them in the browser right away (the date of the MDT is in the patient header). Nothing leaves this browser.
 import { useRef, useState } from 'react';
 import { readFile, reportDate } from '../../case/readReport';
 import { SIM_TODAY, nextDocId, updatePatient } from '../../state/patients';
@@ -47,9 +47,6 @@ export function AddReports({ patient, first = false }: { patient: StoredPatient;
           <h2>{first ? 'Přidejte zprávy pacienta' : `Zprávy pacienta (${docs.length})`}</h2>
           {first && <p className="muted">Začněte žádankou od praktika a přidejte další zprávy. Aplikace z nich sama vytáhne údaje pro konzilium a ukáže, co chybí nebo si odporuje. Vše zůstává jen v tomto prohlížeči.</p>}
         </div>
-        <label className="mdt-date">Termín konzilia
-          <input type="date" value={patient.mdtDate} min={SIM_TODAY} onChange={(e) => updatePatient(patient.id, (p) => ({ ...p, mdtDate: e.target.value }))} />
-        </label>
       </div>
       <div
         className={`drop${over ? ' over' : ''}`}

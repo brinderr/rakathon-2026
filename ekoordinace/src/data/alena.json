@@ -127,7 +127,24 @@
           "ref": "žádanka praktika 2. 10.",
           "quote": "Telefon: +420 777 000 541"
         }
-      ]
+      ],
+      "todo": {
+        "title": "Zjistit e-mail pacientky",
+        "contacts": [
+          {
+            "role": "Pacientka",
+            "name": "Alena Procházková",
+            "phone": "+420 777 000 541"
+          },
+          {
+            "role": "Dcera",
+            "name": "Petra Horká",
+            "phone": "+420 777 000 542",
+            "note": "souhlas se sdílením informací (žádanka praktika 2. 10.)"
+          }
+        ],
+        "quotes": []
+      }
     },
     {
       "key": "contactPerson",
@@ -237,7 +254,28 @@
           "ref": "žádanka praktika 2. 10.",
           "quote": "FA: apixaban 5 mg 1-0-1, bisoprolol 5 mg 1-0-0, perindopril 4 mg 1-0-0, rosuvastatin 10 mg 0-0-1, paracetamol 500 mg při bolesti max. 4× denně"
         }
-      ]
+      ],
+      "todo": {
+        "title": "Ověřit, kdy byl vysazen apixaban",
+        "contacts": [
+          {
+            "role": "Endoskopické pracoviště",
+            "name": "MUDr. Martin Svoboda"
+          }
+        ],
+        "quotes": [
+          {
+            "docId": "09",
+            "ref": "protokol biopsie 12. 10.",
+            "quote": "Nalačno od půlnoci. Apixaban vysazen 48 h před výkonem (poslední dávka 18. 10. 2026 večer). Informovaný souhlas podepsán."
+          },
+          {
+            "docId": "09",
+            "ref": "protokol biopsie 12. 10.",
+            "quote": "Datum výkonu: 12. 10. 2026"
+          }
+        ]
+      }
     },
     {
       "key": "allergies",
@@ -261,7 +299,18 @@
       "value": "",
       "status": "chybí",
       "issue": "Skóre ECOG ani Karnofsky není v žádné zprávě. Žádanka praktika 2. 10. uvádí jen slovní popis „Soběstačná“ – to není skóre.",
-      "quotes": []
+      "quotes": [],
+      "todo": {
+        "title": "Doplnit výkonnostní stav (ECOG)",
+        "contacts": [
+          {
+            "role": "Praktický lékař",
+            "name": "MUDr. Tomáš Řezníček",
+            "phone": "+420 311 000 287"
+          }
+        ],
+        "quotes": []
+      }
     },
     {
       "key": "weightHeight",
@@ -506,7 +555,28 @@
           "ref": "histologie 19. 10.",
           "quote": "Datum vydání: 19. 10. 2026"
         }
-      ]
+      ],
+      "todo": {
+        "title": "Ověřit datum odběru vzorku na histologii",
+        "contacts": [
+          {
+            "role": "Ústav patologie",
+            "name": "MUDr. Radek Pokorný, Ph.D."
+          }
+        ],
+        "quotes": [
+          {
+            "docId": "11",
+            "ref": "histologie 19. 10.",
+            "quote": "Materiál: ložisko hlavy pankreatu, EUS-FNB 22G (odběr 20. 10. 2026)"
+          },
+          {
+            "docId": "11",
+            "ref": "histologie 19. 10.",
+            "quote": "Datum vydání: 19. 10. 2026"
+          }
+        ]
+      }
     },
     {
       "key": "other",

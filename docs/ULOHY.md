@@ -12,8 +12,11 @@ Claude stavia, Matej po každej sekcii otvorí appku, preklikne ju a povie „ď
 - [x] **1. Údaje pro konzilium – zobrazenie** (`#/pacienti/udaje`)
   - Skontroluj: 20 údajov v skupinách ako v šablóne zadania. Klik na zdroj otvorí správu so zvýraznenou vetou.
     Viditeľné sú 4 problémy (ECOG chýba, e-mail neúplný, rozpor pri liekoch a histológii).
-- [ ] **2. Doplniť a overiť**
-  - „Zapsat telefonát“ pri ECOG a e-maile, „Ověřeno“ pri rozpore (lieky, histológia).
+- [x] **2. Doplniť a overiť**
+  - Pri probléme rámček „Co udělat“: čo nesedí, vety zo správ (klik = otvorí správu), koho volať s telefónom,
+    tlačidlo **Doplnit údaj** (ECOG, e-mail) / **Zapsat ověření** (lieky, histológia) → zapíše sa, kto a kedy; „Vrátit“.
+  - V Prehľade má každá úloha odkaz rovno na formulár (`#/pacienti/alena/udaje/performance`). Termín konzilia sa
+    mení priamo v hlavičke pacienta (dátumové pole), prípad sa prepočíta.
   - Skontroluj: zapíš ECOG ako koordinátorka (napr. „ECOG 1, od praktika“). V Prehľade zmizne úloha a počty
     klesnú (K vyřešení 4 → 3).
 - [ ] **3. Potvrdenie lekárom**

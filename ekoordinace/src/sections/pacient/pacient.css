@@ -217,3 +217,15 @@
   .pt-mdt { display: none; }
   .pt-todo { grid-column: 3; grid-row: 1; }
 }
+
+/* the date of the MDT in the header: reads like the other facts, edits in place */
+.fact-date { font: inherit; font-weight: 600; color: inherit; margin: 0 0 0 -.3rem; padding: 0 .3rem; border: 1px solid transparent; border-radius: 6px; background: none; cursor: pointer; }
+.fact-date:hover { border-color: var(--line); background: var(--surface); }
+.fact-date:focus { outline: 2px solid var(--red-200); border-color: var(--red-200); background: var(--surface); }
+.stats.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.todo-links { display: flex; flex-wrap: wrap; gap: .3rem 1rem; }
+.todo-links a.link { text-decoration: none; }
+@media (max-width: 700px) {
+  .stats.three { grid-template-columns: 1fr; }
+  .stats.three .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+}

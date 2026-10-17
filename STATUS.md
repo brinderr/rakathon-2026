@@ -20,7 +20,7 @@ _Aktualizuj pri každom `/handoff`. Stav: 🔵 robí sa · ✅ hotové · ⛔ bl
 | Poistka proti opačnému významu (NegEx) | matej | ✅ | `npm run eval:guard`: 5/5 viet kritika 06 (bez nej 0/5), ďalšie 3/5, falošné poplachy 0/18 → public/data/pojistka.json |
 | Text bez nadpisov (vzory vnútri viet + poctivý pruh) | matej | ✅ | src/ai/plain.ts, `meta.plainText.notice`; `npm run eval:plain`: sada 1 naslepo 41/80 → po úprave 66/80; **sada 2 naslepo 53/80**; 0 vymyslených |
 | **eKoordinace – nová appka** (`ekoordinace/`) | matej | 🔵 | krok 1 hotový: hlavička s diagnózou z histológie, cesta v 5 krokoch (hotové kroky malé), úlohy s kontaktmi, „Dnes nové“; appka rozdelená na sekcie (pravidlá v ekoordinace/README.md); ďalej záložka Zprávy |
-| eKoordinace M1 Údaje pro konzilium + doplnenie + potvrdenie lekárom | matej | 🔵 | `tabs/Udaje.tsx` |
+| eKoordinace M1 Údaje pro konzilium + doplnenie + potvrdenie lekárom | matej | 🔵 | `tabs/Udaje.tsx`: zobrazenie ✅, Doplnit údaj / Zapsat ověření ✅ (živé počty, zvonček), termín konzilia v hlavičke ✅; ďalej potvrdenie lekárom |
 | eKoordinace M2 Podklad podľa MDT_zapis + PDF | matej | ⚪ | `tabs/Podklad.tsx` |
 | eKoordinace M3 Závěr praktikovi + doručenka | matej | ⚪ | `tabs/Zaver.tsx` |
 | eKoordinace B1 Žádanka od praktika bez formulára | bruno | ⚪ | `src/sections/zadanka/` (`#/zadanka`) |

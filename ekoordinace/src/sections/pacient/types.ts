@@ -30,7 +30,17 @@ export interface Step {
 }
 
 /** One of the 20 items of Handover_obsah as shown in "Údaje pro konzilium". */
-export interface Field { key: string; label: string; group: string; value: string; status: string; issue: string; quotes: Quote[] }
+export interface Field {
+  key: string; label: string; group: string; value: string;
+  /** nalezeno | neúplné | chybí | rozpor; after the coordinator dealt with it: doplněno | ověřeno */
+  status: string;
+  issue: string;
+  quotes: Quote[];
+  /** when something is missing or does not add up: what to do, whom to call, the sentences behind it */
+  todo?: { title: string; contacts: Person[]; quotes: Quote[] };
+  /** what the coordinator wrote down about it (src/sections/pacient/live.ts) */
+  note?: string;
+}
 
 /** Everything eKoordinace shows about one patient (src/case/buildCase.ts; precomputed for Alena in src/data/alena.json). */
 export interface CaseData {

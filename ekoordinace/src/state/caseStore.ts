@@ -9,7 +9,7 @@ export type EventKind =
 /** One line of the coordination record: who did what and when (simulated date of the case, real time of day). */
 export interface CaseEvent { at: string; who: string; kind: EventKind; text: string; field?: string; docId?: string }
 export interface Added { value: string; source: string; at: string; who: string }
-export interface Resolution { note: string; at: string; who: string }
+export interface Resolution { note: string; at: string; who: string; with?: string }
 
 export interface CaseState {
   /** field key → value added by the coordinator */
@@ -73,4 +73,43 @@ export function addEvent(caseId: string, day: string, e: Omit<CaseEvent, 'at'>) 
 export function resetCase(caseId: string) {
   try { window.localStorage.removeItem(KEY + caseId); } catch { /* nothing stored */ }
   write(caseId, empty());
+}
+
+/** The coordinator using the app (shown in the side menu). */
+export const ME = 'Bc. Lucie Dvořáková';
+
+/** A value the coordinator found out (e.g. ECOG from the GP on the phone): it fills a missing field. */
+export function addValue(caseId: string, day: string, field: string, value: string, from: string) {
+  const at = stamp(day);
+  updateCase(caseId, (s) => ({
+    ...s,
+    added: { ...s.added, [field]: { value, source: `telefonát – ${from}`, at, who: ME } },
+    events: [...s.events, { at, who: ME, kind: 'telefonat', text: `${from}: ${value}`, field }],
+  }));
+}
+
+/** A conflict the coordinator checked with the workplace: what she found out and with whom. */
+export function resolveField(caseId: string, day: string, field: string, note: string, withWhom: string) {
+  const at = stamp(day);
+  updateCase(caseId, (s) => ({
+    ...s,
+    resolved: { ...s.resolved, [field]: { note, at, who: ME, with: withWhom } },
+    events: [...s.events, { at, who: ME, kind: 'overeno', text: `${withWhom}: ${note}`, field }],
+  }));
+}
+
+/** Undo an added value or a check (both kept in the record as a note). */
+export function undoField(caseId: string, day: string, field: string) {
+  updateCase(caseId, (s) => {
+    const added = { ...s.added };
+    const resolved = { ...s.resolved };
+    delete added[field];
+    delete resolved[field];
+    return { ...s, added, resolved, events: [...s.events, { at: stamp(day), who: ME, kind: 'poznamka', text: 'zápis vrácen', field }] };
+  });
+}
+
+/** Has the coordinator already dealt with this field? */
+export function isSettled(s: CaseState, field: string): boolean {
+  return Boolean(s.added[field] || s.resolved[field]);
 }

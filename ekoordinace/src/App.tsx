@@ -3,13 +3,18 @@
 // can build two sections at once without touching each other's files.
 import { useEffect, useMemo, useState } from 'react';
 import { DEFAULT_SECTION, SECTIONS } from './sections';
-import { demoCase } from './state/patients';
+import { liveCase } from './sections/pacient/live';
+import { useCase } from './state/caseStore';
+import { DEMO_ID, demoCase } from './state/patients';
 import { Icon } from './ui/Icon';
 import { Mark } from './ui/Mark';
 
 const SOON = 'Připravujeme';
-// the bell: open to-dos of the demo case (system alerts come later)
-const openTasks = demoCase.steps.find((s) => s.status === 'now')?.todo?.length ?? 0;
+/** The bell: open to-dos of the demo case, without those the coordinator already dealt with (system alerts come later). */
+function useOpenTasks(): number {
+  const st = useCase(DEMO_ID);
+  return liveCase(demoCase, st).steps.find((s) => s.status === 'now')?.todo?.length ?? 0;
+}
 
 function readRoute(): string[] {
   return window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
@@ -27,6 +32,7 @@ function useRoute(): string[] {
 
 export function App() {
   const route = useRoute();
+  const openTasks = useOpenTasks();
   const section = SECTIONS.find((s) => s.id === route[0] && s.render) ?? SECTIONS.find((s) => s.id === DEFAULT_SECTION)!;
   // a new array only when the address changes, so a section can react to it (e.g. #/pacienti/ukoly)
   const path = useMemo(() => (route[0] === section.id ? route.slice(1) : []), [route, section.id]);

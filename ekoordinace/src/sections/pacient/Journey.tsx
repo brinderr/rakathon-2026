@@ -6,6 +6,7 @@ import type { KeyboardEvent, RefObject } from 'react';
 import { DocIcon } from '../../ui/DocIcon';
 import { Icon } from '../../ui/Icon';
 import { czDate, daysBetween, inDays, nb, telHref } from '../../ui/format';
+import { useCaseData } from './caseContext';
 import type { DocRef, Step, Todo } from './types';
 
 /** Opens a report in the reader; `marks` are sentences to highlight in it. */
@@ -20,6 +21,7 @@ function eyebrow(step: Step): string {
 }
 
 function TodoItem({ t, onOpen }: { t: Todo; onOpen: OpenDoc }) {
+  const { id } = useCaseData();
   const [open, setOpen] = useState(false);
   const miss = t.kind === 'chybí';
   const docIds = [...new Set(t.quotes.map((q) => q.docId))];
@@ -31,11 +33,14 @@ function TodoItem({ t, onOpen }: { t: Todo; onOpen: OpenDoc }) {
       <div className="todo-main">
         <p className="todo-title"><span className="sr">{miss ? 'Chybí: ' : 'Rozpor: '}</span>{nb(t.title)}</p>
         <p className="todo-why">{nb(t.why)}</p>
-        {t.quotes.length > 0 && (
-          <button type="button" className="link" aria-expanded={open} onClick={() => setOpen(!open)}>
-            {open ? 'Skrýt citaci' : 'Ukázat citaci'}<Icon name={open ? 'up' : 'down'} size={14} />
-          </button>
-        )}
+        <div className="todo-links">
+          <a className="link" href={`#/pacienti/${id}/udaje/${t.field}`}>{miss ? 'Doplnit údaj' : 'Zapsat ověření'}<Icon name="right" size={14} /></a>
+          {t.quotes.length > 0 && (
+            <button type="button" className="link" aria-expanded={open} onClick={() => setOpen(!open)}>
+              {open ? 'Skrýt citaci' : 'Ukázat citaci'}<Icon name={open ? 'up' : 'down'} size={14} />
+            </button>
+          )}
+        </div>
         {open && (
           <div className="quotes">
             {t.quotes.map((q) => (

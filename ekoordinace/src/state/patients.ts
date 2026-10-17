@@ -73,23 +73,48 @@ function todayOf(p: StoredPatient): string {
   return p.docs.reduce((d, x) => (x.date > d ? x.date : d), SIM_TODAY);
 }
 
+// the date of the MDT is a field the coordinator can change; for the demo case it is kept apart (its reports are fixed)
+const DEMO_MDT = demo.mdtDate;
+const MDT_KEY = 'ekoordinace:mdt:';
+let demoMdt: string | null = null;
+function readDemoMdt(): string {
+  if (demoMdt === null) {
+    try { demoMdt = window.localStorage.getItem(MDT_KEY + DEMO_ID) ?? DEMO_MDT; } catch { demoMdt = DEMO_MDT; }
+  }
+  return demoMdt;
+}
+const demoDocs: Report[] = Object.values(demo.documents).map((d) => ({ id: d.id, date: d.date, title: d.title, text: d.text }));
+
+/** Change the date of the MDT of a patient; the case is rebuilt (only what was known by then goes into the podklad). */
+export function setMdtDate(id: string, date: string) {
+  if (id !== DEMO_ID) { updatePatient(id, (p) => ({ ...p, mdtDate: date })); return; }
+  demoMdt = date;
+  try { window.localStorage.setItem(MDT_KEY + DEMO_ID, date); } catch { /* keep in memory only */ }
+  listeners.forEach((l) => l());
+}
+
 const built = new Map<string, { key: string; data: CaseData }>();
 
-/** The case of one patient: the demo case at once, an added patient built from its reports (null while building). */
+/** The case of one patient (null while its reports are being processed). */
 export function useCaseOf(id: string): { data: CaseData | null; stored: StoredPatient | null; missing: boolean } {
   const stored = useStoredPatients().find((p) => p.id === id) ?? null;
-  const key = stored ? JSON.stringify([stored.label, stored.mdtDate, stored.docs.map((d) => [d.id, d.date, d.text.length])]) : '';
-  const [data, setData] = useState<CaseData | null>(() => (id === DEMO_ID ? demo : built.get(id)?.key === key ? built.get(id)!.data : null));
+  const mdtOfDemo = useSyncExternalStore(subscribe, readDemoMdt, readDemoMdt);
+  const source = id === DEMO_ID
+    ? (mdtOfDemo === DEMO_MDT ? null : { docs: demoDocs, today: SIM_TODAY, mdt: mdtOfDemo, label: demo.patient.name })
+    : stored ? { docs: stored.docs, today: todayOf(stored), mdt: stored.mdtDate, label: stored.label } : null;
+  const key = source ? JSON.stringify([source.label, source.mdt, source.docs.map((d) => [d.id, d.date, d.text.length])]) : '';
+  const ready = (): CaseData | null => (id === DEMO_ID && !source ? demo : built.get(id)?.key === key ? built.get(id)!.data : null);
+  const [data, setData] = useState<CaseData | null>(ready);
   useEffect(() => {
-    if (id === DEMO_ID) { setData(demo); return; }
-    if (!stored) { setData(null); return; }
-    const hit = built.get(id);
-    if (hit?.key === key) { setData(hit.data); return; }
+    const hit = ready();
+    if (hit || !source) { setData(hit); return; }
     let alive = true;
-    buildCase({ caseId: id, docs: stored.docs, today: todayOf(stored), mdtDate: stored.mdtDate, label: stored.label })
+    buildCase({ caseId: id, docs: source.docs, today: source.today, mdtDate: source.mdt, label: source.label })
       .then((d) => { built.set(id, { key, data: d }); if (alive) setData(d); });
     return () => { alive = false; };
-  }, [id, key, stored]);
+    // the key covers everything the case is built from
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, key]);
   return { data, stored, missing: id !== DEMO_ID && !stored };
 }
 

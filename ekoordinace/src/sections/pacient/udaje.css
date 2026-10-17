@@ -43,3 +43,38 @@
   .field-body { grid-column: 1 / -1; }
   .field-actions { grid-column: 2; grid-row: 1; }
 }
+
+/* what to do about a missing or conflicting item: what is wrong, the sentences, whom to call, the form */
+.todo-box { display: grid; gap: .55rem; justify-items: start; width: 100%; max-width: 46rem; margin-top: .15rem; padding: .75rem .9rem; border-radius: var(--r-ctl); border: 1px solid var(--line); background: var(--soft); }
+.todo-box.miss { border-color: color-mix(in srgb, var(--miss) 22%, transparent); background: var(--miss-bg); }
+.todo-box.conf { border-color: color-mix(in srgb, var(--conf) 22%, transparent); background: var(--conf-bg); }
+.todo-why { font-size: .875rem; line-height: 1.45; color: var(--ink); }
+.todo-quotes { display: grid; gap: .3rem; justify-items: start; width: 100%; }
+.todo-quotes blockquote { margin: 0; padding: .35rem .6rem; border-radius: 6px; background: var(--surface); font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+.todo-quotes .src-link { display: inline-flex; align-items: center; gap: .3rem; }
+.todo-do { font-size: .9rem; }
+.todo-do b { font-weight: 700; }
+.todo-people { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; width: 100%; }
+.todo-people li { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .9rem; font-size: .875rem; }
+.todo-people li > span:first-child { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .45rem; font-weight: 600; }
+.todo-people small { font-weight: 400; color: var(--muted); }
+.todo-people a { display: inline-flex; align-items: center; gap: .3rem; color: var(--red); font: 500 .85rem var(--mono); text-decoration: none; }
+.todo-people a:hover { text-decoration: underline; }
+.todo-people .muted { font-size: .8rem; }
+.todo-form { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: .6rem .75rem; width: 100%; }
+.todo-form label { display: grid; gap: .25rem; font-size: .8rem; font-weight: 600; color: var(--ink-2); }
+.todo-form select, .todo-form input { font: inherit; font-size: .9rem; font-weight: 400; min-width: 0; padding: .5rem .65rem; border: 1px solid var(--line); border-radius: var(--r-ctl); background: var(--surface); color: var(--ink); }
+.todo-form select:focus, .todo-form input:focus { outline: 2px solid var(--red-200); border-color: var(--red-200); }
+.todo-form .form-actions { grid-column: 1 / -1; }
+.todo-box .btn-primary { padding: .45rem .9rem; font-size: .875rem; }
+.todo-box .btn-ghost { padding: .45rem .9rem; font-size: .875rem; }
+
+/* what the coordinator wrote down (with undo) */
+.field-done { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; font-size: .85rem; color: var(--ok); }
+.field-done > span { color: var(--ink-2); }
+.field.focus { animation: field-focus 2.2s ease-out; }
+@keyframes field-focus { from { background: var(--red-50); } to { background: transparent; } }
+
+@media (max-width: 640px) {
+  .todo-form { grid-template-columns: minmax(0, 1fr); }
+}

@@ -167,6 +167,7 @@ export async function buildCase(input: BuildInput): Promise<CaseData> {
       key: f.key, label: label(f.key), group: GROUP[spec?.group ?? ''] ?? 'Jiná sdělení', value: f.value, status,
       issue: issue?.why ?? (f.value ? '' : humanRefs(f.note ?? '')),
       quotes: quotesOf(f.citations ?? []),
+      ...(issue ? { todo: { title: issue.title, contacts: issue.contacts, quotes: issue.quotes } } : {}),
     };
   });
 

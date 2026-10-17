@@ -3,17 +3,19 @@
 // a compact stepper (done steps small, the current step with what is still needed and whom to call); the other tabs
 // live in ./tabs/, one file per tab with its owner (see README). Every report opens for reading. Added patients get
 // their reports here (Word or text) and the case is built from them in the browser (src/case/buildCase.ts).
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { DEMO_ID, useCaseOf } from '../../state/patients';
+import { useCase } from '../../state/caseStore';
+import { DEMO_ID, setMdtDate, useCaseOf } from '../../state/patients';
 import type { StoredPatient } from '../../state/patients';
 import { DocViewer } from '../../ui/DocViewer';
 import { Icon } from '../../ui/Icon';
-import { czDate, daysBetween, inDays, nb } from '../../ui/format';
+import { daysBetween, inDays, nb } from '../../ui/format';
 import { AddReports } from './AddReports';
 import { CaseCtx } from './caseContext';
 import { Journey } from './Journey';
 import type { OpenDoc } from './Journey';
+import { liveCase } from './live';
 import { PatientsList } from './PatientsList';
 import { PhoneContacts } from './PhoneContacts';
 import { Plan } from './tabs/Plan';
@@ -36,7 +38,18 @@ const TABS = [
   { id: 'zaver', label: 'Závěr', Tab: Zaver },
 ];
 
-function PatientHead({ data }: { data: CaseData }) {
+/** The date of the MDT – it changes, so it is a field the coordinator edits right in the header. */
+function MdtDate({ id, data }: { id: string; data: CaseData }) {
+  const days = data.mdtDate ? daysBetween(data.today, data.mdtDate) : null;
+  return (
+    <>
+      <input type="date" className="fact-date" value={data.mdtDate} aria-label="Termín konzilia" onChange={(e) => setMdtDate(id, e.target.value)} />
+      <span className="soft">{days !== null ? ` · ${inDays(days)}` : ' · nenaplánováno'}</span>
+    </>
+  );
+}
+
+function PatientHead({ id, data }: { id: string; data: CaseData }) {
   const p = data.patient;
   const female = p.sex === 'žena';
   // whom the coordinator calls about this patient: the patient, the contact person, the GP (numbers from the reports)
@@ -50,6 +63,7 @@ function PatientHead({ data }: { data: CaseData }) {
     p.insurer.code && { label: 'Pojišťovna', title: p.insurer.name, body: <>{p.insurer.short} <span className="code">{p.insurer.code}</span></> },
     (p.diagnosis.code || p.diagnosis.text) && { label: 'Diagnóza', title: p.diagnosis.source && `Podle: ${p.diagnosis.source}`, body: <><span className="code">{p.diagnosis.code}</span> {p.diagnosis.text}</> },
   ].filter(Boolean) as { label: string; title?: string; body: ReactNode }[];
+  const mdt = { label: 'Konzilium', body: <MdtDate id={id} data={data} /> };
   return (
     <div className="patient-head">
       <span className="avatar big" aria-hidden="true">{p.initials}</span>
@@ -57,6 +71,7 @@ function PatientHead({ data }: { data: CaseData }) {
       <dl className="facts">
         {facts.length ? facts.map((f) => <div key={f.label}><dt>{f.label}</dt><dd title={f.title || undefined}>{f.body}</dd></div>)
           : <div><dt>Údaje</dt><dd className="soft">zatím žádné – přidejte zprávy</dd></div>}
+        <div><dt>{mdt.label}</dt><dd>{mdt.body}</dd></div>
       </dl>
       <div className="head-actions">
         {people.some((x) => x.phone) && <PhoneContacts people={people} />}
@@ -67,7 +82,10 @@ function PatientHead({ data }: { data: CaseData }) {
   );
 }
 
-function CaseView({ id, data, stored, path }: { id: string; data: CaseData; stored: StoredPatient | null; path: string[] }) {
+function CaseView({ id, data: built, stored, path }: { id: string; data: CaseData; stored: StoredPatient | null; path: string[] }) {
+  // the reports plus what the coordinator filled in or checked – every tab sees the same
+  const st = useCase(id);
+  const data = useMemo(() => liveCase(built, st), [built, st]);
   const steps = data.steps;
   const nowStep = steps.find((s) => s.status === 'now') ?? steps[0];
   const [selected, setSelected] = useState(nowStep.id);
@@ -76,7 +94,6 @@ function CaseView({ id, data, stored, path }: { id: string; data: CaseData; stor
   const s = data.stats;
   const news = data.news[0];
   const openTasks = nowStep.todo?.length ?? 0;
-  const days = data.mdtDate ? daysBetween(data.today, data.mdtDate) : null;
   const openDoc: OpenDoc = useCallback((docId, marks = []) => setReading({ id: docId, marks }), []);
 
   const show = useCallback((stepId: string) => {
@@ -100,12 +117,12 @@ function CaseView({ id, data, stored, path }: { id: string; data: CaseData; stor
   const empty = Object.keys(data.documents).length === 0;
 
   return (
-    <CaseCtx.Provider value={{ id, data }}>
+    <CaseCtx.Provider value={{ id, data, focus: path[0] === 'udaje' ? path[1] : undefined }}>
       <nav className="crumbs" aria-label="Drobečková navigace">
         <a href="#/pacienti">Pacienti</a><Icon name="right" size={14} /><span className="crumb-now">{data.patient.name}</span>
       </nav>
 
-      <PatientHead data={data} />
+      <PatientHead id={id} data={data} />
 
       <div className="tabs-row">
         <div className="tabs" role="tablist" aria-label="Části případu">
@@ -117,12 +134,11 @@ function CaseView({ id, data, stored, path }: { id: string; data: CaseData; stor
 
       {Tab ? <Tab openDoc={openDoc} /> : (<>
         {stored && empty && <AddReports patient={stored} first />}
-        <section className="card stats" aria-label="Hlavní údaje">
-          <div className="stat"><span className="stat-icon"><Icon name="calendar" /></span><span><small>Konzilium</small><b>{data.mdtDate ? czDate(data.mdtDate) : 'Nenaplánováno'}</b><em>{days !== null ? inDays(days) : 'termín zadáte u zpráv'}</em></span></div>
+        <section className="card stats three" aria-label="Hlavní údaje">
           <div className="stat"><span className="stat-icon"><Icon name="fields" /></span><span><small>Údaje pro konzilium</small><b>{s.ready} z {s.fields}</b><em>připraveno k potvrzení</em></span></div>
           <button type="button" className="stat stat-link" onClick={() => show(nowStep.id)}>
             <span className="stat-icon red"><Icon name="alert" /></span>
-            <span><small>K vyřešení</small><b>{openTasks}</b><em>{s.missing} chybí · {s.conflicts} {s.conflicts === 1 ? 'rozpor' : s.conflicts < 5 ? 'rozpory' : 'rozporů'}</em></span>
+            <span><small>K vyřešení</small><b>{openTasks}</b><em>{openTasks ? `${s.missing} chybí · ${s.conflicts} ${s.conflicts === 1 ? 'rozpor' : s.conflicts < 5 ? 'rozpory' : 'rozporů'}` : 'vše vyřešeno'}</em></span>
           </button>
           {news ? (
             <button type="button" className="stat stat-link" onClick={() => openDoc(news.id)}>
