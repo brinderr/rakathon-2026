@@ -17,7 +17,7 @@ const STATUS_SR = { done: 'hotovo', now: 'teď na řadě', waiting: 'čeká' } a
 function eyebrow(step: Step): string {
   if (step.status === 'now') return 'Teď na řadě';
   if (step.status === 'waiting') return 'Čeká';
-  return step.date ? `Hotovo · ${czDate(step.date)}` : 'Hotovo';
+  return 'Hotovo';
 }
 
 function TodoItem({ t, onOpen }: { t: Todo; onOpen: OpenDoc }) {
